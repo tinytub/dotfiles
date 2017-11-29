@@ -12,6 +12,9 @@ scriptencoding utf-8
 " no vi-compatible
 set nocompatible
 
+" clipboard 配置
+set clipboard=unnamed
+
 " Setting up Vundle - the best vim plugin manager
 let iCanHazVundle=1
 let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
@@ -225,7 +228,13 @@ imap <M-Up> <ESC><c-w>k
 imap <M-Down> <ESC><c-w>j
 
 " old autocomplete keyboard shortcut
-imap <C-J> <C-X><C-O>
+"imap <C-J> <C-X><C-O>
+" 分屏窗口移动, Smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
 
 " Comment this line to enable autocompletion preview window
 " (displays documentation related to the selected completion option)
