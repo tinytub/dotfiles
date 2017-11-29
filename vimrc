@@ -28,6 +28,8 @@ filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+" default map leader '\'
+
 " let Vundle manage Plugins
 Plugin 'gmarik/vundle'
 
@@ -77,7 +79,7 @@ Plugin 'tomtom/tlib_vim'
 Plugin 'honza/vim-snippets'
 Plugin 'garbas/vim-snipmate'
 " awesome colorscheme
-Plugin 'tomasr/molokai'
+Plugin 'joshdick/onedark.vim'
 " Git/mercurial/others diff icons on the side of the file lines
 Plugin 'mhinz/vim-signify'
 " Automatically sort python imports
@@ -153,8 +155,8 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 " highlight cursor line and column
-set cursorline
-set cursorcolumn
+" set cursorline
+" set cursorcolumn
 " hidden startup messages
 set shortmess=atI
 " auto read and write
@@ -166,7 +168,7 @@ set confirm
 set nobackup
 " other settings 
 set langmenu=zh_CN.UTF-8
-set mouse=a
+"set mouse=a
 set whichwrap+=<,>,h,l,[,]
 set background=dark
 set encoding=utf-8
@@ -247,13 +249,14 @@ nmap ,wr :RecurGrepFast <cword><CR>
 " use 256 colors when possible
 if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
 	let &t_Co = 256
-    colorscheme molokai
+    colorscheme onedark
 else
     colorscheme delek
 endif
 
 " colors for gvim
 if has('gui_running')
+    "colorscheme wombat
     colorscheme wombat
 endif
 
@@ -551,3 +554,47 @@ let g:vim_markdown_frontmatter=1
 " and when you open this, you can manually trigger preview
 " via the command :InstantMarkdownPreview
 let g:instant_markdown_autostart = 0
+
+function! VimGoSetup()
+  " vim-go related mappings
+  au FileType go nmap <Leader>r <Plug>(go-run)
+  au FileType go nmap <Leader>b <Plug>(go-build)
+  au FileType go nmap <Leader>t <Plug>(go-test)
+  au FileType go nmap <Leader>i <Plug>(go-info)
+  au FileType go nmap <Leader>s <Plug>(go-implements)
+  au FileType go nmap <Leader>c <Plug>(go-coverage)
+  au FileType go nmap <Leader>e <Plug>(go-rename)
+  au FileType go nmap <Leader>gi <Plug>(go-imports)
+  au FileType go nmap <Leader>gI <Plug>(go-install)
+  au FileType go nmap <Leader>gd <Plug>(go-doc)
+  au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+  au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+  au FileType go nmap <Leader>ds <Plug>(go-def-split)
+  au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+  au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+  au FileType go set nocursorcolumn
+  au FileType go syntax sync minlines=256
+  au FileType go set synmaxcol=128
+  au FileType go set re=1
+  let g:go_auto_type_info = 1
+  let g:go_fmt_command = "goimports"
+  let g:go_fmt_experimental = 1
+  let g:go_dispatch_enabled = 0 " vim-dispatch needed
+  "let g:go_metalinter_autosave = 1
+  "let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+  "let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+  let g:go_term_enabled = 0
+  let g:go_term_mode = "vertical"
+  let g:go_highlight_functions = 1
+  let g:go_highlight_methods = 1
+  let g:go_highlight_structs = 1
+  let g:go_highlight_interfaces = 1
+  let g:go_highlight_operators = 1
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_build_constraints = 1
+  let g:go_highlight_chan_whitespace_error = 1
+endfunction
+"
+"if &filetype == 'go'
+  call VimGoSetup()
+"endif
