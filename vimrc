@@ -418,6 +418,15 @@ let g:deoplete#file#enable_buffer_path=1
 let g:deoplete#keyword_patterns={}
 let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.]*'
 
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#mappings#manual_complete()
+function! s:check_back_space() abort "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+
 "" NeoComplCache ------------------------------
 "
 "" most of them not documented because I'm not sure how they work
