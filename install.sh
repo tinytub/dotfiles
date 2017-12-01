@@ -5,4 +5,6 @@ go get -u github.com/jstemmer/gotags
 
 vim -E -u $HOME/.vimrc +qall
 
+echo "need install vim8 --with-python3"
+
 echo 'Install Complete! '
