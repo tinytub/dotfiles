@@ -83,6 +83,8 @@ Plugin 'klen/python-mode'
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
+" deoplete golang 插件, 需要手动make
+Plugin 'zchee/deoplete-go'
 
 
 " Snippets manager (SnipMate), dependencies, and snippets repo
