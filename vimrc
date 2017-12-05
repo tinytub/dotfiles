@@ -26,7 +26,7 @@ if !filereadable(vundle_readme)
     let iCanHazVundle=0
 endif
 
-filetype off
+filetype on
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -623,6 +623,7 @@ function! VimGoSetup()
   let g:go_term_mode = "vertical"
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
+  let g:go_highlight_fields = 1
   let g:go_highlight_structs = 1
   let g:go_highlight_interfaces = 1
   let g:go_highlight_operators = 1
