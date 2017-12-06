@@ -14,6 +14,16 @@ echo "need install vim8 --with-python3"
 #sudo apt-get remove --purge vim vim-runtime vim-gnome vim-tiny vim-gui-common
 #
 #sudo apt-get install liblua5.1-dev luajit libluajit-5.1 python-dev ruby-dev libperl-dev libncurses5-dev libatk1.0-dev libx11-dev libxpm-dev libxt-dev
+# sudo yum install -y ruby ruby-devel lua lua-devel luajit \
+#     luajit-devel ctags git python python-devel \
+#     python3 python3-devel tcl-devel \
+#     perl perl-devel perl-ExtUtils-ParseXS \
+#     perl-ExtUtils-XSpp perl-ExtUtils-CBuilder \
+#     perl-ExtUtils-Embed
+# This step is needed to rectify an issue with how Fedora 20 installs XSubPP:
+# 
+# # symlink xsubpp (perl) from /usr/bin to the perl dir
+# sudo ln -s /usr/bin/xsubpp /usr/share/perl5/ExtUtils/xsubpp
 #
 ##Optional: so vim can be uninstalled again via `dpkg -r vim`
 #sudo apt-get install checkinstall
@@ -50,6 +60,19 @@ echo "need install vim8 --with-python3"
 #--disable-netbeans \
 #--with-compiledby="yourname" \
 #--enable-fail-if-missing
+# 用这个
+#./configure --with-features=huge \
+#            --enable-multibyte \
+#            --enable-rubyinterp=yes \
+#            --enable-pythoninterp=yes \
+#            --with-python-config-dir=/usr/lib64/python2.6/config \
+#            --enable-python3interp=yes \
+#            --with-python3-config-dir=/usr/lib/python3.5/config \
+#            --enable-perlinterp=yes \
+#            --enable-luainterp=yes \
+#            --enable-gui=gtk2 \
+#            --enable-cscope \
+#            --prefix=/usr/local
 #
 # make VIMRUNTIMEDIR=/usr/local/share/vim/vim80
 #make && sudo make install
