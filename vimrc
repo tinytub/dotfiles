@@ -429,50 +429,6 @@ function! s:check_back_space() abort "{{{
     return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
 
-"" NeoComplCache ------------------------------
-"
-"" most of them not documented because I'm not sure how they work
-"" (docs aren't good, had to do a lot of trial and error to make 
-"" it play nice)
-"
-"" Disable AutoComplPop.
-"let g:acp_enableAtStartup = 0
-"" Use neocomplcache.
-"let g:neocomplcache_enable_at_startup = 1
-"let g:neocomplcache_enable_ignore_case = 1
-"" Use smartcase.
-"let g:neocomplcache_enable_smart_case = 1
-"let g:neocomplcache_enable_auto_select = 1
-"
-"let g:neocomplcache_enable_fuzzy_completion = 1
-"let g:neocomplcache_enable_camel_case_completion = 1
-"let g:neocomplcache_enable_underbar_completion = 1
-"let g:neocomplcache_fuzzy_completion_start_length = 1
-"let g:neocomplcache_auto_completion_start_length = 1
-"let g:neocomplcache_manual_completion_start_length = 1
-"" Set minimum syntax keyword length.
-"let g:neocomplcache_min_keyword_length = 1
-"let g:neocomplcache_min_syntax_length = 1
-"let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-"" complete with workds from any opened file
-"let g:neocomplcache_same_filetype_lists = {}
-"let g:neocomplcache_same_filetype_lists._ = '_'
-"" <TAB>: completion.
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-"" Define keyword.
-"if !exists('g:neocomplcache_keyword_patterns')
-"    let g:neocomplcache_keyword_patterns = {}
-"endif
-"let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
-"" Plugin key-mappings.
-"inoremap <expr><C-g>     neocomplcache#undo_completion()
-"inoremap <expr><C-l>     neocomplcache#complete_common_string()
-"" <C-h>, <BS>: close popup and delete backword char.
-"inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-"inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-"inoremap <expr><C-y>  neocomplcache#close_popup()
-"inoremap <expr><C-e>  neocomplcache#cancel_popup()
-
 " TabMan ------------------------------
 
 " mappings to toggle display, and to focus on it
@@ -613,6 +569,7 @@ function! VimGoSetup()
   au FileType go set synmaxcol=128
   au FileType go set re=1
   let g:go_auto_type_info = 1
+"  let g:go_info_mode = 'guru'
   let g:go_fmt_command = "goimports"
   let g:go_fmt_experimental = 1
   let g:go_dispatch_enabled = 0 " vim-dispatch needed
@@ -624,8 +581,8 @@ function! VimGoSetup()
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
   let g:go_highlight_fields = 1
-  let g:go_highlight_structs = 1
-  let g:go_highlight_interfaces = 1
+"  let g:go_highlight_structs = 1
+"  let g:go_highlight_interfaces = 1
   let g:go_highlight_operators = 1
   let g:go_highlight_extra_types = 1
   let g:go_highlight_build_constraints = 1
