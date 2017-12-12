@@ -26,7 +26,7 @@ if !filereadable(vundle_readme)
     let iCanHazVundle=0
 endif
 
-filetype on
+filetype off
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -93,7 +93,9 @@ Plugin 'tomtom/tlib_vim'
 Plugin 'honza/vim-snippets'
 Plugin 'garbas/vim-snipmate'
 " awesome colorscheme
-Plugin 'joshdick/onedark.vim'
+ Plugin 'joshdick/onedark.vim'
+" Plugin 'morhetz/gruvbox'
+
 " Git/mercurial/others diff icons on the side of the file lines
 Plugin 'mhinz/vim-signify'
 " Automatically sort python imports
@@ -271,6 +273,7 @@ nmap ,wr :RecurGrepFast <cword><CR>
 if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
 	let &t_Co = 256
     colorscheme onedark
+    "colorscheme gruvbox
 else
     colorscheme delek
 endif
@@ -569,7 +572,9 @@ function! VimGoSetup()
   au FileType go set synmaxcol=128
   au FileType go set re=1
   let g:go_auto_type_info = 1
-"  let g:go_info_mode = 'guru'
+  let g:go_info_mode = 'guru'
+  set updatetime=100
+
   let g:go_fmt_command = "goimports"
   let g:go_fmt_experimental = 1
   let g:go_dispatch_enabled = 0 " vim-dispatch needed
@@ -622,3 +627,5 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
 \ }
 
+set lazyredraw
+set ttyfast
