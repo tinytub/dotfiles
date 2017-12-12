@@ -61,20 +61,26 @@ echo "need install vim8 --with-python3"
 #--with-compiledby="yourname" \
 #--enable-fail-if-missing
 # 用这个
-#./configure --with-features=huge \
-#            --enable-multibyte \
-#            --enable-rubyinterp=yes \
-#            --enable-pythoninterp=yes \
-#            --with-python-config-dir=/usr/lib64/python2.6/config \
-#            --enable-python3interp=yes \
-#            --with-python3-config-dir=/usr/lib/python3.5/config \
-#            --enable-perlinterp=yes \
-#            --enable-luainterp=yes \
-#            --enable-gui=gtk2 \
-#            --enable-cscope \
-#            --prefix=/usr/local
-#
-# make VIMRUNTIMEDIR=/usr/local/share/vim/vim80
-#make && sudo make install
+
+sudo yum install -y ruby ruby-devel lua lua-devel luajit     luajit-devel ctags git python python-devel     python3 python3-devel tcl-devel     perl perl-devel perl-ExtUtils-ParseXS     perl-ExtUtils-XSpp perl-ExtUtils-CBuilder     perl-ExtUtils-Embed
+sudo ln -s /usr/bin/xsubpp /usr/share/perl5/ExtUtils/xsubpp
+yum search python3
+yum install python34.x86_64 python34-devel
+yum install python34-pip
+./configure --with-features=huge \
+            --enable-multibyte \
+            --enable-rubyinterp=yes \
+            --enable-pythoninterp=yes \
+            --with-python-config-dir=/usr/lib64/python2.6/config \
+            --enable-python3interp=yes \
+            --with-python3-config-dir=/usr/lib/python3.5/config \
+            --enable-perlinterp=yes \
+            --enable-luainterp=yes \
+            --enable-gui=gtk2 \
+            --enable-cscope \
+            --prefix=/usr/local
+
+ make VIMRUNTIMEDIR=/usr/local/share/vim/vim80
+make && sudo make install
 
 echo 'Install Complete! '
