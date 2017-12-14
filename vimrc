@@ -80,6 +80,7 @@ Plugin 'klen/python-mode'
 "
 
 " Better autocompletion
+" pip3 install neovim
 Plugin 'Shougo/deoplete.nvim'
 Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
@@ -139,12 +140,12 @@ Plugin 'terryma/vim-multiple-cursors'
 
 " Plugins from vim-scripts repos:
 
-" Search results counter
-Plugin 'IndexedSearch'
+"" Search results counter
+"Plugin 'IndexedSearch'
 " XML/HTML tags navigation
-Plugin 'matchit.zip'
+"Plugin 'matchit.zip'
 " Gvim colorscheme
-Plugin 'Wombat'
+"Plugin 'Wombat'
 " Yank history navigation
 Plugin 'YankRing.vim'
 
@@ -212,6 +213,9 @@ set hlsearch
 set ignorecase
 " muting search highlighting 
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+" 进入搜索Use sane regexes"
+"nnoremap / /\v
+"vnoremap / /\v
 
 " syntax highlight on
 syntax on
@@ -419,6 +423,7 @@ nmap ,o :RopeFindOccurrences<CR>
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#go#gocode_binary = '$GOPATH/bin/gocode'
 let g:deoplete#file#enable_buffer_path=1
 let g:deoplete#keyword_patterns={}
 let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.]*'
@@ -558,7 +563,7 @@ function! VimGoSetup()
   au FileType go nmap <Leader>i <Plug>(go-info)
   au FileType go nmap <Leader>s <Plug>(go-implements)
   au FileType go nmap <Leader>c <Plug>(go-coverage)
-  au FileType go nmap <Leader>e <Plug>(go-rename)
+  au FileType go nmap <Leadee <Plug>(go-rename)
   au FileType go nmap <Leader>gi <Plug>(go-imports)
   au FileType go nmap <Leader>gI <Plug>(go-install)
   au FileType go nmap <Leader>gd <Plug>(go-doc)
@@ -571,8 +576,11 @@ function! VimGoSetup()
   au FileType go syntax sync minlines=256
   au FileType go set synmaxcol=128
   au FileType go set re=1
-  let g:go_auto_type_info = 1
-  let g:go_info_mode = 'guru'
+  au FileType go set lazyredraw
+  au FileType go set ttyfast
+  let g:go_autodetect_gopath = 1
+  let g:go_auto_type_info = 0
+"  let g:go_info_mode = 'gocode'
   set updatetime=100
 
   let g:go_fmt_command = "goimports"
@@ -586,8 +594,8 @@ function! VimGoSetup()
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
   let g:go_highlight_fields = 1
-"  let g:go_highlight_structs = 1
-"  let g:go_highlight_interfaces = 1
+  let g:go_highlight_structs = 1
+  let g:go_highlight_interfaces = 1
   let g:go_highlight_operators = 1
   let g:go_highlight_extra_types = 1
   let g:go_highlight_build_constraints = 1
@@ -627,5 +635,5 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
 \ }
 
-set lazyredraw
-set ttyfast
+"set lazyredraw
+"set ttyfast
