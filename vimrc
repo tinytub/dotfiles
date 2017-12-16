@@ -26,7 +26,7 @@ if !filereadable(vundle_readme)
     let iCanHazVundle=0
 endif
 
-filetype off
+filetype on
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -165,6 +165,7 @@ endif
 " allow plugins by file type (required for plugins!)
 filetype plugin on
 filetype indent on
+filetype plugin indent on
 
 " tabs and spaces handling
 set expandtab
@@ -185,7 +186,7 @@ set confirm
 set nobackup
 " other settings 
 set langmenu=zh_CN.UTF-8
-"set mouse=a
+set mouse-=a
 set whichwrap+=<,>,h,l,[,]
 set background=dark
 set encoding=utf-8
@@ -216,6 +217,11 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 " 进入搜索Use sane regexes"
 "nnoremap / /\v
 "vnoremap / /\v
+
+" 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
 
 " syntax highlight on
 syntax on
@@ -252,6 +258,18 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
+
+" disbale paste mode when leaving insert mode
+au InsertLeave * set nopaste
+
+" 自动set paset
+" Automatically set paste mode in Vim when pasting in insert mode
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
 
 " Comment this line to enable autocompletion preview window
