@@ -13,7 +13,7 @@ scriptencoding utf-8
 set nocompatible
 
 " clipboard 配置
-set clipboard=unnamed
+" set clipboard=unnamed
 
 " Setting up Vundle - the best vim plugin manager
 let iCanHazVundle=1
@@ -73,7 +73,7 @@ Plugin 'Townk/vim-autoclose'
 Plugin 'michaeljsmith/vim-indent-object'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
-Plugin 'klen/python-mode'
+Plugin 'python-mode/python-mode'
 " Better autocompletion
 "Plugin 'Shougo/neocomplcache.vim'
 "
