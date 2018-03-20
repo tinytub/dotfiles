@@ -87,6 +87,9 @@ Plugin 'roxma/vim-hug-neovim-rpc'
 " deoplete golang 插件, 需要手动make
 Plugin 'zchee/deoplete-go'
 
+" python 补全插件
+Plugin 'davidhalter/jedi-vim'
+
 
 " Snippets manager (SnipMate), dependencies, and snippets repo
 Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -148,6 +151,11 @@ Plugin 'terryma/vim-multiple-cursors'
 "Plugin 'Wombat'
 " Yank history navigation
 Plugin 'YankRing.vim'
+
+" html/js/css 格式化
+" 需要cd ~/.vim/bundle/vim-jsbeautify && git submodule update --init --recursive
+Plugin 'maksimr/vim-jsbeautify'
+
 
 " ============================================================================
 " Install plugins the first time vim runs
@@ -621,8 +629,21 @@ function! VimGoSetup()
 endfunction
 "
 "if &filetype == 'go'
-  call VimGoSetup()
+call VimGoSetup()
 "endif
+if &filetype == 'python'
+    " 禁用自动补全
+    let g:jedi#completions_enabled = 0
+    " 键位什么的
+    "let g:jedi#goto_command = "<leader>d"
+    "let g:jedi#goto_assignments_command = "<leader>g"
+    "let g:jedi#goto_definitions_command = "gd"
+    "let g:jedi#documentation_command = "K"
+    "let g:jedi#usages_command = "<leader>n"
+    "let g:jedi#completions_command = "<C-Space>"
+    "let g:jedi#rename_command = "<leader>r"
+endif
+
 
 "光标在某变量或函数上，输入gd跳转。ctrl+o返回 需要安装ctags和gotags
 let g:tagbar_type_go = {
@@ -655,3 +676,15 @@ let g:tagbar_type_go = {
 
 "set lazyredraw
 "set ttyfast
+"
+" 前端 jsbeautify 命令
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+" for json
+autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+" for jsx
+autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+" for html
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+" for css or scss
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+
