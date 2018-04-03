@@ -80,7 +80,7 @@ yum install python34-pip
             --enable-cscope \
             --prefix=/usr/local
 
- make VIMRUNTIMEDIR=/usr/local/share/vim/vim80
+make VIMRUNTIMEDIR=/usr/local/share/vim/vim80
 make && sudo make install
 
 echo 'Install Complete! '
