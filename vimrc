@@ -99,6 +99,7 @@ Plugin 'garbas/vim-snipmate'
 " awesome colorscheme
 " Plugin 'joshdick/onedark.vim'
 Plugin 'morhetz/gruvbox'
+" gruvbox 如果颜色不对,尝试执行~/.vim/bundle/gruvbox/gruvbox_256palette.sh 或 ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
 "Plugin 'altercation/solarized'
 
 " Git/mercurial/others diff icons on the side of the file lines
