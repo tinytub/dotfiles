@@ -97,8 +97,9 @@ Plugin 'tomtom/tlib_vim'
 Plugin 'honza/vim-snippets'
 Plugin 'garbas/vim-snipmate'
 " awesome colorscheme
- Plugin 'joshdick/onedark.vim'
-" Plugin 'morhetz/gruvbox'
+" Plugin 'joshdick/onedark.vim'
+Plugin 'morhetz/gruvbox'
+"Plugin 'altercation/solarized'
 
 " Git/mercurial/others diff icons on the side of the file lines
 Plugin 'mhinz/vim-signify'
@@ -197,7 +198,7 @@ set nobackup
 set langmenu=zh_CN.UTF-8
 set mouse-=a
 set whichwrap+=<,>,h,l,[,]
-set background=dark
+set background=light
 set encoding=utf-8
 
 set backspace=2 " make backspace work like most other apps
@@ -303,8 +304,9 @@ nmap ,wr :RecurGrepFast <cword><CR>
 " use 256 colors when possible
 if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
 	let &t_Co = 256
-    colorscheme onedark
-    "colorscheme gruvbox
+    "colorscheme onedark
+    "colorscheme solarized
+    colorscheme gruvbox
 else
     colorscheme delek
 endif
