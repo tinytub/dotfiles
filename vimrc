@@ -514,7 +514,8 @@ let g:choosewin_overlay_enable = 1
 " Airline ------------------------------
 
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'bubblegum'
+" let g:airline_theme = 'bubblegum'
+let g:airline_theme = 'gruvbox'
 "let g:airline#extensions#tabline#enabled = 1
 "let g:airline#extensions#tabline#left_sep = ' '
 "let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -609,6 +610,7 @@ function! VimGoSetup()
   au FileType go set lazyredraw
   au FileType go set ttyfast
   let g:go_autodetect_gopath = 1
+  let g:go_list_type = "quickfix"
   let g:go_auto_type_info = 0
 "  let g:go_info_mode = 'gocode'
   set updatetime=100
