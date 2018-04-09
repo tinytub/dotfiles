@@ -454,9 +454,11 @@ nmap ,o :RopeFindOccurrences<CR>
 " deoplete
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#gocode_binary = '$GOPATH/bin/gocode'
-let g:deoplete#file#enable_buffer_path=1
+" let g:deoplete#file#enable_buffer_path=1
+let g:deoplete#sources#go#pointer = 1
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const', 'pointer']
 let g:deoplete#keyword_patterns={}
-let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.]*'
+"let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.]*'
 
 inoremap <silent><expr> <TAB>
     \ pumvisible() ? "\<C-n>" :
