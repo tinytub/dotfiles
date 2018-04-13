@@ -73,7 +73,7 @@ Plugin 'Townk/vim-autoclose'
 Plugin 'michaeljsmith/vim-indent-object'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
-Plugin 'python-mode/python-mode'
+" Plugin 'python-mode/python-mode'
 " Better autocompletion
 "Plugin 'Shougo/neocomplcache.vim'
 "
@@ -89,6 +89,7 @@ Plugin 'zchee/deoplete-go'
 
 " python 补全插件
 Plugin 'davidhalter/jedi-vim'
+Plugin 'zchee/deoplete-jedi'
 
 
 " Snippets manager (SnipMate), dependencies, and snippets repo
@@ -151,8 +152,8 @@ Plugin 'terryma/vim-multiple-cursors'
 "Plugin 'matchit.zip'
 " Gvim colorscheme
 "Plugin 'Wombat'
-" Yank history navigation
-Plugin 'YankRing.vim'
+" Yank history navigation 复制历史记录工具？
+"Plugin 'YankRing.vim'
 
 " html/js/css 格式化
 " 需要cd ~/.vim/bundle/vim-jsbeautify && git submodule update --init --recursive
@@ -435,21 +436,21 @@ let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '⚠'
 
-" Python-mode ------------------------------
-
-" don't use linter, we use syntastic for that
-let g:pymode_lint_on_write = 0
-let g:pymode_lint_signs = 0
-" don't fold python code on open
-let g:pymode_folding = 0
-" don't load rope by default. Change to 1 to use rope
-let g:pymode_rope = 0
-" open definitions on same window, and custom mappings for definitions and
-" occurrences
-let g:pymode_rope_goto_definition_bind = ',d'
-let g:pymode_rope_goto_definition_cmd = 'e'
-nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
-nmap ,o :RopeFindOccurrences<CR>
+"" Python-mode ------------------------------
+"
+"" don't use linter, we use syntastic for that
+"let g:pymode_lint_on_write = 0
+"let g:pymode_lint_signs = 0
+"" don't fold python code on open
+"let g:pymode_folding = 0
+"" don't load rope by default. Change to 1 to use rope
+"let g:pymode_rope = 0
+"" open definitions on same window, and custom mappings for definitions and
+"" occurrences
+"let g:pymode_rope_goto_definition_bind = ',d'
+"let g:pymode_rope_goto_definition_cmd = 'e'
+"nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
+"nmap ,o :RopeFindOccurrences<CR>
 
 " deoplete
 let g:deoplete#enable_at_startup = 1
@@ -588,29 +589,33 @@ let g:vim_markdown_frontmatter=1
 " via the command :InstantMarkdownPreview
 let g:instant_markdown_autostart = 0
 
-function! VimGoSetup()
+augroup go
+  autocmd!
   " vim-go related mappings
-  au FileType go nmap <Leader>r <Plug>(go-run)
-  au FileType go nmap <Leader>b <Plug>(go-build)
-  au FileType go nmap <Leader>t <Plug>(go-test)
-  au FileType go nmap <Leader>i <Plug>(go-info)
-  au FileType go nmap <Leader>s <Plug>(go-implements)
-  au FileType go nmap <Leader>c <Plug>(go-coverage)
-  au FileType go nmap <Leadee <Plug>(go-rename)
-  au FileType go nmap <Leader>gi <Plug>(go-imports)
-  au FileType go nmap <Leader>gI <Plug>(go-install)
-  au FileType go nmap <Leader>gd <Plug>(go-doc)
-  au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-  au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
-  au FileType go nmap <Leader>ds <Plug>(go-def-split)
-  au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-  au FileType go nmap <Leader>dt <Plug>(go-def-tab)
-  au FileType go set nocursorcolumn
-  au FileType go syntax sync minlines=256
-  au FileType go set synmaxcol=128
-  au FileType go set re=1
-  au FileType go set lazyredraw
-  au FileType go set ttyfast
+  autocmd FileType go nmap <Leader>r <Plug>(go-run)
+  autocmd FileType go nmap <Leader>b <Plug>(go-build)
+  autocmd FileType go nmap <Leader>t <Plug>(go-test)
+  autocmd FileType go nmap <Leader>i <Plug>(go-info)
+  autocmd FileType go nmap <Leader>s <Plug>(go-implements)
+  autocmd FileType go nmap <Leader>c <Plug>(go-coverage)
+  autocmd FileType go nmap <Leadee <Plug>(go-rename)
+  autocmd FileType go nmap <Leader>gi <Plug>(go-imports)
+  autocmd FileType go nmap <Leader>gI <Plug>(go-install)
+  autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
+  autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+  autocmd FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+  autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
+  autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+  autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
+  autocmd FileType go set nocursorcolumn
+  autocmd FileType go syntax sync minlines=256
+  autocmd FileType go set synmaxcol=128
+  autocmd FileType go set re=1
+  autocmd FileType go set lazyredraw
+  autocmd FileType go set ttyfast
+augroup END
+
+"if &filetype == 'go'
   let g:go_autodetect_gopath = 1
   let g:go_list_type = "quickfix"
   let g:go_auto_type_info = 0
@@ -634,22 +639,23 @@ function! VimGoSetup()
   let g:go_highlight_extra_types = 1
   let g:go_highlight_build_constraints = 1
   let g:go_highlight_chan_whitespace_error = 1
-endfunction
-"
-"if &filetype == 'go'
-call VimGoSetup()
 "endif
+
 "if &filetype == 'python'
-"    " 禁用自动补全
-"    let g:jedi#completions_enabled = 0
-"    " 键位什么的
-"    "let g:jedi#goto_command = "<leader>d"
-"    "let g:jedi#goto_assignments_command = "<leader>g"
-"    "let g:jedi#goto_definitions_command = "gd"
-"    "let g:jedi#documentation_command = "K"
-"    "let g:jedi#usages_command = "<leader>n"
-"    "let g:jedi#completions_command = "<C-Space>"
-"    "let g:jedi#rename_command = "<leader>r"
+    "let g:jedi#auto_vim_configuration = 1
+    "let g:jedi#auto_configuration = 1
+    " 禁用自动补全
+    let g:jedi#completions_enabled = 0
+    let g:jedi#use_tabs_not_buffers = 1
+    " 键位什么的
+    let g:jedi#goto_command = "<leader>d"
+    let g:jedi#goto_assignments_command = "<leader>g"
+    " goto_definitions_command 已废弃，但是仍可使用
+    let g:jedi#goto_definitions_command = "gd" 
+    let g:jedi#documentation_command = "K"
+    let g:jedi#usages_command = "<leader>n"
+    let g:jedi#completions_command = "<C-Space>"
+    let g:jedi#rename_command = "<leader>r"
 "endif
 
 
