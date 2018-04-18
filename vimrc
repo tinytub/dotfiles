@@ -419,14 +419,24 @@ nmap <leader>e :Errors<CR>
 " turn to next or previous errors, after open errors list
 nmap <leader>n :lnext<CR>
 nmap <leader>p :lprevious<CR>
+" 通过 :Sc 命令进行语法检测
+:command Sc :SyntasticCheck 
 " check also when just opened the file
-let g:syntastic_check_on_open = 1
+" 太慢了，打开文件时不自动加载
+let g:syntastic_check_on_open = 0
+" 也不要每次保存的时候尝试加载，等我手动出发好了
+let g:syntastic_check_on_wq = 0 
+" 保持被动模式
+let g:syntastic_mode_map = {'mode': 'passive'} 
 " syntastic checker for javascript.
 " eslint is the only tool support JSX.
 " If you don't need write JSX, you can use jshint.
 " And eslint is slow, but not a hindrance
 " let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_javascript_checkers = ['eslint']
+" python 好多检测插件，加载速度太慢了。。。只加载 pylint 好了
+" let g:syntastic_disabled_filetypes=['python']
+let g:syntastic_python_checkers = ['pylint']
 " don't put icons on the sign column (it hides the vcs status icons of signify)
 let g:syntastic_enable_signs = 0
 " custom icons (enable them if you use a patched font, and enable the previous 
@@ -642,8 +652,8 @@ augroup END
 "endif
 
 "if &filetype == 'python'
-    "let g:jedi#auto_vim_configuration = 1
-    "let g:jedi#auto_configuration = 1
+    let g:jedi#auto_vim_configuration = 0
+    let g:jedi#auto_configuration = 0
     " 禁用自动补全
     let g:jedi#completions_enabled = 0
     let g:jedi#use_tabs_not_buffers = 1
@@ -692,13 +702,16 @@ let g:tagbar_type_go = {
 "set ttyfast
 "
 " 前端 jsbeautify 命令
-autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-" for json
-autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
-" for jsx
-autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
-" for html
-autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-" for css or scss
-autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+augroup json,javascript,jsx,html,css
+  autocmd!
+  autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+  " for json
+  autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+  " for jsx
+  autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+  " for html
+  autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+  " for css or scss
+  autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+augroup END
 
