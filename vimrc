@@ -200,7 +200,7 @@ set nobackup
 set langmenu=zh_CN.UTF-8
 set mouse-=a
 set whichwrap+=<,>,h,l,[,]
-set background=light
+set background=dark
 set encoding=utf-8
 
 set backspace=2 " make backspace work like most other apps
@@ -306,7 +306,6 @@ nmap ,wr :RecurGrepFast <cword><CR>
 " use 256 colors when possible
 if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
 	let &t_Co = 256
-    let g:gruvbox_contrast_light
     "colorscheme onedark
     "colorscheme solarized
     colorscheme gruvbox
@@ -438,6 +437,7 @@ let g:syntastic_javascript_checkers = ['eslint']
 " python 好多检测插件，加载速度太慢了。。。只加载 pylint 好了
 " let g:syntastic_disabled_filetypes=['python']
 let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 " don't put icons on the sign column (it hides the vcs status icons of signify)
 let g:syntastic_enable_signs = 0
 " custom icons (enable them if you use a patched font, and enable the previous 
@@ -634,7 +634,7 @@ augroup END
   set updatetime=100
 
   let g:go_fmt_command = "goimports"
-  let g:go_fmt_experimental = 1
+  let g:go_fmt_experimental = 0
   let g:go_dispatch_enabled = 0 " vim-dispatch needed
   "let g:go_metalinter_autosave = 1
   "let g:go_metalinter_autosave_enabled = ['vet', 'golint']
