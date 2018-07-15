@@ -716,3 +716,10 @@ augroup json,javascript,jsx,html,css
   autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 augroup END
 
+" 解决 vim-multiple-cursors deoplete 冲突问题
+function Multiple_cursors_before()
+  let g:deoplete#disable_auto_complete = 1
+endfunction
+function Multiple_cursors_after()
+  let g:deoplete#disable_auto_complete = 0
+endfunction
