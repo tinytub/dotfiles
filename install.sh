@@ -83,4 +83,8 @@ yum install python34-pip
 make VIMRUNTIMEDIR=/usr/local/share/vim/vim80
 make && sudo make install
 
+# 如果用 nvim
+ln -s ~/.vim .config/nvim
+ln -s ~/.vimrc .config/nvim/init.vim
+
 echo 'Install Complete! '

@@ -15,62 +15,71 @@ set nocompatible
 " clipboard 配置
 " set clipboard=unnamed
 
-" Setting up Vundle - the best vim plugin manager
-let iCanHazVundle=1
-let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
-if !filereadable(vundle_readme)
-    echo "Installing Vundle..."
-    echo ""
-    silent !mkdir -p ~/.vim/bundle
-    silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/vundle
-    let iCanHazVundle=0
+" vim-plug 自动更新
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+
+" Setting up Vundle - the best vim plugin manager
+" let iCanHazVundle=1
+" let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
+" if !filereadable(vundle_readme)
+"     echo "Installing Vundle..."
+"     echo ""
+"     silent !mkdir -p ~/.vim/bundle
+"     silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/vundle
+"     let iCanHazVundle=0
+" endif
 
 filetype on
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" set rtp+=~/.vim/bundle/vundle/
+" call vundle#rc()
 
 " default map leader '\'
 
 " let Vundle manage Plugins
-Plugin 'gmarik/vundle'
+" Plugin 'gmarik/vundle'
 
 " ============================================================================
 " Active plugins
 " You can disable or add new ones here:
 
+call plug#begin('~/.vim/plugged')
+
 " Plugins from github repos:
 
 " Better file browser
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 " Code commenter
-Plugin 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter'
 " Class/module browser
-Plugin 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 " Code and files fuzzy finder
-Plugin 'kien/ctrlp.vim'
+Plug 'kien/ctrlp.vim'
 " Extension to ctrlp, for fuzzy command finder
-Plugin 'fisadev/vim-ctrlp-cmdpalette'
+Plug 'fisadev/vim-ctrlp-cmdpalette'
 " Zen coding
-Plugin 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim'
 " Maybe the best Git integration
-Plugin 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 " Tab list panel
-Plugin 'kien/tabman.vim'
+Plug 'kien/tabman.vim'
 " Airline
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Consoles as buffers
-Plugin 'rosenfeld/conque-term'
+Plug 'rosenfeld/conque-term'
 " Pending tasks list
-Plugin 'fisadev/FixedTaskList.vim'
+Plug 'fisadev/FixedTaskList.vim'
 " Surround
-Plugin 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 " Autoclose
-Plugin 'Townk/vim-autoclose'
+Plug 'Townk/vim-autoclose'
 " Indent text object
-Plugin 'michaeljsmith/vim-indent-object'
+Plug 'michaeljsmith/vim-indent-object'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
 " Plugin 'python-mode/python-mode'
@@ -81,40 +90,44 @@ Plugin 'michaeljsmith/vim-indent-object'
 
 " Better autocompletion
 " pip3 install neovim
-Plugin 'Shougo/deoplete.nvim'
-Plugin 'roxma/nvim-yarp'
-Plugin 'roxma/vim-hug-neovim-rpc'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 " deoplete golang 插件, 需要手动make
-Plugin 'zchee/deoplete-go'
+Plug 'zchee/deoplete-go' , { 'do': 'make'}
 
 " python 补全插件
-Plugin 'davidhalter/jedi-vim'
-Plugin 'zchee/deoplete-jedi'
+Plug 'davidhalter/jedi-vim'
+Plug 'zchee/deoplete-jedi'
 
 
 " Snippets manager (SnipMate), dependencies, and snippets repo
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'honza/vim-snippets'
-Plugin 'garbas/vim-snipmate'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'honza/vim-snippets'
+Plug 'garbas/vim-snipmate'
 " awesome colorscheme
 " Plugin 'joshdick/onedark.vim'
-Plugin 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 " gruvbox 如果颜色不对,尝试执行~/.vim/bundle/gruvbox/gruvbox_256palette.sh 或 ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
 "Plugin 'altercation/solarized'
 
 " Git/mercurial/others diff icons on the side of the file lines
-Plugin 'mhinz/vim-signify'
+Plug 'mhinz/vim-signify'
 " Automatically sort python imports
-Plugin 'fisadev/vim-isort'
+Plug 'fisadev/vim-isort'
 " Drag visual blocks arround
-Plugin 'fisadev/dragvisuals.vim'
+Plug 'fisadev/dragvisuals.vim'
 " Window chooser
-Plugin 't9md/vim-choosewin'
+Plug 't9md/vim-choosewin'
 " Python and other languages code checker
-Plugin 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
 " Paint css colors with the real color
-Plugin 'lilydjwg/colorizer'
+Plug 'lilydjwg/colorizer'
 " Relative numbering of lines (0 is the current line)
 " (disabled by default because is very intrusive and can't be easily toggled
 " on/off. When the plugin is present, will always activate the relative 
@@ -125,24 +138,24 @@ Plugin 'lilydjwg/colorizer'
 " javascript complete after install the plugin, you must cd the install
 " directory and run `npm install`, then add a .tern-project config file
 " the doc at http://ternjs.net/doc/manual.html#vim
-Plugin 'marijnh/tern_for_vim'
+Plug 'marijnh/tern_for_vim'
 " Golang Plugins
-Plugin 'fatih/vim-go'
+Plug 'fatih/vim-go'
 " JSX syntax highlight.
-Plugin 'mxw/vim-jsx'
+Plug 'mxw/vim-jsx'
 " Markdown syntastic highlight
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 " Markdown realtime preview
 " Before you want to use it, please run
 " `sudo npm -g install instant-markdown-d`
-Plugin 'suan/vim-instant-markdown'
+" Plug 'suan/vim-instant-markdown'
 " Handlebars syntax highlighting
-Plugin 'mustache/vim-mustache-handlebars'
+Plug 'mustache/vim-mustache-handlebars'
 " Vue.js syntax and highlighting
-Plugin 'tao12345666333/vim-vue'
+" Plug 'tao12345666333/vim-vue'
 " True Sublime Text style multiple selections for Vim
-Plugin 'terryma/vim-multiple-cursors'
+Plug 'terryma/vim-multiple-cursors'
 
 " Plugins from vim-scripts repos:
 
@@ -158,17 +171,18 @@ Plugin 'terryma/vim-multiple-cursors'
 " html/js/css 格式化
 " 需要cd ~/.vim/bundle/vim-jsbeautify && git submodule update --init --recursive
 " 下载 js 库 wget https://github.com/beautify-web/js-beautify/archive/master.zip && unzip master.zip && cp -rf js-beautify-master/ /home/zhaopeng-iri/.vim/bundle/js-beautify/
-Plugin 'maksimr/vim-jsbeautify'
+" Plug 'maksimr/vim-jsbeautify'
+call plug#end()
 
 
 " ============================================================================
 " Install plugins the first time vim runs
 
-if iCanHazVundle == 0
-    echo "Installing Plugins, please ignore key map error messages"
-    echo ""
-    :PluginInstall
-endif
+" if iCanHazVundle == 0
+"     echo "Installing Plugins, please ignore key map error messages"
+"     echo ""
+"     :PluginInstall
+" endif
 
 " ============================================================================
 " Vim settings and mappings
@@ -303,14 +317,33 @@ nmap ,r :RecurGrepFast
 nmap ,wR :RecurGrep <cword><CR>
 nmap ,wr :RecurGrepFast <cword><CR>
 
+
+"if (empty($TMUX))
+"  if (has("nvim"))
+"  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+"  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+"  endif
+"  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+"  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+"  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+"  if (has("termguicolors"))
+"    set termguicolors
+"  endif
+"endif
 " use 256 colors when possible
-if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
-	let &t_Co = 256
-    "colorscheme onedark
-    "colorscheme solarized
-    colorscheme gruvbox
+if has('nvim')
+  set termguicolors
+  colorscheme gruvbox
 else
-    colorscheme delek
+  if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
+  	let &t_Co = 256
+      "colorscheme onedark
+      "colorscheme solarized
+      colorscheme gruvbox
+  else
+      "colorscheme delek
+      colorscheme gruvbox
+  endif
 endif
 
 " colors for gvim
@@ -333,7 +366,19 @@ set backup                        " make backup files
 set backupdir=~/.vim/dirs/backups " where to put backup files
 set undofile                      " persistent undos - undo after you re-open the file
 set undodir=~/.vim/dirs/undos
-set viminfo+=n~/.vim/dirs/viminfo
+" 适配 neovim 的viminfo
+if has('nvim')
+	"  ShaDa/viminfo:
+	"   ' - Maximum number of previously edited files marks
+	"   < - Maximum number of lines saved for each register
+	"   @ - Maximum number of items in the input-line history to be
+	"   s - Maximum size of an item contents in KiB
+	"   h - Disable the effect of 'hlsearch' when loading the shada
+	set shada='300,<50,@100,s10,h
+else
+	set viminfo='300,<10,@50,h,n$VARPATH/viminfo
+    set viminfo+=n~/.vim/dirs/viminfo
+endif
 " store yankring history file there too
 let g:yankring_history_dir = '~/.vim/dirs/'
 
@@ -629,7 +674,7 @@ augroup END
 "if &filetype == 'go'
   let g:go_autodetect_gopath = 1
   let g:go_list_type = "quickfix"
-  let g:go_auto_type_info = 0
+  let g:go_auto_type_info = 1
 "  let g:go_info_mode = 'gocode'
   set updatetime=100
 
@@ -640,6 +685,8 @@ augroup END
   "let g:go_metalinter_autosave_enabled = ['vet', 'golint']
   "let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
   let g:go_term_enabled = 0
+  " 自动添加标签
+  let g:go_addtags_transform = "snakecase"
   let g:go_term_mode = "vertical"
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
@@ -703,18 +750,18 @@ let g:tagbar_type_go = {
 "set ttyfast
 "
 " 前端 jsbeautify 命令
-augroup json,javascript,jsx,html,css
-  autocmd!
-  autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-  " for json
-  autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
-  " for jsx
-  autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
-  " for html
-  autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-  " for css or scss
-  autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-augroup END
+"augroup json,javascript,jsx,html,css
+"  autocmd!
+"  autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+"  " for json
+"  autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+"  " for jsx
+"  autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+"  " for html
+"  autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+"  " for css or scss
+"  autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+"augroup END
 
 " 解决 vim-multiple-cursors deoplete 冲突问题
 function Multiple_cursors_before()
