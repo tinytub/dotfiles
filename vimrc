@@ -68,8 +68,8 @@ endif
 Plug 'zchee/deoplete-go' , { 'do': 'make'}
 
 " python 补全插件
-Plug 'davidhalter/jedi-vim' , {'for': 'python'}
-Plug 'zchee/deoplete-jedi', {'for': 'python'}
+Plug 'davidhalter/jedi-vim' , {'for': ['python', 'python3']}
+Plug 'zchee/deoplete-jedi', {'for': ['python', 'python3']}
 
 
 " Snippets manager (SnipMate), dependencies, and snippets repo
@@ -801,3 +801,6 @@ endfunction
 function Multiple_cursors_after()
   let g:deoplete#disable_auto_complete = 0
 endfunction
+
+" 回头添加 vim venv
+
