@@ -1,13 +1,4 @@
 scriptencoding utf-8
-" ============================================================================
-" Author: TaoBeier
-" Blog: http://moelove.info
-" Version: v1.1.0
-" Update Time: 2016-09-25
-
-" ============================================================================
-" Vundle initialization
-" Avoid modify this section, unless you are very sure of what you are doing
 
 " no vi-compatible
 set nocompatible
@@ -22,26 +13,9 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Setting up Vundle - the best vim plugin manager
-" let iCanHazVundle=1
-" let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
-" if !filereadable(vundle_readme)
-"     echo "Installing Vundle..."
-"     echo ""
-"     silent !mkdir -p ~/.vim/bundle
-"     silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/vundle
-"     let iCanHazVundle=0
-" endif
-
 filetype on
 
-" set rtp+=~/.vim/bundle/vundle/
-" call vundle#rc()
-
 " default map leader '\'
-
-" let Vundle manage Plugins
-" Plugin 'gmarik/vundle'
 
 " ============================================================================
 " Active plugins
@@ -80,13 +54,6 @@ Plug 'tpope/vim-surround'
 Plug 'Townk/vim-autoclose'
 " Indent text object
 Plug 'michaeljsmith/vim-indent-object'
-" Python mode (indentation, doc, refactor, lints, code checking, motion and
-" operators, highlighting, run and ipdb breakpoints)
-" Plugin 'python-mode/python-mode'
-" Better autocompletion
-"Plugin 'Shougo/neocomplcache.vim'
-"
-"
 
 " Better autocompletion
 " pip3 install neovim
@@ -101,8 +68,8 @@ endif
 Plug 'zchee/deoplete-go' , { 'do': 'make'}
 
 " python 补全插件
-Plug 'davidhalter/jedi-vim'
-Plug 'zchee/deoplete-jedi'
+Plug 'davidhalter/jedi-vim' , {'for': 'python'}
+Plug 'zchee/deoplete-jedi', {'for': 'python'}
 
 
 " Snippets manager (SnipMate), dependencies, and snippets repo
@@ -492,23 +459,53 @@ let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_style_error_symbol = '✗'
 let g:syntastic_style_warning_symbol = '⚠'
 
-"" Python-mode ------------------------------
-"
-"" don't use linter, we use syntastic for that
-"let g:pymode_lint_on_write = 0
-"let g:pymode_lint_signs = 0
-"" don't fold python code on open
-"let g:pymode_folding = 0
-"" don't load rope by default. Change to 1 to use rope
-"let g:pymode_rope = 0
-"" open definitions on same window, and custom mappings for definitions and
-"" occurrences
-"let g:pymode_rope_goto_definition_bind = ',d'
-"let g:pymode_rope_goto_definition_cmd = 'e'
-"nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
-"nmap ,o :RopeFindOccurrences<CR>
+" deoplete 相关配置
+" ---
+" let g:deoplete#enable_profile = 1
+" call deoplete#enable_logging('DEBUG', 'deoplete.log')<CR>
+" call deoplete#custom#source('tern', 'debug_enabled', 1)<CR>
+" " General settings " {{{ 参考https://github.com/rafi/vim-config/config/plugins/deoplete.vim
+" ---
+" let g:deoplete#auto_complete_delay = 50  " Default is 50
+" let g:deoplete#auto_refresh_delay = 500  " Default is 500
+" let g:deoplete#auto_complete_delay = 50  " Default is 50
+" let g:deoplete#auto_refresh_delay = 500  " Default is 500
 
-" deoplete
+let g:deoplete#enable_refresh_always = 1
+let g:deoplete#enable_camel_case = 1
+let g:deoplete#max_abbr_width = 35
+let g:deoplete#max_menu_width = 20
+let g:deoplete#skip_chars = ['(', ')', '<', '>']
+let g:deoplete#tag#cache_limit_size = 800000
+let g:deoplete#file#enable_buffer_path = 1
+
+let g:deoplete#sources#jedi#statement_length = 30
+let g:deoplete#sources#jedi#show_docstring = 1
+let g:deoplete#sources#jedi#short_types = 1
+
+let g:deoplete#sources#ternjs#filetypes = [
+	\ 'jsx',
+	\ 'javascript.jsx',
+	\ 'vue',
+	\ 'javascript'
+	\ ]
+
+let g:deoplete#sources#ternjs#timeout = 3
+let g:deoplete#sources#ternjs#types = 1
+let g:deoplete#sources#ternjs#docs = 1
+
+call deoplete#custom#source('_', 'min_pattern_length', 2)
+
+" }}}
+" Limit Sources " {{{
+" ---
+
+"let g:deoplete#sources = get(g:, 'deoplete#sources', {})
+"let g:deoplete#sources.go = ['vim-go']
+"let g:deoplete#ignore_sources = get(g:, 'deoplete#ignore_sources', {})
+
+
+" deoplete 我的 go 相关配置
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#go#gocode_binary = '$GOPATH/bin/gocode'
 " let g:deoplete#file#enable_buffer_path=1
@@ -517,14 +514,36 @@ let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const
 let g:deoplete#keyword_patterns={}
 "let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.]*'
 
-inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#mappings#manual_complete()
-function! s:check_back_space() abort "{{{
+"inoremap <silent><expr> <TAB>
+"    \ pumvisible() ? "\<C-n>" :
+"    \ <SID>check_back_space() ? "\<TAB>" :
+"    \ deoplete#mappings#manual_complete()
+"function! s:check_back_space() abort "{{{
+"    let col = col('.') - 1
+"    return !col || getline('.')[col - 1]  =~ '\s'
+"endfunction"}}}
+
+" <Tab> completion:
+" 1. If popup menu is visible, select and insert next item
+" 2. Otherwise, if within a snippet, jump to next input
+" 3. Otherwise, if preceding chars are whitespace, insert tab char
+" 4. Otherwise, start manual autocomplete
+imap <silent><expr><Tab> pumvisible() ? "\<Down>"
+	\ : (<SID>is_whitespace() ? "\<Tab>"
+	\ : deoplete#manual_complete())
+
+smap <silent><expr><Tab> pumvisible() ? "\<Down>"
+	\ : (<SID>is_whitespace() ? "\<Tab>"
+	\ : deoplete#manual_complete())
+
+inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
+
+function! s:is_whitespace()
     let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
+    return ! col || getline('.')[col - 1] =~? '\s'
+endfunction
+
+" }}}
 
 " TabMan ------------------------------
 
@@ -700,6 +719,18 @@ augroup END
 "endif
 
 "if &filetype == 'python'
+"  hook_add: |
+"    let g:jedi#completions_enabled = 0
+"    let g:jedi#auto_vim_configuration = 0
+"    let g:jedi#smart_auto_mappings = 0
+"    let g:jedi#show_call_signatures = 1
+"  hook_source: |
+"    let g:jedi#use_tag_stack = 0
+"    let g:jedi#popup_select_first = 0
+"    let g:jedi#popup_on_dot = 0
+"    let g:jedi#max_doc_height = 100
+"    let g:jedi#quickfix_window_height = 10
+"    let g:jedi#use_splits_not_buffers = 'right'
     let g:jedi#auto_vim_configuration = 0
     let g:jedi#auto_configuration = 0
     " 禁用自动补全
