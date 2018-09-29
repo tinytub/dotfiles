@@ -1,5 +1,20 @@
 scriptencoding utf-8
 
+" Set main configuration directory, and where cache is stored.
+
+let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
+
+" Write history on idle, for sharing among different sessions
+" autocmd MyAutoCmd CursorHold * if exists(':rshada') | rshada | wshada | endif
+
+" Search and use environments specifically made for Neovim.
+if isdirectory($VARPATH.'/venv/neovim2')
+	let g:python_host_prog = $VARPATH.'/venv/neovim2/bin/python'
+endif
+if isdirectory($VARPATH.'/venv/neovim3')
+	let g:python3_host_prog = $VARPATH.'/venv/neovim3/bin/python'
+endif
+
 " no vi-compatible
 set nocompatible
 
@@ -803,4 +818,25 @@ function Multiple_cursors_after()
 endfunction
 
 " 回头添加 vim venv
+
+
+" AutoGroups {{{
+"    " file type specific settings
+"    augroup configgroup
+"        autocmd!
+"
+"        " automatically resize panes on resize
+"        autocmd VimResized * exe 'normal! \<c-w>='
+"        autocmd BufWritePost .vimrc,.vimrc.local,init.vim source %
+"        autocmd BufWritePost .vimrc.local source %
+"        " save all files on focus lost, ignoring warnings about untitled buffers
+"        autocmd FocusLost * silent! wa
+"
+"        " make quickfix windows take all the lower section of the screen
+"        " when there are multiple windows open
+"        autocmd FileType qf wincmd J
+"        autocmd FileType qf nmap <buffer> q :q<cr>
+"    augroup END
+" }}}
+" 
 
