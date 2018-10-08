@@ -60,6 +60,7 @@ echo "need install vim8 --with-python3"
 #--disable-netbeans \
 #--with-compiledby="yourname" \
 #--enable-fail-if-missing
+
 # 用这个
 
 sudo yum install -y ruby ruby-devel lua lua-devel luajit     luajit-devel ctags git python python-devel     python3 python3-devel tcl-devel     perl perl-devel perl-ExtUtils-ParseXS     perl-ExtUtils-XSpp perl-ExtUtils-CBuilder     perl-ExtUtils-Embed
