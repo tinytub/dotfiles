@@ -9,17 +9,20 @@ let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
 
 " Search and use environments specifically made for Neovim.
 if isdirectory($VARPATH.'/venv/neovim2')
-	let g:python_host_prog = $VARPATH.'/venv/neovim2/bin/python'
+    let g:python_host_prog = $VARPATH.'/venv/neovim2/bin/python'
 endif
 if isdirectory($VARPATH.'/venv/neovim3')
-	let g:python3_host_prog = $VARPATH.'/venv/neovim3/bin/python'
+    let g:python3_host_prog = $VARPATH.'/venv/neovim3/bin/python'
 endif
 
 " no vi-compatible
 set nocompatible
 
 " clipboard 配置
-" set clipboard=unnamed
+if has('unnamedplus')
+  set clipboard^=unnamed
+  set clipboard^=unnamedplus
+endif
 
 " vim-plug 自动更新
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -28,7 +31,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-filetype on
+filetype off
+filetype plugin indent on
 
 " default map leader '\'
 
@@ -157,24 +161,6 @@ Plug 'terryma/vim-multiple-cursors'
 call plug#end()
 
 
-" ============================================================================
-" Install plugins the first time vim runs
-
-" if iCanHazVundle == 0
-"     echo "Installing Plugins, please ignore key map error messages"
-"     echo ""
-"     :PluginInstall
-" endif
-
-" ============================================================================
-" Vim settings and mappings
-" You can edit them as you wish
-
-" allow plugins by file type (required for plugins!)
-filetype plugin on
-filetype indent on
-filetype plugin indent on
-
 " tabs and spaces handling
 set expandtab
 set tabstop=4
@@ -300,25 +286,13 @@ nmap ,wR :RecurGrep <cword><CR>
 nmap ,wr :RecurGrepFast <cword><CR>
 
 
-"if (empty($TMUX))
-"  if (has("nvim"))
-"  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-"  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-"  endif
-"  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-"  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-"  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-"  if (has("termguicolors"))
-"    set termguicolors
-"  endif
-"endif
 " use 256 colors when possible
 if has('nvim')
   set termguicolors
   colorscheme gruvbox
 else
   if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
-  	let &t_Co = 256
+      let &t_Co = 256
       "colorscheme onedark
       "colorscheme solarized
       colorscheme gruvbox
@@ -350,15 +324,15 @@ set undofile                      " persistent undos - undo after you re-open th
 set undodir=~/.vim/dirs/undos
 " 适配 neovim 的viminfo
 if has('nvim')
-	"  ShaDa/viminfo:
-	"   ' - Maximum number of previously edited files marks
-	"   < - Maximum number of lines saved for each register
-	"   @ - Maximum number of items in the input-line history to be
-	"   s - Maximum size of an item contents in KiB
-	"   h - Disable the effect of 'hlsearch' when loading the shada
-	set shada='300,<50,@100,s10,h
+    "  ShaDa/viminfo:
+    "   ' - Maximum number of previously edited files marks
+    "   < - Maximum number of lines saved for each register
+    "   @ - Maximum number of items in the input-line history to be
+    "   s - Maximum size of an item contents in KiB
+    "   h - Disable the effect of 'hlsearch' when loading the shada
+    set shada='300,<50,@100,s10,h
 else
-	set viminfo='300,<10,@50,h,n$VARPATH/viminfo
+    set viminfo='300,<10,@50,h,n$VARPATH/viminfo
     set viminfo+=n~/.vim/dirs/viminfo
 endif
 " store yankring history file there too
@@ -447,7 +421,7 @@ nmap <leader>e :Errors<CR>
 nmap <leader>n :lnext<CR>
 nmap <leader>p :lprevious<CR>
 " 通过 :Sc 命令进行语法检测
-:command Sc :SyntasticCheck 
+:command! Sc :SyntasticCheck 
 " check also when just opened the file
 " 太慢了，打开文件时不自动加载
 let g:syntastic_check_on_open = 0
@@ -499,11 +473,11 @@ let g:deoplete#sources#jedi#show_docstring = 1
 let g:deoplete#sources#jedi#short_types = 1
 
 let g:deoplete#sources#ternjs#filetypes = [
-	\ 'jsx',
-	\ 'javascript.jsx',
-	\ 'vue',
-	\ 'javascript'
-	\ ]
+    \ 'jsx',
+    \ 'javascript.jsx',
+    \ 'vue',
+    \ 'javascript'
+    \ ]
 
 let g:deoplete#sources#ternjs#timeout = 3
 let g:deoplete#sources#ternjs#types = 1
@@ -544,12 +518,12 @@ let g:deoplete#keyword_patterns={}
 " 3. Otherwise, if preceding chars are whitespace, insert tab char
 " 4. Otherwise, start manual autocomplete
 imap <silent><expr><Tab> pumvisible() ? "\<Down>"
-	\ : (<SID>is_whitespace() ? "\<Tab>"
-	\ : deoplete#manual_complete())
+    \ : (<SID>is_whitespace() ? "\<Tab>"
+    \ : deoplete#manual_complete())
 
 smap <silent><expr><Tab> pumvisible() ? "\<Down>"
-	\ : (<SID>is_whitespace() ? "\<Tab>"
-	\ : deoplete#manual_complete())
+    \ : (<SID>is_whitespace() ? "\<Tab>"
+    \ : deoplete#manual_complete())
 
 inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
 
@@ -637,7 +611,7 @@ let g:airline_symbols.linenr = ''
 
 " new file set title and turn to endline
 autocmd BufNewFile *.sh,*.py,*.rb exec ":call SetTitle()"
-function SetTitle()
+function! SetTitle()
     if &filetype == 'sh'
         call setline(1,"\#!/bin/bash")
         call append(line("."), "")
@@ -645,14 +619,15 @@ function SetTitle()
     elseif &filetype == 'python'
         call setline(1,"#!/usr/bin/env python")
         call append(line("."),"# coding=utf-8")
-	    call append(line(".")+1, "") 
+        call append(line(".")+1, "") 
 
     elseif &filetype == 'ruby'
         call setline(1,"#!/usr/bin/env ruby")
         call append(line("."),"# encoding: utf-8")
-	    call append(line(".")+1, "")
+        call append(line(".")+1, "")
     endif
 endfunction
+
 autocmd BufNewFile * normal G
 
 " Vim-jsx ------------------------------
@@ -709,7 +684,9 @@ augroup END
   let g:go_autodetect_gopath = 1
   let g:go_list_type = "quickfix"
   let g:go_auto_type_info = 1
-"  let g:go_info_mode = 'gocode'
+  "let g:go_info_mode = 'guru'
+  "guru 在当前版本进行 go to def 会有问题,暂时用 godef 代替
+  let g:go_def_mode = 'godef'
   set updatetime=100
 
   let g:go_fmt_command = "goimports"
@@ -722,15 +699,19 @@ augroup END
   " 自动添加标签
   let g:go_addtags_transform = "snakecase"
   let g:go_term_mode = "vertical"
-  let g:go_highlight_functions = 1
-  let g:go_highlight_methods = 1
+
+  let g:go_highlight_types = 1
   let g:go_highlight_fields = 1
-  let g:go_highlight_structs = 1
+  let g:go_highlight_functions = 1
+  let g:go_highlight_function_calls = 1
   let g:go_highlight_interfaces = 1
+  let g:go_highlight_methods = 1
+  let g:go_highlight_structs = 1
   let g:go_highlight_operators = 1
-  let g:go_highlight_extra_types = 1
   let g:go_highlight_build_constraints = 1
   let g:go_highlight_chan_whitespace_error = 1
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_generate_tags = 1
 "endif
 
 "if &filetype == 'python'
@@ -763,38 +744,6 @@ augroup END
 "endif
 
 
-"光标在某变量或函数上，输入gd跳转。ctrl+o返回 需要安装ctags和gotags
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-\ }
-
-"set lazyredraw
-"set ttyfast
-"
 " 前端 jsbeautify 命令
 "augroup json,javascript,jsx,html,css
 "  autocmd!
@@ -810,11 +759,16 @@ let g:tagbar_type_go = {
 "augroup END
 
 " 解决 vim-multiple-cursors deoplete 冲突问题
-function Multiple_cursors_before()
-  let g:deoplete#disable_auto_complete = 1
+function! Multiple_cursors_before()
+  if exists(':NeoCompleteLock')==2
+    exe 'NeoCompleteLock'
+  endif
 endfunction
-function Multiple_cursors_after()
-  let g:deoplete#disable_auto_complete = 0
+
+function! Multiple_cursors_after()
+  if exists(':NeoCompleteUnlock')==2
+    exe 'NeoCompleteUnlock'
+  endif
 endfunction
 
 " 回头添加 vim venv
@@ -840,3 +794,5 @@ endfunction
 " }}}
 " 
 
+" Enter automatically into the files directory
+autocmd BufEnter * silent! lcd %:p:h
