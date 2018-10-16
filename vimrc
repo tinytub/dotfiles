@@ -8,12 +8,14 @@ let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
 " autocmd MyAutoCmd CursorHold * if exists(':rshada') | rshada | wshada | endif
 
 " Search and use environments specifically made for Neovim.
-"if isdirectory($VARPATH.'/venv/neovim3')
-"    let g:python3_host_prog = $VARPATH.'/venv/neovim3/bin/python'
-"endif
-"if isdirectory($VARPATH.'/venv/neovim2')
-"    let g:python_host_prog = $VARPATH.'/venv/neovim2/bin/python'
-"endif
+if isdirectory($VARPATH.'/venv/neovim3')
+    let g:python3_host_prog = $VARPATH.'/venv/neovim3/bin/python'
+    " Skip the check of neovim module
+    let g:python3_host_skip_check = 1
+endif
+if isdirectory($VARPATH.'/venv/neovim2')
+    let g:python_host_prog = $VARPATH.'/venv/neovim2/bin/python'
+endif
 
 " no vi-compatible
 set nocompatible
@@ -269,7 +271,10 @@ inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 " Comment this line to enable autocompletion preview window
 " (displays documentation related to the selected completion option)
 " Disabled by default because preview makes the window flicker
+" deoplete.nvim recommend
 set completeopt-=preview
+set completeopt+=noinsert
+set completeopt+=noselect
 
 " save as sudo
 ca w!! w !sudo tee "%"
@@ -459,6 +464,8 @@ let g:syntastic_style_warning_symbol = '⚠'
 " let g:deoplete#auto_refresh_delay = 500  " Default is 500
 " let g:deoplete#auto_complete_delay = 50  " Default is 50
 " let g:deoplete#auto_refresh_delay = 500  " Default is 500
+
+" let g:deoplete#sources#go#debug#log_file = '/tmp/deoplete-go.log'
 
 let g:deoplete#enable_refresh_always = 1
 let g:deoplete#enable_camel_case = 1
@@ -686,7 +693,7 @@ augroup END
   let g:go_auto_type_info = 1
   "let g:go_info_mode = 'guru'
   "guru 在当前版本进行 go to def 会有问题,暂时用 godef 代替
-  let g:go_def_mode = 'godef'
+  "let g:go_def_mode = 'godef'
   set updatetime=100
 
   let g:go_fmt_command = "goimports"
