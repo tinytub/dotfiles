@@ -74,7 +74,9 @@ Plug 'fisadev/dragvisuals.vim'
 " Window chooser
 Plug 't9md/vim-choosewin'
 " Python and other languages code checker
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale' " Asynchonous linting engine
+
 " Paint css colors with the real color
 Plug 'lilydjwg/colorizer'
 " Relative numbering of lines (0 is the current line)
@@ -390,40 +392,73 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\.pyc$\|\.pyo$',
   \ }
 
-" Syntastic ------------------------------
+"" Syntastic ------------------------------
+"
+"" show list of errors and warnings on the current file
+"nmap <leader>e :Errors<CR>
+"" turn to next or previous errors, after open errors list
+"nmap <leader>n :lnext<CR>
+"nmap <leader>p :lprevious<CR>
+"" 通过 :Sc 命令进行语法检测
+":command! Sc :SyntasticCheck 
+"" check also when just opened the file
+"" 太慢了，打开文件时不自动加载
+"let g:syntastic_check_on_open = 0
+"" 也不要每次保存的时候尝试加载，等我手动出发好了
+"let g:syntastic_check_on_wq = 0 
+"" 保持被动模式
+"let g:syntastic_mode_map = {'mode': 'passive'} 
+"" syntastic checker for javascript.
+"" eslint is the only tool support JSX.
+"" If you don't need write JSX, you can use jshint.
+"" And eslint is slow, but not a hindrance
+"" let g:syntastic_javascript_checkers = ['jshint']
+"let g:syntastic_javascript_checkers = ['eslint']
+"" python 好多检测插件，加载速度太慢了。。。只加载 pylint 好了
+"" let g:syntastic_disabled_filetypes=['python']
+"let g:syntastic_python_checkers = ['pylint']
+"let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+"" don't put icons on the sign column (it hides the vcs status icons of signify)
+"let g:syntastic_enable_signs = 0
+"" custom icons (enable them if you use a patched font, and enable the previous 
+"" setting)
+"let g:syntastic_error_symbol = '✗'
+"let g:syntastic_warning_symbol = '⚠'
+"let g:syntastic_style_error_symbol = '✗'
+"let g:syntastic_style_warning_symbol = '⚠'
 
-" show list of errors and warnings on the current file
-nmap <leader>e :Errors<CR>
-" turn to next or previous errors, after open errors list
-nmap <leader>n :lnext<CR>
-nmap <leader>p :lprevious<CR>
-" 通过 :Sc 命令进行语法检测
-:command! Sc :SyntasticCheck 
-" check also when just opened the file
-" 太慢了，打开文件时不自动加载
-let g:syntastic_check_on_open = 0
-" 也不要每次保存的时候尝试加载，等我手动出发好了
-let g:syntastic_check_on_wq = 0 
-" 保持被动模式
-let g:syntastic_mode_map = {'mode': 'passive'} 
-" syntastic checker for javascript.
-" eslint is the only tool support JSX.
-" If you don't need write JSX, you can use jshint.
-" And eslint is slow, but not a hindrance
-" let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_javascript_checkers = ['eslint']
-" python 好多检测插件，加载速度太慢了。。。只加载 pylint 好了
-" let g:syntastic_disabled_filetypes=['python']
-let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-" don't put icons on the sign column (it hides the vcs status icons of signify)
-let g:syntastic_enable_signs = 0
-" custom icons (enable them if you use a patched font, and enable the previous 
-" setting)
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_style_error_symbol = '✗'
-let g:syntastic_style_warning_symbol = '⚠'
+" ALE 替代 Syntastic
+let g:ale_set_highlights = 0
+let g:ale_change_sign_column_color = 0
+
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⚠'
+let g:ale_echo_msg_error_str = '✖'
+let g:ale_echo_msg_warning_str = '⚠'
+let g:ale_echo_msg_format = '%severity% %s% [%linter%% code%]'
+" for golang
+let g:ale_linters = {'go': ['gometalinter']}
+let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
+
+"let g:ale_linters = {
+"\   'go': ['gometalinter', 'gofmt']
+"\   'javascript': ['eslint', 'tsserver'],
+"\   'typescript': ['tsserver', 'tslint'],
+"\   'html': []
+"\}
+
+"let g:ale_fixers = {}
+"let g:ale_fixers['javascript'] = ['prettier']
+"let g:ale_fixers['typescript'] = ['prettier', 'tslint']
+"let g:ale_fixers['json'] = ['prettier']
+"let g:ale_fixers['css'] = ['prettier']
+"let g:ale_javascript_prettier_use_local_config = 1
+"let g:ale_fix_on_save = 0
 
 " deoplete 相关配置
 " ---
@@ -656,7 +691,7 @@ augroup END
 "if &filetype == 'go'
   let g:go_autodetect_gopath = 1
   let g:go_list_type = "quickfix"
-  let g:go_auto_type_info = 1
+  "let g:go_auto_type_info = 1
   "let g:go_info_mode = 'guru'
   "guru 在当前版本进行 go to def 会有问题,暂时用 godef 代替
   "let g:go_def_mode = 'godef'
@@ -775,15 +810,9 @@ endfunction
       set termguicolors
       colorscheme gruvbox
     else
-      if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
-          let &t_Co = 256
-          "colorscheme onedark
-          "colorscheme solarized
-          colorscheme gruvbox
-      else
-          "colorscheme delek
-          colorscheme gruvbox
-      endif
+      set termguicolors
+      let &t_Co = 256
+      colorscheme gruvbox
     endif
 
     " syntax highlight on and filetype reload
@@ -798,17 +827,6 @@ endfunction
     highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
     highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
     highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
-
-    " make the highlighting of tabs and other non-text less annoying
-    highlight SpecialKey ctermfg=19 guifg=#333333
-    highlight NonText ctermfg=19 guifg=#333333
-
-    " make comments and HTML attributes italic
-    highlight Comment cterm=italic term=italic gui=italic
-    highlight htmlArg cterm=italic term=italic gui=italic
-    highlight xmlAttrib cterm=italic term=italic gui=italic
-    " highlight Type cterm=italic term=italic gui=italic
-    highlight Normal ctermbg=none
 
 " }}}
 
