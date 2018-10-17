@@ -428,19 +428,25 @@ let g:ctrlp_custom_ignore = {
 "let g:syntastic_style_warning_symbol = '⚠'
 
 " ALE 替代 Syntastic
+let g:ale_lint_on_save = 0
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_text_changed = 'never'
+"let g:ale_linters_explicit = 1
+
 let g:ale_set_highlights = 0
 let g:ale_change_sign_column_color = 0
 
-let g:airline#extensions#ale#enabled = 1
+"let g:airline#extensions#ale#enabled = 1
 
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-let g:ale_sign_column_always = 1
+"let g:ale_set_loclist = 0
+"let g:ale_set_quickfix = 1
+let g:ale_sign_column_always = 0
 let g:ale_sign_error = '✖'
 let g:ale_sign_warning = '⚠'
 let g:ale_echo_msg_error_str = '✖'
 let g:ale_echo_msg_warning_str = '⚠'
-let g:ale_echo_msg_format = '%severity% %s% [%linter%% code%]'
+
+"let g:ale_echo_msg_format = '%severity% %s% [%linter%% code%]'
 " for golang
 let g:ale_linters = {'go': ['gometalinter']}
 let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
