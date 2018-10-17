@@ -1,41 +1,3 @@
-scriptencoding utf-8
-
-" Set main configuration directory, and where cache is stored.
-
-let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
-
-" Write history on idle, for sharing among different sessions
-" autocmd MyAutoCmd CursorHold * if exists(':rshada') | rshada | wshada | endif
-
-" Search and use environments specifically made for Neovim.
-if isdirectory($VARPATH.'/venv/neovim3')
-    let g:python3_host_prog = $VARPATH.'/venv/neovim3/bin/python'
-    " Skip the check of neovim module
-    let g:python3_host_skip_check = 1
-endif
-if isdirectory($VARPATH.'/venv/neovim2')
-    let g:python_host_prog = $VARPATH.'/venv/neovim2/bin/python'
-endif
-
-" no vi-compatible
-set nocompatible
-
-" clipboard 配置
-if has('unnamedplus')
-  set clipboard^=unnamed
-  set clipboard^=unnamedplus
-endif
-
-" vim-plug 自动更新
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-filetype off
-filetype plugin indent on
-
 " default map leader '\'
 
 " ============================================================================
@@ -98,7 +60,6 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'honza/vim-snippets'
 Plug 'garbas/vim-snipmate'
-" awesome colorscheme
 " Plugin 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 " gruvbox 如果颜色不对,尝试执行~/.vim/bundle/gruvbox/gruvbox_256palette.sh 或 ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
@@ -151,7 +112,6 @@ Plug 'terryma/vim-multiple-cursors'
 "Plugin 'IndexedSearch'
 " XML/HTML tags navigation
 "Plugin 'matchit.zip'
-" Gvim colorscheme
 "Plugin 'Wombat'
 " Yank history navigation 复制历史记录工具？
 "Plugin 'YankRing.vim'
@@ -161,6 +121,39 @@ Plug 'terryma/vim-multiple-cursors'
 " 下载 js 库 wget https://github.com/beautify-web/js-beautify/archive/master.zip && unzip master.zip && cp -rf js-beautify-master/ /home/zhaopeng-iri/.vim/bundle/js-beautify/
 " Plug 'maksimr/vim-jsbeautify'
 call plug#end()
+
+" vim-plug 自动更新
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+scriptencoding utf-8
+
+" 配置缓存地址
+let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
+
+" 配置 neovim 使用的基础环境地址
+if isdirectory($VARPATH.'/venv/neovim3')
+    let g:python3_host_prog = $VARPATH.'/venv/neovim3/bin/python'
+    " 忽略 nvim 模块检查
+    let g:python3_host_skip_check = 1
+endif
+if isdirectory($VARPATH.'/venv/neovim2')
+    let g:python_host_prog = $VARPATH.'/venv/neovim2/bin/python'
+endif
+
+" 关闭 vi 兼容性
+set nocompatible
+
+" clipboard 配置
+if has('unnamedplus')
+  set clipboard^=unnamed
+  set clipboard^=unnamedplus
+endif
+
+
 
 
 " tabs and spaces handling
@@ -191,9 +184,9 @@ set backspace=2 " make backspace work like most other apps
 set backspace=indent,eol,start
 
 " tab length exceptions on some file types
- autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
- autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
- autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 " auto open or close NERDTree
 autocmd vimenter * if !argc() | NERDTree | endif
@@ -219,8 +212,7 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
-" syntax highlight on
-syntax on
+
 
 " show line numbers
 set nu
@@ -291,27 +283,7 @@ nmap ,wR :RecurGrep <cword><CR>
 nmap ,wr :RecurGrepFast <cword><CR>
 
 
-" use 256 colors when possible
-if has('nvim')
-  set termguicolors
-  colorscheme gruvbox
-else
-  if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
-      let &t_Co = 256
-      "colorscheme onedark
-      "colorscheme solarized
-      colorscheme gruvbox
-  else
-      "colorscheme delek
-      colorscheme gruvbox
-  endif
-endif
 
-" colors for gvim
-if has('gui_running')
-    "colorscheme wombat
-    colorscheme wombat
-endif
 
 " when scrolling, keep cursor 3 lines away from screen border
 set scrolloff=3
@@ -570,13 +542,7 @@ let g:signify_vcs_list = [ 'git', 'hg' ]
 " mappings to jump to changed blocks
 nmap <leader>sn <plug>(signify-next-hunk)
 nmap <leader>sp <plug>(signify-prev-hunk)
-" nicer colors
-highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
-highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
-highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
-highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
-highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
-highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+
 
 " Window Chooser ------------------------------
 
@@ -800,6 +766,51 @@ endfunction
     augroup END
 " }}}
 " 
+
+
+
+" 颜色主题及最后配置 {{{
+    " use 256 colors when possible
+    if has('nvim')
+      set termguicolors
+      colorscheme gruvbox
+    else
+      if &term =~? 'mlterm\|xterm\|xterm-256\|screen-256'
+          let &t_Co = 256
+          "colorscheme onedark
+          "colorscheme solarized
+          colorscheme gruvbox
+      else
+          "colorscheme delek
+          colorscheme gruvbox
+      endif
+    endif
+
+    " syntax highlight on and filetype reload
+    syntax on
+    filetype off
+    filetype plugin indent on
+
+    " nicer colors
+    highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
+    highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
+    highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
+    highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
+    highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
+    highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+
+    " make the highlighting of tabs and other non-text less annoying
+    highlight SpecialKey ctermfg=19 guifg=#333333
+    highlight NonText ctermfg=19 guifg=#333333
+
+    " make comments and HTML attributes italic
+    highlight Comment cterm=italic term=italic gui=italic
+    highlight htmlArg cterm=italic term=italic gui=italic
+    highlight xmlAttrib cterm=italic term=italic gui=italic
+    " highlight Type cterm=italic term=italic gui=italic
+    highlight Normal ctermbg=none
+
+" }}}
 
 " Enter automatically into the files directory
 autocmd BufEnter * silent! lcd %:p:h
