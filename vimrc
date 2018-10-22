@@ -167,7 +167,7 @@ set shiftwidth=4
 " set cursorline
 " set cursorcolumn
 " hidden startup messages
-set shortmess=atI
+"set shortmess=atI
 " auto read and write
 set autowrite
 set autoread
