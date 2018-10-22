@@ -134,15 +134,17 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'elzr/vim-json', { 'for': 'json' }
 
+" 传说中的自动补全神器?
+"git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+"~/.fzf/install
+if has("nvim")
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    "Plug '~/.fzf', { 'do' : './install --all' } | Plug 'junegunn/fzf.vim'
+endif
+
+
 " Plugins from vim-scripts repos:
 
-"" Search results counter
-"Plugin 'IndexedSearch'
-" XML/HTML tags navigation
-"Plugin 'matchit.zip'
-"Plugin 'Wombat'
-" Yank history navigation 复制历史记录工具？
-"Plugin 'YankRing.vim'
 call plug#end()
 
 
@@ -419,6 +421,56 @@ call plug#end()
     " show pending tasks list
     map <F2> :TaskList<CR>
 
+" FZF 没有详细配置,回头再搞
+    let g:fzf_layout = { 'down': '~25%' }
+
+    if isdirectory(".git")
+        " if in a git project, use :GFiles
+        nmap <silent> <leader>t :GitFiles --cached --others --exclude-standard<cr>
+    else
+        " otherwise, use :FZF
+        nmap <silent> <leader>t :FZF<cr>
+    endif
+
+    nmap <silent> <leader>s :GFiles?<cr>
+
+    nmap <silent> <leader>r :Buffers<cr>
+    nmap <silent> <leader>e :FZF<cr>
+    nmap <leader><tab> <plug>(fzf-maps-n)
+    xmap <leader><tab> <plug>(fzf-maps-x)
+    omap <leader><tab> <plug>(fzf-maps-o)
+
+    " Insert mode completion
+    imap <c-x><c-k> <plug>(fzf-complete-word)
+    imap <c-x><c-f> <plug>(fzf-complete-path)
+    imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+    imap <c-x><c-l> <plug>(fzf-complete-line)
+
+    nnoremap <silent> <Leader>C :call fzf#run({
+    \   'source':
+    \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+    \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+    \   'sink':    'colo',
+    \   'options': '+m',
+    \   'left':    30
+    \ })<CR>
+
+    command! FZFMru call fzf#run({
+    \  'source':  v:oldfiles,
+    \  'sink':    'e',
+    \  'options': '-m -x +s',
+    \  'down':    '40%'})
+
+    command! -bang -nargs=* Find call fzf#vim#grep(
+        \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
+        \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
+    command! -bang -nargs=? -complete=dir Files
+        \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+    command! -bang -nargs=? -complete=dir GitFiles
+        \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+
+
+
 " CtrlP ------------------------------
 
     " file finder mapping
@@ -553,9 +605,10 @@ call plug#end()
     let g:deoplete#tag#cache_limit_size = 800000
     let g:deoplete#file#enable_buffer_path = 1
 
-    let g:deoplete#sources#jedi#statement_length = 30
-    let g:deoplete#sources#jedi#show_docstring = 1
-    let g:deoplete#sources#jedi#short_types = 1
+    "let g:deoplete#sources#jedi#statement_length = 30
+    "let g:deoplete#sources#jedi#show_docstring = 1
+    "let g:deoplete#sources#jedi#short_types = 1
+    "let g:deoplete#sources#jedi#enable_typeinfo = 0
 
     let g:deoplete#sources#ternjs#filetypes = [
         \ 'jsx',
@@ -810,22 +863,11 @@ call plug#end()
       let g:go_highlight_extra_types = 1
       let g:go_highlight_generate_tags = 1
     "endif
-" deoplete-jedi 相关配置
-    "if &filetype == 'python'
-    "  hook_add: |
-    "    let g:jedi#completions_enabled = 0
-    "    let g:jedi#auto_vim_configuration = 0
-    "    let g:jedi#smart_auto_mappings = 0
-    "    let g:jedi#show_call_signatures = 1
-    "  hook_source: |
-    "    let g:jedi#use_tag_stack = 0
-    "    let g:jedi#popup_select_first = 0
-    "    let g:jedi#popup_on_dot = 0
-    "    let g:jedi#max_doc_height = 100
-    "    let g:jedi#quickfix_window_height = 10
-    "    let g:jedi#use_splits_not_buffers = 'right'
+
+" vim-jedi 相关配置
         let g:jedi#auto_vim_configuration = 0
-        let g:jedi#auto_configuration = 0
+        "let g:jedi#auto_configuration = 0
+        let g:jedi#smart_auto_mappings = 1
         " 禁用自动补全
         let g:jedi#completions_enabled = 0
         let g:jedi#use_tabs_not_buffers = 1
@@ -838,6 +880,7 @@ call plug#end()
         let g:jedi#usages_command = "<leader>n"
         let g:jedi#completions_command = "<C-Space>"
         let g:jedi#rename_command = "<leader>r"
+        let g:jedi#auto_close_doc = 1
     "endif
 
 
