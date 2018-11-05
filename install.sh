@@ -89,3 +89,18 @@ ln -s ~/.vim .config/nvim
 ln -s ~/.vimrc .config/nvim/init.vim
 
 echo 'Install Complete! '
+
+# tmux
+git clone https://github.com/tmux/tmux.git
+cd tmux
+sh autogen.sh
+TMUX_HOME=${TMUX_HOME:-'/usr/local/share/tmux'}
+./configure --prefix=${TMUX_HOME%/} && make
+
+cd
+ln -sf vim/tmux/tmux.conf .tmux.conf
+ln -sf vim/tmux/tmux.conf.local .tmux.conf.local
+
+#oh my zsh
+ln -sf vim/zshrc .zshrc
+
