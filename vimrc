@@ -605,9 +605,9 @@ call plug#end()
     let g:deoplete#tag#cache_limit_size = 800000
     let g:deoplete#file#enable_buffer_path = 1
 
-    "let g:deoplete#sources#jedi#statement_length = 30
-    "let g:deoplete#sources#jedi#show_docstring = 1
-    "let g:deoplete#sources#jedi#short_types = 1
+    let g:deoplete#sources#jedi#statement_length = 30
+    let g:deoplete#sources#jedi#show_docstring = 1
+    let g:deoplete#sources#jedi#short_types = 1
     "let g:deoplete#sources#jedi#enable_typeinfo = 0
 
     let g:deoplete#sources#ternjs#filetypes = [
@@ -919,6 +919,7 @@ call plug#end()
     " syntax highlight on and filetype reload
     syntax on
     filetype off
+    filetype on
     filetype plugin indent on
 
     " nicer colors
