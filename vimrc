@@ -865,7 +865,7 @@ call plug#end()
     "endif
 
 " vim-jedi 相关配置
-        let g:jedi#auto_vim_configuration = 0
+        "let g:jedi#auto_vim_configuration = 0
         "let g:jedi#auto_configuration = 0
         let g:jedi#smart_auto_mappings = 1
         " 禁用自动补全
