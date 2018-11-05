@@ -605,9 +605,9 @@ call plug#end()
     let g:deoplete#tag#cache_limit_size = 800000
     let g:deoplete#file#enable_buffer_path = 1
 
-    "let g:deoplete#sources#jedi#statement_length = 30
-    "let g:deoplete#sources#jedi#show_docstring = 1
-    "let g:deoplete#sources#jedi#short_types = 1
+    let g:deoplete#sources#jedi#statement_length = 30
+    let g:deoplete#sources#jedi#show_docstring = 1
+    let g:deoplete#sources#jedi#short_types = 1
     "let g:deoplete#sources#jedi#enable_typeinfo = 0
 
     let g:deoplete#sources#ternjs#filetypes = [
@@ -866,7 +866,7 @@ call plug#end()
 
 " vim-jedi 相关配置
         let g:jedi#auto_vim_configuration = 0
-        "let g:jedi#auto_configuration = 0
+        let g:jedi#auto_configuration = 0
         let g:jedi#smart_auto_mappings = 1
         " 禁用自动补全
         let g:jedi#completions_enabled = 0
@@ -919,6 +919,7 @@ call plug#end()
     " syntax highlight on and filetype reload
     syntax on
     filetype off
+    filetype on
     filetype plugin indent on
 
     " nicer colors
