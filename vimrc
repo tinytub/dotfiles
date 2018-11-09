@@ -52,9 +52,9 @@ Plug 'kien/tabman.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Consoles as buffers
-Plug 'rosenfeld/conque-term'
+"Plug 'rosenfeld/conque-term'
 " Pending tasks list
-Plug 'fisadev/FixedTaskList.vim'
+"Plug 'fisadev/FixedTaskList.vim'
 " Surround
 Plug 'tpope/vim-surround'
 " Autoclose
@@ -80,21 +80,22 @@ Plug 'zchee/deoplete-jedi', {'for': ['python', 'python3']}
 
 
 " Snippets manager (SnipMate), dependencies, and snippets repo
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-Plug 'honza/vim-snippets'
-Plug 'garbas/vim-snipmate'
+"Plug 'MarcWeber/vim-addon-mw-utils'
+"Plug 'tomtom/tlib_vim'
+"Plug 'honza/vim-snippets'
+"Plug 'garbas/vim-snipmate'
+
 " Plugin 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 " gruvbox 如果颜色不对,尝试执行~/.vim/bundle/gruvbox/gruvbox_256palette.sh 或 ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
 "Plugin 'altercation/solarized'
 
-" Git/mercurial/others diff icons on the side of the file lines
+"" Git/mercurial/others diff icons on the side of the file lines
 Plug 'mhinz/vim-signify'
 " Automatically sort python imports
-Plug 'fisadev/vim-isort'
-" Drag visual blocks arround
-Plug 'fisadev/dragvisuals.vim'
+"Plug 'fisadev/vim-isort'
+"" Drag visual blocks arround
+"Plug 'fisadev/dragvisuals.vim'
 " Window chooser
 Plug 't9md/vim-choosewin'
 " Python and other languages code checker
@@ -154,8 +155,9 @@ call plug#end()
     
     " clipboard 配置
     if has('unnamedplus')
-      set clipboard^=unnamed
-      set clipboard^=unnamedplus
+      set clipboard=unnamed
+      "set clipboard^=unnamed
+      "set clipboard^=unnamedplus
     endif
 
     " tabs 及 空格控制
@@ -164,12 +166,25 @@ call plug#end()
     set softtabstop=4
     set shiftwidth=4
 
+    set magic " Set magic on, for regex
+
     " 横竖行光标高亮
     " set cursorline
     " set cursorcolumn
+    "set lazyredraw
+    set ttyfast "faster redrawing"
+    set nolazyredraw  " don't redraw while executing macros
+    set diffopt+=vertical
+
+    set hidden
+    "set showcmd
+    "set showmode
+    set showcmd " show incomplete commands
+    set noshowmode " don't show which mode disabled for PowerLine
+    set textwidth=120
     
     " 隐藏欢迎信息, neovim 下可能会造成 continue 及 press enter 问题
-    ""set shortmess=atI
+    " set shortmess=atI
     " 文件切换自动保存
     set autowrite
     " 文件变更自动读取
@@ -179,8 +194,10 @@ call plug#end()
     " 无备份文件
     set nobackup
     " 其他设置
-    set langmenu=zh_CN.UTF-8
+    "set langmenu=zh_CN.UTF-8
     set mouse-=a
+    "set wrap " turn on line wrapping
+    "set wrapmargin=8 " wrap lines when coming within n characters from side
     set whichwrap+=<,>,h,l,[,]
     set background=dark
     set encoding=UTF-8
@@ -229,14 +246,14 @@ call plug#end()
     imap <C-S-Left> <ESC>:tabp<CR>
 
     " 窗口导航使用 meta+arrows
-    map <M-Right> <c-w>l
-    map <M-Left> <c-w>h
-    map <M-Up> <c-w>k
-    map <M-Down> <c-w>j
-    imap <M-Right> <ESC><c-w>l
-    imap <M-Left> <ESC><c-w>h
-    imap <M-Up> <ESC><c-w>k
-    imap <M-Down> <ESC><c-w>j
+    "map <M-Right> <c-w>l
+    "map <M-Left> <c-w>h
+    "map <M-Up> <c-w>k
+    "map <M-Down> <c-w>j
+    "imap <M-Right> <ESC><c-w>l
+    "imap <M-Left> <ESC><c-w>h
+    "imap <M-Up> <ESC><c-w>k
+    "imap <M-Down> <ESC><c-w>j
 
     " old autocomplete keyboard shortcut
     "imap <C-J> <C-X><C-O>
@@ -279,11 +296,23 @@ call plug#end()
     nmap ,wr :RecurGrepFast <cword><CR>
 
     " 滚动屏幕是保持3行在屏幕边界内
-    set scrolloff=3
+    set scrolloff=5
 
     " 自动补全文件名和命令行的行为,类似 zsh
     set wildmenu
     set wildmode=full
+    set shell=$SHELL
+    set cmdheight=1 " command bar height
+    set title " set terminal title
+    set showmatch " show matching braces
+"    set mat=2 " how many tenths of a second to blink
+
+    set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors
+
+    if &term =~ '256color'
+        " disable background color erase
+        set t_ut=
+    endif
 
     " 更好的 backup, swap 和 undos storage
     set directory=~/.vim/dirs/tmp     " directory to place swap files in
@@ -825,8 +854,8 @@ call plug#end()
       autocmd FileType go syntax sync minlines=256
       autocmd FileType go set synmaxcol=128
       autocmd FileType go set re=1
-      autocmd FileType go set lazyredraw
-      autocmd FileType go set ttyfast
+"      autocmd FileType go set lazyredraw
+"      autocmd FileType go set ttyfast
     augroup END
 
 " deoplete-go 相关配置
@@ -918,8 +947,8 @@ call plug#end()
 
     " syntax highlight on and filetype reload
     syntax on
-    filetype off
-    filetype on
+    "filetype off
+    "filetype on
     filetype plugin indent on
 
     " nicer colors
