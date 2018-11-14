@@ -27,6 +27,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+" 还是需要再把插件详细分类一下
 " Plugins from github repos:
 
 " Better file browser
@@ -73,6 +74,9 @@ else
 endif
 " deoplete golang 插件, 需要手动make
 Plug 'zchee/deoplete-go' , {'for':'go', 'do': 'make'}
+"Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' } " 据说是不维护了
+Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+
 
 " python 补全插件
 Plug 'davidhalter/jedi-vim' , {'for': ['python', 'python3']}
@@ -171,15 +175,23 @@ call plug#end()
     " 横竖行光标高亮
     " set cursorline
     " set cursorcolumn
-    "set lazyredraw
-    set ttyfast "faster redrawing"
+
+    if !has('nvim')
+        set lazyredraw
+        set ttyfast "faster redrawing
+    endif
+
     set nolazyredraw  " don't redraw while executing macros
     set diffopt+=vertical
+
+    "syntax sync minlines=256 " 设置配色行数
+    "set synmaxcol=128
 
     set hidden
     "set showcmd
     "set showmode
-    set showcmd " show incomplete commands
+    "set showcmd " show incomplete commands
+    set noshowcmd noruler "关闭 showcmd 和 ruler 尝试加速 nvim, from: https://www.reddit.com/r/neovim/comments/7epa94/neovim_slowness_compared_to_vim_8/
     set noshowmode " don't show which mode disabled for PowerLine
     set textwidth=120
     
@@ -407,11 +419,11 @@ call plug#end()
     "let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
     "let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
 
-    "augroup nerdtree
-    "    autocmd!
-    "    autocmd FileType nerdtree setlocal nolist " turn off whitespace characters
-    "    autocmd FileType nerdtree setlocal nocursorline " turn off line highlighting for performance
-    "augroup END
+    augroup nerdtree
+        autocmd!
+        autocmd FileType nerdtree setlocal nolist " turn off whitespace characters
+        autocmd FileType nerdtree setlocal nocursorline " turn off line highlighting for performance
+    augroup END
 
     " " Toggle NERDTree
     " function! ToggleNerdTree()
@@ -851,47 +863,32 @@ call plug#end()
       autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
       autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
       autocmd FileType go set nocursorcolumn
-      autocmd FileType go syntax sync minlines=256
-      autocmd FileType go set synmaxcol=128
-      autocmd FileType go set re=1
-"      autocmd FileType go set lazyredraw
-"      autocmd FileType go set ttyfast
     augroup END
 
 " deoplete-go 相关配置
-    "if &filetype == 'go'
       let g:go_autodetect_gopath = 1
       let g:go_list_type = "quickfix"
-      "let g:go_auto_type_info = 1
-      "let g:go_info_mode = 'guru'
-      "guru 在当前版本进行 go to def 会有问题,暂时用 godef 代替
-      "let g:go_def_mode = 'godef'
-      set updatetime=100
+      let g:go_auto_type_info = 1
+      let g:go_updatetime = 5000
+      let g:go_info_mode = 'gocode'
+      let g:go_auto_sameids = 1 
+      let g:go_def_mode = 'guru'
     
       let g:go_fmt_command = "goimports"
-      let g:go_fmt_experimental = 0
-      let g:go_dispatch_enabled = 0 " vim-dispatch needed
-      "let g:go_metalinter_autosave = 1
-      "let g:go_metalinter_autosave_enabled = ['vet', 'golint']
-      "let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
-      let g:go_term_enabled = 0
       " 自动添加标签
       let g:go_addtags_transform = "snakecase"
       let g:go_term_mode = "vertical"
+      let g:go_term_enabled = 0
     
-      let g:go_highlight_types = 1
+      let g:go_highlight_build_constraints = 1
+      let g:go_highlight_extra_types = 1
       let g:go_highlight_fields = 1
       let g:go_highlight_functions = 1
       let g:go_highlight_function_calls = 1
-      let g:go_highlight_interfaces = 1
       let g:go_highlight_methods = 1
-      let g:go_highlight_structs = 1
       let g:go_highlight_operators = 1
-      let g:go_highlight_build_constraints = 1
-      let g:go_highlight_chan_whitespace_error = 1
-      let g:go_highlight_extra_types = 1
-      let g:go_highlight_generate_tags = 1
-    "endif
+      let g:go_highlight_structs = 1
+      let g:go_highlight_types = 1
 
 " vim-jedi 相关配置
         "let g:jedi#auto_vim_configuration = 0
@@ -941,25 +938,13 @@ call plug#end()
     if has('nvim')
       colorscheme gruvbox
     else
-      let &t_Co = 256
       colorscheme gruvbox
     endif
 
     " syntax highlight on and filetype reload
     syntax on
-    "filetype off
-    "filetype on
     filetype plugin indent on
 
-    " nicer colors
-    highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
-    highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
-    highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
-    highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
-    highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
-    highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
-
-" 
 
 " Enter automatically into the files directory
 autocmd BufEnter * silent! lcd %:p:h
