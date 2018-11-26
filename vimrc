@@ -75,7 +75,7 @@ endif
 " deoplete golang 插件, 需要手动make
 Plug 'zchee/deoplete-go' , {'for':'go', 'do': 'make'}
 "Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' } " 据说是不维护了
-Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+"Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 
 
 " python 补全插件
@@ -187,7 +187,8 @@ call plug#end()
     "syntax sync minlines=256 " 设置配色行数
     "set synmaxcol=128
 
-    set hidden
+    "set hidden "current buffer can be put into background, 
+    "set hidden 会和 go-def-tab 冲突, 如果关闭 tab 再通过 go-def-tab 打开会导致在同屏 split horizon
     "set showcmd
     "set showmode
     "set showcmd " show incomplete commands
@@ -196,7 +197,7 @@ call plug#end()
     set textwidth=120
     
     " 隐藏欢迎信息, neovim 下可能会造成 continue 及 press enter 问题
-    " set shortmess=atI
+    set shortmess=atIo
     " 文件切换自动保存
     set autowrite
     " 文件变更自动读取
@@ -207,6 +208,7 @@ call plug#end()
     set nobackup
     " 其他设置
     "set langmenu=zh_CN.UTF-8
+    set langmenu=en_US-UTF-8
     set mouse-=a
     "set wrap " turn on line wrapping
     "set wrapmargin=8 " wrap lines when coming within n characters from side
@@ -288,7 +290,7 @@ call plug#end()
     inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
     " deoplete.nvim 推荐的补全选项
-    set completeopt-=preview
+    set completeopt-=preview "关闭自带补全窗口
     set completeopt+=noinsert
     set completeopt+=noselect
 
@@ -312,7 +314,7 @@ call plug#end()
 
     " 自动补全文件名和命令行的行为,类似 zsh
     set wildmenu
-    set wildmode=full
+    set wildmode=longest,full
     set shell=$SHELL
     set cmdheight=1 " command bar height
     set title " set terminal title
@@ -682,15 +684,6 @@ call plug#end()
     let g:deoplete#keyword_patterns={}
     "let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.]*'
 
-    "inoremap <silent><expr> <TAB>
-    "    \ pumvisible() ? "\<C-n>" :
-    "    \ <SID>check_back_space() ? "\<TAB>" :
-    "    \ deoplete#mappings#manual_complete()
-    "function! s:check_back_space() abort "{{{
-    "    let col = col('.') - 1
-    "    return !col || getline('.')[col - 1]  =~ '\s'
-    "endfunction"}}}
-
     " <Tab> completion:
     " 1. If popup menu is visible, select and insert next item
     " 2. Otherwise, if within a snippet, jump to next input
@@ -713,15 +706,17 @@ call plug#end()
 
     " 解决 vim-multiple-cursors deoplete 冲突问题
     function! Multiple_cursors_before()
-      if exists(':NeoCompleteLock')==2
-        exe 'NeoCompleteLock'
-      endif
+        let g:deoplete#disable_auto_complete = 1
+      "if exists(':NeoCompleteLock')==2
+      "  exe 'NeoCompleteLock'
+      "endif
     endfunction
 
     function! Multiple_cursors_after()
-      if exists(':NeoCompleteUnlock')==2
-        exe 'NeoCompleteUnlock'
-      endif
+        let g:deoplete#disable_auto_complete = 0
+      "if exists(':NeoCompleteUnlock')==2
+      "  exe 'NeoCompleteUnlock'
+      "endif
     endfunction
 "
 
@@ -794,27 +789,6 @@ call plug#end()
     let g:airline_symbols.readonly = ''
     let g:airline_symbols.linenr = ''
     
-    " new file set title and turn to endline
-    autocmd BufNewFile *.sh,*.py,*.rb exec ":call SetTitle()"
-    function! SetTitle()
-        if &filetype == 'sh'
-            call setline(1,"\#!/bin/bash")
-            call append(line("."), "")
-    
-        elseif &filetype == 'python'
-            call setline(1,"#!/usr/bin/env python")
-            call append(line("."),"# coding=utf-8")
-            call append(line(".")+1, "") 
-    
-        elseif &filetype == 'ruby'
-            call setline(1,"#!/usr/bin/env ruby")
-            call append(line("."),"# encoding: utf-8")
-            call append(line(".")+1, "")
-        endif
-    endfunction
-    
-    autocmd BufNewFile * normal G
-
 " Vim-jsx ------------------------------
 
     " if you use JSX syntax in .js file, please enable it.
@@ -843,8 +817,34 @@ call plug#end()
     let g:vim_json_syntax_conceal = 0
 " 
 
+" vim-go 相关配置 --------------------------
+      "let g:go_autodetect_gopath = 1
+      let g:go_list_type = "quickfix"
+      "let g:go_auto_type_info = 1
+      "let g:go_updatetime = 500
+      "let g:go_info_mode = 'guru'
+      "let g:go_auto_sameids = 1 
+      let g:go_def_mode = 'guru'
+      let g:go_def_reuse_buffer = 1
+    
+      let g:go_fmt_command = "goimports"
+      " 自动添加标签
+      let g:go_addtags_transform = "snakecase"
+      "let g:go_term_mode = "split"
+      "let g:go_term_enabled = 1
+    
+      let g:go_highlight_build_constraints = 1
+      let g:go_highlight_extra_types = 1
+      let g:go_highlight_fields = 1
+      let g:go_highlight_functions = 1
+      let g:go_highlight_function_calls = 1
+      let g:go_highlight_methods = 1
+      let g:go_highlight_operators = 1
+      let g:go_highlight_structs = 1
+      let g:go_highlight_types = 1
+
 " vim-go 按键映射 -------------------------
-    augroup go
+    augroup VimGo
       autocmd!
       " vim-go related mappings
       autocmd FileType go nmap <Leader>r <Plug>(go-run)
@@ -864,31 +864,6 @@ call plug#end()
       autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
       autocmd FileType go set nocursorcolumn
     augroup END
-
-" deoplete-go 相关配置
-      let g:go_autodetect_gopath = 1
-      let g:go_list_type = "quickfix"
-      let g:go_auto_type_info = 1
-      let g:go_updatetime = 5000
-      let g:go_info_mode = 'gocode'
-      let g:go_auto_sameids = 1 
-      let g:go_def_mode = 'guru'
-    
-      let g:go_fmt_command = "goimports"
-      " 自动添加标签
-      let g:go_addtags_transform = "snakecase"
-      let g:go_term_mode = "vertical"
-      let g:go_term_enabled = 0
-    
-      let g:go_highlight_build_constraints = 1
-      let g:go_highlight_extra_types = 1
-      let g:go_highlight_fields = 1
-      let g:go_highlight_functions = 1
-      let g:go_highlight_function_calls = 1
-      let g:go_highlight_methods = 1
-      let g:go_highlight_operators = 1
-      let g:go_highlight_structs = 1
-      let g:go_highlight_types = 1
 
 " vim-jedi 相关配置
         "let g:jedi#auto_vim_configuration = 0
@@ -910,7 +885,8 @@ call plug#end()
     "endif
 
 
-" AutoGroups -------------------
+"" AutoGroups -------------------
+    " 虽然不知道做什么用的,但是觉得挺厉害的...
     " file type specific settings
     augroup configgroup
         autocmd!
@@ -927,7 +903,7 @@ call plug#end()
         autocmd FileType qf wincmd J
         autocmd FileType qf nmap <buffer> q :q<cr>
     augroup END
-"  
+""  
 
 " 颜色主题及最后配置
     " use 256 colors when possible
