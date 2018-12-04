@@ -54,8 +54,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Consoles as buffers
 "Plug 'rosenfeld/conque-term'
-" Pending tasks list
-"Plug 'fisadev/FixedTaskList.vim'
 " Surround
 Plug 'tpope/vim-surround'
 " Autoclose
@@ -76,6 +74,7 @@ endif
 Plug 'zchee/deoplete-go' , {'for':'go', 'do': 'make'}
 "Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' } " 据说是不维护了
 "Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+"Plug 'mdempsky/gocode', {'rtp': 'nvim'}
 
 
 " python 补全插件
@@ -176,15 +175,13 @@ call plug#end()
     " set cursorline
     " set cursorcolumn
 
-    if !has('nvim')
-        set lazyredraw
-        set ttyfast "faster redrawing
-    endif
+    set lazyredraw
+    set ttyfast "faster redrawing
 
     set nolazyredraw  " don't redraw while executing macros
     set diffopt+=vertical
 
-    "syntax sync minlines=256 " 设置配色行数
+    "syntax sync minlines=128 " 设置配色行数
     "set synmaxcol=128
 
     "set hidden "current buffer can be put into background, 
@@ -194,6 +191,7 @@ call plug#end()
     "set showcmd " show incomplete commands
     set noshowcmd noruler "关闭 showcmd 和 ruler 尝试加速 nvim, from: https://www.reddit.com/r/neovim/comments/7epa94/neovim_slowness_compared_to_vim_8/
     set noshowmode " don't show which mode disabled for PowerLine
+
     set textwidth=120
     
     " 隐藏欢迎信息, neovim 下可能会造成 continue 及 press enter 问题
@@ -232,11 +230,14 @@ call plug#end()
 
 
     " 永远显示状态栏
-    set laststatus=2
+    " set laststatus=2
     " 增量搜索
     set incsearch
     " 高亮搜索结果
     set hlsearch
+    " 关闭最后一次查询的高亮
+    nnoremap <F3> :set hlsearch!<CR>
+
     " 搜索忽略大小写
     set ignorecase
     " 取消查询结果高亮
@@ -459,11 +460,6 @@ call plug#end()
 
 
 
-" Tasklist ------------------------------
-
-    " show pending tasks list
-    map <F2> :TaskList<CR>
-
 " FZF 没有详细配置,回头再搞
     let g:fzf_layout = { 'down': '~25%' }
 
@@ -588,28 +584,34 @@ call plug#end()
     "let g:syntastic_style_warning_symbol = '⚠'
 
 " ALE 替代 Syntastic
-    let g:ale_lint_on_save = 0
-    let g:ale_lint_on_enter = 0
+    " Write this in your vimrc file
     let g:ale_lint_on_text_changed = 'never'
-    "let g:ale_linters_explicit = 1
+    " You can disable this option too
+    " if you don't want linters to run on opening a file
+    let g:ale_lint_on_enter = 0
 
-    let g:ale_set_highlights = 0
-    let g:ale_change_sign_column_color = 0
+    "let g:ale_set_highlights = 0
+    "let g:ale_change_sign_column_color = 0
 
-    "let g:airline#extensions#ale#enabled = 1
+    " Enable integration with airline.
+    let g:airline#extensions#ale#enabled = 1
 
-    "let g:ale_set_loclist = 0
-    "let g:ale_set_quickfix = 1
+    " 关闭本地列表,使用 quickfix
+    let g:ale_set_loclist = 0
+    let g:ale_set_quickfix = 1
+
     let g:ale_sign_column_always = 0
     let g:ale_sign_error = '✖'
     let g:ale_sign_warning = '⚠'
     let g:ale_echo_msg_error_str = '✖'
     let g:ale_echo_msg_warning_str = '⚠'
 
-    "let g:ale_echo_msg_format = '%severity% %s% [%linter%% code%]'
     " for golang
-    let g:ale_linters = {'go': ['gometalinter']}
-    let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
+    "let g:ale_linters = {'go': ['gometalinter']}
+    "let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
+    let g:ale_linters = {'go': ['gometalinter','gofmt'],'python': ['flake8']}
+    "let g:ale_go_gometalinter_options = '--fast --disable=gas --deadline=1s'
+    let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s --exclude="should have comment" --exclude="error return value not checked \(defer"'
 
     "let g:ale_linters = {
     "\   'go': ['gometalinter', 'gofmt']
@@ -824,7 +826,8 @@ call plug#end()
       "let g:go_updatetime = 500
       "let g:go_info_mode = 'guru'
       "let g:go_auto_sameids = 1 
-      let g:go_def_mode = 'guru'
+      "let g:go_def_mode = 'guru'
+      let g:go_def_mode = 'godef'
       let g:go_def_reuse_buffer = 1
     
       let g:go_fmt_command = "goimports"
@@ -832,16 +835,30 @@ call plug#end()
       let g:go_addtags_transform = "snakecase"
       "let g:go_term_mode = "split"
       "let g:go_term_enabled = 1
+      
+      "据说可以解决和 ale 的冲突
+      let g:go_fmt_fail_silently = 1
+
+      " 关闭 vim-go 的 linter ?
+      "let g:go_metalinter_autosave = 1
     
+      "let g:go_highlight_build_constraints = 1
+      "let g:go_highlight_extra_types = 1
+      "let g:go_highlight_fields = 1
+      "let g:go_highlight_functions = 1
+      "let g:go_highlight_function_calls = 1
+      "let g:go_highlight_methods = 1
+      "let g:go_highlight_operators = 1
+      "let g:go_highlight_structs = 1
+      "let g:go_highlight_types = 1
+
+      let g:go_highlight_functions = 1
+      let g:go_highlight_methods = 1
+      let g:go_highlight_structs = 1
+      let g:go_highlight_interfaces = 1
+      let g:go_highlight_operators = 1
       let g:go_highlight_build_constraints = 1
       let g:go_highlight_extra_types = 1
-      let g:go_highlight_fields = 1
-      let g:go_highlight_functions = 1
-      let g:go_highlight_function_calls = 1
-      let g:go_highlight_methods = 1
-      let g:go_highlight_operators = 1
-      let g:go_highlight_structs = 1
-      let g:go_highlight_types = 1
 
 " vim-go 按键映射 -------------------------
     augroup VimGo
@@ -873,10 +890,8 @@ call plug#end()
         let g:jedi#completions_enabled = 0
         let g:jedi#use_tabs_not_buffers = 1
         " 键位什么的
-        let g:jedi#goto_command = "<leader>d"
+        let g:jedi#goto_command = "gd"
         let g:jedi#goto_assignments_command = "<leader>g"
-        " goto_definitions_command 已废弃，但是仍可使用
-        let g:jedi#goto_definitions_command = "gd" 
         let g:jedi#documentation_command = "K"
         let g:jedi#usages_command = "<leader>n"
         let g:jedi#completions_command = "<C-Space>"
