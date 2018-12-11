@@ -236,7 +236,7 @@ call plug#end()
     " 高亮搜索结果
     set hlsearch
     " 关闭最后一次查询的高亮
-    nnoremap <F3> :set hlsearch!<CR>
+    nnoremap <F2> :set hlsearch!<CR>
 
     " 搜索忽略大小写
     set ignorecase
