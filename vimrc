@@ -79,7 +79,7 @@ Plug 'zchee/deoplete-go' , {'for':'go', 'do': 'make'}
 
 " python 补全插件
 Plug 'davidhalter/jedi-vim' , {'for': ['python', 'python3']}
-Plug 'zchee/deoplete-jedi', {'for': ['python', 'python3']}
+"Plug 'zchee/deoplete-jedi', {'for': ['python', 'python3']}
 
 
 " Snippets manager (SnipMate), dependencies, and snippets repo
@@ -609,7 +609,8 @@ call plug#end()
     " for golang
     "let g:ale_linters = {'go': ['gometalinter']}
     "let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
-    let g:ale_linters = {'go': ['gometalinter','gofmt'],'python': ['flake8']}
+    let g:ale_linters = {'go': ['gometalinter','gofmt'],'python': ['flake8','pylint']}
+    let b:ale_fixers = {'python':['autopep8', 'yapf']}
     "let g:ale_go_gometalinter_options = '--fast --disable=gas --deadline=1s'
     let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s --exclude="should have comment" --exclude="error return value not checked \(defer"'
 

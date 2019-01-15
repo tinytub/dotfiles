@@ -9,8 +9,10 @@ plugins=(git vim python golang osx tmux)
 source $ZSH/oh-my-zsh.sh
 #source ~/.bash_profile
 source ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
+#export GOPATH="/home/zhaopeng/goworks"
+#export GOROOT="/usr/local/go"
 export GOPATH="/home/zhaopeng/goworks"
-export GOROOT="/usr/local/go"
+export GOROOT="/home/zhaopeng/go1.11"
 #export GOPATH="/home/zhaopeng/goworks1.8.3/src/jd.com/jstack-thirdparty-libs"
 #export GOROOT="/home/zhaopeng/go1.8.3"
 export PATH="$HOME/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
