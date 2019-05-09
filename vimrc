@@ -613,6 +613,9 @@ call plug#end()
     let b:ale_fixers = {'python':['autopep8', 'yapf']}
     "let g:ale_go_gometalinter_options = '--fast --disable=gas --deadline=1s'
     let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s --exclude="should have comment" --exclude="error return value not checked \(defer"'
+    "let g:ale_python_flake8_args="--ignore=E114,E116,E131 --max-line-length=120"
+    let g:ale_python_flake8_options="--ignore=E114,E116,E131 --max-line-length=120"
+    " --ignore=E225,E124,E712,E116
 
     "let g:ale_linters = {
     "\   'go': ['gometalinter', 'gofmt']
