@@ -143,6 +143,7 @@ Plug 'elzr/vim-json', { 'for': 'json' }
 "~/.fzf/install
 if has("nvim")
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
     "Plug '~/.fzf', { 'do' : './install --all' } | Plug 'junegunn/fzf.vim'
 endif
 
@@ -464,13 +465,14 @@ call plug#end()
 
 " FZF 没有详细配置,回头再搞
     let g:fzf_layout = { 'down': '~25%' }
+    let g:fzf_buffers_jump = 1
 
     if isdirectory(".git")
         " if in a git project, use :GFiles
-        nmap <silent> <leader>t :GitFiles --cached --others --exclude-standard<cr>
+        nmap <silent> <leader>f :GitFiles --cached --others --exclude-standard<cr>
     else
         " otherwise, use :FZF
-        nmap <silent> <leader>t :FZF<cr>
+        nmap <silent> <leader>f :FZF<cr>
     endif
 
     nmap <silent> <leader>s :GFiles?<cr>
@@ -600,7 +602,8 @@ call plug#end()
 
     " 关闭本地列表,使用 quickfix
     let g:ale_set_loclist = 0
-    let g:ale_set_quickfix = 1
+    "let g:ale_set_quickfix = 1
+    let g:ale_set_quickfix = 0
 
     let g:ale_sign_column_always = 0
     let g:ale_sign_error = '✖'
@@ -775,7 +778,9 @@ call plug#end()
     "let g:airline#extensions#tabline#left_sep = ' '
     "let g:airline#extensions#tabline#left_alt_sep = '|'
     let g:airline#extensions#whitespace#enabled = 1
-    "let g:airline#extensions#tabline#fnamemod = ':p:~'
+    "let g:airline#extensions#tabline#fnamemod = ':p:.'
+    "let g:airline#extensions#tabline#fnamemod = ':.'
+    "let g:airline#extensions#tabline#fnamecollapse = 0
 
     
     " to use fancy symbols for airline, uncomment the following lines and use a
@@ -790,14 +795,26 @@ call plug#end()
     " let g:airline_symbols.branch = '⭠'
     " let g:airline_symbols.readonly = '⭤'
     " let g:airline_symbols.linenr = '⭡'
-    
-    let g:airline_left_sep = ''
-    let g:airline_left_alt_sep = ''
-    let g:airline_right_sep = ''
-    let g:airline_right_alt_sep = ''
+    let g:airline_left_sep = '»'
+    let g:airline_left_sep = '▶'
+    let g:airline_right_sep = '«'
+    let g:airline_right_sep = '◀'
+    let g:airline_symbols.crypt = '🔒'
+    let g:airline_symbols.linenr = '¶'
+    let g:airline_symbols.maxlinenr = ''
     let g:airline_symbols.branch = ''
-    let g:airline_symbols.readonly = ''
-    let g:airline_symbols.linenr = ''
+    let g:airline_symbols.paste = 'Þ'
+    let g:airline_symbols.spell = ''
+    let g:airline_symbols.notexists = 'Ɇ'
+    let g:airline_symbols.whitespace = 'Ξ'
+    
+    "let g:airline_left_sep = ''
+    "let g:airline_left_alt_sep = ''
+    "let g:airline_right_sep = ''
+    "let g:airline_right_alt_sep = ''
+    "let g:airline_symbols.branch = ''
+    "let g:airline_symbols.readonly = ''
+    "let g:airline_symbols.linenr = ''
     
 " Vim-jsx ------------------------------
 
