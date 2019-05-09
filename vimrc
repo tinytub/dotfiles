@@ -40,9 +40,9 @@ Plug 'scrooloose/nerdcommenter'
 " Class/module browser
 Plug 'majutsushi/tagbar'
 " Code and files fuzzy finder
-Plug 'kien/ctrlp.vim'
+"Plug 'kien/ctrlp.vim'
 " Extension to ctrlp, for fuzzy command finder
-Plug 'fisadev/vim-ctrlp-cmdpalette'
+"Plug 'fisadev/vim-ctrlp-cmdpalette'
 " Zen coding
 Plug 'mattn/emmet-vim'
 " Maybe the best Git integration
@@ -143,6 +143,7 @@ Plug 'elzr/vim-json', { 'for': 'json' }
 "~/.fzf/install
 if has("nvim")
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
     "Plug '~/.fzf', { 'do' : './install --all' } | Plug 'junegunn/fzf.vim'
 endif
 
@@ -409,9 +410,11 @@ call plug#end()
 
 " NERDTree ----------------------------- 
     " 切换 nerdtre 显示
-    map <F3> :NERDTreeToggle<CR>
+    " map <F3> :NERDTreeToggle<CR>
     " 打开 nerdree 并选中当前打开的文件
-    nmap ,t :NERDTreeFind<CR>
+    map <F3> :call ToggleNerdTree()<CR>
+    "nmap ,t :NERDTreeFind<CR>
+    "
     " 不要显示如下文件类型
     let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
     " 自动开关 NERDTree
@@ -428,14 +431,14 @@ call plug#end()
         autocmd FileType nerdtree setlocal nocursorline " turn off line highlighting for performance
     augroup END
 
-    " " Toggle NERDTree
-    " function! ToggleNerdTree()
-    "     if @% != "" && @% !~ "Startify" && (!exists("g:NERDTree") || (g:NERDTree.ExistsForTab() && !g:NERDTree.IsOpen()))
-    "         :NERDTreeFind
-    "     else
-    "         :NERDTreeToggle
-    "     endif
-    " endfunction
+    " Toggle NERDTree
+    function! ToggleNerdTree()
+        if @% != "" && @% !~ "Startify" && (!exists("g:NERDTree") || (g:NERDTree.ExistsForTab() && !g:NERDTree.IsOpen()))
+            :NERDTreeFind
+        else
+            :NERDTreeToggle
+        endif
+    endfunction
     " " toggle nerd tree
     " nmap <silent> <leader>k :call ToggleNerdTree()<cr>
     " " find the current file in nerdtree without needing to reload the drawer
@@ -462,13 +465,14 @@ call plug#end()
 
 " FZF 没有详细配置,回头再搞
     let g:fzf_layout = { 'down': '~25%' }
+    let g:fzf_buffers_jump = 1
 
     if isdirectory(".git")
         " if in a git project, use :GFiles
-        nmap <silent> <leader>t :GitFiles --cached --others --exclude-standard<cr>
+        nmap <silent> <leader>f :GitFiles --cached --others --exclude-standard<cr>
     else
         " otherwise, use :FZF
-        nmap <silent> <leader>t :FZF<cr>
+        nmap <silent> <leader>f :FZF<cr>
     endif
 
     nmap <silent> <leader>s :GFiles?<cr>
@@ -512,41 +516,41 @@ call plug#end()
 
 " CtrlP ------------------------------
 
-    " file finder mapping
-    let g:ctrlp_map = ',e'
-    " hidden some types files
-    let g:ctrlp_show_hidden = 1
-    set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif           "Linux
-    " tags (symbols) in current file finder mapping
-    nmap ,g :CtrlPBufTag<CR>
-    " tags (symbols) in all files finder mapping
-    nmap ,G :CtrlPBufTagAll<CR>
-    " general code finder in all files mapping
-    nmap ,f :CtrlPLine<CR>
-    " recent files finder mapping
-    nmap ,m :CtrlPMRUFiles<CR>
-    " commands finder mapping
-    nmap ,c :CtrlPCmdPalette<CR>
-    " to be able to call CtrlP with default search text
-    function! CtrlPWithSearchText(search_text, ctrlp_command_end)
-        execute ':CtrlP' . a:ctrlp_command_end
-        call feedkeys(a:search_text)
-    endfunction
-    " same as previous mappings, but calling with current word as default text
-    nmap ,wg :call CtrlPWithSearchText(expand('<cword>'), 'BufTag')<CR>
-    nmap ,wG :call CtrlPWithSearchText(expand('<cword>'), 'BufTagAll')<CR>
-    nmap ,wf :call CtrlPWithSearchText(expand('<cword>'), 'Line')<CR>
-    nmap ,we :call CtrlPWithSearchText(expand('<cword>'), '')<CR>
-    nmap ,pe :call CtrlPWithSearchText(expand('<cfile>'), '')<CR>
-    nmap ,wm :call CtrlPWithSearchText(expand('<cword>'), 'MRUFiles')<CR>
-    nmap ,wc :call CtrlPWithSearchText(expand('<cword>'), 'CmdPalette')<CR>
-    " don't change working directory
-    let g:ctrlp_working_path_mode = 0
-    " ignore these files and folders on file finder
-    let g:ctrlp_custom_ignore = {
-      \ 'dir':  '\v[\/](\.git|\.hg|\.svn)$',
-      \ 'file': '\.pyc$\|\.pyo$',
-      \ }
+"    " file finder mapping
+"    let g:ctrlp_map = ',e'
+"    " hidden some types files
+"    let g:ctrlp_show_hidden = 1
+"    set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif           "Linux
+"    " tags (symbols) in current file finder mapping
+"    nmap ,g :CtrlPBufTag<CR>
+"    " tags (symbols) in all files finder mapping
+"    nmap ,G :CtrlPBufTagAll<CR>
+"    " general code finder in all files mapping
+"    nmap ,f :CtrlPLine<CR>
+"    " recent files finder mapping
+"    nmap ,m :CtrlPMRUFiles<CR>
+"    " commands finder mapping
+"    nmap ,c :CtrlPCmdPalette<CR>
+"    " to be able to call CtrlP with default search text
+"    function! CtrlPWithSearchText(search_text, ctrlp_command_end)
+"        execute ':CtrlP' . a:ctrlp_command_end
+"        call feedkeys(a:search_text)
+"    endfunction
+"    " same as previous mappings, but calling with current word as default text
+"    nmap ,wg :call CtrlPWithSearchText(expand('<cword>'), 'BufTag')<CR>
+"    nmap ,wG :call CtrlPWithSearchText(expand('<cword>'), 'BufTagAll')<CR>
+"    nmap ,wf :call CtrlPWithSearchText(expand('<cword>'), 'Line')<CR>
+"    nmap ,we :call CtrlPWithSearchText(expand('<cword>'), '')<CR>
+"    nmap ,pe :call CtrlPWithSearchText(expand('<cfile>'), '')<CR>
+"    nmap ,wm :call CtrlPWithSearchText(expand('<cword>'), 'MRUFiles')<CR>
+"    nmap ,wc :call CtrlPWithSearchText(expand('<cword>'), 'CmdPalette')<CR>
+"    " don't change working directory
+"    let g:ctrlp_working_path_mode = 0
+"    " ignore these files and folders on file finder
+"    let g:ctrlp_custom_ignore = {
+"      \ 'dir':  '\v[\/](\.git|\.hg|\.svn)$',
+"      \ 'file': '\.pyc$\|\.pyo$',
+"      \ }
 
 "" Syntastic ------------------------------
     "
@@ -598,7 +602,8 @@ call plug#end()
 
     " 关闭本地列表,使用 quickfix
     let g:ale_set_loclist = 0
-    let g:ale_set_quickfix = 1
+    "let g:ale_set_quickfix = 1
+    let g:ale_set_quickfix = 0
 
     let g:ale_sign_column_always = 0
     let g:ale_sign_error = '✖'
@@ -609,9 +614,12 @@ call plug#end()
     " for golang
     "let g:ale_linters = {'go': ['gometalinter']}
     "let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
-    let g:ale_linters = {'go': ['gometalinter','gofmt'],'python': ['flake8','pylint']}
+    "let g:ale_linters = {'go': ['golint','gofmt'],'python': ['flake8','pylint']}
+    let g:ale_linters = {'go': ['golangci-lint','gofmt'],'python': ['flake8','pylint']}
     let b:ale_fixers = {'python':['autopep8', 'yapf']}
     "let g:ale_go_gometalinter_options = '--fast --disable=gas --deadline=1s'
+    let g:ale_go_golangci_lint_package = 1
+    let g:ale_go_golangci_lint_options = '--fast'
     let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s --exclude="should have comment" --exclude="error return value not checked \(defer"'
     "let g:ale_python_flake8_args="--ignore=E114,E116,E131 --max-line-length=120"
     let g:ale_python_flake8_options="--ignore=E114,E116,E131 --max-line-length=120"
@@ -773,6 +781,10 @@ call plug#end()
     "let g:airline#extensions#tabline#left_sep = ' '
     "let g:airline#extensions#tabline#left_alt_sep = '|'
     let g:airline#extensions#whitespace#enabled = 1
+    "let g:airline#extensions#tabline#fnamemod = ':p:.'
+    "let g:airline#extensions#tabline#fnamemod = ':.'
+    "let g:airline#extensions#tabline#fnamecollapse = 0
+
     
     " to use fancy symbols for airline, uncomment the following lines and use a
     " patched font (more info on the README.rst)
@@ -786,14 +798,26 @@ call plug#end()
     " let g:airline_symbols.branch = '⭠'
     " let g:airline_symbols.readonly = '⭤'
     " let g:airline_symbols.linenr = '⭡'
-    
-    let g:airline_left_sep = ''
-    let g:airline_left_alt_sep = ''
-    let g:airline_right_sep = ''
-    let g:airline_right_alt_sep = ''
+    let g:airline_left_sep = '»'
+    let g:airline_left_sep = '▶'
+    let g:airline_right_sep = '«'
+    let g:airline_right_sep = '◀'
+    let g:airline_symbols.crypt = '🔒'
+    let g:airline_symbols.linenr = '¶'
+    let g:airline_symbols.maxlinenr = ''
     let g:airline_symbols.branch = ''
-    let g:airline_symbols.readonly = ''
-    let g:airline_symbols.linenr = ''
+    let g:airline_symbols.paste = 'Þ'
+    let g:airline_symbols.spell = ''
+    let g:airline_symbols.notexists = 'Ɇ'
+    let g:airline_symbols.whitespace = 'Ξ'
+    
+    "let g:airline_left_sep = ''
+    "let g:airline_left_alt_sep = ''
+    "let g:airline_right_sep = ''
+    "let g:airline_right_alt_sep = ''
+    "let g:airline_symbols.branch = ''
+    "let g:airline_symbols.readonly = ''
+    "let g:airline_symbols.linenr = ''
     
 " Vim-jsx ------------------------------
 
@@ -870,9 +894,9 @@ call plug#end()
       " vim-go related mappings
       autocmd FileType go nmap <Leader>r <Plug>(go-run)
       autocmd FileType go nmap <Leader>b <Plug>(go-build)
-      autocmd FileType go nmap <Leader>t <Plug>(go-test)
-      autocmd FileType go nmap <Leader>i <Plug>(go-info)
-      autocmd FileType go nmap <Leader>s <Plug>(go-implements)
+      "autocmd FileType go nmap <Leader>t <Plug>(go-test)
+      "autocmd FileType go nmap <Leader>i <Plug>(go-info)
+      "autocmd FileType go nmap <Leader>s <Plug>(go-implements)
       autocmd FileType go nmap <Leader>c <Plug>(go-coverage)
       autocmd FileType go nmap <Leadee <Plug>(go-rename)
       autocmd FileType go nmap <Leader>gi <Plug>(go-imports)
