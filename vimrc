@@ -231,7 +231,7 @@ call plug#end()
 
 
     " 永远显示状态栏
-    " set laststatus=2
+    set laststatus=2
     " 增量搜索
     set incsearch
     " 高亮搜索结果
@@ -552,41 +552,6 @@ call plug#end()
 "      \ 'file': '\.pyc$\|\.pyo$',
 "      \ }
 
-"" Syntastic ------------------------------
-    "
-    "" show list of errors and warnings on the current file
-    "nmap <leader>e :Errors<CR>
-    "" turn to next or previous errors, after open errors list
-    "nmap <leader>n :lnext<CR>
-    "nmap <leader>p :lprevious<CR>
-    "" 通过 :Sc 命令进行语法检测
-    ":command! Sc :SyntasticCheck 
-    "" check also when just opened the file
-    "" 太慢了，打开文件时不自动加载
-    "let g:syntastic_check_on_open = 0
-    "" 也不要每次保存的时候尝试加载，等我手动出发好了
-    "let g:syntastic_check_on_wq = 0 
-    "" 保持被动模式
-    "let g:syntastic_mode_map = {'mode': 'passive'} 
-    "" syntastic checker for javascript.
-    "" eslint is the only tool support JSX.
-    "" If you don't need write JSX, you can use jshint.
-    "" And eslint is slow, but not a hindrance
-    "" let g:syntastic_javascript_checkers = ['jshint']
-    "let g:syntastic_javascript_checkers = ['eslint']
-    "" python 好多检测插件，加载速度太慢了。。。只加载 pylint 好了
-    "" let g:syntastic_disabled_filetypes=['python']
-    "let g:syntastic_python_checkers = ['pylint']
-    "let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-    "" don't put icons on the sign column (it hides the vcs status icons of signify)
-    "let g:syntastic_enable_signs = 0
-    "" custom icons (enable them if you use a patched font, and enable the previous 
-    "" setting)
-    "let g:syntastic_error_symbol = '✗'
-    "let g:syntastic_warning_symbol = '⚠'
-    "let g:syntastic_style_error_symbol = '✗'
-    "let g:syntastic_style_warning_symbol = '⚠'
-
 " ALE 替代 Syntastic
     " Write this in your vimrc file
     let g:ale_lint_on_text_changed = 'never'
@@ -602,8 +567,8 @@ call plug#end()
 
     " 关闭本地列表,使用 quickfix
     let g:ale_set_loclist = 0
-    "let g:ale_set_quickfix = 1
-    let g:ale_set_quickfix = 0
+    let g:ale_set_quickfix = 1
+    let g:ale_open_list = 1
 
     let g:ale_sign_column_always = 0
     let g:ale_sign_error = '✖'
@@ -613,32 +578,26 @@ call plug#end()
 
     " for golang
     "let g:ale_linters = {'go': ['gometalinter']}
-    "let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
-    "let g:ale_linters = {'go': ['golint','gofmt'],'python': ['flake8','pylint']}
-    let g:ale_linters = {'go': ['golangci-lint','gofmt'],'python': ['flake8','pylint']}
+    "let g:ale_linters = {'go': ['golangci-lint','gofmt'],'python': ['flake8','pylint']}
+    let g:ale_linters = {'go': ['gometalinter','gofmt'],'python': ['flake8','pylint']}
     let b:ale_fixers = {'python':['autopep8', 'yapf']}
     "let g:ale_go_gometalinter_options = '--fast --disable=gas --deadline=1s'
-    let g:ale_go_golangci_lint_package = 1
-    let g:ale_go_golangci_lint_options = '--fast'
-    let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s --exclude="should have comment" --exclude="error return value not checked \(defer"'
+    "let g:ale_go_golangci_lint_package = 1
+    "let g:ale_go_golangci_lint_options = '--fast'
+    let g:ale_go_golangci_lint_options = "--no-config --fast -D staticcheck -D typecheck"
+    "let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s --exclude="should have comment" --exclude="error return value not checked \(defer"'
+    "let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
+    let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s'
     "let g:ale_python_flake8_args="--ignore=E114,E116,E131 --max-line-length=120"
     let g:ale_python_flake8_options="--ignore=E114,E116,E131 --max-line-length=120"
-    " --ignore=E225,E124,E712,E116
 
-    "let g:ale_linters = {
-    "\   'go': ['gometalinter', 'gofmt']
-    "\   'javascript': ['eslint', 'tsserver'],
-    "\   'typescript': ['tsserver', 'tslint'],
-    "\   'html': []
-    "\}
-
-    "let g:ale_fixers = {}
-    "let g:ale_fixers['javascript'] = ['prettier']
-    "let g:ale_fixers['typescript'] = ['prettier', 'tslint']
-    "let g:ale_fixers['json'] = ['prettier']
-    "let g:ale_fixers['css'] = ['prettier']
-    "let g:ale_javascript_prettier_use_local_config = 1
-    "let g:ale_fix_on_save = 0
+    let g:ale_fixers = {}
+    let g:ale_fixers['javascript'] = ['prettier']
+    let g:ale_fixers['typescript'] = ['prettier', 'tslint']
+    let g:ale_fixers['json'] = ['prettier']
+    let g:ale_fixers['css'] = ['prettier']
+    let g:ale_javascript_prettier_use_local_config = 1
+    let g:ale_fix_on_save = 0
 
 " deoplete 相关配置
     " ---
@@ -850,12 +809,8 @@ call plug#end()
 " vim-go 相关配置 --------------------------
       "let g:go_autodetect_gopath = 1
       let g:go_list_type = "quickfix"
-      "let g:go_auto_type_info = 1
-      "let g:go_updatetime = 500
-      "let g:go_info_mode = 'guru'
-      "let g:go_auto_sameids = 1 
-      "let g:go_def_mode = 'guru'
-      let g:go_def_mode = 'godef'
+      let g:go_def_mode = 'guru'
+      "let g:go_def_mode = 'godef'
       let g:go_def_reuse_buffer = 1
     
       let g:go_fmt_command = "goimports"
@@ -870,16 +825,6 @@ call plug#end()
       " 关闭 vim-go 的 linter ?
       "let g:go_metalinter_autosave = 1
     
-      "let g:go_highlight_build_constraints = 1
-      "let g:go_highlight_extra_types = 1
-      "let g:go_highlight_fields = 1
-      "let g:go_highlight_functions = 1
-      "let g:go_highlight_function_calls = 1
-      "let g:go_highlight_methods = 1
-      "let g:go_highlight_operators = 1
-      "let g:go_highlight_structs = 1
-      "let g:go_highlight_types = 1
-
       let g:go_highlight_functions = 1
       let g:go_highlight_methods = 1
       let g:go_highlight_structs = 1
