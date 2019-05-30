@@ -554,13 +554,13 @@ call plug#end()
 
 " ALE 替代 Syntastic
     " Write this in your vimrc file
-    let g:ale_lint_on_text_changed = 'never'
+    let g:ale_lint_on_text_changed = 'normal'
     " You can disable this option too
     " if you don't want linters to run on opening a file
-    let g:ale_lint_on_enter = 0
+    let g:ale_lint_on_enter = 1
 
-    "let g:ale_set_highlights = 0
-    "let g:ale_change_sign_column_color = 0
+    "let g:ale_set_highlights = 1
+    "let g:ale_change_sign_column_color = 1
 
     " Enable integration with airline.
     let g:airline#extensions#ale#enabled = 1
@@ -568,13 +568,18 @@ call plug#end()
     " 关闭本地列表,使用 quickfix
     let g:ale_set_loclist = 0
     let g:ale_set_quickfix = 1
-    let g:ale_open_list = 1
+    "let g:ale_list_vertical = 1
+    "let g:ale_open_list = 1
 
     let g:ale_sign_column_always = 0
-    let g:ale_sign_error = '✖'
-    let g:ale_sign_warning = '⚠'
-    let g:ale_echo_msg_error_str = '✖'
-    let g:ale_echo_msg_warning_str = '⚠'
+    "let g:ale_sign_error = '✖'
+    "let g:ale_sign_warning = '⚠'
+    let g:ale_sign_error = '👿'
+    let g:ale_sign_warning = '🤔'
+    "let g:ale_echo_msg_error_str = '✖'
+    "let g:ale_echo_msg_warning_str = '⚠'
+    let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
 
     " for golang
     "let g:ale_linters = {'go': ['gometalinter']}
@@ -598,6 +603,27 @@ call plug#end()
     let g:ale_fixers['css'] = ['prettier']
     let g:ale_javascript_prettier_use_local_config = 1
     let g:ale_fix_on_save = 0
+
+    " エラー一覧リストをトグルする自作関数
+    function! AleListToggle()
+        " ALEが起動していないときは終了する
+        if !exists('g:ale_open_list')
+            return
+        endif
+        " listが0(off)のときは1(on)にして、1のときは0にする
+        if(g:ale_open_list == 0) 
+            ALEDisableBuffer  " 一旦aleを終了(ale起動中に変数を変えても反映されないので)
+            let g:ale_open_list = 1
+            ALEEnableBuffer  " aleを再度起動
+        else
+            let g:ale_open_list = 0
+            " 下のウィンドウに移動してからウィンドウを消す
+            execute ":wincmd j"
+            execute ":q"
+        endif
+    endfunction
+
+    nnoremap <silent> <F5> :call AleListToggle()<CR>
 
 " deoplete 相关配置
     " ---
@@ -733,17 +759,12 @@ call plug#end()
 
 " Airline ------------------------------
 
+    
     let g:airline_powerline_fonts = 1
     " let g:airline_theme = 'bubblegum'
     let g:airline_theme = 'gruvbox'
-    "let g:airline#extensions#tabline#enabled = 1
     "let g:airline#extensions#tabline#left_sep = ' '
     "let g:airline#extensions#tabline#left_alt_sep = '|'
-    let g:airline#extensions#whitespace#enabled = 1
-    "let g:airline#extensions#tabline#fnamemod = ':p:.'
-    "let g:airline#extensions#tabline#fnamemod = ':.'
-    "let g:airline#extensions#tabline#fnamecollapse = 0
-
     
     " to use fancy symbols for airline, uncomment the following lines and use a
     " patched font (more info on the README.rst)
@@ -757,26 +778,41 @@ call plug#end()
     " let g:airline_symbols.branch = '⭠'
     " let g:airline_symbols.readonly = '⭤'
     " let g:airline_symbols.linenr = '⭡'
-    let g:airline_left_sep = '»'
-    let g:airline_left_sep = '▶'
-    let g:airline_right_sep = '«'
-    let g:airline_right_sep = '◀'
+    "
+    "let g:airline_left_sep = '»'
+    "let g:airline_left_sep = '▶'
+    "let g:airline_right_sep = '«'
+    "let g:airline_right_sep = '◀'
+    "let g:airline_symbols.crypt = '🔒'
+    "let g:airline_symbols.linenr = '¶'
+    "let g:airline_symbols.maxlinenr = ''
+    "let g:airline_symbols.branch = ''
+    "let g:airline_symbols.paste = 'Þ'
+    "let g:airline_symbols.spell = ''
+    "let g:airline_symbols.notexists = 'Ɇ'
+    "let g:airline_symbols.whitespace = 'Ξ'
+
+    let g:airline#extensions#tabline#enabled = 1
+    let g:airline#extensions#tabline#formatter = 'default'
+    "let airline#extensions#ale#error_symbol = 'E:'
+    "let airline#extensions#ale#warning_symbol = 'W:'
+    "let airline#extensions#ale#show_line_numbers = 1
+    "let airline#extensions#ale#open_lnum_symbol = '(L'
+    "let airline#extensions#ale#close_lnum_symbol = ')'
+    
+    let g:airline_left_sep = ''
+    let g:airline_left_alt_sep = ''
+    let g:airline_right_sep = ''
+    let g:airline_right_alt_sep = ''
+    let g:airline_symbols.branch = ''
+    let g:airline_symbols.readonly = ''
     let g:airline_symbols.crypt = '🔒'
     let g:airline_symbols.linenr = '¶'
     let g:airline_symbols.maxlinenr = ''
-    let g:airline_symbols.branch = ''
     let g:airline_symbols.paste = 'Þ'
     let g:airline_symbols.spell = ''
     let g:airline_symbols.notexists = 'Ɇ'
     let g:airline_symbols.whitespace = 'Ξ'
-    
-    "let g:airline_left_sep = ''
-    "let g:airline_left_alt_sep = ''
-    "let g:airline_right_sep = ''
-    "let g:airline_right_alt_sep = ''
-    "let g:airline_symbols.branch = ''
-    "let g:airline_symbols.readonly = ''
-    "let g:airline_symbols.linenr = ''
     
 " Vim-jsx ------------------------------
 
@@ -808,7 +844,7 @@ call plug#end()
 
 " vim-go 相关配置 --------------------------
       "let g:go_autodetect_gopath = 1
-      let g:go_list_type = "quickfix"
+      "let g:go_list_type = "quickfix"
       let g:go_def_mode = 'guru'
       "let g:go_def_mode = 'godef'
       let g:go_def_reuse_buffer = 1
@@ -823,7 +859,8 @@ call plug#end()
       let g:go_fmt_fail_silently = 1
 
       " 关闭 vim-go 的 linter ?
-      "let g:go_metalinter_autosave = 1
+      let g:go_metalinter_autosave = 0
+      let g:go_metalinter_autosave_enabled = ['vet']
     
       let g:go_highlight_functions = 1
       let g:go_highlight_methods = 1
@@ -909,6 +946,11 @@ call plug#end()
     syntax on
     filetype plugin indent on
 
+
+augroup CloseLoclistWindowGroup
+    autocmd!
+    autocmd QuitPre * if empty(&buftype) | lclose | endif
+augroup END
 
 " Enter automatically into the files directory
 autocmd BufEnter * silent! lcd %:p:h
