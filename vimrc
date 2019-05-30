@@ -72,6 +72,9 @@ else
 endif
 " deoplete golang 插件, 需要手动make
 Plug 'zchee/deoplete-go' , {'for':'go', 'do': 'make'}
+" 据说比 deoplete 好用
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+
 "Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' } " 据说是不维护了
 "Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 "Plug 'mdempsky/gocode', {'rtp': 'nvim'}
@@ -563,7 +566,7 @@ call plug#end()
     "let g:ale_change_sign_column_color = 1
 
     " Enable integration with airline.
-    let g:airline#extensions#ale#enabled = 1
+    "let g:airline#extensions#ale#enabled = 1
 
     " 关闭本地列表,使用 quickfix
     let g:ale_set_loclist = 0
@@ -584,12 +587,14 @@ call plug#end()
     " for golang
     "let g:ale_linters = {'go': ['gometalinter']}
     "let g:ale_linters = {'go': ['golangci-lint','gofmt'],'python': ['flake8','pylint']}
-    let g:ale_linters = {'go': ['gometalinter','gofmt'],'python': ['flake8','pylint']}
+    "let g:ale_linters = {'go': ['gometalinter','gofmt'],'python': ['flake8','pylint']}
+    let g:ale_linters = {'go': ['golint','gofmt'],'python': ['flake8','pylint']}
+    "let g:ale_linters = {'go': ['gopls'],'python': ['flake8','pylint']}
     let b:ale_fixers = {'python':['autopep8', 'yapf']}
     "let g:ale_go_gometalinter_options = '--fast --disable=gas --deadline=1s'
     "let g:ale_go_golangci_lint_package = 1
     "let g:ale_go_golangci_lint_options = '--fast'
-    let g:ale_go_golangci_lint_options = "--no-config --fast -D staticcheck -D typecheck"
+    "let g:ale_go_golangci_lint_options = "--no-config --fast -D staticcheck -D typecheck"
     "let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s --exclude="should have comment" --exclude="error return value not checked \(defer"'
     "let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
     let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s'
@@ -625,98 +630,98 @@ call plug#end()
 
     nnoremap <silent> <F5> :call AleListToggle()<CR>
 
-" deoplete 相关配置
-    " ---
-    " let g:deoplete#enable_profile = 1
-    " call deoplete#enable_logging('DEBUG', 'deoplete.log')<CR>
-    " call deoplete#custom#source('tern', 'debug_enabled', 1)<CR>
-    " " General settings " {{{ 参考https://github.com/rafi/vim-config/config/plugins/deoplete.vim
-    " ---
-    " let g:deoplete#auto_complete_delay = 50  " Default is 50
-    " let g:deoplete#auto_refresh_delay = 500  " Default is 500
-    " let g:deoplete#auto_complete_delay = 50  " Default is 50
-    " let g:deoplete#auto_refresh_delay = 500  " Default is 500
-
-    " let g:deoplete#sources#go#debug#log_file = '/tmp/deoplete-go.log'
-
-    let g:deoplete#enable_refresh_always = 1
-    let g:deoplete#enable_camel_case = 1
-    let g:deoplete#max_abbr_width = 35
-    let g:deoplete#max_menu_width = 20
-    let g:deoplete#skip_chars = ['(', ')', '<', '>']
-    let g:deoplete#tag#cache_limit_size = 800000
-    let g:deoplete#file#enable_buffer_path = 1
-
-    let g:deoplete#sources#jedi#statement_length = 30
-    let g:deoplete#sources#jedi#show_docstring = 1
-    let g:deoplete#sources#jedi#short_types = 1
-    "let g:deoplete#sources#jedi#enable_typeinfo = 0
-
-    let g:deoplete#sources#ternjs#filetypes = [
-        \ 'jsx',
-        \ 'javascript.jsx',
-        \ 'vue',
-        \ 'javascript'
-        \ ]
-
-    let g:deoplete#sources#ternjs#timeout = 3
-    let g:deoplete#sources#ternjs#types = 1
-    let g:deoplete#sources#ternjs#docs = 1
-
-    call deoplete#custom#source('_', 'min_pattern_length', 2)
-
-    " }}}
-    " Limit Sources " {{{
-    " ---
-
-    "let g:deoplete#sources = get(g:, 'deoplete#sources', {})
-    "let g:deoplete#sources.go = ['vim-go']
-    "let g:deoplete#ignore_sources = get(g:, 'deoplete#ignore_sources', {})
-
-
-    " deoplete 我的 go 相关配置
-    let g:deoplete#enable_at_startup = 1
-    let g:deoplete#sources#go#gocode_binary = '$GOPATH/bin/gocode'
-    " let g:deoplete#file#enable_buffer_path=1
-    let g:deoplete#sources#go#pointer = 1
-    let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const', 'pointer']
-    let g:deoplete#keyword_patterns={}
-    "let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.]*'
-
-    " <Tab> completion:
-    " 1. If popup menu is visible, select and insert next item
-    " 2. Otherwise, if within a snippet, jump to next input
-    " 3. Otherwise, if preceding chars are whitespace, insert tab char
-    " 4. Otherwise, start manual autocomplete
-    imap <silent><expr><Tab> pumvisible() ? "\<Down>"
-        \ : (<SID>is_whitespace() ? "\<Tab>"
-        \ : deoplete#manual_complete())
-
-    smap <silent><expr><Tab> pumvisible() ? "\<Down>"
-        \ : (<SID>is_whitespace() ? "\<Tab>"
-        \ : deoplete#manual_complete())
-
-    inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
-
-    function! s:is_whitespace()
-        let col = col('.') - 1
-        return ! col || getline('.')[col - 1] =~? '\s'
-    endfunction
-
-    " 解决 vim-multiple-cursors deoplete 冲突问题
-    function! Multiple_cursors_before()
-        let g:deoplete#disable_auto_complete = 1
-      "if exists(':NeoCompleteLock')==2
-      "  exe 'NeoCompleteLock'
-      "endif
-    endfunction
-
-    function! Multiple_cursors_after()
-        let g:deoplete#disable_auto_complete = 0
-      "if exists(':NeoCompleteUnlock')==2
-      "  exe 'NeoCompleteUnlock'
-      "endif
-    endfunction
+"" deoplete 相关配置
+"    " ---
+"    " let g:deoplete#enable_profile = 1
+"    " call deoplete#enable_logging('DEBUG', 'deoplete.log')<CR>
+"    " call deoplete#custom#source('tern', 'debug_enabled', 1)<CR>
+"    " " General settings " {{{ 参考https://github.com/rafi/vim-config/config/plugins/deoplete.vim
+"    " ---
+"    " let g:deoplete#auto_complete_delay = 50  " Default is 50
+"    " let g:deoplete#auto_refresh_delay = 500  " Default is 500
+"    " let g:deoplete#auto_complete_delay = 50  " Default is 50
+"    " let g:deoplete#auto_refresh_delay = 500  " Default is 500
+"
+"    " let g:deoplete#sources#go#debug#log_file = '/tmp/deoplete-go.log'
+"
+"    let g:deoplete#enable_refresh_always = 1
+"    let g:deoplete#enable_camel_case = 1
+"    let g:deoplete#max_abbr_width = 35
+"    let g:deoplete#max_menu_width = 20
+"    let g:deoplete#skip_chars = ['(', ')', '<', '>']
+"    let g:deoplete#tag#cache_limit_size = 800000
+"    let g:deoplete#file#enable_buffer_path = 1
+"
+"    let g:deoplete#sources#jedi#statement_length = 30
+"    let g:deoplete#sources#jedi#show_docstring = 1
+"    let g:deoplete#sources#jedi#short_types = 1
+"    "let g:deoplete#sources#jedi#enable_typeinfo = 0
+"
+"    let g:deoplete#sources#ternjs#filetypes = [
+"        \ 'jsx',
+"        \ 'javascript.jsx',
+"        \ 'vue',
+"        \ 'javascript'
+"        \ ]
+"
+"    let g:deoplete#sources#ternjs#timeout = 3
+"    let g:deoplete#sources#ternjs#types = 1
+"    let g:deoplete#sources#ternjs#docs = 1
+"
+"    call deoplete#custom#source('_', 'min_pattern_length', 2)
+"
+"    " }}}
+"    " Limit Sources " {{{
+"    " ---
+"
+"    "let g:deoplete#sources = get(g:, 'deoplete#sources', {})
+"    "let g:deoplete#sources.go = ['vim-go']
+"    "let g:deoplete#ignore_sources = get(g:, 'deoplete#ignore_sources', {})
+"
+"
+"    " deoplete 我的 go 相关配置
+"    let g:deoplete#enable_at_startup = 1
+"    let g:deoplete#sources#go#gocode_binary = '$GOPATH/bin/gocode'
+"    " let g:deoplete#file#enable_buffer_path=1
+"    let g:deoplete#sources#go#pointer = 1
+"    let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const', 'pointer']
+"    let g:deoplete#keyword_patterns={}
+"    "let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.]*'
+"
+"    " <Tab> completion:
+"    " 1. If popup menu is visible, select and insert next item
+"    " 2. Otherwise, if within a snippet, jump to next input
+"    " 3. Otherwise, if preceding chars are whitespace, insert tab char
+"    " 4. Otherwise, start manual autocomplete
+"    imap <silent><expr><Tab> pumvisible() ? "\<Down>"
+"        \ : (<SID>is_whitespace() ? "\<Tab>"
+"        \ : deoplete#manual_complete())
+"
+"    smap <silent><expr><Tab> pumvisible() ? "\<Down>"
+"        \ : (<SID>is_whitespace() ? "\<Tab>"
+"        \ : deoplete#manual_complete())
+"
+"    inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
+"
+"    function! s:is_whitespace()
+"        let col = col('.') - 1
+"        return ! col || getline('.')[col - 1] =~? '\s'
+"    endfunction
+"
+"    " 解决 vim-multiple-cursors deoplete 冲突问题
+"    function! Multiple_cursors_before()
+"        let g:deoplete#disable_auto_complete = 1
+"      "if exists(':NeoCompleteLock')==2
+"      "  exe 'NeoCompleteLock'
+"      "endif
+"    endfunction
+"
+"    function! Multiple_cursors_after()
+"        let g:deoplete#disable_auto_complete = 0
+"      "if exists(':NeoCompleteUnlock')==2
+"      "  exe 'NeoCompleteUnlock'
+"      "endif
+"    endfunction
 "
 
 " TabMan ------------------------------
@@ -799,6 +804,9 @@ call plug#end()
     "let airline#extensions#ale#show_line_numbers = 1
     "let airline#extensions#ale#open_lnum_symbol = '(L'
     "let airline#extensions#ale#close_lnum_symbol = ')'
+    let g:airline#extensions#coc#enabled = 1
+
+
     
     let g:airline_left_sep = ''
     let g:airline_left_alt_sep = ''
@@ -841,11 +849,47 @@ call plug#end()
 " vim-JSON 
     let g:vim_json_syntax_conceal = 0
 " 
+" coc.vim
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+
 
 " vim-go 相关配置 --------------------------
+      " disable vim-go :GoDef short cut (gd)
+      " this is handled by LanguageClient [LC]
+      " 关闭 vim-go 的 godef 使用 coc 的
+      let g:go_def_mapping_enabled = 0
+       
       "let g:go_autodetect_gopath = 1
       "let g:go_list_type = "quickfix"
-      let g:go_def_mode = 'guru'
+      "let g:go_def_mode = 'guru'
+      let g:go_def_mode = 'gopls'
+      let g:go_info_mode = 'gopls'
       "let g:go_def_mode = 'godef'
       let g:go_def_reuse_buffer = 1
     
