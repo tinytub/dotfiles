@@ -104,3 +104,7 @@ ln -sf vim/tmux/tmux.conf.local .tmux.conf.local
 #oh my zsh
 ln -sf vim/zshrc .zshrc
 
+# 初始化 Python venv
+sh venv.sh
+# 初始化 coc.nvim
+sh init_coc.sh

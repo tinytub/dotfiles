@@ -1,10 +1,12 @@
+" ----------------------------------------------------------------------------
+"  外部基础依赖
+" ----------------------------------------------------------------------------
 " vim-plug 自动更新
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-
 
 " 配置缓存地址
 let $VARPATH = expand(($XDG_CACHE_HOME ? $XDG_CACHE_HOME : '~/.cache').'/vim')
@@ -21,142 +23,120 @@ endif
 
 " default map leader '\'
 
-" ============================================================================
-" Active plugins
-" You can disable or add new ones here:
 
+" ----------------------------------------------------------------------------
+"  插件加载
+" ----------------------------------------------------------------------------
 call plug#begin('~/.vim/plugged')
 
-" 还是需要再把插件详细分类一下
-" Plugins from github repos:
-
-" Better file browser
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
-" Code commenter
-Plug 'scrooloose/nerdcommenter'
-" Class/module browser
-Plug 'majutsushi/tagbar'
-" Code and files fuzzy finder
-"Plug 'kien/ctrlp.vim'
-" Extension to ctrlp, for fuzzy command finder
-"Plug 'fisadev/vim-ctrlp-cmdpalette'
-" Zen coding
-Plug 'mattn/emmet-vim'
-" Maybe the best Git integration
-Plug 'tpope/vim-fugitive'
-" Tab list panel
-Plug 'kien/tabman.vim'
-" Airline
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" Consoles as buffers
-"Plug 'rosenfeld/conque-term'
-" Surround
-Plug 'tpope/vim-surround'
-" Autoclose
-Plug 'Townk/vim-autoclose'
-" Indent text object
-Plug 'michaeljsmith/vim-indent-object'
-
-" Better autocompletion
-" pip3 install neovim
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-" deoplete golang 插件, 需要手动make
-Plug 'zchee/deoplete-go' , {'for':'go', 'do': 'make'}
-" 据说比 deoplete 好用
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
-
-"Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' } " 据说是不维护了
-"Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
-"Plug 'mdempsky/gocode', {'rtp': 'nvim'}
-
-
-" python 补全插件
-Plug 'davidhalter/jedi-vim' , {'for': ['python', 'python3']}
-"Plug 'zchee/deoplete-jedi', {'for': ['python', 'python3']}
-
-
-" Snippets manager (SnipMate), dependencies, and snippets repo
-"Plug 'MarcWeber/vim-addon-mw-utils'
-"Plug 'tomtom/tlib_vim'
-"Plug 'honza/vim-snippets'
-"Plug 'garbas/vim-snipmate'
-
-" Plugin 'joshdick/onedark.vim'
-Plug 'morhetz/gruvbox'
-" gruvbox 如果颜色不对,尝试执行~/.vim/bundle/gruvbox/gruvbox_256palette.sh 或 ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
-"Plugin 'altercation/solarized'
-
-"" Git/mercurial/others diff icons on the side of the file lines
-Plug 'mhinz/vim-signify'
-" Automatically sort python imports
-"Plug 'fisadev/vim-isort'
-"" Drag visual blocks arround
-"Plug 'fisadev/dragvisuals.vim'
-" Window chooser
-Plug 't9md/vim-choosewin'
-" Python and other languages code checker
-" Plug 'scrooloose/syntastic'
-Plug 'w0rp/ale' " Asynchonous linting engine
-
-" Paint css colors with the real color
-Plug 'lilydjwg/colorizer'
-" Relative numbering of lines (0 is the current line)
-" (disabled by default because is very intrusive and can't be easily toggled
-" on/off. When the plugin is present, will always activate the relative 
-" numbering every time you go to normal mode. Author refuses to add a setting 
-" to avoid that)
-" Plugin 'myusuf3/numbers.vim'
-
-" javascript complete after install the plugin, you must cd the install
-" directory and run `npm install`, then add a .tern-project config file
-" the doc at http://ternjs.net/doc/manual.html#vim
-Plug 'marijnh/tern_for_vim'
-" Golang Plugins
-Plug 'fatih/vim-go', {'for':'go', 'do': ':GoInstallBinaries' }
-
-" JSX syntax highlight.
-Plug 'mxw/vim-jsx'
-" Markdown syntastic highlight
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-" Markdown realtime preview
-" Before you want to use it, please run
-" `sudo npm -g install instant-markdown-d`
-" Plug 'suan/vim-instant-markdown'
-" Handlebars syntax highlighting
-Plug 'mustache/vim-mustache-handlebars'
-" Vue.js syntax and highlighting
-" Plug 'tao12345666333/vim-vue'
-" True Sublime Text style multiple selections for Vim
-Plug 'terryma/vim-multiple-cursors'
-Plug 'elzr/vim-json', { 'for': 'json' }
-
-" 传说中的自动补全神器?
-"git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-"~/.fzf/install
-if has("nvim")
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
-    "Plug '~/.fzf', { 'do' : './install --all' } | Plug 'junegunn/fzf.vim'
-endif
-
-
-" Plugins from vim-scripts repos:
-
+    " 还是需要再把插件详细分类一下
+    " 配色大全
+    Plug 'sheerun/vim-polyglot'
+    
+    " Better file browser
+    Plug 'scrooloose/nerdtree'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    
+    " Class/module 浏览器
+    Plug 'majutsushi/tagbar'
+    " Zen coding
+    Plug 'mattn/emmet-vim'
+    " 可能是最好的 git 继承插件
+    Plug 'tpope/vim-fugitive'
+    " Airline
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    " Surround
+    Plug 'tpope/vim-surround'
+    " Autoclose
+    "Plug 'Townk/vim-autoclose'
+    Plug 'jiangmiao/auto-pairs'
+    
+    " Better autocompletion 暂时先使用 coc
+    "if has('nvim')
+    "  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    "else
+    "  Plug 'Shougo/deoplete.nvim'
+    "  Plug 'roxma/nvim-yarp'
+    "  Plug 'roxma/vim-hug-neovim-rpc'
+    "endif
+    "" deoplete golang 插件, 需要手动make
+    "Plug 'zchee/deoplete-go' , {'for':'go', 'do': 'make'}
+    
+    " 据说比 deoplete 好用
+    Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+    
+    "Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' } " 据说是不维护了
+    "Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+    
+    
+    " python 补全插件
+    Plug 'davidhalter/jedi-vim' , {'for': ['python', 'python3']}
+    "Plug 'zchee/deoplete-jedi', {'for': ['python', 'python3']}
+    
+    
+    " Plugin 'joshdick/onedark.vim'
+    Plug 'morhetz/gruvbox'
+    " gruvbox 如果颜色不对,尝试执行~/.vim/bundle/gruvbox/gruvbox_256palette.sh 或 ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
+    "Plugin 'altercation/solarized'
+    
+    "" Git/mercurial/others diff icons on the side of the file lines
+    Plug 'mhinz/vim-signify'
+    
+    " Window chooser
+    Plug 't9md/vim-choosewin'
+    " Asynchonous linting engine
+    Plug 'w0rp/ale' 
+    
+    " Paint css colors with the real color
+    Plug 'lilydjwg/colorizer'
+    " Relative numbering of lines (0 is the current line)
+    " (disabled by default because is very intrusive and can't be easily toggled
+    " on/off. When the plugin is present, will always activate the relative 
+    " numbering every time you go to normal mode. Author refuses to add a setting 
+    " to avoid that)
+    " Plugin 'myusuf3/numbers.vim'
+    
+    " javascript complete after install the plugin, you must cd the install
+    " directory and run `npm install`, then add a .tern-project config file
+    " the doc at http://ternjs.net/doc/manual.html#vim
+    Plug 'marijnh/tern_for_vim'
+    
+    " Golang Plugins
+    Plug 'fatih/vim-go', {'for':'go', 'do': ':GoInstallBinaries' }
+    
+    " JSX syntax highlight.
+    Plug 'mxw/vim-jsx'
+    
+    " Markdown syntastic highlight
+    Plug 'godlygeek/tabular'
+    Plug 'plasticboy/vim-markdown'
+    " Markdown realtime preview
+    " Before you want to use it, please run
+    " `sudo npm -g install instant-markdown-d`
+    " Plug 'suan/vim-instant-markdown'
+    " Handlebars syntax highlighting
+    Plug 'mustache/vim-mustache-handlebars'
+    " Vue.js syntax and highlighting
+    " Plug 'tao12345666333/vim-vue'
+    " True Sublime Text style multiple selections for Vim
+    Plug 'terryma/vim-multiple-cursors'
+    Plug 'elzr/vim-json', { 'for': 'json' }
+    
+    " 传说中的自动补全神器?
+    "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    "~/.fzf/install
+    if has("nvim")
+        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+        Plug 'junegunn/fzf.vim'
+    endif
 call plug#end()
 
 
+" ----------------------------------------------------------------------------
 " 一般配置 
+" ----------------------------------------------------------------------------
     " 关闭 vi 兼容性
     set nocompatible
     
@@ -184,6 +164,8 @@ call plug#end()
 
     set nolazyredraw  " don't redraw while executing macros
     set diffopt+=vertical
+
+    set splitright
 
     "syntax sync minlines=128 " 设置配色行数
     "set synmaxcol=128
@@ -295,9 +277,9 @@ call plug#end()
     inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
     " deoplete.nvim 推荐的补全选项
-    set completeopt-=preview "关闭自带补全窗口
-    set completeopt+=noinsert
-    set completeopt+=noselect
+    " set completeopt-=preview "关闭自带补全窗口
+    " set completeopt+=noinsert
+    " set completeopt+=noselect
 
     " sudo 权限保存
     ca w!! w !sudo tee "%"
@@ -400,9 +382,9 @@ call plug#end()
     autocmd BufNewFile * normal G
 "
 
-" ============================================================================
-" Plugins settings and mappings
-" Edit them as you wish.
+" ----------------------------------------------------------------------------
+" 插件配置
+" ----------------------------------------------------------------------------
 
 " Tagbar ----------------------------- 
 
@@ -416,8 +398,6 @@ call plug#end()
     " map <F3> :NERDTreeToggle<CR>
     " 打开 nerdree 并选中当前打开的文件
     map <F3> :call ToggleNerdTree()<CR>
-    "nmap ,t :NERDTreeFind<CR>
-    "
     " 不要显示如下文件类型
     let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
     " 自动开关 NERDTree
@@ -442,10 +422,9 @@ call plug#end()
             :NERDTreeToggle
         endif
     endfunction
-    " " toggle nerd tree
-    " nmap <silent> <leader>k :call ToggleNerdTree()<cr>
+
     " " find the current file in nerdtree without needing to reload the drawer
-    " nmap <silent> <leader>y :NERDTreeFind<cr>
+    nmap <silent> <leader>y :NERDTreeFind<cr>
 
     "let NERDTreeShowHidden=1
     let NERDTreeDirArrowExpandable = '▷'
@@ -464,42 +443,27 @@ call plug#end()
     \ }
 "
 
-
-
-" FZF 没有详细配置,回头再搞
+" FZF
+    let $FZF_DEFAULT_COMMAND = 'rg --files --follow -g "!{.git,node_modules}/*" 2>/dev/null'
     let g:fzf_layout = { 'down': '~25%' }
     let g:fzf_buffers_jump = 1
 
     if isdirectory(".git")
         " if in a git project, use :GFiles
-        nmap <silent> <leader>f :GitFiles --cached --others --exclude-standard<cr>
+        nmap <silent> <leader>f :GFiles --cached --others --exclude-standard<cr>
     else
         " otherwise, use :FZF
         nmap <silent> <leader>f :FZF<cr>
     endif
 
-    nmap <silent> <leader>s :GFiles?<cr>
-
-    nmap <silent> <leader>r :Buffers<cr>
+    "nmap <silent> <leader>s :GFiles?<cr>
+    nmap <silent> <leader>s :GFiles --cached --others --exclude-standard<cr>
+    "nmap <silent> <leader>r :Buffers<cr>
+    nmap ; :Buffers<cr>
     nmap <silent> <leader>e :FZF<cr>
     nmap <leader><tab> <plug>(fzf-maps-n)
     xmap <leader><tab> <plug>(fzf-maps-x)
     omap <leader><tab> <plug>(fzf-maps-o)
-
-    " Insert mode completion
-    imap <c-x><c-k> <plug>(fzf-complete-word)
-    imap <c-x><c-f> <plug>(fzf-complete-path)
-    imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-    imap <c-x><c-l> <plug>(fzf-complete-line)
-
-    nnoremap <silent> <Leader>C :call fzf#run({
-    \   'source':
-    \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-    \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-    \   'sink':    'colo',
-    \   'options': '+m',
-    \   'left':    30
-    \ })<CR>
 
     command! FZFMru call fzf#run({
     \  'source':  v:oldfiles,
@@ -516,46 +480,7 @@ call plug#end()
         \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
 
 
-
-" CtrlP ------------------------------
-
-"    " file finder mapping
-"    let g:ctrlp_map = ',e'
-"    " hidden some types files
-"    let g:ctrlp_show_hidden = 1
-"    set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.png,*.jpg,*.gif           "Linux
-"    " tags (symbols) in current file finder mapping
-"    nmap ,g :CtrlPBufTag<CR>
-"    " tags (symbols) in all files finder mapping
-"    nmap ,G :CtrlPBufTagAll<CR>
-"    " general code finder in all files mapping
-"    nmap ,f :CtrlPLine<CR>
-"    " recent files finder mapping
-"    nmap ,m :CtrlPMRUFiles<CR>
-"    " commands finder mapping
-"    nmap ,c :CtrlPCmdPalette<CR>
-"    " to be able to call CtrlP with default search text
-"    function! CtrlPWithSearchText(search_text, ctrlp_command_end)
-"        execute ':CtrlP' . a:ctrlp_command_end
-"        call feedkeys(a:search_text)
-"    endfunction
-"    " same as previous mappings, but calling with current word as default text
-"    nmap ,wg :call CtrlPWithSearchText(expand('<cword>'), 'BufTag')<CR>
-"    nmap ,wG :call CtrlPWithSearchText(expand('<cword>'), 'BufTagAll')<CR>
-"    nmap ,wf :call CtrlPWithSearchText(expand('<cword>'), 'Line')<CR>
-"    nmap ,we :call CtrlPWithSearchText(expand('<cword>'), '')<CR>
-"    nmap ,pe :call CtrlPWithSearchText(expand('<cfile>'), '')<CR>
-"    nmap ,wm :call CtrlPWithSearchText(expand('<cword>'), 'MRUFiles')<CR>
-"    nmap ,wc :call CtrlPWithSearchText(expand('<cword>'), 'CmdPalette')<CR>
-"    " don't change working directory
-"    let g:ctrlp_working_path_mode = 0
-"    " ignore these files and folders on file finder
-"    let g:ctrlp_custom_ignore = {
-"      \ 'dir':  '\v[\/](\.git|\.hg|\.svn)$',
-"      \ 'file': '\.pyc$\|\.pyo$',
-"      \ }
-
-" ALE 替代 Syntastic
+" ALE
     " Write this in your vimrc file
     let g:ale_lint_on_text_changed = 'normal'
     " You can disable this option too
@@ -565,8 +490,6 @@ call plug#end()
     "let g:ale_set_highlights = 1
     "let g:ale_change_sign_column_color = 1
 
-    " Enable integration with airline.
-    "let g:airline#extensions#ale#enabled = 1
 
     " 关闭本地列表,使用 quickfix
     let g:ale_set_loclist = 0
@@ -585,20 +508,9 @@ call plug#end()
 
 
     " for golang
-    "let g:ale_linters = {'go': ['gometalinter']}
-    "let g:ale_linters = {'go': ['golangci-lint','gofmt'],'python': ['flake8','pylint']}
-    "let g:ale_linters = {'go': ['gometalinter','gofmt'],'python': ['flake8','pylint']}
-    let g:ale_linters = {'go': ['golint','gofmt'],'python': ['flake8','pylint']}
-    "let g:ale_linters = {'go': ['gopls'],'python': ['flake8','pylint']}
+    let g:ale_linters = {'go': ['golint','govet','gobuild','gopls'],'python': ['flake8','pylint']}
     let b:ale_fixers = {'python':['autopep8', 'yapf']}
-    "let g:ale_go_gometalinter_options = '--fast --disable=gas --deadline=1s'
-    "let g:ale_go_golangci_lint_package = 1
-    "let g:ale_go_golangci_lint_options = '--fast'
-    "let g:ale_go_golangci_lint_options = "--no-config --fast -D staticcheck -D typecheck"
-    "let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s --exclude="should have comment" --exclude="error return value not checked \(defer"'
-    "let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
     let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s'
-    "let g:ale_python_flake8_args="--ignore=E114,E116,E131 --max-line-length=120"
     let g:ale_python_flake8_options="--ignore=E114,E116,E131 --max-line-length=120"
 
     let g:ale_fixers = {}
@@ -606,23 +518,21 @@ call plug#end()
     let g:ale_fixers['typescript'] = ['prettier', 'tslint']
     let g:ale_fixers['json'] = ['prettier']
     let g:ale_fixers['css'] = ['prettier']
+    let g:ale_fixers['go'] = ['gofmt', 'goimports']
     let g:ale_javascript_prettier_use_local_config = 1
     let g:ale_fix_on_save = 0
 
-    " エラー一覧リストをトグルする自作関数
+    " 打开 ale 错误列表
     function! AleListToggle()
-        " ALEが起動していないときは終了する
         if !exists('g:ale_open_list')
             return
         endif
-        " listが0(off)のときは1(on)にして、1のときは0にする
         if(g:ale_open_list == 0) 
-            ALEDisableBuffer  " 一旦aleを終了(ale起動中に変数を変えても反映されないので)
+            ALEDisableBuffer 
             let g:ale_open_list = 1
-            ALEEnableBuffer  " aleを再度起動
+            ALEEnableBuffer
         else
             let g:ale_open_list = 0
-            " 下のウィンドウに移動してからウィンドウを消す
             execute ":wincmd j"
             execute ":q"
         endif
@@ -722,28 +632,10 @@ call plug#end()
 "      "  exe 'NeoCompleteUnlock'
 "      "endif
 "    endfunction
-"
-
-" TabMan ------------------------------
-
-    " mappings to toggle display, and to focus on it
-    let g:tabman_toggle = 'tl'
-    let g:tabman_focus  = 'tf'
 
 " Autoclose ------------------------------
-
-    " Fix to let ESC work as espected with Autoclose plugin
-    let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
-
-" DragVisuals ------------------------------
-
-    " mappings to move blocks in 4 directions
-    vmap <expr> <S-M-LEFT> DVB_Drag('left')
-    vmap <expr> <S-M-RIGHT> DVB_Drag('right')
-    vmap <expr> <S-M-DOWN> DVB_Drag('down')
-    vmap <expr> <S-M-UP> DVB_Drag('up')
-    " mapping to duplicate block
-    vmap <expr> D DVB_Duplicate()
+"    " Fix to let ESC work as espected with Autoclose plugin
+"    let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
 
 " Signify ------------------------------
 
@@ -768,11 +660,7 @@ call plug#end()
     let g:airline_powerline_fonts = 1
     " let g:airline_theme = 'bubblegum'
     let g:airline_theme = 'gruvbox'
-    "let g:airline#extensions#tabline#left_sep = ' '
-    "let g:airline#extensions#tabline#left_alt_sep = '|'
     
-    " to use fancy symbols for airline, uncomment the following lines and use a
-    " patched font (more info on the README.rst)
     if !exists('g:airline_symbols')
        let g:airline_symbols = {}
     endif
@@ -796,18 +684,6 @@ call plug#end()
     "let g:airline_symbols.spell = ''
     "let g:airline_symbols.notexists = 'Ɇ'
     "let g:airline_symbols.whitespace = 'Ξ'
-
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#tabline#formatter = 'default'
-    "let airline#extensions#ale#error_symbol = 'E:'
-    "let airline#extensions#ale#warning_symbol = 'W:'
-    "let airline#extensions#ale#show_line_numbers = 1
-    "let airline#extensions#ale#open_lnum_symbol = '(L'
-    "let airline#extensions#ale#close_lnum_symbol = ')'
-    let g:airline#extensions#coc#enabled = 1
-
-
-    
     let g:airline_left_sep = ''
     let g:airline_left_alt_sep = ''
     let g:airline_right_sep = ''
@@ -821,7 +697,20 @@ call plug#end()
     let g:airline_symbols.spell = ''
     let g:airline_symbols.notexists = 'Ɇ'
     let g:airline_symbols.whitespace = 'Ξ'
-    
+
+    let g:airline#extensions#tabline#enabled = 1
+    let g:airline#extensions#tabline#formatter = 'default'
+    "let airline#extensions#ale#error_symbol = 'E:'
+    "let airline#extensions#ale#warning_symbol = 'W:'
+    "let airline#extensions#ale#show_line_numbers = 1
+    "let airline#extensions#ale#open_lnum_symbol = '(L'
+    "let airline#extensions#ale#close_lnum_symbol = ')'
+
+    " 开启 coc 或 ale 支持
+    "let g:airline#extensions#coc#enabled = 1
+    let g:airline#extensions#ale#enabled = 1
+
+        
 " Vim-jsx ------------------------------
 
     " if you use JSX syntax in .js file, please enable it.
@@ -850,9 +739,6 @@ call plug#end()
     let g:vim_json_syntax_conceal = 0
 " 
 " coc.vim
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -880,9 +766,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 
 " vim-go 相关配置 --------------------------
-      " disable vim-go :GoDef short cut (gd)
-      " this is handled by LanguageClient [LC]
-      " 关闭 vim-go 的 godef 使用 coc 的
+      " 关闭 vim-go 的 gd :GoDef 由 coc 接管
       let g:go_def_mapping_enabled = 0
        
       "let g:go_autodetect_gopath = 1
@@ -902,6 +786,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
       "据说可以解决和 ale 的冲突
       let g:go_fmt_fail_silently = 1
 
+      let g:go_decls_mode = 'fzf'
+
       " 关闭 vim-go 的 linter ?
       let g:go_metalinter_autosave = 0
       let g:go_metalinter_autosave_enabled = ['vet']
@@ -918,8 +804,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
     augroup VimGo
       autocmd!
       " vim-go related mappings
-      autocmd FileType go nmap <Leader>r <Plug>(go-run)
-      autocmd FileType go nmap <Leader>b <Plug>(go-build)
+      "autocmd FileType go nmap <Leader>r <Plug>(go-run)
+      "autocmd FileType go nmap <Leader>b <Plug>(go-build)
       "autocmd FileType go nmap <Leader>t <Plug>(go-test)
       "autocmd FileType go nmap <Leader>i <Plug>(go-info)
       "autocmd FileType go nmap <Leader>s <Plug>(go-implements)
@@ -996,5 +882,16 @@ augroup CloseLoclistWindowGroup
     autocmd QuitPre * if empty(&buftype) | lclose | endif
 augroup END
 
+" Reloads vimrc after saving but keep cursor position
+if !exists('*ReloadVimrc')
+   fun! ReloadVimrc()
+       let save_cursor = getcurpos()
+       source $MYVIMRC
+       call setpos('.', save_cursor)
+   endfun
+endif
+autocmd! BufWritePost $MYVIMRC call ReloadVimrc()
+
 " Enter automatically into the files directory
 autocmd BufEnter * silent! lcd %:p:h
+
