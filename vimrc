@@ -32,10 +32,14 @@ call plug#begin('~/.vim/plugged')
     " 还是需要再把插件详细分类一下
     " 配色大全
     Plug 'sheerun/vim-polyglot'
+
+    " 启动页
+    Plug 'mhinz/vim-startify'
     
     " Better file browser
     Plug 'scrooloose/nerdtree'
     Plug 'Xuyuanp/nerdtree-git-plugin'
+    Plug 'ryanoasis/vim-devicons'
     Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
     
     " Class/module 浏览器
@@ -49,6 +53,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline-themes'
     " Surround
     Plug 'tpope/vim-surround'
+
     " Autoclose
     "Plug 'Townk/vim-autoclose'
     Plug 'jiangmiao/auto-pairs'
@@ -78,6 +83,8 @@ call plug#begin('~/.vim/plugged')
     
     " Plugin 'joshdick/onedark.vim'
     Plug 'morhetz/gruvbox'
+    Plug 'joshdick/onedark.vim'
+
     " gruvbox 如果颜色不对,尝试执行~/.vim/bundle/gruvbox/gruvbox_256palette.sh 或 ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
     "Plugin 'altercation/solarized'
     
@@ -89,40 +96,27 @@ call plug#begin('~/.vim/plugged')
     " Asynchonous linting engine
     Plug 'w0rp/ale' 
     
-    " Paint css colors with the real color
-    Plug 'lilydjwg/colorizer'
-    " Relative numbering of lines (0 is the current line)
-    " (disabled by default because is very intrusive and can't be easily toggled
-    " on/off. When the plugin is present, will always activate the relative 
-    " numbering every time you go to normal mode. Author refuses to add a setting 
-    " to avoid that)
-    " Plugin 'myusuf3/numbers.vim'
-    
-    " javascript complete after install the plugin, you must cd the install
-    " directory and run `npm install`, then add a .tern-project config file
-    " the doc at http://ternjs.net/doc/manual.html#vim
-    Plug 'marijnh/tern_for_vim'
+    " JS 相关暂时用不到
+    "Plug 'othree/yajs.vim', { 'for': [ 'javascript', 'javascript.jsx', 'html' ] }
+    "" Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx', 'html'] }
+    "Plug 'moll/vim-node', { 'for': 'javascript' }
+	"Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do': 'npm install' }
+	"Plug 'MaxMEllon/vim-jsx-pretty'
+    "let g:vim_jsx_pretty_highlight_close_tag = 1
     
     " Golang Plugins
     Plug 'fatih/vim-go', {'for':'go', 'do': ':GoInstallBinaries' }
     
-    " JSX syntax highlight.
-    Plug 'mxw/vim-jsx'
-    
     " Markdown syntastic highlight
     Plug 'godlygeek/tabular'
     Plug 'plasticboy/vim-markdown'
-    " Markdown realtime preview
-    " Before you want to use it, please run
-    " `sudo npm -g install instant-markdown-d`
-    " Plug 'suan/vim-instant-markdown'
-    " Handlebars syntax highlighting
-    Plug 'mustache/vim-mustache-handlebars'
-    " Vue.js syntax and highlighting
-    " Plug 'tao12345666333/vim-vue'
     " True Sublime Text style multiple selections for Vim
     Plug 'terryma/vim-multiple-cursors'
+
+    "JSON
     Plug 'elzr/vim-json', { 'for': 'json' }
+    let g:vim_json_syntax_conceal = 0
+
     
     " 传说中的自动补全神器?
     "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -163,7 +157,9 @@ call plug#end()
     set ttyfast "faster redrawing
 
     set nolazyredraw  " don't redraw while executing macros
-    set diffopt+=vertical
+    set diffopt+=vertical,iwhite,internal,algorithm:patience,hiddenoff
+    "set diffopt+=vertical
+
 
     set splitright
 
@@ -398,6 +394,16 @@ call plug#end()
     " map <F3> :NERDTreeToggle<CR>
     " 打开 nerdree 并选中当前打开的文件
     map <F3> :call ToggleNerdTree()<CR>
+
+
+    let g:WebDevIconsOS = 'Darwin'
+    let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+    let g:DevIconsEnableFoldersOpenClose = 1
+    let g:DevIconsEnableFolderExtensionPatternMatching = 1
+    let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
+    let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
+    let NERDTreeNodeDelimiter = "\u263a" " smiley face
+
     " 不要显示如下文件类型
     let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
     " 自动开关 NERDTree
@@ -426,9 +432,9 @@ call plug#end()
     " " find the current file in nerdtree without needing to reload the drawer
     nmap <silent> <leader>y :NERDTreeFind<cr>
 
-    "let NERDTreeShowHidden=1
-    let NERDTreeDirArrowExpandable = '▷'
-    let NERDTreeDirArrowCollapsible = '▼'
+    let NERDTreeShowHidden=1
+    " let NERDTreeDirArrowExpandable = '▷'
+    " let NERDTreeDirArrowCollapsible = '▼'
     let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
@@ -441,7 +447,6 @@ call plug#end()
     \ 'Ignored'   : '☒',
     \ "Unknown"   : "?"
     \ }
-"
 
 " FZF
     let $FZF_DEFAULT_COMMAND = 'rg --files --follow -g "!{.git,node_modules}/*" 2>/dev/null'
@@ -487,7 +492,7 @@ call plug#end()
     " if you don't want linters to run on opening a file
     let g:ale_lint_on_enter = 1
 
-    "let g:ale_set_highlights = 1
+    let g:ale_set_highlights = 1
     "let g:ale_change_sign_column_color = 1
 
 
@@ -504,7 +509,9 @@ call plug#end()
     let g:ale_sign_warning = '🤔'
     "let g:ale_echo_msg_error_str = '✖'
     "let g:ale_echo_msg_warning_str = '⚠'
-    let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+    "let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+    let g:ale_echo_msg_format = '%severity% %s% [%linter%% code%]'
+
 
 
     " for golang
@@ -518,7 +525,7 @@ call plug#end()
     let g:ale_fixers['typescript'] = ['prettier', 'tslint']
     let g:ale_fixers['json'] = ['prettier']
     let g:ale_fixers['css'] = ['prettier']
-    let g:ale_fixers['go'] = ['gofmt', 'goimports']
+    let g:ale_fixers['golang'] = ['gofmt', 'goimports']
     let g:ale_javascript_prettier_use_local_config = 1
     let g:ale_fix_on_save = 0
 
@@ -639,12 +646,11 @@ call plug#end()
 
 " Signify ------------------------------
 
-    " this first setting decides in which order try to guess your current vcs
-    " UPDATE it to reflect your preferences, it will speed up opening files
-    let g:signify_vcs_list = [ 'git', 'hg' ]
-    " mappings to jump to changed blocks
-    nmap <leader>sn <plug>(signify-next-hunk)
-    nmap <leader>sp <plug>(signify-prev-hunk)
+    let g:signify_vcs_list = [ 'git' ]
+    let g:signify_sign_add               = '┃'
+    let g:signify_sign_delete            = '-'
+    let g:signify_sign_delete_first_line = '_'
+    let g:signify_sign_change = '┃'
 
 
 " Window Chooser ------------------------------
@@ -709,12 +715,6 @@ call plug#end()
     " 开启 coc 或 ale 支持
     "let g:airline#extensions#coc#enabled = 1
     let g:airline#extensions#ale#enabled = 1
-
-        
-" Vim-jsx ------------------------------
-
-    " if you use JSX syntax in .js file, please enable it.
-    let g:jsx_ext_required = 0
 
 " Vim-markdown ------------------------------
 
@@ -823,22 +823,61 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
     augroup END
 
 " vim-jedi 相关配置
-        "let g:jedi#auto_vim_configuration = 0
-        "let g:jedi#auto_configuration = 0
-        let g:jedi#smart_auto_mappings = 1
-        " 禁用自动补全
-        let g:jedi#completions_enabled = 0
-        let g:jedi#use_tabs_not_buffers = 1
-        " 键位什么的
-        let g:jedi#goto_command = "gd"
-        let g:jedi#goto_assignments_command = "<leader>g"
-        let g:jedi#documentation_command = "K"
-        let g:jedi#usages_command = "<leader>n"
-        let g:jedi#completions_command = "<C-Space>"
-        let g:jedi#rename_command = "<leader>r"
-        let g:jedi#auto_close_doc = 1
-    "endif
+    "let g:jedi#auto_vim_configuration = 0
+    "let g:jedi#auto_configuration = 0
+    let g:jedi#smart_auto_mappings = 1
+    " 禁用自动补全
+    let g:jedi#completions_enabled = 0
+    let g:jedi#use_tabs_not_buffers = 1
+    " 键位什么的
+    let g:jedi#goto_command = "gd"
+    let g:jedi#goto_assignments_command = "<leader>g"
+    let g:jedi#documentation_command = "K"
+    let g:jedi#usages_command = "<leader>n"
+    let g:jedi#completions_command = "<C-Space>"
+    let g:jedi#rename_command = "<leader>r"
+    let g:jedi#auto_close_doc = 1
+    
+" Startify: Fancy startup screen for vim {{{
+    " Don't change to directory when selecting a file
+    let g:startify_files_number = 5
+    let g:startify_change_to_dir = 0
+    let g:startify_custom_header = [ ]
+    let g:startify_relative_path = 1
+    let g:startify_use_env = 1
 
+    function! s:list_commits()
+        let git = 'git -C ' . getcwd()
+        let commits = systemlist(git . ' log --oneline | head -n5')
+        let git = 'G' . git[1:]
+        return map(commits, '{"line": matchstr(v:val, "\\s\\zs.*"), "cmd": "'. git .' show ". matchstr(v:val, "^\\x\\+") }')
+    endfunction
+
+    " Custom startup list, only show MRU from current directory/project
+    let g:startify_lists = [
+    \  { 'type': 'dir',       'header': [ 'Files '. getcwd() ] },
+    \  { 'type': function('s:list_commits'), 'header': [ 'Recent Commits' ] },
+    \  { 'type': 'sessions',  'header': [ 'Sessions' ]       },
+    \  { 'type': 'bookmarks', 'header': [ 'Bookmarks' ]      },
+    \  { 'type': 'commands',  'header': [ 'Commands' ]       },
+    \ ]
+
+    let g:startify_commands = [
+    \   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
+    \   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
+    \ ]
+
+    let g:startify_bookmarks = [
+        \ { 'c': '~/code/dotfiles/config/nvim/init.vim' },
+        \ { 'z': '~/code/dotfiles/zsh/zshrc.symlink' }
+    \ ]
+
+    autocmd User Startified setlocal cursorline
+    nmap <leader>st :Startify<cr>
+    
+" ----------------------------------------------------------------------------
+" 杂七杂八
+" ----------------------------------------------------------------------------
 
 "" AutoGroups -------------------
     " 虽然不知道做什么用的,但是觉得挺厉害的...
@@ -865,12 +904,10 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
     if (has("termguicolors"))
         set termguicolors
     endif
-
-    if has('nvim')
-      colorscheme gruvbox
-    else
-      colorscheme gruvbox
-    endif
+    "let g:onedark_termcolors=16
+    "let g:onedark_terminal_italics=1
+    "colorscheme onedark
+    colorscheme gruvbox
 
     " syntax highlight on and filetype reload
     syntax on
