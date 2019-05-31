@@ -400,8 +400,8 @@ call plug#end()
     let g:WebDevIconsUnicodeDecorateFolderNodes = 1
     let g:DevIconsEnableFoldersOpenClose = 1
     let g:DevIconsEnableFolderExtensionPatternMatching = 1
-    let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
-    let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
+    "let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
+    "let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
     let NERDTreeNodeDelimiter = "\u263a" " smiley face
 
     " 不要显示如下文件类型
@@ -409,10 +409,6 @@ call plug#end()
     " 自动开关 NERDTree
     autocmd vimenter * if !argc() | NERDTree | endif
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-    " 先注释掉,试用旧配置"
-    "let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
-    "let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
 
     augroup nerdtree
         autocmd!
