@@ -108,3 +108,67 @@ ln -sf vim/zshrc .zshrc
 sh venv.sh
 # 初始化 coc.nvim
 sh init_coc.sh
+
+#bat
+#diff-so-fancy
+#fzf
+#git
+#'grep --with-default-names'
+#highlight
+#hub
+#markdown
+#mas
+##neovim
+##node
+#python
+#reattach-to-user-namespace
+#the_silver_searcher
+#shellcheck
+#tmux
+#trash
+#tree
+#wget
+##vim
+#z
+#zsh
+#ripgrep
+##git-standup
+##entr
+#zplug
+formulas=(
+    #bat
+    #diff-so-fancy
+    fzf
+    git
+    'grep --with-default-names'
+    highlight
+    #hub
+    markdown
+    #mas
+    #neovim
+    #node
+    python
+    reattach-to-user-namespace
+    the_silver_searcher
+    shellcheck
+    tmux
+    trash
+    tree
+    wget
+    #vim
+    z
+    zsh
+    ripgrep
+    #git-standup
+    #entr
+    zplug   
+)
+
+for formula in "${formulas[@]}"; do
+    formula_name=$( echo "$formula" | awk '{print $1}' )
+    if brew list "$formula_name" > /dev/null 2>&1; then
+        echo "$formula_name already installed... skipping."
+    else
+        brew install "$formula"
+    fi
+done

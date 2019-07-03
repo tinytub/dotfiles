@@ -31,10 +31,13 @@ call plug#begin('~/.vim/plugged')
 
     " 还是需要再把插件详细分类一下
     " 配色大全
-    Plug 'sheerun/vim-polyglot'
+    " Plug 'sheerun/vim-polyglot'
 
     " 启动页
     Plug 'mhinz/vim-startify'
+
+    " tmux integration for vim
+    Plug 'benmills/vimux'
     
     " Better file browser
     Plug 'scrooloose/nerdtree'
@@ -162,6 +165,7 @@ call plug#end()
 
 
     set splitright
+    set splitbelow
 
     "syntax sync minlines=128 " 设置配色行数
     "set synmaxcol=128
@@ -252,14 +256,46 @@ call plug#end()
     "imap <M-Up> <ESC><c-w>k
     "imap <M-Down> <ESC><c-w>j
 
-    " old autocomplete keyboard shortcut
-    "imap <C-J> <C-X><C-O>
+    " insert Mode 移动光标
+    inoremap <C-h> <Left>
+    inoremap <C-j> <Down>
+    inoremap <C-k> <Up>
+    inoremap <C-l> <Right>
+
+    cnoremap <C-h> <Left>
+    cnoremap <C-j> <Down>
+    cnoremap <C-k> <Up>
+    cnoremap <C-l> <Right>
+
 
     " 分屏窗口移动, Smart way to move between windows
     map <C-j> <C-W>j
     map <C-k> <C-W>k
     map <C-h> <C-W>h
     map <C-l> <C-W>l
+
+    " Make basic movements work better with wrapped lines
+    "nnoremap j gj
+    "nnoremap gj j
+    "nnoremap k gk
+    "nnoremap gk k
+
+    " So that I don't have to hit esc
+    "inoremap jk 
+    "inoremap kj 
+
+    " So I can move around in insert
+    "inoremap <C-k> <C-o>gk
+    "inoremap <C-h> <Left>
+    "inoremap <C-l> <Right>
+    "inoremap <C-j> <C-o>gj
+    
+    " Make working with multiple buffers less of a pain
+    "nnoremap <C-w>v :vnew<cr>
+    "nnoremap <C-k> <C-w>k
+    "nnoremap <C-h> <C-w>h
+    "nnoremap <C-l> <C-w>l
+    "nnoremap <C-j> <C-w>j<Paste>
 
     " 离开插入模式时关闭粘贴模式
     au InsertLeave * set nopaste
@@ -382,6 +418,9 @@ call plug#end()
 " 插件配置
 " ----------------------------------------------------------------------------
 
+" Polyglot
+    let g:polyglot_disabled = ['go']
+
 " Tagbar ----------------------------- 
 
     " toggle tagbar display
@@ -398,10 +437,12 @@ call plug#end()
 
     let g:WebDevIconsOS = 'Darwin'
     let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+    "let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
+    let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
     let g:DevIconsEnableFoldersOpenClose = 1
     let g:DevIconsEnableFolderExtensionPatternMatching = 1
-    "let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
-    "let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
+    let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
+    let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
     let NERDTreeNodeDelimiter = "\u263a" " smiley face
 
     " 不要显示如下文件类型
@@ -448,6 +489,8 @@ call plug#end()
     let $FZF_DEFAULT_COMMAND = 'rg --files --follow -g "!{.git,node_modules}/*" 2>/dev/null'
     let g:fzf_layout = { 'down': '~25%' }
     let g:fzf_buffers_jump = 1
+    let g:fzf_tags_command = 'ctags -R'
+
 
     if isdirectory(".git")
         " if in a git project, use :GFiles
@@ -506,12 +549,13 @@ call plug#end()
     "let g:ale_echo_msg_error_str = '✖'
     "let g:ale_echo_msg_warning_str = '⚠'
     "let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-    let g:ale_echo_msg_format = '%severity% %s% [%linter%% code%]'
+    let g:ale_echo_msg_format = '%severity% %s [%linter%% %code%]'
 
 
 
     " for golang
-    let g:ale_linters = {'go': ['golint','govet','gobuild','gopls'],'python': ['flake8','pylint']}
+    "let g:ale_linters = {'go': ['golint','govet','gobuild','gopls'],'python': ['flake8','pylint']}
+    let g:ale_linters = {'go': ['golint','gopls'],'python': ['flake8','pylint']}
     let b:ale_fixers = {'python':['autopep8', 'yapf']}
     let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s'
     let g:ale_python_flake8_options="--ignore=E114,E116,E131 --max-line-length=120"
@@ -809,7 +853,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
       autocmd FileType go nmap <Leadee <Plug>(go-rename)
       autocmd FileType go nmap <Leader>gi <Plug>(go-imports)
       autocmd FileType go nmap <Leader>gI <Plug>(go-install)
-      autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
+      "autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
       autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
       autocmd FileType go nmap <Leader>gb <Plug>(go-doc-browser)
       autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
@@ -833,6 +877,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
     let g:jedi#completions_command = "<C-Space>"
     let g:jedi#rename_command = "<leader>r"
     let g:jedi#auto_close_doc = 1
+
     
 " Startify: Fancy startup screen for vim {{{
     " Don't change to directory when selecting a file
@@ -916,14 +961,24 @@ augroup CloseLoclistWindowGroup
 augroup END
 
 " Reloads vimrc after saving but keep cursor position
-if !exists('*ReloadVimrc')
-   fun! ReloadVimrc()
-       let save_cursor = getcurpos()
-       source $MYVIMRC
-       call setpos('.', save_cursor)
-   endfun
+"if !exists('*ReloadVimrc')
+"   fun! ReloadVimrc()
+"       let save_cursor = getcurpos()
+"       source $MYVIMRC
+"       call setpos('.', save_cursor)
+"   endfun
+"endif
+"autocmd! BufWritePost $MYVIMRC call ReloadVimrc()
+
+" 自动刷新文件 
+if ! exists("g:CheckUpdateStarted")
+    let g:CheckUpdateStarted=1
+    call timer_start(1,'CheckUpdate')
 endif
-autocmd! BufWritePost $MYVIMRC call ReloadVimrc()
+function! CheckUpdate(timer)
+    silent! checktime
+    call timer_start(1000,'CheckUpdate')
+endfunction
 
 " Enter automatically into the files directory
 autocmd BufEnter * silent! lcd %:p:h
