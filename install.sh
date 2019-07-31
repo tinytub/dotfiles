@@ -109,32 +109,6 @@ sh venv.sh
 # 初始化 coc.nvim
 sh init_coc.sh
 
-#bat
-#diff-so-fancy
-#fzf
-#git
-#'grep --with-default-names'
-#highlight
-#hub
-#markdown
-#mas
-##neovim
-##node
-#python
-#reattach-to-user-namespace
-#the_silver_searcher
-#shellcheck
-#tmux
-#trash
-#tree
-#wget
-##vim
-#z
-#zsh
-#ripgrep
-##git-standup
-##entr
-#zplug
 formulas=(
     #bat
     #diff-so-fancy
@@ -161,6 +135,7 @@ formulas=(
     ripgrep
     #git-standup
     #entr
+    neovim --HEAD
     zplug   
 )
 
