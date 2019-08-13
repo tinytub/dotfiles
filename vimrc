@@ -59,7 +59,7 @@ call plug#begin('~/.vim/plugged')
 
     " Autoclose
     "Plug 'Townk/vim-autoclose'
-    Plug 'jiangmiao/auto-pairs'
+    "Plug 'jiangmiao/auto-pairs'
     
     " Better autocompletion 暂时先使用 coc
     "if has('nvim')
@@ -73,7 +73,10 @@ call plug#begin('~/.vim/plugged')
     "Plug 'zchee/deoplete-go' , {'for':'go', 'do': 'make'}
     
     " 据说比 deoplete 好用
-    Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+    " Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+    Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+
+
     
     "Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' } " 据说是不维护了
     "Plug 'mdempsky/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
@@ -159,7 +162,6 @@ call plug#end()
     set lazyredraw
     set ttyfast "faster redrawing
 
-    set nolazyredraw  " don't redraw while executing macros
     set diffopt+=vertical,iwhite,internal,algorithm:patience,hiddenoff
     "set diffopt+=vertical
 
@@ -181,7 +183,7 @@ call plug#end()
     set textwidth=120
     
     " 隐藏欢迎信息, neovim 下可能会造成 continue 及 press enter 问题
-    set shortmess=atIo
+    "set shortmess=atIo
     " 文件切换自动保存
     set autowrite
     " 文件变更自动读取
@@ -217,10 +219,14 @@ call plug#end()
 
     " 永远显示状态栏
     set laststatus=2
-    " 增量搜索
-    set incsearch
-    " 高亮搜索结果
-    set hlsearch
+
+    " Searching
+    set ignorecase " case insensitive searching
+    set smartcase " case-sensitive if expresson contains a capital letter
+    set hlsearch " highlight search results, 高亮搜索结果
+    set incsearch " set incremental search, like modern browsers, 增量搜索
+    set nolazyredraw " don't redraw while executing macros
+
     " 关闭最后一次查询的高亮
     nnoremap <F2> :set hlsearch!<CR>
 
@@ -338,7 +344,11 @@ call plug#end()
     set cmdheight=1 " command bar height
     set title " set terminal title
     set showmatch " show matching braces
-"    set mat=2 " how many tenths of a second to blink
+    set mat=2 " how many tenths of a second to blink
+
+    set updatetime=300
+    set signcolumn=yes
+    set shortmess+=c
 
     set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors
 
@@ -685,12 +695,12 @@ call plug#end()
 "    let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
 
 " Signify ------------------------------
-
-    let g:signify_vcs_list = [ 'git' ]
-    let g:signify_sign_add               = '┃'
-    let g:signify_sign_delete            = '-'
-    let g:signify_sign_delete_first_line = '_'
-    let g:signify_sign_change = '┃'
+" 通过 coc 控制
+"    let g:signify_vcs_list = [ 'git' ]
+"    let g:signify_sign_add               = '┃'
+"    let g:signify_sign_delete            = '-'
+"    let g:signify_sign_delete_first_line = '_'
+"    let g:signify_sign_change = '┃'
 
 
 " Window Chooser ------------------------------
@@ -777,31 +787,59 @@ call plug#end()
 
 " vim-JSON 
     let g:vim_json_syntax_conceal = 0
-" 
-" coc.vim
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+" coc.vim -----------------------------------------------
+        " coc-prettier
+        command! -nargs=0 Prettier :CocCommand prettier.formatFile
+        nmap <leader>f :CocCommand prettier.formatFile<cr>
 
-" Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+        "" coc tab 补全
+        inoremap <silent><expr> <TAB>
+              \ pumvisible() ? "\<C-n>" :
+              \ <SID>check_back_space() ? "\<TAB>" :
+              \ coc#refresh()
+        inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+        
+        function! s:check_back_space() abort
+          let col = col('.') - 1
+          return !col || getline('.')[col - 1]  =~# '\s'
+        endfunction
+        
+        " Use `[c` and `]c` to navigate diagnostics
+        nmap <silent> [c <Plug>(coc-diagnostic-prev)
+        nmap <silent> ]c <Plug>(coc-diagnostic-next)
+        
+        "remap keys for gotos
+        nmap <silent> gd <Plug>(coc-definition)
+        nmap <silent> gy <Plug>(coc-type-definition)
+        nmap <silent> gi <Plug>(coc-implementation)
+        nmap <silent> gr <Plug>(coc-references)
+        nmap <silent> gh <Plug>(coc-doHover)
+        
+        " Highlight symbol under cursor on CursorHold
+        autocmd CursorHold * silent call CocActionAsync('highlight')
+        
+        nnoremap <silent> K :call <SID>show_documentation()<CR>
+        
+        function! s:show_documentation()
+            if (index(['vim','help'], &filetype) >= 0)
+                execute 'h '.expand('<cword>')
+            else
+                call CocAction('doHover')
+            endif
+        endfunction
 
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+        let g:coc_global_extensions = [
+                \ 'coc-css',
+                \ 'coc-json',
+                \ 'coc-git',
+                \ 'coc-pairs',
+                \ 'coc-emoji',
+                \ 'coc-sh',
+                \ 'coc-emmet',
+                \ 'coc-prettier'
+                \ ]
 
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
 
 
 
