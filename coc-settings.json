@@ -12,6 +12,7 @@
   "diagnostic.warningSign": "⚠",
   "diagnostic.infoSign": "●",
   "diagnostic.hintSign": "○",
+  "diagnostic.refreshAfterSave": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "git.addGlameToBufferVar": true,
   "coc.preferences.formatOnSaveFiletypes": ["typescript", "javascript", "typescript.tsx", "typescriptreact", "javascriptreact"],
