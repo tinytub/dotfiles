@@ -835,7 +835,6 @@ call plug#end()
                 \ 'coc-git',
                 \ 'coc-pairs',
                 \ 'coc-emoji',
-                \ 'coc-sh',
                 \ 'coc-emmet',
                 \ 'coc-prettier'
                 \ ]
