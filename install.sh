@@ -137,6 +137,7 @@ formulas=(
     #entr
     neovim --HEAD
     zplug   
+    yarn
 )
 
 for formula in "${formulas[@]}"; do
