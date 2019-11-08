@@ -44,6 +44,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'Xuyuanp/nerdtree-git-plugin'
     Plug 'ryanoasis/vim-devicons'
     Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+    "Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+    "Plug 'kristijanhusak/defx-git'
+    "Plug 'kristijanhusak/defx-icons'
     
     " Class/module 浏览器
     Plug 'majutsushi/tagbar'
@@ -89,7 +93,9 @@ call plug#begin('~/.vim/plugged')
     
     " Plugin 'joshdick/onedark.vim'
     Plug 'morhetz/gruvbox'
+    Plug 'jacoborus/tender.vim'
     Plug 'joshdick/onedark.vim'
+    Plug 'dracula/vim', { 'as': 'dracula' }
 
     " gruvbox 如果颜色不对,尝试执行~/.vim/bundle/gruvbox/gruvbox_256palette.sh 或 ~/.vim/bundle/gruvbox/gruvbox_256palette_osx.sh
     "Plugin 'altercation/solarized'
@@ -172,7 +178,7 @@ call plug#end()
     "syntax sync minlines=128 " 设置配色行数
     "set synmaxcol=128
 
-    "set hidden "current buffer can be put into background, 
+    set hidden "current buffer can be put into background, 
     "set hidden 会和 go-def-tab 冲突, 如果关闭 tab 再通过 go-def-tab 打开会导致在同屏 split horizon
     "set showcmd
     "set showmode
@@ -192,6 +198,7 @@ call plug#end()
     set confirm
     " 无备份文件
     set nobackup
+    set nowritebackup
     " 其他设置
     "set langmenu=zh_CN.UTF-8
     set langmenu=en_US-UTF-8
@@ -456,7 +463,8 @@ call plug#end()
     let NERDTreeNodeDelimiter = "\u263a" " smiley face
 
     " 不要显示如下文件类型
-    let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
+    let NERDTreeIgnore=['\.o','\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+
     " 自动开关 NERDTree
     autocmd vimenter * if !argc() | NERDTree | endif
     autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -494,6 +502,68 @@ call plug#end()
     \ 'Ignored'   : '☒',
     \ "Unknown"   : "?"
     \ }
+
+"  Defx 代替 nerdtree
+""    map <F3> :Defx<CR>
+    " Avoid the white space highting issue
+""    autocmd FileType defx match ExtraWhitespace /^^/
+""    " Keymap in defx
+""    autocmd FileType defx call s:defx_my_settings()
+""    function! s:defx_my_settings() abort
+""      IndentLinesDisable
+""      setl nospell
+""      setl signcolumn=no
+""      setl nonumber
+""      nnoremap <silent><buffer><expr> <CR>
+""      \ defx#is_directory() ?
+""      \ defx#do_action('open_or_close_tree') :
+""      \ defx#do_action('drop',)
+""      nmap <silent><buffer><expr> <2-LeftMouse>
+""      \ defx#is_directory() ?
+""      \ defx#do_action('open_or_close_tree') :
+""      \ defx#do_action('drop',)
+""      nnoremap <silent><buffer><expr> s defx#do_action('drop', 'split')
+""      nnoremap <silent><buffer><expr> v defx#do_action('drop', 'vsplit')
+""      nnoremap <silent><buffer><expr> t defx#do_action('drop', 'tabe')
+""      nnoremap <silent><buffer><expr> o defx#do_action('open_tree')
+""      nnoremap <silent><buffer><expr> O defx#do_action('open_tree_recursive')
+""      nnoremap <silent><buffer><expr> C defx#do_action('copy')
+""      nnoremap <silent><buffer><expr> P defx#do_action('paste')
+""      nnoremap <silent><buffer><expr> M defx#do_action('rename')
+""      nnoremap <silent><buffer><expr> D defx#do_action('remove_trash')
+""      nnoremap <silent><buffer><expr> A defx#do_action('new_multiple_files')
+""      nnoremap <silent><buffer><expr> U defx#do_action('cd', ['..'])
+""      nnoremap <silent><buffer><expr> . defx#do_action('toggle_ignored_files')
+""      nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select')
+""      nnoremap <silent><buffer><expr> R defx#do_action('redraw')
+""    endfunction
+""" Defx git
+""let g:defx_git#indicators = {
+""  \ 'Modified'  : '✹',
+""  \ 'Staged'    : '✚',
+""  \ 'Untracked' : '✭',
+""  \ 'Renamed'   : '➜',
+""  \ 'Unmerged'  : '═',
+""  \ 'Ignored'   : '☒',
+""  \ 'Deleted'   : '✖',
+""  \ 'Unknown'   : '?'
+""  \ }
+""let g:defx_git#column_length = 0
+""hi def link Defx_filename_directory NERDTreeDirSlash
+""hi def link Defx_git_Modified Special
+""hi def link Defx_git_Staged Function
+""hi def link Defx_git_Renamed Title
+""hi def link Defx_git_Unmerged Label
+""hi def link Defx_git_Untracked Tag
+""hi def link Defx_git_Ignored Comment
+
+" Defx icons
+" Requires nerd-font, install at https://github.com/ryanoasis/nerd-fonts or
+" brew cask install font-hack-nerd-font
+" Then set non-ascii font to Driod sans mono for powerline in iTerm2
+" disbale syntax highlighting to prevent performence issue
+let g:defx_icons_enable_syntax_highlight = 1
+
 
 " FZF
     let $FZF_DEFAULT_COMMAND = 'rg --files --follow -g "!{.git,node_modules}/*" 2>/dev/null'
@@ -535,8 +605,9 @@ call plug#end()
 
 
 " ALE
-    " Write this in your vimrc file
-    let g:ale_lint_on_text_changed = 'normal'
+    "仅仅在保存的时候跑 ale
+    "let g:ale_lint_on_text_changed = 'normal'
+    let g:ale_lint_on_text_changed = 'never'
     " You can disable this option too
     " if you don't want linters to run on opening a file
     let g:ale_lint_on_enter = 1
@@ -554,20 +625,28 @@ call plug#end()
     let g:ale_sign_column_always = 0
     "let g:ale_sign_error = '✖'
     "let g:ale_sign_warning = '⚠'
-    let g:ale_sign_error = '👿'
+    let g:ale_sign_error = '🔥'
     let g:ale_sign_warning = '🤔'
-    "let g:ale_echo_msg_error_str = '✖'
-    "let g:ale_echo_msg_warning_str = '⚠'
-    "let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-    let g:ale_echo_msg_format = '%severity% %s [%linter%% %code%]'
+    let g:ale_echo_msg_error_str = '✖'
+    let g:ale_echo_msg_warning_str = '⚠'
+    let g:ale_echo_msg_format = '[%linter%] %code: %%s [%severity%]'
+    "let g:ale_echo_msg_format = '%severity% %s [%linter%% %code%]'
+
+    " 下降低语法检查程序的进程优先级（不要卡到前台进程）
+    "let g:ale_command_wrapper = 'nice -n5'
 
 
 
     " for golang
     "let g:ale_linters = {'go': ['golint','govet','gobuild','gopls'],'python': ['flake8','pylint']}
-    let g:ale_linters = {'go': ['golint','gopls'],'python': ['flake8','pylint']}
+    "let g:ale_linters = {'go': ['gopls','golint'],'python': ['flake8','pylint']}
+    let g:ale_linters = {'go': ['golangci-lint'],'python': ['flake8','pylint']}
     let b:ale_fixers = {'python':['autopep8', 'yapf']}
-    let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s'
+    let g:ale_go_golangci_lint_options = '--fast --disable=errcheck --disable=deadcode --disable=ineffassign'
+    let g:ale_go_golangci_lint_package = 1
+    "let g:ale_go_gometalinter_options = '--fast --disable=gas --disable=goconst --disable=gocyclo --deadline=1s'
+    "let g:ale_go_gometalinter_options = '--fast'
+    "let g:ale_go_gometalinter_lint_package = 1
     let g:ale_python_flake8_options="--ignore=E114,E116,E131 --max-line-length=120"
 
     let g:ale_fixers = {}
@@ -575,9 +654,11 @@ call plug#end()
     let g:ale_fixers['typescript'] = ['prettier', 'tslint']
     let g:ale_fixers['json'] = ['prettier']
     let g:ale_fixers['css'] = ['prettier']
-    let g:ale_fixers['golang'] = ['gofmt', 'goimports']
+    " fixers 由 vim-go 暂时接管
+    let g:ale_fixers['go'] = []
+    "let g:ale_fixers['golang'] = ['gofmt', 'goimports']
     let g:ale_javascript_prettier_use_local_config = 1
-    let g:ale_fix_on_save = 0
+    let g:ale_fix_on_save = 1
 
     " 打开 ale 错误列表
     function! AleListToggle()
@@ -720,26 +801,6 @@ call plug#end()
     if !exists('g:airline_symbols')
        let g:airline_symbols = {}
     endif
-    " let g:airline_left_sep = '⮀'
-    " let g:airline_left_alt_sep = '⮁'
-    " let g:airline_right_sep = '⮂'
-    " let g:airline_right_alt_sep = '⮃'
-    " let g:airline_symbols.branch = '⭠'
-    " let g:airline_symbols.readonly = '⭤'
-    " let g:airline_symbols.linenr = '⭡'
-    "
-    "let g:airline_left_sep = '»'
-    "let g:airline_left_sep = '▶'
-    "let g:airline_right_sep = '«'
-    "let g:airline_right_sep = '◀'
-    "let g:airline_symbols.crypt = '🔒'
-    "let g:airline_symbols.linenr = '¶'
-    "let g:airline_symbols.maxlinenr = ''
-    "let g:airline_symbols.branch = ''
-    "let g:airline_symbols.paste = 'Þ'
-    "let g:airline_symbols.spell = ''
-    "let g:airline_symbols.notexists = 'Ɇ'
-    "let g:airline_symbols.whitespace = 'Ξ'
     let g:airline_left_sep = ''
     let g:airline_left_alt_sep = ''
     let g:airline_right_sep = ''
@@ -756,14 +817,9 @@ call plug#end()
 
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#formatter = 'default'
-    "let airline#extensions#ale#error_symbol = 'E:'
-    "let airline#extensions#ale#warning_symbol = 'W:'
-    "let airline#extensions#ale#show_line_numbers = 1
-    "let airline#extensions#ale#open_lnum_symbol = '(L'
-    "let airline#extensions#ale#close_lnum_symbol = ')'
 
     " 开启 coc 或 ale 支持
-    "let g:airline#extensions#coc#enabled = 1
+    let g:airline#extensions#coc#enabled = 1
     let g:airline#extensions#ale#enabled = 1
 
 " Vim-markdown ------------------------------
@@ -804,10 +860,19 @@ call plug#end()
           let col = col('.') - 1
           return !col || getline('.')[col - 1]  =~# '\s'
         endfunction
+
+        " Use <c-space> to trigger completion.
+        inoremap <silent><expr> <c-space> coc#refresh()
+
+        " 使用 回车 确认补全 Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+        " Coc only does snippet and additional edit on confirm.
+        " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+        " Or use `complete_info` if your vim support it, like:
+        inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
         
-        " Use `[c` and `]c` to navigate diagnostics
-        nmap <silent> [c <Plug>(coc-diagnostic-prev)
-        nmap <silent> ]c <Plug>(coc-diagnostic-next)
+       " Use `[g` and `]g` to navigate diagnostics
+        nmap <silent> [g <Plug>(coc-diagnostic-prev)
+        nmap <silent> ]g <Plug>(coc-diagnostic-next)
         
         "remap keys for gotos
         nmap <silent> gd <Plug>(coc-definition)
@@ -816,10 +881,10 @@ call plug#end()
         nmap <silent> gr <Plug>(coc-references)
         nmap <silent> gh <Plug>(coc-doHover)
         
+        nnoremap <silent> K :call <SID>show_documentation()<CR>
+
         " Highlight symbol under cursor on CursorHold
         autocmd CursorHold * silent call CocActionAsync('highlight')
-        
-        nnoremap <silent> K :call <SID>show_documentation()<CR>
         
         function! s:show_documentation()
             if (index(['vim','help'], &filetype) >= 0)
@@ -829,15 +894,43 @@ call plug#end()
             endif
         endfunction
 
+        augroup coc
+          autocmd!
+          " Setup formatexpr specified filetype(s).
+          autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+          " Update signature help on jump placeholder
+          autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+        augroup end
+
+        "" Using CocList
+        "" Show all diagnostics
+        "nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+        "" Manage extensions
+        "nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+        "" Show commands
+        "nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+        "" Find symbol of current document
+        "nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+        "" Search workspace symbols
+        "nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+        "" Do default action for next item.
+        "nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+        "" Do default action for previous item.
+        "nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+        "" Resume latest coc list
+        "nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
         let g:coc_global_extensions = [
                 \ 'coc-css',
                 \ 'coc-json',
                 \ 'coc-git',
                 \ 'coc-pairs',
                 \ 'coc-emoji',
+                \ 'coc-vimlsp',
                 \ 'coc-emmet',
                 \ 'coc-prettier'
                 \ ]
+
 
 
 
@@ -865,9 +958,9 @@ call plug#end()
 
       let g:go_decls_mode = 'fzf'
 
-      " 关闭 vim-go 的 linter ?
+      " 关闭 vim-go 的 linter 
       let g:go_metalinter_autosave = 0
-      let g:go_metalinter_autosave_enabled = ['vet']
+      let g:go_metalinter_autosave_enabled = ['golint', 'vet']
     
       let g:go_highlight_functions = 1
       let g:go_highlight_methods = 1
@@ -986,6 +1079,8 @@ call plug#end()
     "let g:onedark_terminal_italics=1
     "colorscheme onedark
     colorscheme gruvbox
+    "colorscheme dracula
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
     " syntax highlight on and filetype reload
     syntax on
@@ -1016,6 +1111,8 @@ function! CheckUpdate(timer)
     silent! checktime
     call timer_start(1000,'CheckUpdate')
 endfunction
+
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " Enter automatically into the files directory
 autocmd BufEnter * silent! lcd %:p:h

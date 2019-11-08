@@ -135,7 +135,7 @@ formulas=(
     ripgrep
     #git-standup
     #entr
-    neovim --HEAD
+    neovim
     zplug   
     yarn
 )
