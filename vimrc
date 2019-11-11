@@ -40,14 +40,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'benmills/vimux'
     
     " Better file browser
-    Plug 'scrooloose/nerdtree'
-    Plug 'Xuyuanp/nerdtree-git-plugin'
-    Plug 'ryanoasis/vim-devicons'
-    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+    "Plug 'scrooloose/nerdtree'
+    "Plug 'Xuyuanp/nerdtree-git-plugin'
+    "Plug 'ryanoasis/vim-devicons'
+    "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
-    "Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-    "Plug 'kristijanhusak/defx-git'
-    "Plug 'kristijanhusak/defx-icons'
+    Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'kristijanhusak/defx-git'
+    Plug 'kristijanhusak/defx-icons'
     
     " Class/module 浏览器
     Plug 'majutsushi/tagbar'
@@ -446,123 +446,191 @@ call plug#end()
     let g:tagbar_autofocus = 1
 
 " NERDTree ----------------------------- 
-    " 切换 nerdtre 显示
-    " map <F3> :NERDTreeToggle<CR>
-    " 打开 nerdree 并选中当前打开的文件
-    map <F3> :call ToggleNerdTree()<CR>
-
-
-    let g:WebDevIconsOS = 'Darwin'
-    let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-    "let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
-    let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
-    let g:DevIconsEnableFoldersOpenClose = 1
-    let g:DevIconsEnableFolderExtensionPatternMatching = 1
-    let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
-    let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
-    let NERDTreeNodeDelimiter = "\u263a" " smiley face
-
-    " 不要显示如下文件类型
-    let NERDTreeIgnore=['\.o','\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-
-    " 自动开关 NERDTree
-    autocmd vimenter * if !argc() | NERDTree | endif
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-    augroup nerdtree
-        autocmd!
-        autocmd FileType nerdtree setlocal nolist " turn off whitespace characters
-        autocmd FileType nerdtree setlocal nocursorline " turn off line highlighting for performance
-    augroup END
-
-    " Toggle NERDTree
-    function! ToggleNerdTree()
-        if @% != "" && @% !~ "Startify" && (!exists("g:NERDTree") || (g:NERDTree.ExistsForTab() && !g:NERDTree.IsOpen()))
-            :NERDTreeFind
-        else
-            :NERDTreeToggle
-        endif
-    endfunction
-
-    " " find the current file in nerdtree without needing to reload the drawer
-    nmap <silent> <leader>y :NERDTreeFind<cr>
-
-    let NERDTreeShowHidden=1
-    " let NERDTreeDirArrowExpandable = '▷'
-    " let NERDTreeDirArrowCollapsible = '▼'
-    let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ 'Ignored'   : '☒',
-    \ "Unknown"   : "?"
-    \ }
-
-"  Defx 代替 nerdtree
-""    map <F3> :Defx<CR>
-    " Avoid the white space highting issue
-""    autocmd FileType defx match ExtraWhitespace /^^/
-""    " Keymap in defx
-""    autocmd FileType defx call s:defx_my_settings()
-""    function! s:defx_my_settings() abort
-""      IndentLinesDisable
-""      setl nospell
-""      setl signcolumn=no
-""      setl nonumber
-""      nnoremap <silent><buffer><expr> <CR>
-""      \ defx#is_directory() ?
-""      \ defx#do_action('open_or_close_tree') :
-""      \ defx#do_action('drop',)
-""      nmap <silent><buffer><expr> <2-LeftMouse>
-""      \ defx#is_directory() ?
-""      \ defx#do_action('open_or_close_tree') :
-""      \ defx#do_action('drop',)
-""      nnoremap <silent><buffer><expr> s defx#do_action('drop', 'split')
-""      nnoremap <silent><buffer><expr> v defx#do_action('drop', 'vsplit')
-""      nnoremap <silent><buffer><expr> t defx#do_action('drop', 'tabe')
-""      nnoremap <silent><buffer><expr> o defx#do_action('open_tree')
-""      nnoremap <silent><buffer><expr> O defx#do_action('open_tree_recursive')
-""      nnoremap <silent><buffer><expr> C defx#do_action('copy')
-""      nnoremap <silent><buffer><expr> P defx#do_action('paste')
-""      nnoremap <silent><buffer><expr> M defx#do_action('rename')
-""      nnoremap <silent><buffer><expr> D defx#do_action('remove_trash')
-""      nnoremap <silent><buffer><expr> A defx#do_action('new_multiple_files')
-""      nnoremap <silent><buffer><expr> U defx#do_action('cd', ['..'])
-""      nnoremap <silent><buffer><expr> . defx#do_action('toggle_ignored_files')
-""      nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select')
-""      nnoremap <silent><buffer><expr> R defx#do_action('redraw')
+""    " 切换 nerdtre 显示
+""    " map <F3> :NERDTreeToggle<CR>
+""    " 打开 nerdree 并选中当前打开的文件
+""    map <F3> :call ToggleNerdTree()<CR>
+""
+""
+""    let g:WebDevIconsOS = 'Darwin'
+""    let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+""    "let g:WebDevIconsUnicodeDecorateFolderNodes = v:true
+""    let g:WebDevIconsNerdTreeBeforeGlyphPadding = ''
+""    let g:DevIconsEnableFoldersOpenClose = 1
+""    let g:DevIconsEnableFolderExtensionPatternMatching = 1
+""    let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
+""    let NERDTreeDirArrowCollapsible = "\u00a0" " make arrows invisible
+""    let NERDTreeNodeDelimiter = "\u263a" " smiley face
+""
+""    " 不要显示如下文件类型
+""    let NERDTreeIgnore=['\.o','\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+""
+""    " 自动开关 NERDTree
+""    autocmd vimenter * if !argc() | NERDTree | endif
+""    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+""
+""    augroup nerdtree
+""        autocmd!
+""        autocmd FileType nerdtree setlocal nolist " turn off whitespace characters
+""        autocmd FileType nerdtree setlocal nocursorline " turn off line highlighting for performance
+""    augroup END
+""
+""    " Toggle NERDTree
+""    function! ToggleNerdTree()
+""        if @% != "" && @% !~ "Startify" && (!exists("g:NERDTree") || (g:NERDTree.ExistsForTab() && !g:NERDTree.IsOpen()))
+""            :NERDTreeFind
+""        else
+""            :NERDTreeToggle
+""        endif
 ""    endfunction
-""" Defx git
-""let g:defx_git#indicators = {
-""  \ 'Modified'  : '✹',
-""  \ 'Staged'    : '✚',
-""  \ 'Untracked' : '✭',
-""  \ 'Renamed'   : '➜',
-""  \ 'Unmerged'  : '═',
-""  \ 'Ignored'   : '☒',
-""  \ 'Deleted'   : '✖',
-""  \ 'Unknown'   : '?'
-""  \ }
-""let g:defx_git#column_length = 0
-""hi def link Defx_filename_directory NERDTreeDirSlash
-""hi def link Defx_git_Modified Special
-""hi def link Defx_git_Staged Function
-""hi def link Defx_git_Renamed Title
-""hi def link Defx_git_Unmerged Label
-""hi def link Defx_git_Untracked Tag
-""hi def link Defx_git_Ignored Comment
+""
+""    " " find the current file in nerdtree without needing to reload the drawer
+""    nmap <silent> <leader>y :NERDTreeFind<cr>
+""
+""    let NERDTreeShowHidden=1
+""    " let NERDTreeDirArrowExpandable = '▷'
+""    " let NERDTreeDirArrowCollapsible = '▼'
+""    let g:NERDTreeIndicatorMapCustom = {
+""    \ "Modified"  : "✹",
+""    \ "Staged"    : "✚",
+""    \ "Untracked" : "✭",
+""    \ "Renamed"   : "➜",
+""    \ "Unmerged"  : "═",
+""    \ "Deleted"   : "✖",
+""    \ "Dirty"     : "✗",
+""    \ "Clean"     : "✔︎",
+""    \ 'Ignored'   : '☒',
+""    \ "Unknown"   : "?"
+""    \ }
 
-" Defx icons
-" Requires nerd-font, install at https://github.com/ryanoasis/nerd-fonts or
-" brew cask install font-hack-nerd-font
-" Then set non-ascii font to Driod sans mono for powerline in iTerm2
-" disbale syntax highlighting to prevent performence issue
-let g:defx_icons_enable_syntax_highlight = 1
+  
+" Defx 代替 nerdtree ----------------------------- 
+    augroup vimrc_defx
+      autocmd!
+      autocmd FileType defx call s:defx_mappings()                                  "Defx mappings
+      autocmd VimEnter * call s:setup_defx()
+    augroup END
+    
+    nnoremap <silent><Leader>n :call <sid>defx_open()<CR>
+    nnoremap <silent><Leader>hf :call <sid>defx_open({ 'find_current_file': v:true })<CR>
+    let s:default_columns = 'indent:git:icons:filename'
+    
+    function! s:setup_defx() abort
+      call defx#custom#option('_', {
+            \ 'columns': s:default_columns,
+            \ })
+    
+      call defx#custom#column('filename', {
+            \ 'min_width': 80,
+            \ 'max_width': 80,
+            \ })
+    
+      call s:defx_open({ 'dir': expand('<afile>') })
+    endfunction
+    
+    function s:get_project_root() abort
+      let l:git_root = ''
+      let l:path = expand('%:p:h')
+      let l:cmd = systemlist('cd '.l:path.' && git rev-parse --show-toplevel')
+      if !v:shell_error && !empty(l:cmd)
+        let l:git_root = fnamemodify(l:cmd[0], ':p:h')
+      endif
+    
+      if !empty(l:git_root)
+        return l:git_root
+      endif
+    
+      return getcwd()
+    endfunction
+    
+    function! s:defx_open(...) abort
+      let l:opts = get(a:, 1, {})
+      let l:is_file = has_key(l:opts, 'dir') && !isdirectory(l:opts.dir)
+    
+      if  &filetype ==? 'defx' || l:is_file
+        return
+      endif
+    
+      let l:path = s:get_project_root()
+    
+      if has_key(l:opts, 'dir') && isdirectory(l:opts.dir)
+        let l:path = l:opts.dir
+      endif
+    
+      let l:args = '-winwidth=40 -direction=topleft -split=vertical'
+    
+      if has_key(l:opts, 'find_current_file')
+        call execute(printf('Defx %s -search=%s %s', l:args, expand('%:p'), l:path))
+      else
+        call execute(printf('Defx -toggle %s %s', l:args, l:path))
+        call execute('wincmd p')
+      endif
+    
+      return execute("norm!\<C-w>=")
+    endfunction
+    
+    function! s:defx_context_menu() abort
+      let l:actions = ['new_multiple_files', 'rename', 'copy', 'move', 'paste', 'remove']
+      let l:selection = confirm('Action?', "&New file/directory\n&Rename\n&Copy\n&Move\n&Paste\n&Delete")
+      silent exe 'redraw'
+    
+      return feedkeys(defx#do_action(l:actions[l:selection - 1]))
+    endfunction
+    
+    function s:defx_toggle_tree() abort
+      if defx#is_directory()
+        return defx#do_action('open_or_close_tree')
+      endif
+      return defx#do_action('drop')
+    endfunction
+    
+    function! s:defx_mappings() abort
+      nnoremap <silent><buffer>m :call <sid>defx_context_menu()<CR>
+      nnoremap <silent><buffer><expr> o <sid>defx_toggle_tree()
+      nnoremap <silent><buffer><expr> O defx#do_action('open_tree_recursive')
+      nnoremap <silent><buffer><expr> <CR> <sid>defx_toggle_tree()
+      nnoremap <silent><buffer><expr> <2-LeftMouse> <sid>defx_toggle_tree()
+      nnoremap <silent><buffer><expr> C defx#is_directory() ? defx#do_action('multi', ['open', 'change_vim_cwd']) : 'C'
+      nnoremap <silent><buffer><expr> s defx#do_action('open', 'botright vsplit')
+      nnoremap <silent><buffer><expr> R defx#do_action('redraw')
+      nnoremap <silent><buffer><expr> U defx#do_action('multi', [['cd', '..'], 'change_vim_cwd'])
+      nnoremap <silent><buffer><expr> H defx#do_action('toggle_ignored_files')
+      nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
+      nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
+      nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
+      nnoremap <silent><buffer> J :call search('')<CR>
+      nnoremap <silent><buffer> K :call search('', 'b')<CR>
+      nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
+      nnoremap <silent><buffer><expr> q defx#do_action('quit')
+      silent exe 'nnoremap <silent><buffer><expr> tt defx#do_action("toggle_columns", "'.s:default_columns.':size:time")'
+    endfunction
+    
+    " Defx git
+    let g:defx_git#indicators = {
+      \ 'Modified'  : '✹',
+      \ 'Staged'    : '✚',
+      \ 'Untracked' : '✭',
+      \ 'Renamed'   : '➜',
+      \ 'Unmerged'  : '═',
+      \ 'Ignored'   : '☒',
+      \ 'Deleted'   : '✖',
+      \ 'Unknown'   : '?'
+      \ }
+    let g:defx_git#column_length = 0
+    hi def link Defx_filename_directory NERDTreeDirSlash
+    hi def link Defx_git_Modified Special
+    hi def link Defx_git_Staged Function
+    hi def link Defx_git_Renamed Title
+    hi def link Defx_git_Unmerged Label
+    hi def link Defx_git_Untracked Tag
+    hi def link Defx_git_Ignored Comment
+    
+    " Defx icons
+    " Requires nerd-font, install at https://github.com/ryanoasis/nerd-fonts or
+    " brew cask install font-hack-nerd-font
+    " Then set non-ascii font to Driod sans mono for powerline in iTerm2
+    " disbale syntax highlighting to prevent performence issue
+    let g:defx_icons_enable_syntax_highlight = 1
 
 
 " FZF
