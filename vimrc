@@ -38,6 +38,9 @@ call plug#begin('~/.vim/plugged')
 
     " tmux integration for vim
     Plug 'benmills/vimux'
+
+    "displays available keybindings in popup.
+    "Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
     
     " Better file browser
     "Plug 'scrooloose/nerdtree'
@@ -128,7 +131,10 @@ call plug#begin('~/.vim/plugged')
     "JSON
     Plug 'elzr/vim-json', { 'for': 'json' }
     let g:vim_json_syntax_conceal = 0
-
+    Plug 'cespare/vim-toml', { 'for': 'toml' }
+    Plug 'vim-scripts/xml.vim', { 'for': 'xml' }
+    Plug 'pearofducks/ansible-vim', { 'for': ['ansible_host','yaml.ansible'] }
+  
     
     " 传说中的自动补全神器?
     "git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -288,11 +294,13 @@ call plug#end()
     map <C-l> <C-W>l
 
     " Make basic movements work better with wrapped lines
-    "nnoremap j gj
-    "nnoremap gj j
-    "nnoremap k gk
-    "nnoremap gk k
+    nnoremap j gj
+    nnoremap gj j
+    nnoremap k gk
+    nnoremap gk k
 
+    "delete buffer
+    nnoremap <C-x>  :bd<CR>
     " So that I don't have to hit esc
     "inoremap jk 
     "inoremap kj 
@@ -503,31 +511,277 @@ call plug#end()
 ""    \ "Unknown"   : "?"
 ""    \ }
 
+" WhichKey
+"    nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
   
 " Defx 代替 nerdtree ----------------------------- 
-    augroup vimrc_defx
-      autocmd!
-      autocmd FileType defx call s:defx_mappings()                                  "Defx mappings
-      autocmd VimEnter * call s:setup_defx()
+" Defx settings
+" ---
+" See https://github.com/shougo/defx.nvim
+" See https://github.com/rafi/vim-config/blob/master/config/plugins/defx.vim
+    nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
+    call defx#custom#option('_', {
+    	\ 'columns': 'indent:git:icons:filename',
+    	\ 'winwidth': 25,
+    	\ 'split': 'vertical',
+    	\ 'direction': 'topleft',
+    	\ 'listed': 1,
+    	\ 'show_ignored_files': 0,
+    	\ 'root_marker': ' ',
+    	\ 'ignored_files':
+    	\     '.mypy_cache,.pytest_cache,.git,.hg,.svn,.stversions'
+    	\   . ',__pycache__,.sass-cache,*.egg-info,.DS_Store,*.pyc'
+    	\ })
+    
+    call defx#custom#column('git', {
+    	\   'indicators': {
+    	\     'Modified'  : '•',
+    	\     'Staged'    : '✚',
+    	\     'Untracked' : 'ᵁ',
+    	\     'Renamed'   : '≫',
+    	\     'Unmerged'  : '≠',
+    	\     'Ignored'   : 'ⁱ',
+    	\     'Deleted'   : '✖',
+    	\     'Unknown'   : '⁇'
+    	\   }
+    	\ })
+    
+    call defx#custom#column('mark', { 'readonly_icon': '✗', 'selected_icon': '✓' })
+    " call defx#custom#column('filename', { 'min_width': 20, 'max_width': -95 })
+    
+    " defx-icons plugin
+    let g:defx_icons_column_length = 2
+    let g:defx_icons_mark_icon = ''
+    
+    " Events
+    " ---
+    
+    augroup user_plugin_defx
+    	autocmd!
+    
+    	" FIXME
+    	" autocmd DirChanged * call s:defx_refresh_cwd(v:event)
+    
+    	" Delete defx if it's the only buffer left in the window
+    	autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | q | endif
+    
+    	" Move focus to the next window if current buffer is defx
+    	autocmd TabLeave * if &filetype == 'defx' | wincmd w | endif
+    
+    	autocmd TabClosed * call s:defx_close_tab(expand('<afile>'))
+    
+    	" Define defx window mappings
+    	autocmd FileType defx call s:defx_mappings()
+    
     augroup END
     
-    nnoremap <silent><Leader>n :call <sid>defx_open()<CR>
-    nnoremap <silent><Leader>hf :call <sid>defx_open({ 'find_current_file': v:true })<CR>
-    let s:default_columns = 'indent:git:icons:filename'
+    " Internal functions
+    " ---
     
-    function! s:setup_defx() abort
-      call defx#custom#option('_', {
-            \ 'columns': s:default_columns,
-            \ })
-    
-      call defx#custom#column('filename', {
-            \ 'min_width': 80,
-            \ 'max_width': 80,
-            \ })
-    
-      call s:defx_open({ 'dir': expand('<afile>') })
+    function! s:defx_close_tab(tabnr)
+    	" When a tab is closed, find and delete any associated defx buffers
+    	for l:nr in range(1, bufnr('$'))
+    		let l:defx = getbufvar(l:nr, 'defx')
+    		if empty(l:defx)
+    			continue
+    		endif
+    		let l:context = get(l:defx, 'context', {})
+    		if get(l:context, 'buffer_name', '') ==# 'tab' . a:tabnr
+    			silent! execute 'bdelete '.l:nr
+    			break
+    		endif
+    	endfor
     endfunction
     
+    function! s:defx_toggle_tree() abort
+    	" Open current file, or toggle directory expand/collapse
+    	if defx#is_directory()
+    		return defx#do_action('open_or_close_tree')
+    	endif
+    	return defx#do_action('multi', ['drop', 'quit'])
+    endfunction
+    
+    function! s:defx_refresh_cwd(event)
+    	" Automatically refresh opened Defx windows when changing working-directory
+    	let l:cwd = get(a:event, 'cwd', '')
+    	let l:scope = get(a:event, 'scope', '')   " global, tab, window
+    	let l:is_opened = bufwinnr('defx') > -1
+    	if ! l:is_opened || empty(l:cwd) || empty(l:scope)
+    		return
+    	endif
+    
+    	" Abort if Defx is already on the cwd triggered (new files trigger this)
+    	let l:paths = get(getbufvar('defx', 'defx', {}), 'paths', [])
+    	if index(l:paths, l:cwd) >= 0
+    		return
+    	endif
+    
+    	let l:tab = tabpagenr()
+    	call execute(printf('Defx -buffer-name=tab%s %s', l:tab, l:cwd))
+    	wincmd p
+    endfunction
+    
+    function! s:jump_dirty(dir) abort
+    	" Jump to the next position with defx-git dirty symbols
+    	let l:icons = get(g:, 'defx_git_indicators', {})
+    	let l:icons_pattern = join(values(l:icons), '\|')
+    
+    	if ! empty(l:icons_pattern)
+    		let l:direction = a:dir > 0 ? 'w' : 'bw'
+    		return search(printf('\(%s\)', l:icons_pattern), l:direction)
+    	endif
+    endfunction
+    
+    function! s:defx_mappings() abort
+    	" Defx window keyboard mappings
+    	setlocal signcolumn=no expandtab
+    
+    	nnoremap <silent><buffer><expr> <CR>  defx#do_action('drop')
+    	nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()
+    	nnoremap <silent><buffer><expr> h     defx#async_action('cd', ['..'])
+    	nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
+    	nnoremap <silent><buffer><expr> s     defx#do_action('open', 'botright vsplit')
+    	nnoremap <silent><buffer><expr> i     defx#do_action('open', 'botright split')
+    	nnoremap <silent><buffer><expr> P     defx#do_action('open', 'pedit')
+    	nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
+    	nnoremap <silent><buffer><expr> N     defx#do_action('new_multiple_files')
+    	nnoremap <silent><buffer><expr> dd    defx#do_action('remove_trash')
+    	nnoremap <silent><buffer><expr> r     defx#do_action('rename')
+    	nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
+    	nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')
+    	nnoremap <silent><buffer><expr> yy    defx#do_action('yank_path')
+    	nnoremap <silent><buffer><expr> ~     defx#async_action('cd')
+    	nnoremap <silent><buffer><expr> q     defx#do_action('quit')
+    	nnoremap <silent><buffer><expr> <Tab> winnr('$') != 1 ?
+ 		\ ':<C-u>wincmd w<CR>' :
+ 		\ ':<C-u>Defx -buffer-name=temp -split=vertical<CR>'
+""    	nnoremap <silent><buffer><expr> se    defx#do_action('save_session')
+""    	nnoremap <silent><buffer><expr> <CR>  <SID>defx_toggle_tree()
+""    	nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()
+""    	nnoremap <silent><buffer><expr> h     defx#do_action('close_tree')
+""    	nnoremap <silent><buffer><expr> t     defx#do_action('open_tree_recursive')
+""    	nnoremap <silent><buffer><expr> <BS>  defx#async_action('cd', ['..'])
+""    	nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
+""    	nnoremap <silent><buffer><expr> sg    defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
+""    	nnoremap <silent><buffer><expr> sv    defx#do_action('multi', [['drop', 'split'], 'quit'])
+""    	nnoremap <silent><buffer><expr> P     defx#do_action('open', 'pedit')
+""    	nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
+""    	nnoremap <silent><buffer><expr> N     defx#do_action('new_multiple_files')
+""    	nnoremap <silent><buffer><expr> dd    defx#do_action('remove_trash')
+""    	nnoremap <silent><buffer><expr> r     defx#do_action('rename')
+""    	nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
+""    	nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')
+""    	nnoremap <silent><buffer><expr> yy    defx#do_action('yank_path')
+""    	nnoremap <silent><buffer><expr> ~     defx#async_action('cd')
+""    	nnoremap <silent><buffer><expr> q     defx#do_action('quit')
+""    	nnoremap <silent><buffer><expr> <Tab> winnr('$') != 1 ?
+""    		\ ':<C-u>wincmd w<CR>' :
+""    		\ ':<C-u>Defx -buffer-name=temp -split=vertical<CR>'
+    
+    	nnoremap <silent><buffer>       [g :<C-u>call <SID>jump_dirty(-1)<CR>
+    	nnoremap <silent><buffer>       ]g :<C-u>call <SID>jump_dirty(1)<CR>
+    
+    	nnoremap <silent><buffer><expr><nowait> \  defx#do_action('cd', getcwd())
+    	nnoremap <silent><buffer><expr><nowait> &  defx#do_action('cd', getcwd())
+    	nnoremap <silent><buffer><expr><nowait> c  defx#do_action('copy')
+    	nnoremap <silent><buffer><expr><nowait> m  defx#do_action('move')
+    	nnoremap <silent><buffer><expr><nowait> p  defx#do_action('paste')
+    
+    	nnoremap <silent><buffer><expr><nowait> <Space>
+    		\ defx#do_action('toggle_select') . 'j'
+    
+    	nnoremap <silent><buffer><expr> '      defx#do_action('toggle_select') . 'j'
+    	nnoremap <silent><buffer><expr> *      defx#do_action('toggle_select_all')
+    	nnoremap <silent><buffer><expr> <C-r>  defx#do_action('redraw')
+    	nnoremap <silent><buffer><expr> <C-g>  defx#do_action('print')
+    
+    	nnoremap <silent><buffer><expr> S  defx#do_action('toggle_sort', 'Time')
+    	nnoremap <silent><buffer><expr> C
+    		\ defx#do_action('toggle_columns', 'indent:mark:filename:type:size:time')
+    
+    	" Tools
+    	nnoremap <silent><buffer><expr> w   defx#do_action('call', '<SID>toggle_width')
+    	nnoremap <silent><buffer><expr> gx  defx#async_action('execute_system')
+    	nnoremap <silent><buffer><expr> gd  defx#async_action('multi', ['drop', ['call', '<SID>git_diff']])
+    	nnoremap <silent><buffer><expr> gr  defx#do_action('call', '<SID>grep')
+    	nnoremap <silent><buffer><expr> gf  defx#do_action('call', '<SID>find_files')
+    	if exists('$TMUX')
+    		nnoremap <silent><buffer><expr> gl  defx#async_action('call', '<SID>explorer')
+    	endif
+    endfunction
+    
+    " TOOLS
+    " ---
+    
+    function! s:git_diff(context) abort
+    	execute 'GdiffThis'
+    endfunction
+    
+    function! s:find_files(context) abort
+    	" Find files in parent directory with Denite
+    	let l:target = a:context['targets'][0]
+    	let l:parent = fnamemodify(l:target, ':h')
+    	silent execute 'wincmd w'
+    	silent execute 'Denite file/rec:'.l:parent
+    endfunction
+    
+    function! s:grep(context) abort
+    	" Grep in parent directory with Denite
+    	let l:target = a:context['targets'][0]
+    	let l:parent = fnamemodify(l:target, ':h')
+    	silent execute 'wincmd w'
+    	silent execute 'Denite grep:'.l:parent
+    endfunction
+    
+    function! s:toggle_width(context) abort
+    	" Toggle between defx window width and longest line
+    	let l:max = 0
+    	let l:original = a:context['winwidth']
+    	for l:line in range(1, line('$'))
+    		let l:len = len(getline(l:line))
+    		if l:len > l:max
+    			let l:max = l:len
+    		endif
+    	endfor
+    	execute 'vertical resize ' . (l:max == winwidth('.') ? l:original : l:max)
+    endfunction
+    
+    function! s:explorer(context) abort
+    	" Open file-explorer split with tmux
+    	let l:explorer = s:find_file_explorer()
+    	if empty('$TMUX') || empty(l:explorer)
+    		return
+    	endif
+    	let l:target = a:context['targets'][0]
+    	let l:parent = fnamemodify(l:target, ':h')
+    	let l:cmd = 'split-window -p 30 -c ' . l:parent . ' ' . l:explorer
+    	silent execute '!tmux ' . l:cmd
+    endfunction
+    
+    function! s:find_file_explorer() abort
+    	" Detect terminal file-explorer
+    	let s:file_explorer = get(g:, 'terminal_file_explorer', '')
+    	if empty(s:file_explorer)
+    		for l:explorer in ['lf', 'hunter', 'ranger', 'vifm']
+    			if executable(l:explorer)
+    				let s:file_explorer = l:explorer
+    				break
+    			endif
+    		endfor
+    	endif
+    	return s:file_explorer
+    endfunction
+
+   " 第一个是默认打开 defx 的方式,当前使用最下面定位到当前文件的方式
+    "nnoremap <silent> <Leader>e
+    "    \ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
+    ""nnoremap <silent> <Leader>F
+    "nnoremap <silent> <F3>
+	"	\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
+    "nnoremap <silent><Leader>n :call <sid>defx_open()<CR>
+    nnoremap <silent><Leader>e :call <sid>defx_open({ 'find_current_file': v:true })<CR>
+    nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
+
     function s:get_project_root() abort
       let l:git_root = ''
       let l:path = expand('%:p:h')
@@ -542,7 +796,7 @@ call plug#end()
     
       return getcwd()
     endfunction
-    
+
     function! s:defx_open(...) abort
       let l:opts = get(a:, 1, {})
       let l:is_file = has_key(l:opts, 'dir') && !isdirectory(l:opts.dir)
@@ -568,72 +822,8 @@ call plug#end()
     
       return execute("norm!\<C-w>=")
     endfunction
-    
-    function! s:defx_context_menu() abort
-      let l:actions = ['new_multiple_files', 'rename', 'copy', 'move', 'paste', 'remove']
-      let l:selection = confirm('Action?', "&New file/directory\n&Rename\n&Copy\n&Move\n&Paste\n&Delete")
-      silent exe 'redraw'
-    
-      return feedkeys(defx#do_action(l:actions[l:selection - 1]))
-    endfunction
-    
-    function s:defx_toggle_tree() abort
-      if defx#is_directory()
-        return defx#do_action('open_or_close_tree')
-      endif
-      return defx#do_action('drop')
-    endfunction
-    
-    function! s:defx_mappings() abort
-      nnoremap <silent><buffer>m :call <sid>defx_context_menu()<CR>
-      nnoremap <silent><buffer><expr> o <sid>defx_toggle_tree()
-      nnoremap <silent><buffer><expr> O defx#do_action('open_tree_recursive')
-      nnoremap <silent><buffer><expr> <CR> <sid>defx_toggle_tree()
-      nnoremap <silent><buffer><expr> <2-LeftMouse> <sid>defx_toggle_tree()
-      nnoremap <silent><buffer><expr> C defx#is_directory() ? defx#do_action('multi', ['open', 'change_vim_cwd']) : 'C'
-      nnoremap <silent><buffer><expr> s defx#do_action('open', 'botright vsplit')
-      nnoremap <silent><buffer><expr> R defx#do_action('redraw')
-      nnoremap <silent><buffer><expr> U defx#do_action('multi', [['cd', '..'], 'change_vim_cwd'])
-      nnoremap <silent><buffer><expr> H defx#do_action('toggle_ignored_files')
-      nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
-      nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
-      nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
-      nnoremap <silent><buffer> J :call search('')<CR>
-      nnoremap <silent><buffer> K :call search('', 'b')<CR>
-      nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
-      nnoremap <silent><buffer><expr> q defx#do_action('quit')
-      silent exe 'nnoremap <silent><buffer><expr> tt defx#do_action("toggle_columns", "'.s:default_columns.':size:time")'
-    endfunction
-    
-    " Defx git
-    let g:defx_git#indicators = {
-      \ 'Modified'  : '✹',
-      \ 'Staged'    : '✚',
-      \ 'Untracked' : '✭',
-      \ 'Renamed'   : '➜',
-      \ 'Unmerged'  : '═',
-      \ 'Ignored'   : '☒',
-      \ 'Deleted'   : '✖',
-      \ 'Unknown'   : '?'
-      \ }
-    let g:defx_git#column_length = 0
-    hi def link Defx_filename_directory NERDTreeDirSlash
-    hi def link Defx_git_Modified Special
-    hi def link Defx_git_Staged Function
-    hi def link Defx_git_Renamed Title
-    hi def link Defx_git_Unmerged Label
-    hi def link Defx_git_Untracked Tag
-    hi def link Defx_git_Ignored Comment
-    
-    " Defx icons
-    " Requires nerd-font, install at https://github.com/ryanoasis/nerd-fonts or
-    " brew cask install font-hack-nerd-font
-    " Then set non-ascii font to Driod sans mono for powerline in iTerm2
-    " disbale syntax highlighting to prevent performence issue
-    let g:defx_icons_enable_syntax_highlight = 1
 
-
-" FZF
+" FZF ----------------------------------------
     let $FZF_DEFAULT_COMMAND = 'rg --files --follow -g "!{.git,node_modules}/*" 2>/dev/null'
     let g:fzf_layout = { 'down': '~25%' }
     let g:fzf_buffers_jump = 1
@@ -652,7 +842,7 @@ call plug#end()
     nmap <silent> <leader>s :GFiles --cached --others --exclude-standard<cr>
     "nmap <silent> <leader>r :Buffers<cr>
     nmap ; :Buffers<cr>
-    nmap <silent> <leader>e :FZF<cr>
+    "nmap <silent> <leader>e :FZF<cr>
     nmap <leader><tab> <plug>(fzf-maps-n)
     xmap <leader><tab> <plug>(fzf-maps-x)
     omap <leader><tab> <plug>(fzf-maps-o)
