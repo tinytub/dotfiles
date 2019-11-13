@@ -1,10 +1,7 @@
 {
-  "suggest.enablePreview": true,
   "codeLens.enable": true,
-  "git.addedSign.text": "┃",
-  "git.removedSign.text": "┃",
-  "git.changedSign.text": "┃",
-  "git.changeRemovedSign.text": "┃",
+  "coc.preferences.formatOnSaveFiletypes": ["typescript", "javascript", "typescript.tsx", "typescriptreact", "javascriptreact"],
+  "suggest.enablePreview": true,
   "suggest.maxPreviewWidth": 100,
   "diagnostic.checkCurrentLine": true,
   "diagnostic.maxWindowHeight": 20,
@@ -12,9 +9,42 @@
   "diagnostic.warningSign": "⚠",
   "diagnostic.infoSign": "●",
   "diagnostic.hintSign": "○",
+  "diagnostic.displayByAle": false,
+  "diagnostic.refreshOnInsertMode": true,
+  //git
+  "git.enableGutters": true,
+  "git.branchCharacter":"\uf408",
   "git.addGBlameToBufferVar": true,
-  "coc.preferences.formatOnSaveFiletypes": ["typescript", "javascript", "typescript.tsx", "typescriptreact", "javascriptreact"],
-  "diagnostic.displayByAle": true, 
+  "git.addGBlameToVirtualText": true,
+  "git.virtualTextPrefix": " ❯❯❯ ",
+  "git.addedSign.hlGroup": "GitGutterAdd",
+  "git.changedSign.hlGroup": "GitGutterChange",
+  "git.removedSign.hlGroup": "GitGutterDelete",
+  "git.topRemovedSign.hlGroup": "GitGutterDelete",
+  "git.changeRemovedSign.hlGroup": "GitGutterChangeDelete",
+  "git.addedSign.text":"▎",
+  "git.changedSign.text":"▎",
+  "git.removedSign.text":"▏",
+  "git.topRemovedSign.text": "▔",
+  "git.changeRemovedSign.text": "▋",
+  //Snippet
+  "coc.preferences.snippetStatusText": "Ⓢ ",
+  //CocList
+  "list.source.files.defaultOptions": ["--auto-preview"],
+  "list.source.outline.defaultOptions": ["--auto-preview"],
+  //imselect
+  "imselect.enableStatusItem": false,
+  //sessions
+  "session.directory": "~/.cache/vim/session",
+  // coc-explorer
+  "explorer.icon.expanded": "▾",
+  "explorer.icon.shrinked": "▸",
+  "explorer.width": 30,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.keyMappings": {
+      "h" : "gotoParent",
+      "l" : "expandOrShrink"
+  },
   "languageserver": {
     "bash": {
       "command": "bash-language-server",
@@ -28,7 +58,8 @@
       "filetypes": ["go"],
       "initializationOptions": {
         "usePlaceholders": true,
-        "completeUnimported": true
+        "completeUnimported": true,
+        "deepCompletion": true
       }
     }
   }
