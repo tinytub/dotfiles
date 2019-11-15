@@ -1,118 +1,95 @@
-export DOTFILES=$HOME/.dotfiles
-export ZSH=$DOTFILES/zsh
-
+# some config from https://github.com/nicknisi/dotfiles/blob/master/zsh/zshrc.symlink
+export ZSH=$HOME/.oh-my-zsh
 # display how long all tasks over 10 seconds take
 export REPORTTIME=10
 
-[[ -e ~/.terminfo ]] && export TERMINFO_DIRS=~/.terminfo:/usr/share/terminfo
+#source "$HOME/vim/zsh/completion.zsh"
+source "$HOME/vim/zsh/config.zsh"
+source "$HOME/vim/zsh/tmux.zsh"
 
-# define the code directory
-# This is where my code exists and where I want the `c` autocomplete to work from exclusively
-if [[ -d ~/code ]]; then
-    export CODE_DIR=~/code
-fi
+# GVM
+[[ -s "/Users/zhaopeng18/.gvm/scripts/gvm" ]] && source "/Users/zhaopeng18/.gvm/scripts/gvm"
 
-# source all .zsh files inside of the zsh/ directory
-source "$ZSH/utils.zsh"
-source "$ZSH/prompt.zsh"
-source "$ZSH/aliases.zsh"
-source "$ZSH/colors.zsh"
-source "$ZSH/completion.zsh"
-source "$ZSH/config.zsh"
-source "$ZSH/functions.zsh"
-source "$ZSH/git.zsh"
-source "$ZSH/tmux.zsh"
-source "$ZSH/z.zsh"
+ZSH_THEME="fino"
+plugins=(git python golang osx)
+source $ZSH/oh-my-zsh.sh
+#source ~/.bash_profile
+source ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
+#export GOPATH="/home/zhaopeng/goworks"
+#export GOROOT="/usr/local/go"
+export GOPATH="/Users/zhaopeng18/Documents/local_projects/goworks"
+#export GOROOT="/usr/local/go"
+export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+#export GOPATH="/home/zhaopeng/goworks1.8.3/src/jd.com/jstack-thirdparty-libs"
+#export GOROOT="/home/zhaopeng/go1.8.3"
 
-if [[ -a ~/.localrc ]]; then
-    source ~/.localrc
-fi
+export PATH=${JAVA_HOME}/bin:$PATH
+export PATH="/usr/local/opt/ruby/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
 
-
-# initialize autocomplete
-autoload -U compinit add-zsh-hook
-compinit
-
-for config ($ZSH/**/*completion.sh) source $config
-
-export EDITOR='nvim'
-export GIT_EDITOR='nvim'
-
-export PATH=/usr/local/bin:$PATH
-
-# add /usr/local/sbin
-if [[ -d /usr/local/sbin ]]; then
-    export PATH=/usr/local/sbin:$PATH
-fi
+#autossh
+export AUTOSSH_PIDFILE=~/autossh.pid
+export AUTOSSH_POLL=60
+export AUTOSSH_FIRST_POLL=30
+export AUTOSSH_GATETIME=0
+export AUTOSSH_DEBUG=1
+alias vim="nvim"
 
 # adding path directory for custom scripts
-export PATH=$DOTFILES/bin:$PATH
 
-# check for custom bin directory and add to path
-if [[ -d ~/bin ]]; then
-    export PATH=~/bin:$PATH
-fi
+#if [ -z "$TMUX" ]; then
+#    #export TERM=xterm-256color-italic
+#    export TERM=xterm-256color
+#else
+#    export TERM=tmux-256color-italic
+#    #export TERM=xterm-color
+#fi
 
-# add a config file for ripgrep
-export RIPGREP_CONFIG_PATH="$HOME/.rgrc"
-
-if [ -z "$TMUX" ]; then
-    export TERM=xterm-256color-italic
-else
-    export TERM=tmux-256color-italic
-fi
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-# Base16 shell setup
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
-if [ -z ${RELOAD}  ]; then
-    export ZPLUG_HOME=/usr/local/opt/zplug
-    source $ZPLUG_HOME/init.zsh
-    zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-    zplug 'zsh-users/zsh-syntax-highlighting', defer:2
-    zplug 'zsh-users/zsh-autosuggestions'
-    export NVM_AUTO_USE=true
-    # export NVM_NO_USE=true
-    zplug 'lukechilds/zsh-nvm'
-
-    if ! zplug check; then
-        printf "Install? [y/N]: "
-        if read -q; then
-            echo; zplug install
-        fi
-    fi
-
-    zplug load
-fi
-# alias git to hub
-if type hub > /dev/null 2>&1; then
-    eval "$(hub alias -s)"
-fi
-
-# move to next word with ctrl-F
-bindkey -M viins "^F" vi-forward-word
-# Move to end of line with ctrl-E
-bindkey -M viins "^E" vi-add-eol
-
-# add color to man pages
-export MANROFFOPT='-c'
-export LESS_TERMCAP_mb=$(tput bold; tput setaf 2)
-export LESS_TERMCAP_md=$(tput bold; tput setaf 6)
-export LESS_TERMCAP_me=$(tput sgr0)
-export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4)
-export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
-export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 7)
-export LESS_TERMCAP_ue=$(tput rmul; tput sgr0)
-export LESS_TERMCAP_mr=$(tput rev)
-export LESS_TERMCAP_mh=$(tput dim)
-
-# add shellcheck config
-# For a full list of errors, refer to
-# https://github.com/koalaman/shellcheck/wiki
+#if [ -e /usr/share/terminfo/x/xterm-256color ]; then
+#    export TERM='xterm-256color'
+#else
+#    export TERM='xterm-color'
+#fi
 #
-# export SHELLCHECK_OPTS=""
+#export EDITOR="vim"
+
+function start_tuproxy {
+#    export https_proxy=http://127.0.0.1:1087;export http_proxy=http://127.0.0.1:1087
+    export https_proxy=http://127.0.0.1:7890;export http_proxy=http://127.0.0.1:7890;export all_proxy=socks5://127.0.0.1:7891
+}
+
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+#export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+#export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"' 2> /dev/null
+#export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+
+# tmux
+if [[ -d $HOME/vim/bin ]]; then
+    export PATH=$HOME/vim/bin:$PATH
+fi
+
+#alias ta='tmux attach'
+#alias tls='tmux ls'
+#alias tat='tmux attach -t'
+#alias tns='tmux new-session -s'
+
+
+#test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+#if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
+
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+#if [ -z "$TMUX" ]
+#then
+#    tmux attach -t TMUX || tmux new -s TMUX
+#fi
+
