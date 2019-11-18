@@ -134,11 +134,11 @@
     endif
 
     " 更好的 backup, swap 和 undos storage
-    set directory=~/.vim/dirs/tmp     " directory to place swap files in
+    set directory=$VARPATH/tmp     " directory to place swap files in
     set backup                        " make backup files
-    set backupdir=~/.vim/dirs/backups " where to put backup files
+    set backupdir=$VARPATH/backups " where to put backup files
     set undofile                      " persistent undos - undo after you re-open the file
-    set undodir=~/.vim/dirs/undos
+    set undodir=$VARPATH/undos
 
     " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
     if has("autocmd")
@@ -165,7 +165,7 @@
     endif
 
     " store yankring history file there too
-    let g:yankring_history_dir = '~/.vim/dirs/'
+    let g:yankring_history_dir = $VARPATH.'/dirs/'
 
     " create needed directories if they don't exist
     if !isdirectory(&backupdir)

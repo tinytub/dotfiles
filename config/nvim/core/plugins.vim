@@ -19,7 +19,8 @@ call plug#begin('~/.config/nvim/plugged')
     " Better file browser
     "Plug 'scrooloose/nerdtree'
     "Plug 'Xuyuanp/nerdtree-git-plugin'
-    "Plug 'ryanoasis/vim-devicons'
+    Plug 'ryanoasis/vim-devicons'
+
     "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 
@@ -101,6 +102,7 @@ call plug#begin('~/.config/nvim/plugged')
     if has("nvim")
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
+        Plug 'Shougo/denite.nvim'
     endif
 call plug#end()
 
@@ -522,42 +524,148 @@ call plug#end()
     endfunction
 
 " FZF ----------------------------------------
-    let $FZF_DEFAULT_COMMAND = 'rg --files --follow -g "!{.git,node_modules}/*" 2>/dev/null'
-    let g:fzf_layout = { 'down': '~25%' }
-    let g:fzf_buffers_jump = 1
-    let g:fzf_tags_command = 'ctags -R'
+""    let $FZF_DEFAULT_COMMAND = 'rg --files --follow -g "!{.git,node_modules}/*" 2>/dev/null'
+""    let g:fzf_layout = { 'down': '~25%' }
+""    let g:fzf_buffers_jump = 1
+""    let g:fzf_tags_command = 'ctags -R'
+""
+""
+""    if isdirectory(".git")
+""        " if in a git project, use :GFiles
+""        nmap <silent> <leader>f :GFiles --cached --others --exclude-standard<cr>
+""    else
+""        " otherwise, use :FZF
+""        nmap <silent> <leader>f :FZF<cr>
+""    endif
+""
+""    "nmap <silent> <leader>s :GFiles?<cr>
+""    nmap <silent> <leader>s :GFiles --cached --others --exclude-standard<cr>
+""    "nmap <silent> <leader>r :Buffers<cr>
+""    nmap ; :Buffers<cr>
+""    "nmap <silent> <leader>e :FZF<cr>
+""    nmap <leader><tab> <plug>(fzf-maps-n)
+""    xmap <leader><tab> <plug>(fzf-maps-x)
+""    omap <leader><tab> <plug>(fzf-maps-o)
+""
+""    command! FZFMru call fzf#run({
+""    \  'source':  v:oldfiles,
+""    \  'sink':    'e',
+""    \  'options': '-m -x +s',
+""    \  'down':    '40%'})
+""
+""    command! -bang -nargs=* Find call fzf#vim#grep(
+""        \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
+""        \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
+""    command! -bang -nargs=? -complete=dir Files
+""        \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+""    command! -bang -nargs=? -complete=dir GitFiles
+""        \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
 
-
-    if isdirectory(".git")
-        " if in a git project, use :GFiles
-        nmap <silent> <leader>f :GFiles --cached --others --exclude-standard<cr>
-    else
-        " otherwise, use :FZF
-        nmap <silent> <leader>f :FZF<cr>
+    "autocmd! FileType fzf
+    "autocmd  FileType fzf set laststatus=0 noshowmode noruler
+      "\| autocmd BufLeave <buffer> set laststatus=0 showmode ruler
+      "
+    let g:fzf_action = {
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit' }
+    
+    " Customize fzf colors to match your color scheme
+    let g:fzf_colors =
+    \ { 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', '#5f5f87'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] }
+    
+    let g:fzf_commits_log_options = '--graph --color=always
+      \ --format="%C(yellow)%h%C(red)%d%C(reset)
+      \ - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
+    
+    "let $FZF_DEFAULT_COMMAND = 'ag --hidden -l -g ""'
+    " ripgrep
+    if executable('rg')
+      let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+      set grepprg=rg\ --vimgrep
+      command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
     endif
-
-    "nmap <silent> <leader>s :GFiles?<cr>
-    nmap <silent> <leader>s :GFiles --cached --others --exclude-standard<cr>
-    "nmap <silent> <leader>r :Buffers<cr>
-    nmap ; :Buffers<cr>
-    "nmap <silent> <leader>e :FZF<cr>
-    nmap <leader><tab> <plug>(fzf-maps-n)
-    xmap <leader><tab> <plug>(fzf-maps-x)
-    omap <leader><tab> <plug>(fzf-maps-o)
-
-    command! FZFMru call fzf#run({
-    \  'source':  v:oldfiles,
-    \  'sink':    'e',
-    \  'options': '-m -x +s',
-    \  'down':    '40%'})
-
-    command! -bang -nargs=* Find call fzf#vim#grep(
-        \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
-        \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
-    command! -bang -nargs=? -complete=dir Files
-        \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
-    command! -bang -nargs=? -complete=dir GitFiles
-        \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
+    
+    let $FZF_DEFAULT_OPTS='--layout=reverse'
+    let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+    
+    function! FloatingFZF()
+      let buf = nvim_create_buf(v:false, v:true)
+      call setbufvar(buf, 'number', 'no')
+    
+      let height = float2nr(&lines/2)
+      let width = float2nr(&columns - (&columns * 2 / 10))
+      "let width = &columns
+      let row = float2nr(&lines / 3)
+      let col = float2nr((&columns - width) / 3)
+    
+      let opts = {
+            \ 'relative': 'editor',
+            \ 'row': row,
+            \ 'col': col,
+            \ 'width': width,
+            \ 'height':height,
+            \ }
+      let win =  nvim_open_win(buf, v:true, opts)
+      call setwinvar(win, '&number', 0)
+      call setwinvar(win, '&relativenumber', 0)
+    endfunction
+    
+    " Files + devicons
+    function! Fzf_dev()
+    
+    let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {1..}"'
+    
+      function! s:files()
+        let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+        "return s:prepend_icon(l:files)
+        return l:files
+      endfunction
+    
+      function! s:prepend_icon(candidates)
+        let result = []
+        for candidate in a:candidates
+          let filename = fnamemodify(candidate, ':p:t')
+          let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
+          call add(result, printf("%s %s", icon, candidate))
+        endfor
+    
+        return result
+      endfunction
+    
+      function! s:edit_file(items)
+        let items = a:items
+        let i = 1
+        let ln = len(items)
+        while i < ln
+          let item = items[i]
+          let parts = split(item, ' ')
+          let file_path = get(parts, 1, '')
+          let items[i] = file_path
+          let i += 1
+        endwhile
+        call s:Sink(items)
+      endfunction
+    
+      let opts = fzf#wrap({})
+      let opts.source = <sid>files()
+      let s:Sink = opts['sink*']
+      let opts['sink*'] = function('s:edit_file')
+      let opts.options .= l:fzf_files_options
+      call fzf#run(opts)
+    endfunction
 
 
 " ALE
@@ -633,6 +741,10 @@ call plug#end()
     endfunction
 
     nnoremap <silent> <F5> :call AleListToggle()<CR>
+
+" vim-devicons
+    let g:webdevicons_enable = 1
+    let g:webdevicons_enable_denite = 1
 
 "" deoplete 相关配置
 "    " ---
@@ -1059,3 +1171,203 @@ call plug#end()
     autocmd User Startified setlocal cursorline
     nmap <leader>st :Startify<cr>
 
+" denite config -----------------------------------------------
+    call denite#custom#option('_', {
+    		\ 'cached_filter': v:true,
+    		\ 'cursor_shape': v:true,
+    		\ 'cursor_wrap': v:true,
+    		\ 'highlight_filter_background': 'DeniteFilter',
+    		\ 'highlight_matched_char': 'Underlined',
+    		\ 'matchers': 'matcher/fuzzy',
+    		\ 'prompt': 'λ ',
+    		\ 'split': 'floating',
+    		\ 'start_filter': v:false,
+    		\ 'statusline': v:false,
+    		\ })
+
+    function! s:denite_detect_size() abort
+        let s:denite_winheight = 20
+        let s:denite_winrow = &lines > s:denite_winheight ? (&lines - s:denite_winheight) / 2 : 0
+        let s:denite_winwidth = &columns > 240 ? &columns / 2 : 120
+        let s:denite_wincol = &columns > s:denite_winwidth ? (&columns - s:denite_winwidth) / 2 : 0
+        call denite#custom#option('_', {
+             \ 'wincol': s:denite_wincol,
+             \ 'winheight': s:denite_winheight,
+             \ 'winrow': s:denite_winrow,
+             \ 'winwidth': s:denite_winwidth,
+             \ })
+      endfunction
+       augroup denite-detect-size
+        autocmd!
+        autocmd VimResized * call <SID>denite_detect_size()
+      augroup END
+      call s:denite_detect_size()
+    
+    
+    call denite#custom#option('search', { 'start_filter': 0, 'no_empty': 1 })
+    call denite#custom#option('list', { 'start_filter': 0 })
+    call denite#custom#option('jump', { 'start_filter': 0 })
+    call denite#custom#option('git', { 'start_filter': 0 })
+    call denite#custom#option('mpc', { 'winheight': 20 })
+    
+    
+    " MATCHERS
+    " Default is 'matcher/fuzzy'
+    call denite#custom#source('tag', 'matchers', ['matcher/substring'])
+    call denite#custom#source('file/rec', 'matchers', ['matcher/fuzzy'])
+    
+    if has('nvim') && &runtimepath =~# '\/cpsm'
+    	call denite#custom#source(
+    		\ 'buffer,file_mru,file/old,file/rec,grep,mpc,line,neoyank',
+    		\ 'matchers', ['matcher/cpsm', 'matcher/fuzzy'])
+    endif
+    
+    
+    " CONVERTERS
+    " Default is none
+    call denite#custom#source(
+    	\ 'buffer,file_mru,file/old,file/rec,directory/rec,directory_mru',
+    	\ 'converters', ['devicons_denite_converter','converter_relative_word'])
+    
+    " FIND and GREP COMMANDS
+    if executable('ag')
+    	" The Silver Searcher
+    	call denite#custom#var('file/rec', 'command',
+    		\ ['ag', '-U', '--hidden', '--follow', '--nocolor', '--nogroup', '-g', ''])
+    
+    	" Setup ignore patterns in your .agignore file!
+    	" https://github.com/ggreer/the_silver_searcher/wiki/Advanced-Usage
+    
+    	call denite#custom#var('grep', 'command', ['ag'])
+    	call denite#custom#var('grep', 'recursive_opts', [])
+    	call denite#custom#var('grep', 'pattern_opt', [])
+    	call denite#custom#var('grep', 'separator', ['--'])
+    	call denite#custom#var('grep', 'final_opts', [])
+    	call denite#custom#var('grep', 'default_opts',
+    		\ [ '--skip-vcs-ignores', '--vimgrep', '--smart-case', '--hidden' ])
+    
+    elseif executable('ack')
+    	" Ack command
+    	call denite#custom#var('grep', 'command', ['ack'])
+    	call denite#custom#var('grep', 'recursive_opts', [])
+    	call denite#custom#var('grep', 'pattern_opt', ['--match'])
+    	call denite#custom#var('grep', 'separator', ['--'])
+    	call denite#custom#var('grep', 'final_opts', [])
+    	call denite#custom#var('grep', 'default_opts',
+    			\ ['--ackrc', $HOME.'/.config/ackrc', '-H',
+    			\ '--nopager', '--nocolor', '--nogroup', '--column'])
+    
+    elseif executable('rg')
+    	" Ripgrep
+      call denite#custom#var('file/rec', 'command',
+            \ ['rg', '--files', '--glob', '!.git'])
+      call denite#custom#var('grep', 'command', ['rg', '--threads', '1'])
+      call denite#custom#var('grep', 'recursive_opts', [])
+      call denite#custom#var('grep', 'final_opts', [])
+      call denite#custom#var('grep', 'separator', ['--'])
+      call denite#custom#var('grep', 'default_opts',
+            \ ['-i', '--vimgrep', '--no-heading'])
+    endif
+    
+    
+    " KEY MAPPINGS
+    autocmd FileType denite call s:denite_settings()
+    function! s:denite_settings() abort
+    	highlight! link CursorLine Visual
+    	nnoremap <silent><buffer><expr> <CR> denite#do_map('do_action')
+    	nnoremap <silent><buffer><expr> i    denite#do_map('open_filter_buffer')
+    	nnoremap <silent><buffer><expr> d    denite#do_map('do_action', 'delete')
+    	nnoremap <silent><buffer><expr> p    denite#do_map('do_action', 'preview')
+    	nnoremap <silent><buffer><expr> st   denite#do_map('do_action', 'tabopen')
+    	nnoremap <silent><buffer><expr> sv   denite#do_map('do_action', 'vsplit')
+    	nnoremap <silent><buffer><expr> si   denite#do_map('do_action', 'split')
+    	nnoremap <silent><buffer><expr> '    denite#do_map('quick_move')
+    	nnoremap <silent><buffer><expr> q    denite#do_map('quit')
+    	nnoremap <silent><buffer><expr> r    denite#do_map('redraw')
+    	nnoremap <silent><buffer><expr> yy   denite#do_map('do_action', 'yank')
+    	nnoremap <silent><buffer><expr> <Esc>   denite#do_map('quit')
+    	nnoremap <silent><buffer><expr> <C-u>   denite#do_map('restore_sources')
+    	nnoremap <silent><buffer><expr> <C-f>   denite#do_map('do_action', 'defx')
+    	nnoremap <silent><buffer><expr> <C-x>   denite#do_map('choose_action')
+    	nnoremap <silent><buffer><expr><nowait> <Space> denite#do_map('toggle_select').'j'
+    endfunction
+    
+    autocmd FileType denite-filter call s:denite_filter_settings()
+    function! s:denite_filter_settings() abort
+    	nnoremap <silent><buffer><expr> <Esc>  denite#do_map('quit')
+    	" inoremap <silent><buffer><expr> <Esc>  denite#do_map('quit')
+    	nnoremap <silent><buffer><expr> q      denite#do_map('quit')
+    	imap <silent><buffer> <C-c> <Plug>(denite_filter_quit)
+    	"inoremap <silent><buffer><expr> <C-c>  denite#do_map('quit')
+    	nnoremap <silent><buffer><expr> <C-c>  denite#do_map('quit')
+    	inoremap <silent><buffer>       kk     <Esc><C-w>p
+    	nnoremap <silent><buffer>       kk     <C-w>p
+    	inoremap <silent><buffer>       jj     <Esc><C-w>p
+    	nnoremap <silent><buffer>       jj     <C-w>p
+    endfunction
+" denite config end -----------------------------------
+" denite_menu config ---------------------------------
+    let s:menus = {}
+    
+    let s:menus.dein = { 'description': '⚔️  Plugin management' }
+    let s:menus.dein.command_candidates = [
+      \   ['🐬 Dein: Plugins update       🔸', 'call dein#update()'],
+      \   ['🐬 Dein: Plugins List         🔸', 'Denite dein'],
+      \   ['🐬 Dein: RecacheRuntimePath   🔸', 'call dein#recache_runtimepath()'],
+      \   ['🐬 Dein: Update log           🔸', 'echo dein#get_updates_log()'],
+      \   ['🐬 Dein: Log                  🔸', 'echo dein#get_log()'],
+      \ ]
+    
+    let s:menus.project = { 'description': '🛠  Project & Structure' }
+    let s:menus.project.command_candidates = [
+      \   ['🐳 File Explorer        🔸<Leader>e',        'Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>'],
+      \   ['🐳 Outline              🔸<LocalLeader>t',   'TagbarToggle'],
+      \   ['🐳 Git Status           🔸<LocalLeader>gs',  'Denite gitstatus'],
+      \   ['🐳 Mundo Tree           🔸<Leader>m',  'MundoToggle'],
+      \ ]
+    
+    let s:menus.files = { 'description': '📁 File tools' }
+    let s:menus.files.command_candidates = [
+      \   ['📂 Denite: Find in files…    🔹 ',  'Denite grep:.'],
+      \   ['📂 Denite: Find files        🔹 ',  'Denite file/rec'],
+      \   ['📂 Denite: Buffers           🔹 ',  'Denite buffer'],
+      \   ['📂 Denite: MRU               🔹 ',  'Denite file/old'],
+      \   ['📂 Denite: Line              🔹 ',  'Denite line'],
+      \ ]
+    
+    let s:menus.tools = { 'description': '⚙️  Dev Tools' }
+    let s:menus.tools.command_candidates = [
+      \   ['🐠 Git commands       🔹', 'Git'],
+      \   ['🐠 Git log            🔹', 'Denite gitlog:all'],
+      \   ['🐠 Goyo               🔹', 'Goyo'],
+      \   ['🐠 Tagbar             🔹', 'TagbarToggle'],
+      \   ['🐠 File explorer      🔹', 'Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>'],
+      \ ]
+    
+    let s:menus.config = { 'description': '🔧 Zsh Tmux Configuration' }
+    let s:menus.config.file_candidates = [
+      \   ['🐠 Zsh Configurationfile            🔸', '~/.zshrc'],
+      \   ['🐠 Tmux Configurationfile           🔸', '~/.tmux.conf'],
+      \ ]
+    
+    let s:menus.thinkvim = {'description': '💎 ThinkVim Configuration files'}
+    let s:menus.thinkvim.file_candidates = [
+      \   ['🐠 MainVimrc          settings: vimrc               🔹', $VIMPATH.'/core/vimrc'],
+      \   ['🐠 Initial            settings: init.vim            🔹', $VIMPATH.'/core/init.vim'],
+      \   ['🐠 General            settings: general.vim         🔹', $VIMPATH.'/core/general.vim'],
+      \   ['🐠 DeinConfig         settings: deinrc.vim          🔹', $VIMPATH.'/core/deinrc.vim'],
+      \   ['🐠 FileTypes          settings: filetype.vim        🔹', $VIMPATH.'/core/filetype.vim'],
+      \   ['🐠 Installed       LoadPlugins: plugins.yaml        🔹', $VIMPATH.'/core/dein/plugins.yaml'],
+      \   ['🐠 Installed      LocalPlugins: local_plugins.yaml  🔹', $VIMPATH.'/core/dein/local_plugins.yaml'],
+      \   ['🐠 Global   Key    Vimmappings: mappings.vim        🔹', $VIMPATH.'/core/mappings.vim'],
+      \   ['🐠 Global   Key Pluginmappings: Pluginmappings      🔹', $VIMPATH.'/core/plugins/allkey.vim'],
+      \ ]
+    
+    call denite#custom#var('menu', 'menus', s:menus)
+    
+    "let s:menus.sessions = { 'description': 'Sessions' }
+    "let s:menus.sessions.command_candidates = [
+      "\   ['▶ Restore session │ ;s', 'Denite session'],
+      "\   ['▶ Save session…   │', 'Denite session/new'],
+      "\ ]
+" denite_menu config end -------------------------------------
