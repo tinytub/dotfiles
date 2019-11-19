@@ -9,3 +9,13 @@ config/nvim/plugged
 config/nvim/autoload/plug.vim
 vim/vim.symlink/spell/
 vim/vim.symlink/plugged/
+
+  
+dein/.DS_Store
+colors/
+coc-settings.json
+tags
+
+./coc-settings.json
+./*.json
+*.json
