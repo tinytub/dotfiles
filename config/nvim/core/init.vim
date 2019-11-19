@@ -61,22 +61,22 @@ call s:main()
 "" AutoGroups -------------------
     " 虽然不知道做什么用的,但是觉得挺厉害的...
     " file type specific settings
-    augroup configgroup
-        autocmd!
-
-        " automatically resize panes on resize
-        autocmd VimResized * exe 'normal! \<c-w>='
-        autocmd BufWritePost .vimrc,.vimrc.local,init.vim source %
-        autocmd BufWritePost .vimrc.local source %
-        " save all files on focus lost, ignoring warnings about untitled buffers
-        autocmd FocusLost * silent! wa
-
-        " make quickfix windows take all the lower section of the screen
-        " when there are multiple windows open
-        autocmd FileType qf wincmd J
-        autocmd FileType qf nmap <buffer> q :q<cr>
-    augroup END
-""
+"    augroup configgroup
+"        autocmd!
+"
+"        " automatically resize panes on resize
+"        autocmd VimResized * exe 'normal! \<c-w>='
+"        autocmd BufWritePost .vimrc,.vimrc.local,init.vim source %
+"        autocmd BufWritePost .vimrc.local source %
+"        " save all files on focus lost, ignoring warnings about untitled buffers
+"        autocmd FocusLost * silent! wa
+"
+"        " make quickfix windows take all the lower section of the screen
+"        " when there are multiple windows open
+"        autocmd FileType qf wincmd J
+"        autocmd FileType qf nmap <buffer> q :q<cr>
+"    augroup END
+"
 
 augroup CloseLoclistWindowGroup
     autocmd!
