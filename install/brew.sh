@@ -35,6 +35,7 @@ formulas=(
     git-standup
     entr
     yarn
+    --HEAD universal-ctags/universal-ctags/universal-ctags
 )
 
 for formula in "${formulas[@]}"; do

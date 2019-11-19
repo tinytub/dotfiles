@@ -33,6 +33,10 @@ call plug#begin('~/.config/nvim/plugged')
 
     " Class/module 浏览器
     Plug 'majutsushi/tagbar'
+    " tag 管理工具
+    " 可以同vista, tagbar 搭配使用
+    Plug 'ludovicchabant/vim-gutentags'
+
     " Zen coding
     Plug 'mattn/emmet-vim'
     " 可能是最好的 git 继承插件
@@ -42,6 +46,9 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'vim-airline/vim-airline-themes'
     " Surround
     Plug 'tpope/vim-surround'
+
+    Plug 'liuchengxu/vista.vim'
+    "Plug 'Yggdroot/indentLine' 
 
     " Better autocompletion 暂时先使用 coc
     "if has('nvim')
@@ -115,6 +122,38 @@ call plug#end()
 
 " Polyglot
     let g:polyglot_disabled = ['go']
+
+" vista
+let g:vista#renderer#enable_icon = 1
+let g:vista_default_executive = 'ctags'
+let g:vista_fzf_preview = ['right:50%']
+
+let g:vista_executive_for = {
+  \ 'go': 'ctags',
+  \ 'javascript': 'coc',
+  \ 'javascript.jsx': 'coc',
+  \ 'python': 'ctags',
+  \ }
+
+" gutentags
+let g:gutentags_cache_dir = $VARPATH . '/tags'
+let g:gutentags_project_root = ['.root', '.git', '.svn', '.hg', '.project','go.mod','/usr/local']
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_new = 0
+let g:gutentags_exclude_filetypes = [ 'defx', 'denite', 'vista', 'magit' ]
+let g:gutentags_ctags_extra_args = ['--output-format=e-ctags']
+let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.less', '*.sass', '*.go', '*.dart', 'node_modules', 'dist', 'vendor']
+
+
+" indentline
+""    let g:indentline_enabled = 1
+""    let g:indentline_char='┆'
+""    let g:indentLine_fileTypeExclude = ['defx', 'denite','startify','tagbar','vista_kind','vista']
+""    let g:indentLine_concealcursor = 'niv'
+""    let g:indentLine_color_term = 96
+""    let g:indentLine_color_gui= '#725972'
+""    let g:indentLine_showFirstIndentLevel =1
 
 " Tagbar -----------------------------
 " 可以改成 fzf+vista 或者直接使用 denite
@@ -853,16 +892,6 @@ call plug#end()
         hi! BuffetTab cterm=NONE ctermbg=66 ctermfg=8 guibg=#458588 guifg=#000000
         hi! BuffetActiveBuffer cterm=NONE ctermbg=10 ctermfg=239 guibg=#999999 guifg=#504945
     endfunction
-    nmap <leader>1 <Plug>BuffetSwitch(1)
-    nmap <leader>2 <Plug>BuffetSwitch(2)
-    nmap <leader>3 <Plug>BuffetSwitch(3)
-    nmap <leader>4 <Plug>BuffetSwitch(4)
-    nmap <leader>5 <Plug>BuffetSwitch(5)
-    nmap <leader>6 <Plug>BuffetSwitch(6)
-    nmap <leader>7 <Plug>BuffetSwitch(7)
-    nmap <leader>8 <Plug>BuffetSwitch(8)
-    nmap <leader>9 <Plug>BuffetSwitch(9)
-    nmap <leader>0 <Plug>BuffetSwitch(10)
 
 " Signify ------------------------------
 " 通过 coc 控制
