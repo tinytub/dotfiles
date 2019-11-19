@@ -29,7 +29,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'kristijanhusak/defx-icons'
 
     " tab控制,和 ale 有冲突,暂时不用
-    "Plug 'bagrat/vim-buffet'
+    Plug 'bagrat/vim-buffet'
 
     " Class/module 浏览器
     Plug 'majutsushi/tagbar'
@@ -845,24 +845,24 @@ call plug#end()
 
 " buffet
 " 和 ALE 有冲突
-"    let g:buffet_tab_icon = "\uf00a"
-"    function! g:BuffetSetCustomColors()
-"        hi! BuffetCurrentBuffer cterm=NONE ctermbg=106 ctermfg=8 guibg=#b8bb26 guifg=#000000
-"        hi! BuffetTrunc cterm=bold ctermbg=66 ctermfg=8 guibg=#458588 guifg=#000000
-"        hi! BuffetBuffer cterm=NONE ctermbg=239 ctermfg=8 guibg=#504945 guifg=#000000
-"        hi! BuffetTab cterm=NONE ctermbg=66 ctermfg=8 guibg=#458588 guifg=#000000
-"        hi! BuffetActiveBuffer cterm=NONE ctermbg=10 ctermfg=239 guibg=#999999 guifg=#504945
-"    endfunction
-"    nmap <leader>1 <Plug>BuffetSwitch(1)
-"    nmap <leader>2 <Plug>BuffetSwitch(2)
-"    nmap <leader>3 <Plug>BuffetSwitch(3)
-"    nmap <leader>4 <Plug>BuffetSwitch(4)
-"    nmap <leader>5 <Plug>BuffetSwitch(5)
-"    nmap <leader>6 <Plug>BuffetSwitch(6)
-"    nmap <leader>7 <Plug>BuffetSwitch(7)
-"    nmap <leader>8 <Plug>BuffetSwitch(8)
-"    nmap <leader>9 <Plug>BuffetSwitch(9)
-"    nmap <leader>0 <Plug>BuffetSwitch(10)
+    let g:buffet_tab_icon = "\uf00a"
+    function! g:BuffetSetCustomColors()
+        hi! BuffetCurrentBuffer cterm=NONE ctermbg=106 ctermfg=8 guibg=#b8bb26 guifg=#000000
+        hi! BuffetTrunc cterm=bold ctermbg=66 ctermfg=8 guibg=#458588 guifg=#000000
+        hi! BuffetBuffer cterm=NONE ctermbg=239 ctermfg=8 guibg=#504945 guifg=#000000
+        hi! BuffetTab cterm=NONE ctermbg=66 ctermfg=8 guibg=#458588 guifg=#000000
+        hi! BuffetActiveBuffer cterm=NONE ctermbg=10 ctermfg=239 guibg=#999999 guifg=#504945
+    endfunction
+    nmap <leader>1 <Plug>BuffetSwitch(1)
+    nmap <leader>2 <Plug>BuffetSwitch(2)
+    nmap <leader>3 <Plug>BuffetSwitch(3)
+    nmap <leader>4 <Plug>BuffetSwitch(4)
+    nmap <leader>5 <Plug>BuffetSwitch(5)
+    nmap <leader>6 <Plug>BuffetSwitch(6)
+    nmap <leader>7 <Plug>BuffetSwitch(7)
+    nmap <leader>8 <Plug>BuffetSwitch(8)
+    nmap <leader>9 <Plug>BuffetSwitch(9)
+    nmap <leader>0 <Plug>BuffetSwitch(10)
 
 " Signify ------------------------------
 " 通过 coc 控制
@@ -980,6 +980,7 @@ call plug#end()
 
         "remap keys for gotos
         nmap <silent> gd <Plug>(coc-definition)
+        "nmap <silent> gd :call CocAction('jumpDefinition', 'tab drop')<CR>
         nmap <silent> gy <Plug>(coc-type-definition)
         nmap <silent> gi <Plug>(coc-implementation)
         nmap <silent> gr <Plug>(coc-references)
@@ -1033,6 +1034,7 @@ call plug#end()
         "nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
         let g:coc_global_extensions = [
+                \ 'coc-go',
                 \ 'coc-css',
                 \ 'coc-json',
                 \ 'coc-git',
@@ -1050,8 +1052,8 @@ call plug#end()
       "let g:go_autodetect_gopath = 1
       "let g:go_list_type = "quickfix"
       "let g:go_def_mode = 'guru'
-      let g:go_def_mode = 'gopls'
-      let g:go_info_mode = 'gopls'
+      "let g:go_def_mode = 'gopls'
+      "let g:go_info_mode = 'gopls'
       "let g:go_def_mode = 'godef'
       let g:go_def_reuse_buffer = 1
 
@@ -1105,7 +1107,7 @@ call plug#end()
       "autocmd FileType go nmap <Leader>i <Plug>(go-info)
       "autocmd FileType go nmap <Leader>s <Plug>(go-implements)
       autocmd FileType go nmap <Leader>c <Plug>(go-coverage)
-      autocmd FileType go nmap <Leadee <Plug>(go-rename)
+      autocmd FileType go nmap <Leader>re <Plug>(go-rename)
       autocmd FileType go nmap <Leader>gi <Plug>(go-imports)
       autocmd FileType go nmap <Leader>gI <Plug>(go-install)
       "autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
@@ -1113,7 +1115,7 @@ call plug#end()
       autocmd FileType go nmap <Leader>gb <Plug>(go-doc-browser)
       autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
       autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-      autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
+      "autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
       autocmd FileType go set nocursorcolumn
     augroup END
 
@@ -1362,9 +1364,7 @@ call plug#end()
       \   ['🐠 Global   Key    Vimmappings: mappings.vim        🔹', $VIMPATH.'/core/mappings.vim'],
       \   ['🐠 Global   Key Pluginmappings: Pluginmappings      🔹', $VIMPATH.'/core/plugins/allkey.vim'],
       \ ]
-    
     call denite#custom#var('menu', 'menus', s:menus)
-    
     "let s:menus.sessions = { 'description': 'Sessions' }
     "let s:menus.sessions.command_candidates = [
       "\   ['▶ Restore session │ ;s', 'Denite session'],

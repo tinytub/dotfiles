@@ -45,22 +45,28 @@
       "h" : "gotoParent",
       "l" : "expandOrShrink"
   },
+  "go.goplsOptions": {
+      "usePlaceholders": true,
+      "completeUnimported": true,
+      "deepCompletion": true
+  },
   "languageserver": {
     "bash": {
       "command": "bash-language-server",
       "args": ["start"],
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
-    },
-    "golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["go"],
-      "initializationOptions": {
-        "usePlaceholders": true,
-        "completeUnimported": true,
-        "deepCompletion": true
-      }
     }
+    //    "golang": {
+    //      "command": "gopls",
+    //      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+    //      "filetypes": ["go"],
+    //      "initializationOptions": {
+    //        "usePlaceholders": true,
+    //        "completeUnimported": true,
+    //        "deepCompletion": true,
+    //        "buildOnSave": false
+    //      }
+    //    }
   }
 }
