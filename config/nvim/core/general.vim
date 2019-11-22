@@ -5,11 +5,11 @@
     set nocompatible
 
     " clipboard 配置
-    if has('unnamedplus')
-      set clipboard=unnamed
-      "set clipboard^=unnamed
-      "set clipboard^=unnamedplus
-    endif
+    "if has('unnamedplus')
+    "  set clipboard=unnamed
+    "  "set clipboard^=unnamed
+    "  "set clipboard^=unnamedplus
+    "endif
 
     " tabs 及 空格控制
     set expandtab
@@ -32,6 +32,9 @@
 
     set splitright
     set splitbelow
+
+    "最大可用内存
+    set mmp=5000
 
     "syntax sync minlines=128 " 设置配色行数
     "set synmaxcol=128
@@ -57,6 +60,9 @@
     " 无备份文件
     set nobackup
     set nowritebackup
+
+    set bsdir=buffer
+
     " 其他设置
     "set langmenu=zh_CN.UTF-8
     set langmenu=en_US-UTF-8
@@ -65,7 +71,11 @@
     "set wrapmargin=8 " wrap lines when coming within n characters from side
     set whichwrap+=<,>,h,l,[,]
     set background=dark
-    set encoding=UTF-8
+
+    if has('vim_starting')
+    	set encoding=UTF-8
+    	scriptencoding UTF-8
+    endif
 
     set backspace=2 "退格数量,和其他 ide 适配
     set backspace=indent,eol,start
@@ -84,6 +94,34 @@
 
     " 永远显示状态栏
     set laststatus=2
+    set showtabline=2
+    "set statusline=-        " hide file name in statusline
+    "set fillchars+=vert:\|  " add a bar for vertical splits
+
+    if get(g:,'gruvbox_transp_bg',1)
+        set fcs=eob:\           " hide ~
+    endif
+    if has('mac')
+    	let g:clipboard = {
+    		\   'name': 'macOS-clipboard',
+    		\   'copy': {
+    		\      '+': 'pbcopy',
+    		\      '*': 'pbcopy',
+    		\    },
+    		\   'paste': {
+    		\      '+': 'pbpaste',
+    		\      '*': 'pbpaste',
+    		\   },
+    		\   'cache_enabled': 0,
+    		\ }
+    endif
+    if has('clipboard')
+	    set clipboard& clipboard+=unnamedplus
+    endif
+
+    set history=2000
+    set number
+    set timeout ttimeout
 
     " Searching
     set ignorecase " case insensitive searching
@@ -107,6 +145,12 @@
     " set completeopt+=noinsert
     " set completeopt+=noselect
 
+    set completefunc=emoji#complete
+    set completeopt =longest,menu
+    set completeopt-=preview
+""    set list
+""    set listchars=tab:»·,nbsp:+,trail:·,extends:→,precedes:←
+
     " sudo 权限保存
     ca w!! w !sudo tee "%"
 
@@ -117,14 +161,25 @@
     set wildmenu
     set wildmode=longest,full
     set shell=$SHELL
-    set cmdheight=1 " command bar height
+    set cmdheight=2 " command bar height
     set title " set terminal title
     set showmatch " show matching braces
     set mat=2 " how many tenths of a second to blink
+    set matchpairs+=<:> " Add HTML brackets to pair matching
+    set matchtime=1     " Tenths of a second to show the matching paren
+    set cpoptions-=m    " showmatch will wait 0.5s or until a char is typed
+    set grepprg=rg\ --vimgrep\ $*
+    set wildignore+=*.so,*~,*/.git/*,*/.svn/*,*/.DS_Store,*/tmp/*
 
-    set updatetime=300
+    set timeoutlen=500
+    set ttimeoutlen=10
+    set updatetime=100
     set signcolumn=yes
     set shortmess+=c
+
+    if has('conceal')
+    	set conceallevel=3 concealcursor=niv
+    endif
 
     set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors
 
@@ -155,7 +210,7 @@
         set shada='300,<50,@100,s10,h
     else
         set viminfo='300,<10,@50,h,n$VARPATH/viminfo
-        set viminfo+=n~/.vim/dirs/viminfo
+        set viminfo+=n~$VARPATH/dirs/viminfo
     endif
 
     if (has('nvim'))
@@ -198,4 +253,20 @@
     endfunction
 
     autocmd BufNewFile * normal G
+
+    " If sudo, disable vim swap/backup/undo/shada/viminfo writing
+    if $SUDO_USER !=# '' && $USER !=# $SUDO_USER
+    		\ && $HOME !=# expand('~'.$USER)
+    		\ && $HOME ==# expand('~'.$SUDO_USER)
+    
+    	set noswapfile
+    	set nobackup
+    	set nowritebackup
+    	set noundofile
+    	if has('nvim')
+    		set shada="NONE"
+    	else
+    		set viminfo="NONE"
+    	endif
+    endif
 "
