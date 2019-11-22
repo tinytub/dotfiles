@@ -1,6 +1,7 @@
 " ----------------------------------------------------------------------------
 "  插件加载
 " ----------------------------------------------------------------------------
+call functions#PlugLoad()
 call plug#begin('~/.config/nvim/plugged')
 
     " 还是需要再把插件详细分类一下
@@ -14,7 +15,13 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'benmills/vimux'
 
     "displays available keybindings in popup.
-    "Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+    function! RegisterWhichKey()
+        call which_key#register('\', 'g:which_key_map')
+        call which_key#register(';', 'g:which_key_localmap')
+        call which_key#register(']', 'g:which_key_rsbgmap')
+        call which_key#register('[', 'g:which_key_lsbgmap')
+    endfunction
+    Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] , 'do': function('RegisterWhichKey') }
 
     " Better file browser
     "Plug 'scrooloose/nerdtree'
@@ -109,7 +116,8 @@ call plug#begin('~/.config/nvim/plugged')
     if has("nvim")
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
-        Plug 'Shougo/denite.nvim'
+        " 黑魔法查询框架, 先不用,后期可以看看thinkvim 的配置
+        "Plug 'Shougo/denite.nvim'
     endif
 call plug#end()
 
@@ -123,7 +131,7 @@ call plug#end()
 " Polyglot
     let g:polyglot_disabled = ['go']
 
-" vista
+" vista  tags 展示,类似 tagbar,但是使用虚拟窗口
 let g:vista#renderer#enable_icon = 1
 let g:vista_default_executive = 'ctags'
 let g:vista_fzf_preview = ['right:50%']
@@ -135,7 +143,7 @@ let g:vista_executive_for = {
   \ 'python': 'ctags',
   \ }
 
-" gutentags
+" gutentags tags管理
 let g:gutentags_cache_dir = $VARPATH . '/tags'
 let g:gutentags_project_root = ['.root', '.git', '.svn', '.hg', '.project','go.mod','/usr/local']
 let g:gutentags_generate_on_write = 1
@@ -160,6 +168,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 " https://github.com/hardcoreplayers/ThinkVim/issues/29
     " toggle tagbar display
     map <F4> :TagbarToggle<CR>
+    nnoremap <silent> <LocalLeader>t :<C-u>TagbarToggle<CR>
     " autofocus on tagbar open
     let g:tagbar_autofocus = 1
     "autocmd BufReadPost *.cpp,*.c,*.h,*.go,*.cc,*.py call tagbar#autoopen()
@@ -378,7 +387,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	nnoremap <silent><buffer><expr> <CR>  defx#do_action('drop')
     	nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()
     	nnoremap <silent><buffer><expr> h     defx#async_action('cd', ['..'])
-    	nnoremap <silent><buffer><expr> t    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
+    	nnoremap <silent><buffer><expr> t     defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
     	nnoremap <silent><buffer><expr> s     defx#do_action('open', 'botright vsplit')
     	nnoremap <silent><buffer><expr> i     defx#do_action('open', 'botright split')
     	nnoremap <silent><buffer><expr> P     defx#do_action('open', 'pedit')
@@ -392,31 +401,8 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	nnoremap <silent><buffer><expr> ~     defx#async_action('cd')
     	nnoremap <silent><buffer><expr> q     defx#do_action('quit')
     	nnoremap <silent><buffer><expr> <Tab> winnr('$') != 1 ?
- 		\ ':<C-u>wincmd w<CR>' :
- 		\ ':<C-u>Defx -buffer-name=temp -split=vertical<CR>'
-""    	nnoremap <silent><buffer><expr> se    defx#do_action('save_session')
-""    	nnoremap <silent><buffer><expr> <CR>  <SID>defx_toggle_tree()
-""    	nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()
-""    	nnoremap <silent><buffer><expr> h     defx#do_action('close_tree')
-""    	nnoremap <silent><buffer><expr> t     defx#do_action('open_tree_recursive')
-""    	nnoremap <silent><buffer><expr> <BS>  defx#async_action('cd', ['..'])
-""    	nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
-""    	nnoremap <silent><buffer><expr> sg    defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
-""    	nnoremap <silent><buffer><expr> sv    defx#do_action('multi', [['drop', 'split'], 'quit'])
-""    	nnoremap <silent><buffer><expr> P     defx#do_action('open', 'pedit')
-""    	nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
-""    	nnoremap <silent><buffer><expr> N     defx#do_action('new_multiple_files')
-""    	nnoremap <silent><buffer><expr> dd    defx#do_action('remove_trash')
-""    	nnoremap <silent><buffer><expr> r     defx#do_action('rename')
-""    	nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
-""    	nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')
-""    	nnoremap <silent><buffer><expr> yy    defx#do_action('yank_path')
-""    	nnoremap <silent><buffer><expr> ~     defx#async_action('cd')
-""    	nnoremap <silent><buffer><expr> q     defx#do_action('quit')
-""    	nnoremap <silent><buffer><expr> <Tab> winnr('$') != 1 ?
-""    		\ ':<C-u>wincmd w<CR>' :
-""    		\ ':<C-u>Defx -buffer-name=temp -split=vertical<CR>'
-
+     		\ ':<C-u>wincmd w<CR>' :
+     		\ ':<C-u>Defx -buffer-name=temp -split=vertical<CR>'
     	nnoremap <silent><buffer>       [g :<C-u>call <SID>jump_dirty(-1)<CR>
     	nnoremap <silent><buffer>       ]g :<C-u>call <SID>jump_dirty(1)<CR>
 
@@ -512,13 +498,12 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     endfunction
 
    " 第一个是默认打开 defx 的方式,当前使用最下面定位到当前文件的方式
-    "nnoremap <silent> <Leader>e
-    "    \ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
-    ""nnoremap <silent> <Leader>F
-    "nnoremap <silent> <F3>
-	"	\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
+    nnoremap <silent> <Leader>e
+        \ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
+    nnoremap <silent> <Leader>F
+		\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
     "nnoremap <silent><Leader>n :call <sid>defx_open()<CR>
-    nnoremap <silent><Leader>e :call <sid>defx_open({ 'find_current_file': v:true })<CR>
+    "nnoremap <silent><Leader>e :call <sid>defx_open({ 'find_current_file': v:true })<CR>
     nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
 
     function s:get_project_root() abort
@@ -664,15 +649,12 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     
     " Files + devicons
     function! Fzf_dev()
-    
-    let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {1..}"'
-    
+    let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
       function! s:files()
         let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
-        "return s:prepend_icon(l:files)
-        return l:files
+        return s:prepend_icon(l:files)
+        "return l:files
       endfunction
-    
       function! s:prepend_icon(candidates)
         let result = []
         for candidate in a:candidates
@@ -680,10 +662,8 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
           let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
           call add(result, printf("%s %s", icon, candidate))
         endfor
-    
         return result
       endfunction
-    
       function! s:edit_file(items)
         let items = a:items
         let i = 1
@@ -697,7 +677,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
         endwhile
         call s:Sink(items)
       endfunction
-    
       let opts = fzf#wrap({})
       let opts.source = <sid>files()
       let s:Sink = opts['sink*']
@@ -790,7 +769,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 "    " let g:deoplete#enable_profile = 1
 "    " call deoplete#enable_logging('DEBUG', 'deoplete.log')<CR>
 "    " call deoplete#custom#source('tern', 'debug_enabled', 1)<CR>
-"    " " General settings " {{{ 参考https://github.com/rafi/vim-config/config/plugins/deoplete.vim
+"    " " General settings "  参考https://github.com/rafi/vim-config/config/plugins/deoplete.vim
 "    " ---
 "    " let g:deoplete#auto_complete_delay = 50  " Default is 50
 "    " let g:deoplete#auto_refresh_delay = 500  " Default is 500
@@ -826,7 +805,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 "    call deoplete#custom#source('_', 'min_pattern_length', 2)
 "
 "    " }}}
-"    " Limit Sources " {{{
+"    " Limit Sources " 
 "    " ---
 "
 "    "let g:deoplete#sources = get(g:, 'deoplete#sources', {})
@@ -926,7 +905,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	\ 'cterm': [ 72, 64 ], 'gui': [ '#7BB292' ] }
 " Airline ------------------------------
 
-
     let g:airline_powerline_fonts = 1
     " let g:airline_theme = 'bubblegum'
     let g:airline_theme = 'gruvbox'
@@ -994,29 +972,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
           return !col || getline('.')[col - 1]  =~# '\s'
         endfunction
 
-        " Use <c-space> to trigger completion.
-        inoremap <silent><expr> <c-space> coc#refresh()
-
-        " 使用 回车 确认补全 Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-        " Coc only does snippet and additional edit on confirm.
-        " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-        " Or use `complete_info` if your vim support it, like:
-        inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
-       " Use `[g` and `]g` to navigate diagnostics
-        nmap <silent> [g <Plug>(coc-diagnostic-prev)
-        nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-        "remap keys for gotos
-        nmap <silent> gd <Plug>(coc-definition)
-        "nmap <silent> gd :call CocAction('jumpDefinition', 'tab drop')<CR>
-        nmap <silent> gy <Plug>(coc-type-definition)
-        nmap <silent> gi <Plug>(coc-implementation)
-        nmap <silent> gr <Plug>(coc-references)
-        nmap <silent> gh <Plug>(coc-doHover)
-
-        nnoremap <silent> K :call <SID>show_documentation()<CR>
-
         " Highlight symbol under cursor on CursorHold
         autocmd CursorHold * silent call CocActionAsync('highlight')
 
@@ -1064,6 +1019,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 
         let g:coc_global_extensions = [
                 \ 'coc-go',
+                \ 'coc-python',
                 \ 'coc-css',
                 \ 'coc-json',
                 \ 'coc-git',
@@ -1071,8 +1027,36 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
                 \ 'coc-emoji',
                 \ 'coc-vimlsp',
                 \ 'coc-emmet',
-                \ 'coc-prettier'
+                \ 'coc-prettier',
+                \ 'coc-explorer'
                 \ ]
+
+        " Use <c-space> to trigger completion.
+        inoremap <silent><expr> <c-space> coc#refresh()
+       " Use `[g` and `]g` to navigate diagnostics
+        nmap <silent> [g <Plug>(coc-diagnostic-prev)
+        nmap <silent> ]g <Plug>(coc-diagnostic-next)
+        "remap keys for gotos
+        nmap <silent> gd <Plug>(coc-definition)
+        "nmap <silent> gd :call CocAction('jumpDefinition', 'tab drop')<CR>
+        nmap <silent> gy <Plug>(coc-type-definition)
+        nmap <silent> gi <Plug>(coc-implementation)
+        nmap <silent> gr <Plug>(coc-references)
+        nmap <silent> gh <Plug>(coc-doHover)
+
+        nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+        " coc-explorer
+        noremap <silent> <leader>j :execute 'CocCommand explorer' .
+            \ ' --toggle' .
+            \ ' --sources=buffer+,file+' .
+            \ ' --file-columns=git,selection,icon,clip,indent,filename,size ' . expand('%:p:h')<CR>
+        " 使用 回车 确认补全 Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+        " Coc only does snippet and additional edit on confirm.
+        " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+        " Or use `complete_info` if your vim support it, like:
+        inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
 
 " vim-go 相关配置 --------------------------
       " 关闭 vim-go 的 gd :GoDef 由 coc 接管
@@ -1202,201 +1186,130 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     autocmd User Startified setlocal cursorline
     nmap <leader>st :Startify<cr>
 
-" denite config -----------------------------------------------
-    call denite#custom#option('_', {
-    		\ 'cached_filter': v:true,
-    		\ 'cursor_shape': v:true,
-    		\ 'cursor_wrap': v:true,
-    		\ 'highlight_filter_background': 'DeniteFilter',
-    		\ 'highlight_matched_char': 'Underlined',
-    		\ 'matchers': 'matcher/fuzzy',
-    		\ 'prompt': 'λ ',
-    		\ 'split': 'floating',
-    		\ 'start_filter': v:false,
-    		\ 'statusline': v:false,
-    		\ })
+" which key
+    let g:which_key_map =  {}
+    let g:which_key_map = {
+          \ 'name' : '+ThinkVim root ' ,
+          \ '1' : 'select window-1'      ,
+          \ '2' : 'select window-2'      ,
+          \ '3' : 'select window-3'      ,
+          \ '4' : 'select window-4'      ,
+          \ '5' : 'select window-5'      ,
+          \ '6' : 'select window-6'      ,
+          \ '7' : 'select window-7'      ,
+          \ '8' : 'select window-8'      ,
+          \ '9' : 'select window-9'      ,
+          \ '0' : 'select window-10'      ,
+          \ 'a' : {
+                \ 'name' : '+coc-code-action',
+                \ 'c' : 'code action',
+                \ },
+          \ 'b' : {
+                \ 'name' : '+buffer',
+                \ 'b' : 'buffer list',
+                \ 'c' : 'keep current buffer',
+                \ 'o' : 'keep input buffer',
+                \ },
+          \ 'e' : 'open file explorer' ,
+          \ '-' : 'choose window by {prompt char}' ,
+          \ 'd' : 'search cursor word on Dash.app' ,
+          \ 'G' : 'distraction free writing' ,
+          \ 'F' : 'find current file' ,
+          \ 'f' : {
+                \ 'name' : '+search {files cursorword word outline}',
+                \ 'f' : 'find file',
+                \ 'r' : 'search {word}',
+                \ 'c' : 'change colorscheme',
+                \ 'w' : 'search cursorword',
+                \ 'v' : 'search outline',
+                \ },
+          \ 'm' : 'open mundotree' ,
+          \ 'w' : 'save file',
+          \ 'j' : 'open coc-explorer',
+          \ 's' : 'open startify screen',
+          \ 'p' : 'edit pluginsconfig {filename}',
+          \ 'x' : 'coc cursors operate',
+          \ 'g'  :{
+                    \'name':'+git-operate',
+                    \ 'd'    : 'Gdiff',
+                    \ 'c'    : 'Gcommit',
+                    \ 'b'    : 'Gblame',
+                    \ 'B'    : 'Gbrowse',
+                    \ 'S'    : 'Gstatus',
+                    \ 'p'    : 'git push',
+                    \ 'l'    : 'GitLogAll',
+                    \ 'h'    : 'GitBranch',
+                    \},
+          \ 'c'    : {
+                  \ 'name' : '+coc list' ,
+                  \ 'a'    : 'coc CodeActionSelected',
+                  \ 'd'    : 'coc Diagnostics',
+                  \ 'c'    : 'coc Commands',
+                  \ 'e'    : 'coc Extensions',
+                  \ 'j'    : 'coc Next',
+                  \ 'k'    : 'coc Prev',
+                  \ 'o'    : 'coc OutLine',
+                  \ 'r'    : 'coc Resume',
+                  \ 'n'    : 'coc Rename',
+                  \ 's'    : 'coc Isymbols',
+                  \ 'g'    : 'coc Gitstatus',
+                  \ 'f'    : 'coc Format',
+                  \ 'm'    : 'coc search word to multiple cursors',
+                  \ },
+          \ 'q' : {
+                \ 'name' : '+coc-quickfix',
+                \ 'f' : 'coc fixcurrent',
+                \ },
+          \ 't' : {
+                \ 'name' : '+tab-operate',
+                \ 'n' : 'new tab',
+                \ 'e' : 'edit tab',
+                \ 'm' : 'move tab',
+                \ },
+          \ }
+    let g:which_key_map[' '] = {
+          \ 'name' : '+easymotion-jumpto-word ' ,
+          \ 'b' : ['<plug>(easymotion-b)' , 'beginning of word backward'],
+          \ 'f' : ['<plug>(easymotion-f)' , 'find {char} to the left'],
+          \ 'w' : ['<plug>(easymotion-w)' , 'beginning of word forward'],
+          \ }
+    
+    let g:which_key_localmap ={
+          \ 'name' : '+LocalLeaderKey'  ,
+          \ 'v'    : 'open vista show outline',
+          \ 'r'    : 'quick run',
+          \ 'm'    : 'toolkit Menu',
+          \ 'g' : {
+                \ 'name' : '+golang-toolkit',
+                \ 'i'    : 'go impl',
+                \ 'd'    : 'go describe',
+                \ 'c'    : 'go callees',
+                \ 'C'    : 'go callers',
+                \ 's'    : 'go callstack',
+                \ },
+          \ }
+    
+    let g:which_key_rsbgmap = {
+          \ 'name' : '+RightSquarebrackets',
+          \ 'a'    : 'ale nextwarp',
+          \ 'c'    : 'coc nextdiagnostics',
+          \ 'b'    : 'next buffer',
+          \ 'g'    : 'coc gitnextchunk',
+          \ ']'    : 'jump prefunction-golang',
+          \ }
+    
+    
+    let g:which_key_lsbgmap = {
+          \ 'name' : '+LeftSquarebrackets',
+          \ 'a'    : 'ale prewarp',
+          \ 'c'    : 'coc prediagnostics',
+          \ 'b'    : 'pre buffer',
+          \ 'g'    : 'coc gitprevchunk',
+          \ '['    : 'jump nextfunction-golang',
+          \ }
+    
+    let s:current_colorscheme = get(g:,"colors_name","")
+    if  s:current_colorscheme == "base16-default-dark"
+        highlight WhichKeySeperator guibg=NONE ctermbg=NONE guifg=#a1b56c ctermfg=02
+    endif
 
-    function! s:denite_detect_size() abort
-        let s:denite_winheight = 20
-        let s:denite_winrow = &lines > s:denite_winheight ? (&lines - s:denite_winheight) / 2 : 0
-        let s:denite_winwidth = &columns > 240 ? &columns / 2 : 120
-        let s:denite_wincol = &columns > s:denite_winwidth ? (&columns - s:denite_winwidth) / 2 : 0
-        call denite#custom#option('_', {
-             \ 'wincol': s:denite_wincol,
-             \ 'winheight': s:denite_winheight,
-             \ 'winrow': s:denite_winrow,
-             \ 'winwidth': s:denite_winwidth,
-             \ })
-      endfunction
-       augroup denite-detect-size
-        autocmd!
-        autocmd VimResized * call <SID>denite_detect_size()
-      augroup END
-      call s:denite_detect_size()
-    
-    
-    call denite#custom#option('search', { 'start_filter': 0, 'no_empty': 1 })
-    call denite#custom#option('list', { 'start_filter': 0 })
-    call denite#custom#option('jump', { 'start_filter': 0 })
-    call denite#custom#option('git', { 'start_filter': 0 })
-    call denite#custom#option('mpc', { 'winheight': 20 })
-    
-    
-    " MATCHERS
-    " Default is 'matcher/fuzzy'
-    call denite#custom#source('tag', 'matchers', ['matcher/substring'])
-    call denite#custom#source('file/rec', 'matchers', ['matcher/fuzzy'])
-    
-    if has('nvim') && &runtimepath =~# '\/cpsm'
-    	call denite#custom#source(
-    		\ 'buffer,file_mru,file/old,file/rec,grep,mpc,line,neoyank',
-    		\ 'matchers', ['matcher/cpsm', 'matcher/fuzzy'])
-    endif
-    
-    
-    " CONVERTERS
-    " Default is none
-    call denite#custom#source(
-    	\ 'buffer,file_mru,file/old,file/rec,directory/rec,directory_mru',
-    	\ 'converters', ['devicons_denite_converter','converter_relative_word'])
-    
-    " FIND and GREP COMMANDS
-    if executable('ag')
-    	" The Silver Searcher
-    	call denite#custom#var('file/rec', 'command',
-    		\ ['ag', '-U', '--hidden', '--follow', '--nocolor', '--nogroup', '-g', ''])
-    
-    	" Setup ignore patterns in your .agignore file!
-    	" https://github.com/ggreer/the_silver_searcher/wiki/Advanced-Usage
-    
-    	call denite#custom#var('grep', 'command', ['ag'])
-    	call denite#custom#var('grep', 'recursive_opts', [])
-    	call denite#custom#var('grep', 'pattern_opt', [])
-    	call denite#custom#var('grep', 'separator', ['--'])
-    	call denite#custom#var('grep', 'final_opts', [])
-    	call denite#custom#var('grep', 'default_opts',
-    		\ [ '--skip-vcs-ignores', '--vimgrep', '--smart-case', '--hidden' ])
-    
-    elseif executable('ack')
-    	" Ack command
-    	call denite#custom#var('grep', 'command', ['ack'])
-    	call denite#custom#var('grep', 'recursive_opts', [])
-    	call denite#custom#var('grep', 'pattern_opt', ['--match'])
-    	call denite#custom#var('grep', 'separator', ['--'])
-    	call denite#custom#var('grep', 'final_opts', [])
-    	call denite#custom#var('grep', 'default_opts',
-    			\ ['--ackrc', $HOME.'/.config/ackrc', '-H',
-    			\ '--nopager', '--nocolor', '--nogroup', '--column'])
-    
-    elseif executable('rg')
-    	" Ripgrep
-      call denite#custom#var('file/rec', 'command',
-            \ ['rg', '--files', '--glob', '!.git'])
-      call denite#custom#var('grep', 'command', ['rg', '--threads', '1'])
-      call denite#custom#var('grep', 'recursive_opts', [])
-      call denite#custom#var('grep', 'final_opts', [])
-      call denite#custom#var('grep', 'separator', ['--'])
-      call denite#custom#var('grep', 'default_opts',
-            \ ['-i', '--vimgrep', '--no-heading'])
-    endif
-    
-    
-    " KEY MAPPINGS
-    autocmd FileType denite call s:denite_settings()
-    function! s:denite_settings() abort
-    	highlight! link CursorLine Visual
-    	nnoremap <silent><buffer><expr> <CR> denite#do_map('do_action')
-    	nnoremap <silent><buffer><expr> i    denite#do_map('open_filter_buffer')
-    	nnoremap <silent><buffer><expr> d    denite#do_map('do_action', 'delete')
-    	nnoremap <silent><buffer><expr> p    denite#do_map('do_action', 'preview')
-    	nnoremap <silent><buffer><expr> st   denite#do_map('do_action', 'tabopen')
-    	nnoremap <silent><buffer><expr> sv   denite#do_map('do_action', 'vsplit')
-    	nnoremap <silent><buffer><expr> si   denite#do_map('do_action', 'split')
-    	nnoremap <silent><buffer><expr> '    denite#do_map('quick_move')
-    	nnoremap <silent><buffer><expr> q    denite#do_map('quit')
-    	nnoremap <silent><buffer><expr> r    denite#do_map('redraw')
-    	nnoremap <silent><buffer><expr> yy   denite#do_map('do_action', 'yank')
-    	nnoremap <silent><buffer><expr> <Esc>   denite#do_map('quit')
-    	nnoremap <silent><buffer><expr> <C-u>   denite#do_map('restore_sources')
-    	nnoremap <silent><buffer><expr> <C-f>   denite#do_map('do_action', 'defx')
-    	nnoremap <silent><buffer><expr> <C-x>   denite#do_map('choose_action')
-    	nnoremap <silent><buffer><expr><nowait> <Space> denite#do_map('toggle_select').'j'
-    endfunction
-    
-    autocmd FileType denite-filter call s:denite_filter_settings()
-    function! s:denite_filter_settings() abort
-    	nnoremap <silent><buffer><expr> <Esc>  denite#do_map('quit')
-    	" inoremap <silent><buffer><expr> <Esc>  denite#do_map('quit')
-    	nnoremap <silent><buffer><expr> q      denite#do_map('quit')
-    	imap <silent><buffer> <C-c> <Plug>(denite_filter_quit)
-    	"inoremap <silent><buffer><expr> <C-c>  denite#do_map('quit')
-    	nnoremap <silent><buffer><expr> <C-c>  denite#do_map('quit')
-    	inoremap <silent><buffer>       kk     <Esc><C-w>p
-    	nnoremap <silent><buffer>       kk     <C-w>p
-    	inoremap <silent><buffer>       jj     <Esc><C-w>p
-    	nnoremap <silent><buffer>       jj     <C-w>p
-    endfunction
-" denite config end -----------------------------------
-" denite_menu config ---------------------------------
-    let s:menus = {}
-    
-    let s:menus.dein = { 'description': '⚔️  Plugin management' }
-    let s:menus.dein.command_candidates = [
-      \   ['🐬 Dein: Plugins update       🔸', 'call dein#update()'],
-      \   ['🐬 Dein: Plugins List         🔸', 'Denite dein'],
-      \   ['🐬 Dein: RecacheRuntimePath   🔸', 'call dein#recache_runtimepath()'],
-      \   ['🐬 Dein: Update log           🔸', 'echo dein#get_updates_log()'],
-      \   ['🐬 Dein: Log                  🔸', 'echo dein#get_log()'],
-      \ ]
-    
-    let s:menus.project = { 'description': '🛠  Project & Structure' }
-    let s:menus.project.command_candidates = [
-      \   ['🐳 File Explorer        🔸<Leader>e',        'Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>'],
-      \   ['🐳 Outline              🔸<LocalLeader>t',   'TagbarToggle'],
-      \   ['🐳 Git Status           🔸<LocalLeader>gs',  'Denite gitstatus'],
-      \   ['🐳 Mundo Tree           🔸<Leader>m',  'MundoToggle'],
-      \ ]
-    
-    let s:menus.files = { 'description': '📁 File tools' }
-    let s:menus.files.command_candidates = [
-      \   ['📂 Denite: Find in files…    🔹 ',  'Denite grep:.'],
-      \   ['📂 Denite: Find files        🔹 ',  'Denite file/rec'],
-      \   ['📂 Denite: Buffers           🔹 ',  'Denite buffer'],
-      \   ['📂 Denite: MRU               🔹 ',  'Denite file/old'],
-      \   ['📂 Denite: Line              🔹 ',  'Denite line'],
-      \ ]
-    
-    let s:menus.tools = { 'description': '⚙️  Dev Tools' }
-    let s:menus.tools.command_candidates = [
-      \   ['🐠 Git commands       🔹', 'Git'],
-      \   ['🐠 Git log            🔹', 'Denite gitlog:all'],
-      \   ['🐠 Goyo               🔹', 'Goyo'],
-      \   ['🐠 Tagbar             🔹', 'TagbarToggle'],
-      \   ['🐠 File explorer      🔹', 'Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>'],
-      \ ]
-    
-    let s:menus.config = { 'description': '🔧 Zsh Tmux Configuration' }
-    let s:menus.config.file_candidates = [
-      \   ['🐠 Zsh Configurationfile            🔸', '~/.zshrc'],
-      \   ['🐠 Tmux Configurationfile           🔸', '~/.tmux.conf'],
-      \ ]
-    
-    let s:menus.thinkvim = {'description': '💎 ThinkVim Configuration files'}
-    let s:menus.thinkvim.file_candidates = [
-      \   ['🐠 MainVimrc          settings: vimrc               🔹', $VIMPATH.'/core/vimrc'],
-      \   ['🐠 Initial            settings: init.vim            🔹', $VIMPATH.'/core/init.vim'],
-      \   ['🐠 General            settings: general.vim         🔹', $VIMPATH.'/core/general.vim'],
-      \   ['🐠 DeinConfig         settings: deinrc.vim          🔹', $VIMPATH.'/core/deinrc.vim'],
-      \   ['🐠 FileTypes          settings: filetype.vim        🔹', $VIMPATH.'/core/filetype.vim'],
-      \   ['🐠 Installed       LoadPlugins: plugins.yaml        🔹', $VIMPATH.'/core/dein/plugins.yaml'],
-      \   ['🐠 Installed      LocalPlugins: local_plugins.yaml  🔹', $VIMPATH.'/core/dein/local_plugins.yaml'],
-      \   ['🐠 Global   Key    Vimmappings: mappings.vim        🔹', $VIMPATH.'/core/mappings.vim'],
-      \   ['🐠 Global   Key Pluginmappings: Pluginmappings      🔹', $VIMPATH.'/core/plugins/allkey.vim'],
-      \ ]
-    call denite#custom#var('menu', 'menus', s:menus)
-    "let s:menus.sessions = { 'description': 'Sessions' }
-    "let s:menus.sessions.command_candidates = [
-      "\   ['▶ Restore session │ ;s', 'Denite session'],
-      "\   ['▶ Save session…   │', 'Denite session/new'],
-      "\ ]
-" denite_menu config end -------------------------------------

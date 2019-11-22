@@ -34,12 +34,12 @@ if has('vim_starting')
 	" Use spacebar as leader and ; as secondary-leader
 	" Required before loading plugins!
     " default map leader '\'
-	"let g:mapleader="\"
+	let g:mapleader='\'
 	"let g:mapleader="\<Space>"
-	" let g:maplocalleader=';'
+	let g:maplocalleader=';'
 
 	" Vim only, Linux terminal settings
-	if ! has('nvim') && ! has('gui_running') && ! has('win32') && ! has('win64')
+	if !has('nvim') && !has('gui_running') && !has('win32') && !has('win64')
 		call s:source_file('config/terminal.vim')
 	endif
 endif

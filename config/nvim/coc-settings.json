@@ -50,6 +50,7 @@
       "completeUnimported": true,
       "deepCompletion": true
   },
+  "python.jediEnabled": false,
   "languageserver": {
     "bash": {
       "command": "bash-language-server",

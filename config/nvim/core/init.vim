@@ -3,11 +3,11 @@
 " ----------------------------------------------------------------------------
 " vim-plug 自动更新
 
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
+"if empty(glob('~/.config/nvim/autoload/plug.vim'))
+"  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+"    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+"endif
 
 function! s:main()
 	if has('vim_starting')
@@ -78,10 +78,10 @@ call s:main()
 "    augroup END
 "
 
-augroup CloseLoclistWindowGroup
-    autocmd!
-    autocmd QuitPre * if empty(&buftype) | lclose | endif
-augroup END
+"augroup CloseLoclistWindowGroup
+"    autocmd!
+"    autocmd QuitPre * if empty(&buftype) | lclose | endif
+"augroup END
 
 " Reloads vimrc after saving but keep cursor position
 "if !exists('*ReloadVimrc')
@@ -102,6 +102,3 @@ function! CheckUpdate(timer)
     silent! checktime
     call timer_start(1000,'CheckUpdate')
 endfunction
-
-" Enter automatically into the files directory
-autocmd BufEnter * silent! lcd %:p:h

@@ -50,6 +50,9 @@
     nnoremap k gk
     nnoremap gk k
 
+    "buffer 切换
+    nnoremap  ]b :bp<CR>
+    nnoremap  [b :bn<CR>
     "delete buffer
     nnoremap <C-x>  :bd<CR>
 
@@ -95,11 +98,11 @@
 
     " Improve scroll, credits: https://github.com/Shougo
     nnoremap <expr> zz (winline() == (winheight(0)+1) / 2) ?
-    	\ 'zt' : (winline() == 1) ? 'zb' : 'zz'
+	\ 'zt' : (winline() == 1) ? 'zb' : 'zz'
     noremap <expr> <C-f> max([winheight(0) - 2, 1])
-    	\ ."\<C-d>".(line('w$') >= line('$') ? "L" : "M")
+	\ ."\<C-d>".(line('w$') >= line('$') ? "L" : "M")
     noremap <expr> <C-b> max([winheight(0) - 2, 1])
-    	\ ."\<C-u>".(line('w0') <= 1 ? "H" : "M")
+	\ ."\<C-u>".(line('w0') <= 1 ? "H" : "M")
     noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
     noremap <expr> <C-y> (line("w0") <= 1         ? "k" : "3\<C-y>")
 
@@ -125,5 +128,12 @@
 " vista
     nnoremap <silent><localleader>v :Vista!!<CR>
     nnoremap <silent><leader>fv     :Vista finder coc<CR>
+
+" whichkey
+	nnoremap <silent> <leader>      :<c-u>WhichKey '\'<CR>
+	nnoremap <silent> <localleader> :<c-u>WhichKey  ';'<CR>
+	nnoremap <silent>[              :<c-u>WhichKey  '['<CR>
+	nnoremap <silent>]              :<c-u>WhichKey  ']'<CR>
+
 " Non-standard
 " ---
