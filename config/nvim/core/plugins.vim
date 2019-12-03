@@ -36,7 +36,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'kristijanhusak/defx-icons'
 
     " tab控制,和 ale 有冲突,暂时不用
-    Plug 'bagrat/vim-buffet'
+    "Plug 'bagrat/vim-buffet'
 
     " Class/module 浏览器
     Plug 'majutsushi/tagbar'
@@ -311,7 +311,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	" autocmd DirChanged * call s:defx_refresh_cwd(v:event)
 
     	" Delete defx if it's the only buffer left in the window
-    	autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | q | endif
+    	" autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | q | endif
 
     	" Move focus to the next window if current buffer is defx
     	autocmd TabLeave * if &filetype == 'defx' | wincmd w | endif
@@ -862,7 +862,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 "    let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
 
 " buffet
-" 和 ALE 有冲突
     let g:buffet_tab_icon = "\uf00a"
     function! g:BuffetSetCustomColors()
         hi! BuffetCurrentBuffer cterm=NONE ctermbg=106 ctermfg=8 guibg=#b8bb26 guifg=#000000
@@ -926,6 +925,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     let g:airline_symbols.notexists = 'Ɇ'
     let g:airline_symbols.whitespace = 'Ξ'
 
+    "打开 airline 提供的 tabline, 不使用 buffet 的
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#formatter = 'default'
 
