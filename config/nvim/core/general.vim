@@ -161,7 +161,7 @@
     set wildmenu
     set wildmode=longest,full
     set shell=$SHELL
-    set cmdheight=2 " command bar height
+    set cmdheight=1 " command bar height
     set title " set terminal title
     set showmatch " show matching braces
     set mat=2 " how many tenths of a second to blink
