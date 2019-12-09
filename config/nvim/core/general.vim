@@ -16,6 +16,10 @@
     set tabstop=4
     set softtabstop=4
     set shiftwidth=4
+    set smarttab
+    set autoindent      " Use same indenting on new lines
+    set smartindent     " Smart autoindenting on new lines
+    set shiftround      " Round indent to multiple of 'shiftwidth'
 
     set magic " Set magic on, for regex
 

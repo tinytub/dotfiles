@@ -45,6 +45,7 @@ if has('vim_starting')
 endif
 
 " 初始化基本配置
+call s:source_file('core/theme.vim')
 call s:source_file('core/init.vim')
 " 初始化 plugin
 call s:source_file('core/plugins.vim')
@@ -53,7 +54,6 @@ call s:source_file('core/plugins.vim')
 call s:source_file('core/general.vim')
 call s:source_file('core/filetype.vim')
 call s:source_file('core/mappings.vim')
-call s:source_file('core/theme.vim')
 
 "
 "" Load user custom local settings
