@@ -15,13 +15,10 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'benmills/vimux'
 
     "displays available keybindings in popup.
-    function! RegisterWhichKey()
-        call which_key#register('\', 'g:which_key_map')
-        call which_key#register(';', 'g:which_key_localmap')
-        call which_key#register(']', 'g:which_key_rsbgmap')
-        call which_key#register('[', 'g:which_key_lsbgmap')
-    endfunction
-    Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] , 'do': function('RegisterWhichKey') }
+    "Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] , 'do': function('RegisterWhichKey') }
+    Plug 'liuchengxu/vim-which-key'
+ 
+    Plug 'sbdchd/neoformat', {'on': ['Neoformat','Neoformat!']}
 
     " Better file browser
     "Plug 'scrooloose/nerdtree'
@@ -31,7 +28,7 @@ call plug#begin('~/.config/nvim/plugged')
     "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 
-    Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins'}
     Plug 'kristijanhusak/defx-git'
     Plug 'kristijanhusak/defx-icons'
 
@@ -54,6 +51,7 @@ call plug#begin('~/.config/nvim/plugged')
     " Surround
     Plug 'tpope/vim-surround'
 
+    "Plug 'liuchengxu/vista.vim', {'on': ['Vista', 'Vista!', 'Vista!!']}
     Plug 'liuchengxu/vista.vim'
     "Plug 'Yggdroot/indentLine' 
 
@@ -430,9 +428,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	nnoremap <silent><buffer><expr> gd  defx#async_action('multi', ['drop', ['call', '<SID>git_diff']])
     	nnoremap <silent><buffer><expr> gr  defx#do_action('call', '<SID>grep')
     	nnoremap <silent><buffer><expr> gf  defx#do_action('call', '<SID>find_files')
-    	if exists('$TMUX')
-    		nnoremap <silent><buffer><expr> gl  defx#async_action('call', '<SID>explorer')
-    	endif
+    	nnoremap <silent><buffer><expr> gl  defx#async_action('call', '<SID>explorer')
     endfunction
 
     " TOOLS
@@ -702,7 +698,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     let g:ale_set_loclist = 0
     let g:ale_set_quickfix = 1
     "let g:ale_list_vertical = 1
-    "let g:ale_open_list = 1
+    let g:ale_open_list = 0
 
     let g:ale_sign_column_always = 0
     "let g:ale_sign_error = '✖'
@@ -748,13 +744,16 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
             return
         endif
         if(g:ale_open_list == 0)
-            ALEDisableBuffer
+            "ALEDisableBuffer
             let g:ale_open_list = 1
-            ALEEnableBuffer
+            "ALEEnableBuffer
+            copen
+            "lopen
         else
             let g:ale_open_list = 0
-            execute ":wincmd j"
-            execute ":q"
+            cclose
+            "lclose
+            return
         endif
     endfunction
 
@@ -1189,17 +1188,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 " which key
     let g:which_key_map =  {}
     let g:which_key_map = {
-          \ 'name' : '+ThinkVim root ' ,
-          \ '1' : 'select window-1'      ,
-          \ '2' : 'select window-2'      ,
-          \ '3' : 'select window-3'      ,
-          \ '4' : 'select window-4'      ,
-          \ '5' : 'select window-5'      ,
-          \ '6' : 'select window-6'      ,
-          \ '7' : 'select window-7'      ,
-          \ '8' : 'select window-8'      ,
-          \ '9' : 'select window-9'      ,
-          \ '0' : 'select window-10'      ,
+          \ 'name' : '+Vim root ' ,
           \ 'a' : {
                 \ 'name' : '+coc-code-action',
                 \ 'c' : 'code action',
@@ -1212,7 +1201,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
                 \ },
           \ 'e' : 'open file explorer' ,
           \ '-' : 'choose window by {prompt char}' ,
-          \ 'd' : 'search cursor word on Dash.app' ,
           \ 'G' : 'distraction free writing' ,
           \ 'F' : 'find current file' ,
           \ 'f' : {
@@ -1223,12 +1211,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
                 \ 'w' : 'search cursorword',
                 \ 'v' : 'search outline',
                 \ },
-          \ 'm' : 'open mundotree' ,
-          \ 'w' : 'save file',
           \ 'j' : 'open coc-explorer',
-          \ 's' : 'open startify screen',
-          \ 'p' : 'edit pluginsconfig {filename}',
-          \ 'x' : 'coc cursors operate',
           \ 'g'  :{
                     \'name':'+git-operate',
                     \ 'd'    : 'Gdiff',
@@ -1266,7 +1249,76 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
                 \ 'e' : 'edit tab',
                 \ 'm' : 'move tab',
                 \ },
-          \ }
+        \}
+"    let g:which_key_map = {
+"          \ 'name' : '+Vim root ' ,
+"          \ 'a' : {
+"                \ 'name' : '+coc-code-action',
+"                \ 'c' : 'code action',
+"                \ },
+"          \ 'b' : {
+"                \ 'name' : '+buffer',
+"                \ 'b' : 'buffer list',
+"                \ 'c' : 'keep current buffer',
+"                \ 'o' : 'keep input buffer',
+"                \ },
+"          \ 'e' : 'open file explorer' ,
+"          \ '-' : 'choose window by {prompt char}' ,
+"          \ 'd' : 'search cursor word on Dash.app' ,
+"          \ 'G' : 'distraction free writing' ,
+"          \ 'F' : 'find current file' ,
+"          \ 'f' : {
+"                \ 'name' : '+search {files cursorword word outline}',
+"                \ 'f' : 'find file',
+"                \ 'r' : 'search {word}',
+"                \ 'c' : 'change colorscheme',
+"                \ 'w' : 'search cursorword',
+"                \ 'v' : 'search outline',
+"                \ },
+"          \ 'm' : 'open mundotree' ,
+"          \ 'w' : 'save file',
+"          \ 'j' : 'open coc-explorer',
+"          \ 's' : 'open startify screen',
+"          \ 'p' : 'edit pluginsconfig {filename}',
+"          \ 'x' : 'coc cursors operate',
+"          \ 'g'  :{
+"                    \'name':'+git-operate',
+"                    \ 'd'    : 'Gdiff',
+"                    \ 'c'    : 'Gcommit',
+"                    \ 'b'    : 'Gblame',
+"                    \ 'B'    : 'Gbrowse',
+"                    \ 'S'    : 'Gstatus',
+"                    \ 'p'    : 'git push',
+"                    \ 'l'    : 'GitLogAll',
+"                    \ 'h'    : 'GitBranch',
+"                    \},
+"          \ 'c'    : {
+"                  \ 'name' : '+coc list' ,
+"                  \ 'a'    : 'coc CodeActionSelected',
+"                  \ 'd'    : 'coc Diagnostics',
+"                  \ 'c'    : 'coc Commands',
+"                  \ 'e'    : 'coc Extensions',
+"                  \ 'j'    : 'coc Next',
+"                  \ 'k'    : 'coc Prev',
+"                  \ 'o'    : 'coc OutLine',
+"                  \ 'r'    : 'coc Resume',
+"                  \ 'n'    : 'coc Rename',
+"                  \ 's'    : 'coc Isymbols',
+"                  \ 'g'    : 'coc Gitstatus',
+"                  \ 'f'    : 'coc Format',
+"                  \ 'm'    : 'coc search word to multiple cursors',
+"                  \ },
+"          \ 'q' : {
+"                \ 'name' : '+coc-quickfix',
+"                \ 'f' : 'coc fixcurrent',
+"                \ },
+"          \ 't' : {
+"                \ 'name' : '+tab-operate',
+"                \ 'n' : 'new tab',
+"                \ 'e' : 'edit tab',
+"                \ 'm' : 'move tab',
+"                \ },
+"          \ }
     let g:which_key_map[' '] = {
           \ 'name' : '+easymotion-jumpto-word ' ,
           \ 'b' : ['<plug>(easymotion-b)' , 'beginning of word backward'],
@@ -1313,3 +1365,13 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
         highlight WhichKeySeperator guibg=NONE ctermbg=NONE guifg=#a1b56c ctermfg=02
     endif
 
+    call which_key#register('\', 'g:which_key_map')
+    call which_key#register(';', 'g:which_key_localmap')
+    call which_key#register(']', 'g:which_key_rsbgmap')
+    call which_key#register('[', 'g:which_key_lsbgmap')
+
+"NeoFormat
+    let g:neoformat_try_formatprg = 1
+    let g:jsx_ext_required = 0
+    let g:neoformat_enabled_javascript=['prettier']
+    let g:neoformat_enabled_html=['js-beautify']
