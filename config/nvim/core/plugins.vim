@@ -493,15 +493,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	return s:file_explorer
     endfunction
 
-   " 第一个是默认打开 defx 的方式,当前使用最下面定位到当前文件的方式
-    nnoremap <silent> <Leader>e
-        \ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
-    nnoremap <silent> <Leader>F
-		\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
-    "nnoremap <silent><Leader>n :call <sid>defx_open()<CR>
-    "nnoremap <silent><Leader>e :call <sid>defx_open({ 'find_current_file': v:true })<CR>
-    nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
-
     function s:get_project_root() abort
       let l:git_root = ''
       let l:path = expand('%:p:h')
@@ -544,47 +535,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     endfunction
 
 " FZF ----------------------------------------
-""    let $FZF_DEFAULT_COMMAND = 'rg --files --follow -g "!{.git,node_modules}/*" 2>/dev/null'
-""    let g:fzf_layout = { 'down': '~25%' }
-""    let g:fzf_buffers_jump = 1
-""    let g:fzf_tags_command = 'ctags -R'
-""
-""
-""    if isdirectory(".git")
-""        " if in a git project, use :GFiles
-""        nmap <silent> <leader>f :GFiles --cached --others --exclude-standard<cr>
-""    else
-""        " otherwise, use :FZF
-""        nmap <silent> <leader>f :FZF<cr>
-""    endif
-""
-""    "nmap <silent> <leader>s :GFiles?<cr>
-""    nmap <silent> <leader>s :GFiles --cached --others --exclude-standard<cr>
-""    "nmap <silent> <leader>r :Buffers<cr>
-""    nmap ; :Buffers<cr>
-""    "nmap <silent> <leader>e :FZF<cr>
-""    nmap <leader><tab> <plug>(fzf-maps-n)
-""    xmap <leader><tab> <plug>(fzf-maps-x)
-""    omap <leader><tab> <plug>(fzf-maps-o)
-""
-""    command! FZFMru call fzf#run({
-""    \  'source':  v:oldfiles,
-""    \  'sink':    'e',
-""    \  'options': '-m -x +s',
-""    \  'down':    '40%'})
-""
-""    command! -bang -nargs=* Find call fzf#vim#grep(
-""        \ 'rg --column --line-number --no-heading --follow --color=always '.<q-args>, 1,
-""        \ <bang>0 ? fzf#vim#with_preview('up:60%') : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
-""    command! -bang -nargs=? -complete=dir Files
-""        \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
-""    command! -bang -nargs=? -complete=dir GitFiles
-""        \ call fzf#vim#gitfiles(<q-args>, fzf#vim#with_preview('right:50%', '?'), <bang>0)
-
-    "autocmd! FileType fzf
-    "autocmd  FileType fzf set laststatus=0 noshowmode noruler
-      "\| autocmd BufLeave <buffer> set laststatus=0 showmode ruler
-      "
     let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-x': 'split',
@@ -680,7 +630,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
       let opts.options .= l:fzf_files_options
       call fzf#run(opts)
     endfunction
-
 
 " ALE
     "仅仅在保存的时候跑 ale
@@ -998,24 +947,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
           autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
         augroup end
 
-        "" Using CocList
-        "" Show all diagnostics
-        "nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-        "" Manage extensions
-        "nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-        "" Show commands
-        "nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-        "" Find symbol of current document
-        "nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-        "" Search workspace symbols
-        "nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-        "" Do default action for next item.
-        "nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-        "" Do default action for previous item.
-        "nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-        "" Resume latest coc list
-        "nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-
         let g:coc_global_extensions = [
                 \ 'coc-go',
                 \ 'coc-python',
@@ -1030,59 +961,33 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
                 \ 'coc-explorer'
                 \ ]
 
-        " Use <c-space> to trigger completion.
-        inoremap <silent><expr> <c-space> coc#refresh()
-       " Use `[g` and `]g` to navigate diagnostics
-        nmap <silent> [g <Plug>(coc-diagnostic-prev)
-        nmap <silent> ]g <Plug>(coc-diagnostic-next)
-        "remap keys for gotos
-        nmap <silent> gd <Plug>(coc-definition)
-        "nmap <silent> gd :call CocAction('jumpDefinition', 'tab drop')<CR>
-        nmap <silent> gy <Plug>(coc-type-definition)
-        nmap <silent> gi <Plug>(coc-implementation)
-        nmap <silent> gr <Plug>(coc-references)
-        nmap <silent> gh <Plug>(coc-doHover)
-
-        nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-        " coc-explorer
-        noremap <silent> <leader>j :execute 'CocCommand explorer' .
-            \ ' --toggle' .
-            \ ' --sources=buffer+,file+' .
-            \ ' --file-columns=git,selection,icon,clip,indent,filename,size ' . expand('%:p:h')<CR>
-        " 使用 回车 确认补全 Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-        " Coc only does snippet and additional edit on confirm.
-        " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-        " Or use `complete_info` if your vim support it, like:
-        inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
 
 " vim-go 相关配置 --------------------------
-      " 关闭 vim-go 的 gd :GoDef 由 coc 接管
-      let g:go_def_mapping_enabled = 0
-
-      "let g:go_autodetect_gopath = 1
-      "let g:go_list_type = "quickfix"
-      "let g:go_def_mode = 'guru'
-      "let g:go_def_mode = 'gopls'
-      "let g:go_info_mode = 'gopls'
-      "let g:go_def_mode = 'godef'
-      let g:go_def_reuse_buffer = 1
-
-      let g:go_fmt_command = "goimports"
-      " 自动添加标签
-      let g:go_addtags_transform = "snakecase"
-      "let g:go_term_mode = "split"
-      "let g:go_term_enabled = 1
-
-      "据说可以解决和 ale 的冲突
-      let g:go_fmt_fail_silently = 1
-
-      let g:go_decls_mode = 'fzf'
-
-      " 关闭 vim-go 的 linter
-      let g:go_metalinter_autosave = 0
-      let g:go_metalinter_autosave_enabled = ['golint', 'vet']
+    " 关闭 vim-go 的 gd :GoDef 由 coc 接管
+    let g:go_def_mapping_enabled = 0
+    
+    "let g:go_autodetect_gopath = 1
+    "let g:go_list_type = "quickfix"
+    "let g:go_def_mode = 'guru'
+    "let g:go_def_mode = 'gopls'
+    "let g:go_info_mode = 'gopls'
+    "let g:go_def_mode = 'godef'
+    let g:go_def_reuse_buffer = 1
+    
+    let g:go_fmt_command = "goimports"
+    " 自动添加标签
+    let g:go_addtags_transform = "snakecase"
+    "let g:go_term_mode = "split"
+    "let g:go_term_enabled = 1
+    
+    "据说可以解决和 ale 的冲突
+    let g:go_fmt_fail_silently = 1
+    
+    let g:go_decls_mode = 'fzf'
+    
+    " 关闭 vim-go 的 linter
+    let g:go_metalinter_autosave = 0
+    let g:go_metalinter_autosave_enabled = ['golint', 'vet']
 
 "     let g:go_highlight_functions = 1
 "     let g:go_highlight_methods = 1
@@ -1092,21 +997,21 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 "     let g:go_highlight_build_constraints = 1
 "     let g:go_highlight_extra_types = 1
 
-      let g:go_highlight_types = 1
-      let g:go_highlight_fields = 1
-      let g:go_highlight_functions = 1
-      let g:go_highlight_function_calls = 1
-      let g:go_highlight_methods = 1
-      let g:go_highlight_structs = 1
-      let g:go_highlight_operators = 1
-      let g:go_highlight_extra_types = 1
-      let g:go_highlight_build_constraints = 1
-      let g:go_highlight_generate_tags = 1
+    let g:go_highlight_types = 1
+    let g:go_highlight_fields = 1
+    let g:go_highlight_functions = 1
+    let g:go_highlight_function_calls = 1
+    let g:go_highlight_methods = 1
+    let g:go_highlight_structs = 1
+    let g:go_highlight_operators = 1
+    let g:go_highlight_extra_types = 1
+    let g:go_highlight_build_constraints = 1
+    let g:go_highlight_generate_tags = 1
 
-      "disable use K to run godoc
-      let g:go_doc_keywordprg_enabled = 0
+    "disable use K to run godoc
+    let g:go_doc_keywordprg_enabled = 0
 
-      autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+    autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
 
 " vim-go: 按键映射 -------------------------
@@ -1250,75 +1155,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
                 \ 'm' : 'move tab',
                 \ },
         \}
-"    let g:which_key_map = {
-"          \ 'name' : '+Vim root ' ,
-"          \ 'a' : {
-"                \ 'name' : '+coc-code-action',
-"                \ 'c' : 'code action',
-"                \ },
-"          \ 'b' : {
-"                \ 'name' : '+buffer',
-"                \ 'b' : 'buffer list',
-"                \ 'c' : 'keep current buffer',
-"                \ 'o' : 'keep input buffer',
-"                \ },
-"          \ 'e' : 'open file explorer' ,
-"          \ '-' : 'choose window by {prompt char}' ,
-"          \ 'd' : 'search cursor word on Dash.app' ,
-"          \ 'G' : 'distraction free writing' ,
-"          \ 'F' : 'find current file' ,
-"          \ 'f' : {
-"                \ 'name' : '+search {files cursorword word outline}',
-"                \ 'f' : 'find file',
-"                \ 'r' : 'search {word}',
-"                \ 'c' : 'change colorscheme',
-"                \ 'w' : 'search cursorword',
-"                \ 'v' : 'search outline',
-"                \ },
-"          \ 'm' : 'open mundotree' ,
-"          \ 'w' : 'save file',
-"          \ 'j' : 'open coc-explorer',
-"          \ 's' : 'open startify screen',
-"          \ 'p' : 'edit pluginsconfig {filename}',
-"          \ 'x' : 'coc cursors operate',
-"          \ 'g'  :{
-"                    \'name':'+git-operate',
-"                    \ 'd'    : 'Gdiff',
-"                    \ 'c'    : 'Gcommit',
-"                    \ 'b'    : 'Gblame',
-"                    \ 'B'    : 'Gbrowse',
-"                    \ 'S'    : 'Gstatus',
-"                    \ 'p'    : 'git push',
-"                    \ 'l'    : 'GitLogAll',
-"                    \ 'h'    : 'GitBranch',
-"                    \},
-"          \ 'c'    : {
-"                  \ 'name' : '+coc list' ,
-"                  \ 'a'    : 'coc CodeActionSelected',
-"                  \ 'd'    : 'coc Diagnostics',
-"                  \ 'c'    : 'coc Commands',
-"                  \ 'e'    : 'coc Extensions',
-"                  \ 'j'    : 'coc Next',
-"                  \ 'k'    : 'coc Prev',
-"                  \ 'o'    : 'coc OutLine',
-"                  \ 'r'    : 'coc Resume',
-"                  \ 'n'    : 'coc Rename',
-"                  \ 's'    : 'coc Isymbols',
-"                  \ 'g'    : 'coc Gitstatus',
-"                  \ 'f'    : 'coc Format',
-"                  \ 'm'    : 'coc search word to multiple cursors',
-"                  \ },
-"          \ 'q' : {
-"                \ 'name' : '+coc-quickfix',
-"                \ 'f' : 'coc fixcurrent',
-"                \ },
-"          \ 't' : {
-"                \ 'name' : '+tab-operate',
-"                \ 'n' : 'new tab',
-"                \ 'e' : 'edit tab',
-"                \ 'm' : 'move tab',
-"                \ },
-"          \ }
     let g:which_key_map[' '] = {
           \ 'name' : '+easymotion-jumpto-word ' ,
           \ 'b' : ['<plug>(easymotion-b)' , 'beginning of word backward'],
