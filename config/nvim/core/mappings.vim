@@ -5,16 +5,11 @@
 
     " 取消查询结果高亮
     nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+
     " tab 导航 按键映射
-    map tn :tabn<CR>
-    map tp :tabp<CR>
-    map tm :tabm
-    map tt :tabnew
-    map ts :tab split<CR>
-    map <C-S-Right> :tabn<CR>
-    imap <C-S-Right> <ESC>:tabn<CR>
-    map <C-S-Left> :tabp<CR>
-    imap <C-S-Left> <ESC>:tabp<CR>
+    noremap <leader>tn :tabnew<cr>
+    noremap <leader>te :tabedit
+    noremap <leader>tm :tabmove
 
     " 窗口导航使用 meta+arrows
     "map <M-Right> <c-w>l
@@ -106,34 +101,8 @@
     noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
     noremap <expr> <C-y> (line("w0") <= 1         ? "k" : "3\<C-y>")
 
-"FZF
-    nnoremap <silent> <leader>fc :Colors<CR>
-    nnoremap <silent> <leader>bb :Buffers<CR>
-    nnoremap <silent> <leader>ff :call Fzf_dev()<CR>
-    nnoremap <silent> <leader>fr :Rg<CR>
-    nnoremap <silent> <leader>fw :Rg <C-R><C-W><CR>
 
-" buffet
-    nmap <leader>1 <Plug>BuffetSwitch(1)
-    nmap <leader>2 <Plug>BuffetSwitch(2)
-    nmap <leader>3 <Plug>BuffetSwitch(3)
-    nmap <leader>4 <Plug>BuffetSwitch(4)
-    nmap <leader>5 <Plug>BuffetSwitch(5)
-    nmap <leader>6 <Plug>BuffetSwitch(6)
-    nmap <leader>7 <Plug>BuffetSwitch(7)
-    nmap <leader>8 <Plug>BuffetSwitch(8)
-    nmap <leader>9 <Plug>BuffetSwitch(9)
-    nmap <leader>0 <Plug>BuffetSwitch(10)
 
-" vista
-    nnoremap <silent><localleader>v :Vista!!<CR>
-    nnoremap <silent><leader>fv     :Vista finder coc<CR>
-
-" whichkey
-	nnoremap <silent> <leader>      :<c-u>WhichKey '\'<CR>
-	nnoremap <silent> <localleader> :<c-u>WhichKey  ';'<CR>
-	nnoremap <silent>[              :<c-u>WhichKey  '['<CR>
-	nnoremap <silent>]              :<c-u>WhichKey  ']'<CR>
 
 " Non-standard
 " ---

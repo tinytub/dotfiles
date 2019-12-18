@@ -53,6 +53,7 @@ call s:source_file('core/plugins.vim')
 call s:source_file('core/general.vim')
 call s:source_file('core/filetype.vim')
 call s:source_file('core/mappings.vim')
+call s:source_file('core/plugin_mappings.vim')
 call s:source_file('core/theme.vim')
 
 "
