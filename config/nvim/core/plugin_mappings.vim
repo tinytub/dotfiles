@@ -120,3 +120,68 @@
     "nnoremap <silent><Leader>e :call <sid>defx_open({ 'find_current_file': v:true })<CR>
     nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
 
+" denite
+    nnoremap <silent><LocalLeader>m :<C-u>Denite menu<CR>
+    noremap zl :<C-u>call <SID>my_denite_outline(&filetype)<CR>
+    noremap zL :<C-u>call <SID>my_denite_decls(&filetype)<CR>
+    noremap zT :<C-u>call <SID>my_denite_file_rec_goroot()<CR>
+
+    nnoremap <silent> <Leader>gl :<C-u>Denite gitlog:all<CR>
+    nnoremap <silent> <Leader>gh :<C-u>Denite gitbranch<CR>
+    function! s:my_denite_outline(filetype) abort
+    execute 'Denite' a:filetype ==# 'go' ? "decls:'%:p'" : 'outline'
+    endfunction
+    function! s:my_denite_decls(filetype) abort
+    if a:filetype ==# 'go'
+        Denite decls
+    else
+        call denite#util#print_error('decls does not support filetypes except go')
+    endif
+    endfunction
+    function! s:my_denite_file_rec_goroot() abort
+    if !executable('go')
+        call denite#util#print_error('`go` executable not found')
+        return
+    endif
+    let out = system('go env | grep ''^GOROOT='' | cut -d\" -f2')
+    let goroot = substitute(out, '\n', '', '')
+    call denite#start(
+            \ [{'name': 'file/rec', 'args': [goroot]}],
+            \ {'input': '.go'})
+    endfunction
+
+"vim-go
+	 nnoremap <silent> <LocalLeader>gi :GoImpl<CR>
+	 nnoremap <silent> <LocalLeader>gd :GoDescribe<CR>
+	 nnoremap <silent> <LocalLeader>gc :GoCallees<CR>
+	 nnoremap <silent> <LocalLeader>gC :GoCallers<CR>
+	 nnoremap <silent> <LocalLeader>gs :GoCallstack<CR>
+
+" vim-go: 按键映射 -------------------------
+"    augroup VimGo
+"      autocmd!
+"      " vim-go related mappings
+"      "autocmd FileType go nmap <Leader>r <Plug>(go-run)
+"      "autocmd FileType go nmap <Leader>b <Plug>(go-build)
+"      "autocmd FileType go nmap <Leader>t <Plug>(go-test)
+"      "autocmd FileType go nmap <Leader>i <Plug>(go-info)
+"      "autocmd FileType go nmap <Leader>s <Plug>(go-implements)
+"      autocmd FileType go nmap <Leader>c <Plug>(go-coverage)
+"      autocmd FileType go nmap <Leader>re <Plug>(go-rename)
+"      autocmd FileType go nmap <Leader>gi <Plug>(go-imports)
+"      autocmd FileType go nmap <Leader>gI <Plug>(go-install)
+"      "autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
+"      autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+"      autocmd FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+"      autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
+"      autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+"      "autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
+"      autocmd FileType go set nocursorcolumn
+"    augroup END
+
+" Startify
+    nnoremap <silent> <leader>s :Startify<CR>
+
+"ale
+    nmap [a <Plug>(ale_next_wrap)
+    nmap ]a <Plug>(ale_previous_wrap)

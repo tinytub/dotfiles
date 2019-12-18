@@ -1013,29 +1013,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 
     autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
-
-" vim-go: 按键映射 -------------------------
-    augroup VimGo
-      autocmd!
-      " vim-go related mappings
-      "autocmd FileType go nmap <Leader>r <Plug>(go-run)
-      "autocmd FileType go nmap <Leader>b <Plug>(go-build)
-      "autocmd FileType go nmap <Leader>t <Plug>(go-test)
-      "autocmd FileType go nmap <Leader>i <Plug>(go-info)
-      "autocmd FileType go nmap <Leader>s <Plug>(go-implements)
-      autocmd FileType go nmap <Leader>c <Plug>(go-coverage)
-      autocmd FileType go nmap <Leader>re <Plug>(go-rename)
-      autocmd FileType go nmap <Leader>gi <Plug>(go-imports)
-      autocmd FileType go nmap <Leader>gI <Plug>(go-install)
-      "autocmd FileType go nmap <Leader>gd <Plug>(go-doc)
-      autocmd FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-      autocmd FileType go nmap <Leader>gb <Plug>(go-doc-browser)
-      autocmd FileType go nmap <Leader>ds <Plug>(go-def-split)
-      autocmd FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-      "autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
-      autocmd FileType go set nocursorcolumn
-    augroup END
-
 " vim-jedi: 相关配置 ------------------------------
     "let g:jedi#auto_vim_configuration = 0
     "let g:jedi#auto_configuration = 0
@@ -1088,7 +1065,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     \ ]
 
     autocmd User Startified setlocal cursorline
-    nmap <leader>st :Startify<cr>
 
 " which key
     let g:which_key_map =  {}
