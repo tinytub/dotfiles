@@ -38,6 +38,14 @@ if has('vim_starting')
 	"let g:mapleader="\<Space>"
 	let g:maplocalleader=';'
 
+	" 驱逐被占用的 键盘映射
+	nnoremap <Space>  <Nop>
+	xnoremap <Space>  <Nop>
+	nnoremap ,        <Nop>
+	xnoremap ,        <Nop>
+	nnoremap ;        <Nop>
+	xnoremap ;        <Nop>
+
 	" Vim only, Linux terminal settings
 	if !has('nvim') && !has('gui_running') && !has('win32') && !has('win64')
 		call s:source_file('config/terminal.vim')
