@@ -24,7 +24,9 @@
     ```
 - bat : [install bat](https://github.com/sharkdp/bat)
 
-
+```
 git clone https://github.com/tinytub/vim ~/.dotfiles
 cd ~/.dotfiles
 sh install.sh
+```
+

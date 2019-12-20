@@ -14,8 +14,8 @@
   //git
   "git.enableGutters": true,
   "git.branchCharacter":"\uf408",
-  "git.addGBlameToBufferVar": true,
-  "git.addGBlameToVirtualText": true,
+  "git.addGBlameToBufferVar": false,
+  "git.addGBlameToVirtualText": false,
   "git.virtualTextPrefix": " ❯❯❯ ",
   "git.addedSign.hlGroup": "GitGutterAdd",
   "git.changedSign.hlGroup": "GitGutterChange",
@@ -45,6 +45,7 @@
       "h" : "gotoParent",
       "l" : "expandOrShrink"
   },
+  "go.goplsPath": "~/Documents/local_projects/goworks/bin/gopls",
   "go.goplsOptions": {
       "usePlaceholders": true,
       "completeUnimported": true,

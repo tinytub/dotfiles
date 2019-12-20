@@ -27,6 +27,13 @@
 	nnoremap <silent>[              :<c-u>WhichKey  '['<CR>
 	nnoremap <silent>]              :<c-u>WhichKey  ']'<CR>
 
+" git
+	nnoremap <silent> <Leader>gd :Gdiff<CR>
+	nnoremap <silent> <Leader>gc :Gcommit<CR>
+	nnoremap <silent> <Leader>gb :Gblame<CR>
+	nnoremap <silent> <Leader>gB :Gbrowse<CR>
+	nnoremap <silent> <Leader>gS :Gstatus<CR>
+
 " coc
     " Using CocList
     " Show all diagnostics
