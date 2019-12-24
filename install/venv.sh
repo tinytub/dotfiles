@@ -28,6 +28,6 @@ fi
 
 # Install or upgrade dependencies
 echo ':: PYTHON 2'
-"$venv/neovim2/bin/pip" install -U neovim PyYAML
+"$venv/neovim2/bin/pip" install -U neovim PyYAML pynvim
 echo -e '\n:: PYTHON 3'
-"$venv/neovim3/bin/pip" install -U neovim PyYAML
+"$venv/neovim3/bin/pip" install -U neovim PyYAML pynvim

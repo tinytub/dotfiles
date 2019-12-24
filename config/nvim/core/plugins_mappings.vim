@@ -88,7 +88,8 @@
 	nnoremap <expr><C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
     " multiple cursors
     nmap <silent> <C-c> <Plug>(coc-cursors-position)
-    nmap <expr> <silent> <C-m> <SID>select_current_word()
+    "和回车冲突
+    "nmap <expr> <silent> <C-m> <SID>select_current_word()
     xmap <silent> <C-d> <Plug>(coc-cursors-range)
     " use normal command like `<leader>xi(`
     nmap <leader>x  <Plug>(coc-cursors-operator)
@@ -122,10 +123,9 @@
     nnoremap <silent> <Leader>e
         \ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
     nnoremap <silent> <Leader>F
-		\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
-    "nnoremap <silent><Leader>n :call <sid>defx_open()<CR>
-    "nnoremap <silent><Leader>e :call <sid>defx_open({ 'find_current_file': v:true })<CR>
-    nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
+		\ :<C-u>Defx -resume -toggle `expand('%:p:h')` -search=`expand('%:p')`<CR>
+		"\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
+    "nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
 
 " denite
     nnoremap <silent><LocalLeader>m :<C-u>Denite menu<CR>
