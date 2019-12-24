@@ -44,6 +44,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'mattn/emmet-vim'
 
     " 可能是最好的 git 继承插件
+    " 同 coc-git 一起食用
     Plug 'tpope/vim-fugitive'
 
     " Airline
@@ -83,7 +84,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'dracula/vim', { 'as': 'dracula' }
 
     "" Git/mercurial/others diff icons on the side of the file lines
-    Plug 'mhinz/vim-signify'
+    "Plug 'mhinz/vim-signify'
 
     " Window chooser
     Plug 't9md/vim-choosewin'
@@ -561,72 +562,72 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     "let $FZF_DEFAULT_COMMAND = 'ag --hidden -l -g ""'
     " ripgrep
     if executable('rg')
-      let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-      set grepprg=rg\ --vimgrep
-      command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+        let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+        set grepprg=rg\ --vimgrep
+        command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
     endif
     
     let $FZF_DEFAULT_OPTS='--layout=reverse'
     let g:fzf_layout = { 'window': 'call FloatingFZF()' }
     
     function! FloatingFZF()
-      let buf = nvim_create_buf(v:false, v:true)
-      call setbufvar(buf, 'number', 'no')
+        let buf = nvim_create_buf(v:false, v:true)
+        call setbufvar(buf, 'number', 'no')
     
-      let height = float2nr(&lines/2)
-      let width = float2nr(&columns - (&columns * 2 / 10))
-      "let width = &columns
-      let row = float2nr(&lines / 3)
-      let col = float2nr((&columns - width) / 3)
+        let height = float2nr(&lines/2)
+        let width = float2nr(&columns - (&columns * 2 / 10))
+        "let width = &columns
+        let row = float2nr(&lines / 3)
+        let col = float2nr((&columns - width) / 3)
     
-      let opts = {
-            \ 'relative': 'editor',
-            \ 'row': row,
-            \ 'col': col,
-            \ 'width': width,
-            \ 'height':height,
-            \ }
-      let win =  nvim_open_win(buf, v:true, opts)
-      call setwinvar(win, '&number', 0)
-      call setwinvar(win, '&relativenumber', 0)
+        let opts = {
+              \ 'relative': 'editor',
+              \ 'row': row,
+              \ 'col': col,
+              \ 'width': width,
+              \ 'height':height,
+              \ }
+        let win =  nvim_open_win(buf, v:true, opts)
+        call setwinvar(win, '&number', 0)
+        call setwinvar(win, '&relativenumber', 0)
     endfunction
     
     " Files + devicons
     function! Fzf_dev()
     let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
-      function! s:files()
-        let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
-        return s:prepend_icon(l:files)
-        "return l:files
-      endfunction
-      function! s:prepend_icon(candidates)
-        let result = []
-        for candidate in a:candidates
-          let filename = fnamemodify(candidate, ':p:t')
-          let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
-          call add(result, printf("%s %s", icon, candidate))
-        endfor
-        return result
-      endfunction
-      function! s:edit_file(items)
-        let items = a:items
-        let i = 1
-        let ln = len(items)
-        while i < ln
-          let item = items[i]
-          let parts = split(item, ' ')
-          let file_path = get(parts, 1, '')
-          let items[i] = file_path
-          let i += 1
-        endwhile
-        call s:Sink(items)
-      endfunction
-      let opts = fzf#wrap({})
-      let opts.source = <sid>files()
-      let s:Sink = opts['sink*']
-      let opts['sink*'] = function('s:edit_file')
-      let opts.options .= l:fzf_files_options
-      call fzf#run(opts)
+        function! s:files()
+            let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+            return s:prepend_icon(l:files)
+            "return l:files
+        endfunction
+        function! s:prepend_icon(candidates)
+            let result = []
+            for candidate in a:candidates
+                let filename = fnamemodify(candidate, ':p:t')
+                let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
+                call add(result, printf("%s %s", icon, candidate))
+            endfor
+            return result
+        endfunction
+        function! s:edit_file(items)
+            let items = a:items
+            let i = 1
+            let ln = len(items)
+            while i < ln
+                let item = items[i]
+                let parts = split(item, ' ')
+                let file_path = get(parts, 1, '')
+                let items[i] = file_path
+                let i += 1
+            endwhile
+            call s:Sink(items)
+        endfunction
+        let opts = fzf#wrap({})
+        let opts.source = <sid>files()
+        let s:Sink = opts['sink*']
+        let opts['sink*'] = function('s:edit_file')
+        let opts.options .= l:fzf_files_options
+        call fzf#run(opts)
     endfunction
 
 " ALE
@@ -827,7 +828,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 
 
 " Window Chooser ------------------------------
-
     " mapping
     nmap  -  <Plug>(choosewin)
     " show big letters
@@ -1330,16 +1330,15 @@ endfunction
 
 let s:menus = {}
 
-let s:menus.dein = { 'description': '⚔️  Plugin management' }
-let s:menus.dein.command_candidates = [
-  \   ['🐬 Dein: Plugins update       🔸', 'call dein#update()'],
-  \   ['🐬 Dein: Plugins List         🔸', 'Denite dein'],
-  \   ['🐬 Dein: RecacheRuntimePath   🔸', 'call dein#recache_runtimepath()'],
-  \   ['🐬 Dein: Update log           🔸', 'echo dein#get_updates_log()'],
-  \   ['🐬 Dein: Log                  🔸', 'echo dein#get_log()'],
+let s:menus.vimplug = { 'description': 'Plugin management' }
+let s:menus.vimplug.command_candidates = [
+  \   ['🐬 vim-plug: Plugins Install      🔸', 'PlugInstall'],
+  \   ['🐬 vim-plug: Plugins Update       🔸', 'PlugUpdate'],
+  \   ['🐬 vim-plug: Plugins Status       🔸', 'PlugStatus'],
+  \   ['🐬 vim-plug: vim-plug Upgrade     🔸', 'PlugUpgrade'],
   \ ]
 
-let s:menus.project = { 'description': '🛠  Project & Structure' }
+let s:menus.project = { 'description': 'Project & Structure' }
 let s:menus.project.command_candidates = [
   \   ['🐳 File Explorer        🔸<Leader>e',        'Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>'],
   \   ['🐳 Outline              🔸<LocalLeader>t',   'TagbarToggle'],
@@ -1347,7 +1346,7 @@ let s:menus.project.command_candidates = [
   \   ['🐳 Mundo Tree           🔸<Leader>m',  'MundoToggle'],
   \ ]
 
-let s:menus.files = { 'description': '📁 File tools' }
+let s:menus.files = { 'description': 'File tools' }
 let s:menus.files.command_candidates = [
   \   ['📂 Denite: Find in files…    🔹 ',  'Denite grep:.'],
   \   ['📂 Denite: Find files        🔹 ',  'Denite file/rec'],
@@ -1356,7 +1355,7 @@ let s:menus.files.command_candidates = [
   \   ['📂 Denite: Line              🔹 ',  'Denite line'],
   \ ]
 
-let s:menus.tools = { 'description': '⚙️  Dev Tools' }
+let s:menus.tools = { 'description': 'Dev Tools' }
 let s:menus.tools.command_candidates = [
   \   ['🐠 Git commands       🔹', 'Git'],
   \   ['🐠 Git log            🔹', 'Denite gitlog:all'],
@@ -1365,23 +1364,22 @@ let s:menus.tools.command_candidates = [
   \   ['🐠 File explorer      🔹', 'Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>'],
   \ ]
 
-let s:menus.config = { 'description': '🔧 Zsh Tmux Configuration' }
+let s:menus.config = { 'description': 'Zsh Tmux Configuration' }
 let s:menus.config.file_candidates = [
   \   ['🐠 Zsh Configurationfile            🔸', '~/.zshrc'],
   \   ['🐠 Tmux Configurationfile           🔸', '~/.tmux.conf'],
   \ ]
 
-let s:menus.thinkvim = {'description': '💎 ThinkVim Configuration files'}
-let s:menus.thinkvim.file_candidates = [
-  \   ['🐠 MainVimrc          settings: vimrc               🔹', $VIMPATH.'/core/vimrc'],
-  \   ['🐠 Initial            settings: init.vim            🔹', $VIMPATH.'/core/init.vim'],
-  \   ['🐠 General            settings: general.vim         🔹', $VIMPATH.'/core/general.vim'],
-  \   ['🐠 DeinConfig         settings: deinrc.vim          🔹', $VIMPATH.'/core/deinrc.vim'],
-  \   ['🐠 FileTypes          settings: filetype.vim        🔹', $VIMPATH.'/core/filetype.vim'],
-  \   ['🐠 Installed       LoadPlugins: plugins.yaml        🔹', $VIMPATH.'/core/dein/plugins.yaml'],
-  \   ['🐠 Installed      LocalPlugins: local_plugins.yaml  🔹', $VIMPATH.'/core/dein/local_plugins.yaml'],
-  \   ['🐠 Global   Key    Vimmappings: mappings.vim        🔹', $VIMPATH.'/core/mappings.vim'],
-  \   ['🐠 Global   Key Pluginmappings: Pluginmappings      🔹', $VIMPATH.'/core/plugins/allkey.vim'],
+let s:menus.myvim = {'description': 'MyVim Configuration files'}
+let s:menus.myvim.file_candidates = [
+  \   ['🐠 MainVimrc          settings: vimrc               🔹', $VIM_PATH.'/core/vimrc'],
+  \   ['🐠 Initial            settings: init.vim            🔹', $VIM_PATH.'/core/init.vim'],
+  \   ['🐠 General            settings: general.vim         🔹', $VIM_PATH.'/core/general.vim'],
+  \   ['🐠 FileTypes          settings: filetype.vim        🔹', $VIM_PATH.'/core/filetype.vim'],
+  \   ['🐠 Installed       LoadPlugins: plugins.yaml        🔹', $VIM_PATH.'/core/plugins.yaml'],
+  \   ['🐠 Plugins  Key        Mapping: plugins_mapping.vim 🔹', $VIM_PATH.'/core/plugins_mapping.vim'],
+  \   ['🐠 Global   Key    Vimmappings: mappings.vim        🔹', $VIM_PATH.'/core/mappings.vim'],
+  \   ['🐠 Theme              settings: theme.vim           🔹', $VIM_PATH.'/core/theme.vim'],
   \ ]
 
 call denite#custom#var('menu', 'menus', s:menus)
