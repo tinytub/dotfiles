@@ -1,0 +1,27 @@
+export ZSH=$HOME/.oh-my-zsh
+source $ZSH/oh-my-zsh.sh
+#source ~/.bash_profile
+source ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
+#export GOPATH="/home/zhaopeng/goworks"
+#export GOROOT="/usr/local/go"
+export GOPATH="/Users/zhaopeng18/Documents/local_projects/goworks"
+export GO111MODULE="on"
+#export GOROOT="/usr/local/go"
+export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+#export GOPATH="/home/zhaopeng/goworks1.8.3/src/jd.com/jstack-thirdparty-libs"
+#export GOROOT="/home/zhaopeng/go1.8.3"
+
+export PATH=${JAVA_HOME}/bin:$PATH
+export PATH="/usr/local/opt/ruby/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
+
+#autossh
+export AUTOSSH_PIDFILE=~/autossh.pid
+export AUTOSSH_POLL=60
+export AUTOSSH_FIRST_POLL=30
+export AUTOSSH_GATETIME=0
+export AUTOSSH_DEBUG=1
+
+# Editor
+export EDITOR="nvim"
+export GIT_EDITOR="nvim"
+export REACT_EDITOR="nvim"
