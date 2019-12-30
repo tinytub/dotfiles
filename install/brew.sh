@@ -9,6 +9,7 @@ echo -e "\\n\\nInstalling homebrew packages..."
 echo "=============================="
 
 formulas=(
+
     bat
     diff-so-fancy
     dnsmasq
@@ -36,6 +37,8 @@ formulas=(
     entr
     yarn
     --HEAD universal-ctags/universal-ctags/universal-ctags
+    zsh-autosuggestions
+    autojump
 )
 
 for formula in "${formulas[@]}"; do
