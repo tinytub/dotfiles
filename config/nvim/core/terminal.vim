@@ -24,10 +24,12 @@ cnoremap <special> <Esc>[201~ <nop>
 " Mouse settings
 " ---
 if has('mouse')
-	if has('mouse_sgr')
-		set ttymouse=sgr
-	else
-		set ttymouse=xterm2
+	if !has('nvim')
+		if has('mouse_sgr')
+			set ttymouse=sgr
+		else
+			set ttymouse=xterm2
+		endif
 	endif
 endif
 

@@ -1,11 +1,17 @@
+
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
+
+export TERM="xterm-256color"
 #source ~/.bash_profile
-source ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
+#source ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
 #export GOPATH="/home/zhaopeng/goworks"
 #export GOROOT="/usr/local/go"
+
+# GVM
+[[ -s "/Users/zhaopeng18/.gvm/scripts/gvm" ]] && source "/Users/zhaopeng18/.gvm/scripts/gvm"
 export GOPATH="/Users/zhaopeng18/Documents/local_projects/goworks"
-export GO111MODULE="on"
+#export GO111MODULE="off"
 #export GOROOT="/usr/local/go"
 export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
 #export GOPATH="/home/zhaopeng/goworks1.8.3/src/jd.com/jstack-thirdparty-libs"
