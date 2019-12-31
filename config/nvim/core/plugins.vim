@@ -53,8 +53,7 @@ call plug#begin('~/.config/nvim/plugged')
     " Surround
     Plug 'tpope/vim-surround'
 
-    "Plug 'liuchengxu/vista.vim', {'on': ['Vista', 'Vista!', 'Vista!!']}
-    Plug 'liuchengxu/vista.vim'
+    Plug 'liuchengxu/vista.vim', {'on': ['Vista', 'Vista!', 'Vista!!']}
     "Plug 'Yggdroot/indentLine' 
 
     " Better autocompletion 暂时先使用 coc
@@ -130,8 +129,9 @@ call plug#end()
 
 " vista  tags 展示,类似 tagbar,但是使用虚拟窗口
 let g:vista#renderer#enable_icon = 1
+"let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
 let g:vista_default_executive = 'ctags'
-let g:vista_fzf_preview = ['right:50%']
+let g:vista_fzf_preview = ['right:65%']
 
 let g:vista_executive_for = {
   \ 'go': 'ctags',
@@ -150,15 +150,6 @@ let g:gutentags_exclude_filetypes = [ 'defx', 'denite', 'vista', 'magit' ]
 let g:gutentags_ctags_extra_args = ['--output-format=e-ctags']
 let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.less', '*.sass', '*.go', '*.dart', 'node_modules', 'dist', 'vendor']
 
-
-" indentline
-""    let g:indentline_enabled = 1
-""    let g:indentline_char='┆'
-""    let g:indentLine_fileTypeExclude = ['defx', 'denite','startify','tagbar','vista_kind','vista']
-""    let g:indentLine_concealcursor = 'niv'
-""    let g:indentLine_color_term = 96
-""    let g:indentLine_color_gui= '#725972'
-""    let g:indentLine_showFirstIndentLevel =1
 
 " Tagbar -----------------------------
 " 可以改成 fzf+vista 或者直接使用 denite
@@ -875,9 +866,12 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#formatter = 'default'
 
-    " 开启 coc 或 ale 支持
+    " 开启 coc 
     let g:airline#extensions#coc#enabled = 1
-    let g:airline#extensions#ale#enabled = 1
+    " 关闭 ale 支持
+    let g:airline#extensions#ale#enabled = 0
+    " 关闭 vista 支持
+    let g:airline#extensions#vista#enabled=0
 
 " Vim-markdown ------------------------------
 
