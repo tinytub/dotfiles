@@ -18,3 +18,23 @@ function! functions#PlugLoad()
     endif
 endfunction
 
+"vim-plug 自动更新plugin
+function! OnVimEnter() abort
+  " Run PlugUpdate every week automatically when entering Vim.
+  if exists('g:plug_home')
+    let l:filename = printf('%s/.vim_plug_update', g:plug_home)
+    if filereadable(l:filename) == 0
+      call writefile([], l:filename)
+    endif
+
+    "let l:this_week = strftime('%Y_%V')
+    let l:this_day = strftime('%Y_%m_%d')
+    let l:contents = readfile(l:filename)
+    if index(l:contents, l:this_day) < 0
+      call execute('PlugUpdate')
+      call writefile([l:this_day], l:filename, 'a')
+    endif
+  endif
+endfunction
+
+autocmd VimEnter * call OnVimEnter()

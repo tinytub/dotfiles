@@ -1,6 +1,3 @@
-
-# Author :taigacute
-
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
@@ -18,6 +15,9 @@ set -g @sysstat_mem_view_tmpl 'MEM: #[fg=#{mem.color}]#{mem.pused} (#{mem.used})
 set -g @sysstat_swap_view_tmpl 'SW: #[fg=#{swap.color}]#{swap.pused} (#{swap.used})#[default]'
 
 # 设置终端类型为256色
+set -g default-terminal "tmux-256color-italic"
+set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
+
 set -g default-terminal 'tmux-256color'
 #set -g default-terminal "tmux-256color-italic"
 
@@ -25,6 +25,9 @@ set -g history-limit 102400
 
 # Add truecolor support
 set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
+#set -g terminal-overrides ",alacritty:RGB"
+#set -ga terminal-overrides ",*256col*:Tc"
+
 
 # set -as terminal-overrides ',xterm*:sitm=\E[3m'
 # 开启剪切板
@@ -70,6 +73,9 @@ bind j select-pane -D
 bind k select-pane -U
 bind l select-pane -R
 
+## synchronize all panes in a window
+bind y setw synchronize-panes
+
 # 创建session
 bind C-c new-session
 
@@ -86,8 +92,11 @@ bind -r K resize-pane -U 5
 bind -r L resize-pane -R 5
 
 # 设置前缀键，默认为Ctrl+b
-# set -g prefix C-Space
 set -g prefix C-a
+bind C-a send-prefix
+
+# for nested tmux sessions
+bind-key a send-prefix
 
 # 释放之前的Ctrl-b前缀快捷键
 unbind C-b
@@ -101,6 +110,9 @@ bind r source-file ~/.tmux.conf \; display "Configuration Reloaded"
 # 设置窗口标签的前景及背景色
 # setw -g window-status-fg colour72
 # setw -g window-status-bg colour238
+
+# enable mouse support for switching panes/windows
+setw -g mouse on
 
 set-window-option -g window-status-format '#[bg=colour238]#[fg=colour107] #I #[bg=colour239]#[fg=colour110] #[bg=colour240]#W#[bg=colour239]#[fg=colour195]#F#[bg=colour238] '
 set-window-option -g window-status-current-format '#[bg=colour236]#[fg=colour215,bold] #I:#[bg=colour235]#[fg=colour167] #[bg=colour234]#W#[bg=colour235]#[fg=colour195]#F#[bg=colour236] '
