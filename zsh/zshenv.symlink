@@ -3,7 +3,10 @@ export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
 export TERM="xterm-256color"
-export LANG=en_US.UTF-8
+# LANG 如设置为 en_US 会导致特殊字符乱码
+export LANG=zh_CN.UTF-8
+
+#export LANG=en_US.UTF-8
 
 #source ~/.bash_profile
 #source ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
