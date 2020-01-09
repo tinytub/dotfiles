@@ -71,6 +71,7 @@
     "set langmenu=zh_CN.UTF-8
     set langmenu=en_US-UTF-8
     set mouse-=a
+    "set mouse=a
     "set wrap " turn on line wrapping
     "set wrapmargin=8 " wrap lines when coming within n characters from side
     set whichwrap+=<,>,h,l,[,]
