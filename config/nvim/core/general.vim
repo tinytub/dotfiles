@@ -169,9 +169,8 @@
     set cmdheight=1 " command bar height
     set title " set terminal title
     set showmatch " show matching braces
-    set mat=2 " how many tenths of a second to blink
     set matchpairs+=<:> " Add HTML brackets to pair matching
-    set matchtime=1     " Tenths of a second to show the matching paren
+    set matchtime=10     " Tenths of a second to show the matching paren
     set cpoptions-=m    " showmatch will wait 0.5s or until a char is typed
     set grepprg=rg\ --vimgrep\ $*
     set wildignore+=*.so,*~,*/.git/*,*/.svn/*,*/.DS_Store,*/tmp/*

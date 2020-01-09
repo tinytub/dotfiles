@@ -51,7 +51,8 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     " Surround
-    Plug 'tpope/vim-surround'
+    "Plug 'tpope/vim-surround'
+    Plug 'machakann/vim-sandwich'
 
     Plug 'liuchengxu/vista.vim', {'on': ['Vista', 'Vista!', 'Vista!!']}
     "Plug 'Yggdroot/indentLine' 
