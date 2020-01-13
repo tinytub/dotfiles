@@ -50,9 +50,15 @@ call plug#begin('~/.config/nvim/plugged')
     " Airline
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
+"    Plug 'itchyny/lightline.vim'
+"    Plug 'mengelbrecht/lightline-bufferline'
+"    Plug 'shinchu/lightline-gruvbox.vim'
+
+    "
     " Surround
     "Plug 'tpope/vim-surround'
     Plug 'machakann/vim-sandwich'
+    Plug 'itchyny/vim-parenmatch'
 
     Plug 'liuchengxu/vista.vim', {'on': ['Vista', 'Vista!', 'Vista!!']}
     "Plug 'Yggdroot/indentLine' 
@@ -842,13 +848,18 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	\ 'cterm': [ 72, 64 ], 'gui': [ '#7BB292' ] }
 " Airline ------------------------------
 
+    " 先关掉 powerline font 支持,不然 tmux 穿模...
+    " https://github.com/vim-airline/vim-airline/issues/1745#issuecomment-397060719
     let g:airline_powerline_fonts = 1
-    " let g:airline_theme = 'bubblegum'
+    "let g:airline_symbols_ascii = 1
+    "let g:airline_theme = 'bubblegum'
     let g:airline_theme = 'gruvbox'
 
     if !exists('g:airline_symbols')
        let g:airline_symbols = {}
     endif
+
+    " airline symbols
     let g:airline_left_sep = ''
     let g:airline_left_alt_sep = ''
     let g:airline_right_sep = ''
@@ -863,6 +874,22 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     let g:airline_symbols.notexists = 'Ɇ'
     let g:airline_symbols.whitespace = 'Ξ'
 
+    " unicode symbols
+    "let g:airline_left_sep = '»'
+    "let g:airline_left_sep = '▶'
+    "let g:airline_right_sep = '«'
+    "let g:airline_right_sep = '◀'
+    "let g:airline_symbols.linenr = '␊'
+    "let g:airline_symbols.linenr = '␤'
+    "let g:airline_symbols.linenr = '¶'
+    "let g:airline_symbols.branch = '⎇'
+    "let g:airline_symbols.paste = 'ρ'
+    "let g:airline_symbols.paste = 'Þ'
+    "let g:airline_symbols.paste = '∥'
+    "let g:airline_symbols.whitespace = 'Ξ'
+
+    
+
     "打开 airline 提供的 tabline, 不使用 buffet 的
     let g:airline#extensions#tabline#enabled = 1
     let g:airline#extensions#tabline#formatter = 'default'
@@ -873,6 +900,60 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     let g:airline#extensions#ale#enabled = 0
     " 关闭 vista 支持
     let g:airline#extensions#vista#enabled=0
+
+" Lightline -----------------------------------------
+"    let g:lightline = {
+"        \   'colorscheme': 'gruvbox',
+"        \   'active': {
+"        \       'left': [ [ 'mode', 'paste' ],
+"        \               [ 'gitbranch' ],
+"        \               [ 'readonly', 'filetype', 'filename' ]],
+"        \       'right': [ [ 'percent' ], [ 'lineinfo' ],
+"        \               [ 'fileformat', 'fileencoding' ],
+"        \               [ 'gitblame', 'currentfunction',  'cocstatus', 'linter_errors', 'linter_warnings' ]]
+"        \   },
+"        \   'component_expand': {
+"        \   },
+"        \   'component_type': {
+"        \       'readonly': 'error',
+"        \       'linter_warnings': 'warning',
+"        \       'linter_errors': 'error'
+"        \   },
+"        \   'component_function': {
+"        \       'fileencoding': 'helpers#lightline#fileEncoding',
+"        \       'filename': 'helpers#lightline#fileName',
+"        \       'fileformat': 'helpers#lightline#fileFormat',
+"        \       'filetype': 'helpers#lightline#fileType',
+"        \       'gitbranch': 'helpers#lightline#gitBranch',
+"        \       'cocstatus': 'coc#status',
+"        \       'currentfunction': 'helpers#lightline#currentFunction',
+"        \       'gitblame': 'helpers#lightline#gitBlame',
+"        \       'method': 'NearestMethodOrFunction'
+"        \   },
+"        \   'tabline': {
+"        \       'left': [ [ 'tabs' ] ],
+"        \       'right': [ [ 'close' ] ]
+"        \   },
+"        \   'tab': {
+"        \       'active': [ 'filename', 'modified' ],
+"        \       'inactive': [ 'filename', 'modified' ],
+"        \   },
+"        \   'separator': { 'left': '', 'right': '' },
+"        \   'subseparator': { 'left': '', 'right': '' }
+"    \ }
+"    let g:lightline.tabline = {'left': [['buffers']], 'right': [['close']]}
+"    let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+"    let g:lightline.component_type   = {'buffers': 'tabsel'}
+"    let g:lightline#bufferline#enable_devicons = 1
+"    let g:lightline#bufferline#modified = 1
+"    function! NearestMethodOrFunction() abort
+"        return get(b:, 'vista_nearest_method_or_function', '')
+"    endfunction
+"    autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+"    let g:vista_disable_statusline = 0
+
+
+
 
 " Vim-markdown ------------------------------
 

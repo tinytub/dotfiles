@@ -33,12 +33,13 @@ function! s:main()
 endfunction
 
 " Disable vim distribution plugins
+" https://github.com/rafi/vim-config/blob/master/config/init.vim
 let g:loaded_getscript = 1
 let g:loaded_getscriptPlugin = 1
 let g:loaded_gzip = 1
 let g:loaded_logiPat = 1
 let g:loaded_matchit = 1
-"let g:loaded_matchparen = 1 "高亮括号,别瞎关...
+let g:loaded_matchparen = 1 "高亮括号,别瞎关... 或者用itchyny/vim-parenmatch
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 let g:loaded_rrhelper = 1  " ?
 let g:loaded_shada_plugin = 1  " ?
