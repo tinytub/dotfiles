@@ -1,4 +1,7 @@
 " Vim Colors
+"highlight ParenMatch  ctermbg=236 guibg=#30302c
+highlight! ParenMatch  ctermfg=NONE guifg=NONE ctermbg=236 guibg=#494d2a
+
 " ---------------------------------------------------------
 hi Whitespace ctermfg=96 guifg=#725972 guibg=NONE ctermbg=NONE
 hi VertSplit  ctermfg=Black  guifg=Black guibg=NONE ctermbg=NONE
@@ -21,7 +24,12 @@ highlight! link pythonIndentError NONE
 "coc setting
 " ---------------------------------------------------------
 hi CocCursorRange guibg=#b16286 guifg=#ebdbb2
-hi default CocHighlightText  guibg=#725972 ctermbg=96
+"hi default CocHighlightText  guibg=#725972 ctermbg=96
+"hi default CocHighlightText  guibg=#5c475c ctermbg=96
+"from spacevim
+hi CocHighlightText ctermfg=235 guifg=#282828 ctermbg=109 guibg=#83a598
+hi link CocHighlightRead CocHighlightText
+hi link CocHighlightWrite CocHighlightText
 hi CocWarningSign  ctermfg=32 ctermbg=NONE guifg=#0087d7 guibg=NONE
 
 
@@ -83,7 +91,6 @@ hi ReduxKeywords ctermfg=204 guifg=#C678DD
 hi ReduxHooksKeywords ctermfg=204 guifg=#C176A7
 hi WebBrowser ctermfg=204 guifg=#56B6C2
 hi ReactLifeCycleMethods ctermfg=204 guifg=#D19A66
-
 
 " yellow
 hi tsxAttrib guifg=#F8BD7F cterm=italic

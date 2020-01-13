@@ -1,5 +1,6 @@
 # some config from https://github.com/nicknisi/dotfiles/blob/master/zsh/zshrc.symlink
 # some config from https://github.com/taigacute/dotfiles
+# some config from https://github.com/Aloxaf/dotfiles
 
 #zmodload zsh/zprof
 # fzf
@@ -8,67 +9,125 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
+export FZF_DEFAULT_OPTS='--color=bg+:23 -m --bind ctrl-space:toggle'
+
 # tmux
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
-# zplug configruation
-if [[ ! -d "${ZPLUG_HOME}" ]]; then
-  if [[ ! -d ~/.zplug ]]; then
-    git clone https://github.com/zplug/zplug ~/.zplug
-    # If we can't get zplug, it'll be a very sobering shell experience. To at
-    # least complete the sourcing of this file, we'll define an always-false
-    # returning zplug function.
-    if [[ $? != 0 ]]; then
-      function zplug() {
-        return 1
-      }
-    fi
-  fi
-  export ZPLUG_HOME=~/.zplug
-fi
+source ~/.zplugin/bin/zplugin.zsh
 
-if [[ -d "${ZPLUG_HOME}" ]]; then
-  source "${ZPLUG_HOME}/init.zsh"
-fi
+# ==== 加载 OMZ 插件 ====
 
-#zplug "junegunn/fzf-bin", \
-#    from:gh-r, \
-#    as:command, \
-#    rename-to:fzf, \
-#    use:"*darwin*amd64*"
+zplugin for \
+    OMZ::lib/clipboard.zsh \
+    OMZ::lib/git.zsh \
+    OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh \
+    OMZ::plugins/git-extras/git-extras.plugin.zsh \
+    OMZ::plugins/systemd/systemd.plugin.zsh \
+    OMZ::plugins/sudo/sudo.plugin.zsh
 
-zplug "zplug/zplug", hook-build:"zplug --self-manage"
-zplug "plugins/git",               from:oh-my-zsh, if:"(( $+commands[git] ))"
-zplug "plugins/sudo",              from:oh-my-zsh, if:"(( $+commands[sudo] ))"
-zplug "plugins/golang",            from:oh-my-zsh, if:"(( $+commands[go] ))"
-zplug "plugins/node",              from:oh-my-zsh, if:"(( $+commands[node] ))"
-zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"
-zplug "plugins/docker",            from:oh-my-zsh, if:"(( $+commands[docker] ))"
-zplug "plugins/docker-compose",    from:oh-my-zsh, if:"(( $+commands[docker-compose] ))"
-zplug 'plugins/git', from:oh-my-zsh, if:'which git'
-zplug "plugins/autojump", from:oh-my-zsh
-zplug 'romkatv/powerlevel10k', use:powerlevel10k.zsh-theme
-zplug 'zsh-users/zsh-autosuggestions'
-zplug 'zsh-users/zsh-completions', defer:2
-zplug 'zsh-users/zsh-history-substring-search'
-zplug 'zsh-users/zsh-syntax-highlighting', defer:2
+zplugin svn for \
+    OMZ::plugins/extract \
+    OMZ::plugins/pip
 
-if ! zplug check; then
-  zplug install
-fi
+zplugin as="completion" for \
+    OMZ::plugins/fd/_fd
 
-zplug load
+zplugin ice lucid wait
+zplugin snippet OMZ::plugins/git/git.plugin.zsh
 
-if zplug check 'zsh-users/zsh-autosuggestions'; then
-  # Enable asynchronous fetching of suggestions.
-  ZSH_AUTOSUGGEST_USE_ASYNC=1
-  # For some reason, the offered completion winds up having the same color as
-  # the terminal background color (when using a dark profile). Therefore, we
-  # switch to gray.
-  # See https://github.com/zsh-users/zsh-autosuggestions/issues/182.
-  ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-fi
+# ==== 加载 GitHub 插件 ====
+zplugin light-mode lucid wait for \
+    zdharma/fast-syntax-highlighting \
+    skywind3000/z.lua
+
+zplugin light-mode lucid wait for \
+    atload='_zsh_autosuggest_start' \
+        zsh-users/zsh-autosuggestions \
+    blockf \
+        zsh-users/zsh-completions \
+    as="program" atclone="rm -f ^(rgg|agv)" \
+        lilydjwg/search-and-view \
+    atclone='sed -i "s/\^h/^?/" autopair.zsh' \
+        hlissner/zsh-autopair
+
+zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh"
+zplugin load trapd00r/LS_COLORS
+
+zplugin ice depth=1
+zplugin light romkatv/powerlevel10k
+
+# ==== 加载自定义插件 ====
+
+CUSTOM=~/.dotfiles/zsh
+
+#source $CUSTOM/snippets/alias.zsh
+#source $CUSTOM/snippets/alias-tips.zsh
+source $CUSTOM/snippets/completion.zsh # 先玩着,不好使再说, 来自 Aloxaf/dotfiles
+source $CUSTOM/snippets/history.zsh
+#source $CUSTOM/snippets/key-bindings.zsh
+source $CUSTOM/snippets/misc.zsh
+
+
+
+# # zplug configruation
+# if [[ ! -d "${ZPLUG_HOME}" ]]; then
+#   if [[ ! -d ~/.zplug ]]; then
+#     git clone https://github.com/zplug/zplug ~/.zplug
+#     # If we can't get zplug, it'll be a very sobering shell experience. To at
+#     # least complete the sourcing of this file, we'll define an always-false
+#     # returning zplug function.
+#     if [[ $? != 0 ]]; then
+#       function zplug() {
+#         return 1
+#       }
+#     fi
+#   fi
+#   export ZPLUG_HOME=~/.zplug
+# fi
+# 
+# if [[ -d "${ZPLUG_HOME}" ]]; then
+#   source "${ZPLUG_HOME}/init.zsh"
+# fi
+# 
+# #zplug "junegunn/fzf-bin", \
+# #    from:gh-r, \
+# #    as:command, \
+# #    rename-to:fzf, \
+# #    use:"*darwin*amd64*"
+# 
+# zplug "zplug/zplug", hook-build:"zplug --self-manage"
+# zplug "plugins/git",               from:oh-my-zsh, if:"(( $+commands[git] ))"
+# #zplug "plugins/sudo",              from:oh-my-zsh, if:"(( $+commands[sudo] ))"
+# zplug "plugins/golang",            from:oh-my-zsh, if:"(( $+commands[go] ))"
+# zplug "plugins/node",              from:oh-my-zsh, if:"(( $+commands[node] ))"
+# zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"
+# zplug "plugins/docker",            from:oh-my-zsh, if:"(( $+commands[docker] ))"
+# zplug "plugins/docker-compose",    from:oh-my-zsh, if:"(( $+commands[docker-compose] ))"
+# zplug 'plugins/git', from:oh-my-zsh, if:'which git'
+# zplug "plugins/autojump", from:oh-my-zsh
+# zplug 'romkatv/powerlevel10k', use:powerlevel10k.zsh-theme
+# zplug 'zsh-users/zsh-autosuggestions'
+# zplug 'zsh-users/zsh-completions', defer:2
+# zplug 'zsh-users/zsh-history-substring-search'
+# zplug 'zsh-users/zsh-syntax-highlighting', defer:2
+# 
+# if ! zplug check; then
+#   zplug install
+# fi
+# 
+# zplug load
+# 
+# if zplug check 'zsh-users/zsh-autosuggestions'; then
+#   # Enable asynchronous fetching of suggestions.
+#   ZSH_AUTOSUGGEST_USE_ASYNC=1
+#   # For some reason, the offered completion winds up having the same color as
+#   # the terminal background color (when using a dark profile). Therefore, we
+#   # switch to gray.
+#   # See https://github.com/zsh-users/zsh-autosuggestions/issues/182.
+#   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
+# fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -84,70 +143,6 @@ bindkey '^[[5D' beginning-of-line
 bindkey '^[[5C' end-of-line
 bindkey '^[[3~' delete-char
 
-
-# history
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-setopt EXTENDED_HISTORY
-setopt HIST_REDUCE_BLANKS
-setopt SHARE_HISTORY
-setopt HIST_IGNORE_ALL_DUPS
-
-setopt COMPLETE_ALIASES
-
-# zsh-syntax-highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-ZSH_HIGHLIGHT_PATTERNS+=('rm -rf *' 'fg=white,bold,bg=red')
-typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[path]='fg=blue'
-ZSH_HIGHLIGHT_STYLES[path_pathseparator]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[function]='fg=cyan'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=yellow'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=magenta'
-ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=cyan,bold'
-ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=green,bold'
-ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=magenta,bold'
-ZSH_HIGHLIGHT_STYLES[bracket-level-4]='fg=yellow,bold'
-
-# zsh-theme
-#DISABLE_AUTO_TITLE="true"
-
-#POWERLEVEL9K_MODE=nerdfont-complete
-#POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-#POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
-#POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
-#POWERLEVEL9K=truncate_beginning
-#POWERLEVEL9K_TIME_BACKGROUND=black
-#POWERLEVEL9K_TIME_FOREGROUND=white
-#POWERLEVEL9K_TIME_FORMAT=%D{%I:%M}
-#POWERLEVEL9K_STATUS_VERBOSE=false
-#POWERLEVEL9K_VCS_CLEAN_FOREGROUND=black
-#POWERLEVEL9K_VCS_CLEAN_BACKGROUND=green
-#POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND=black
-#POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=yellow
-#POWERLEVEL9K_VCS_MODIFIED_FOREGROUND=white
-#POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=black
-#POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND=black
-#POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=blue
-#POWERLEVEL9K_FOLDER_ICON=
-#POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE=true
-#POWERLEVEL9K_STATUS_VERBOSE=false
-#POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
-#POWERLEVEL9K_VCS_UNTRACKED_ICON=●
-#POWERLEVEL9K_VCS_UNSTAGED_ICON=±
-#POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON=↓
-#POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON=↑
-#POWERLEVEL9K_VCS_COMMIT_ICON=' '
-#POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX='%F{blue}╭─%F{red}'
-#POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX='%F{blue}╰%f '
-#POWERLEVEL9K_CUSTOM_OS_ICON='echo   $(whoami) '
-#POWERLEVEL9K_CUSTOM_OS_ICON_BACKGROUND=red
-#POWERLEVEL9K_CUSTOM_OS_ICON_FOREGROUND=white
-#POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_os_icon ssh root_indicator dir dir_writable vcs)
-#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time status background_jobs time ram)
 
 #alias
 alias vi="nvim"

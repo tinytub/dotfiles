@@ -9,6 +9,7 @@ echo "Installing dotfiles."
 source install/link.sh
 
 #source install/git.sh
+source install/dep.sh
 #
 # only perform macOS-specific install
 if [ "$(uname)" == "Darwin" ]; then
