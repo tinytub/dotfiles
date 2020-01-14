@@ -6,10 +6,10 @@
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border --color=bg+:23 -m'
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
-export FZF_DEFAULT_OPTS='--color=bg+:23 -m --bind ctrl-space:toggle'
+#export FZF_DEFAULT_OPTS='--color=bg+:23 -m --bind ctrl-space:toggle'
 
 # tmux
 
@@ -55,6 +55,9 @@ zplugin light-mode lucid wait for \
 zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh"
 zplugin load trapd00r/LS_COLORS
 
+zplugin ice lucid wait"!0"
+zplugin light changyuheng/fz
+
 zplugin ice depth=1
 zplugin light romkatv/powerlevel10k
 
@@ -62,9 +65,10 @@ zplugin light romkatv/powerlevel10k
 
 CUSTOM=~/.dotfiles/zsh
 
+
 #source $CUSTOM/snippets/alias.zsh
 #source $CUSTOM/snippets/alias-tips.zsh
-source $CUSTOM/snippets/completion.zsh # 先玩着,不好使再说, 来自 Aloxaf/dotfiles
+#source $CUSTOM/snippets/completion.zsh # 先玩着,不好使再说, 来自 Aloxaf/dotfiles
 source $CUSTOM/snippets/history.zsh
 #source $CUSTOM/snippets/key-bindings.zsh
 source $CUSTOM/snippets/misc.zsh
@@ -175,6 +179,11 @@ alias ta='tmux attach'
 alias tls='tmux ls'
 alias tat='tmux attach -t'
 alias tns='tmux new-session'
+
+alias zc='z -c'      # 严格匹配当前路径的子路径
+alias zz='z -i'      # 使用交互式选择模式
+alias zf='z -I'      # 使用 fzf 对多个结果进行选择
+alias zb='z -b'      # 快速回到父目录
 
 #functions
 #tmux

@@ -107,10 +107,11 @@
     nmap <leader>x  <Plug>(coc-cursors-operator)
 
     " coc-explorer
-    noremap <silent> <leader>j :execute 'CocCommand explorer' .
-        \ ' --toggle' .
-        \ ' --sources=buffer+,file+' .
-        \ ' --file-columns=git,selection,icon,clip,indent,filename,size ' . expand('%:p:h')<CR>
+    noremap <silent> <leader>j :CocCommand explorer<cr>
+    "noremap <silent> <leader>j :execute 'CocCommand explorer' .
+    "    \ ' --toggle' .
+    "    \ ' --sources=buffer+,file+' .
+    "    \ ' --file-columns=git,selection,icon,clip,indent,filename,size ' . expand('%:p:h')<CR>
 
     " 使用 回车 确认补全 Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
     " Coc only does snippet and additional edit on confirm.
