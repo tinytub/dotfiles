@@ -58,6 +58,8 @@ call plug#begin('~/.config/nvim/plugged')
     " Surround
     "Plug 'tpope/vim-surround'
     Plug 'machakann/vim-sandwich'
+
+    " 括号 match, let g:loaded_matchparen = 1 "高亮括号,别瞎关... 或者用itchyny/vim-parenmatch
     Plug 'itchyny/vim-parenmatch'
 
     Plug 'liuchengxu/vista.vim', {'on': ['Vista', 'Vista!', 'Vista!!']}

@@ -14,6 +14,9 @@ SPROMPT="%B%F{yellow}zsh: correct '%R' be '%r' [nyae]?%f%b "
 WORDCHARS=''
 DIRSTACKSIZE=100
 
+# 将 zlua 映射给 fz
+FZ_HISTORY_CD_CMD="_zlua"
+
 # 直接输入路径即可跳转
 setopt auto_cd
 # 允许多次重定向
