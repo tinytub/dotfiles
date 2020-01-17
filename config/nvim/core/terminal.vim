@@ -1,3 +1,4 @@
+" from https://github.com/rafi/vim-config/blob/master/config/terminal.vim
 " Vim Only Terminal Tweaks: Colors, cursor shape, and tmux
 " ---
 

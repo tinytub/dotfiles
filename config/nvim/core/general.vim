@@ -156,6 +156,11 @@
 ""    set list
 ""    set listchars=tab:»·,nbsp:+,trail:·,extends:→,precedes:←
 
+    " UI Symbols
+    " icons:  ▏│ ¦ ╎ ┆ ⋮ ⦙ ┊ 
+    set showbreak=↪
+    set listchars=tab:\▏\ ,extends:⟫,precedes:⟪,nbsp:␣,trail:·
+
     " sudo 权限保存
     ca w!! w !sudo tee "%"
 
