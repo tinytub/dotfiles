@@ -15,8 +15,23 @@ export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat 
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 source ~/.zplugin/bin/zplugin.zsh
 
+# ==== 某些插件需要的环境变量 ====
+
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+ZSH_AUTOSUGGEST_COMPLETION_IGNORE='( |man |pikaur -S )*'
+
+forgit_add=gai
+forgit_diff=gdi
+forgit_log=glgi
 # ==== 加载 OMZ 插件 ====
 
 zplugin for \
@@ -25,7 +40,8 @@ zplugin for \
     OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh \
     OMZ::plugins/git-extras/git-extras.plugin.zsh \
     OMZ::plugins/systemd/systemd.plugin.zsh \
-    OMZ::plugins/sudo/sudo.plugin.zsh
+    OMZ::plugins/sudo/sudo.plugin.zsh \
+    OMZ::plugins/git/git.plugin.zsh
 
 zplugin svn for \
     OMZ::plugins/extract \
@@ -34,32 +50,33 @@ zplugin svn for \
 zplugin as="completion" for \
     OMZ::plugins/fd/_fd
 
-zplugin ice lucid wait
-zplugin snippet OMZ::plugins/git/git.plugin.zsh
-
 # ==== 加载 GitHub 插件 ====
 zplugin light-mode lucid wait for \
     zdharma/fast-syntax-highlighting \
-    skywind3000/z.lua
+    zsh-users/zsh-autosuggestions \
+    hlissner/zsh-autopair \
+    skywind3000/z.lua \
+    hchbaw/zce.zsh \
+    wfxr/forgit
 
-zplugin light-mode lucid wait for \
-    atload='_zsh_autosuggest_start' \
-        zsh-users/zsh-autosuggestions \
+
+zplugin light-mode for \
     blockf \
         zsh-users/zsh-completions \
     as="program" atclone="rm -f ^(rgg|agv)" \
         lilydjwg/search-and-view \
-    atclone='sed -i "s/\^h/^?/" autopair.zsh' \
-        hlissner/zsh-autopair
-
-zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh"
-zplugin load trapd00r/LS_COLORS
+    atclone="dircolors -b LS_COLORS > c.zsh" atpull='%atclone' pick='c.zsh' \
+        trapd00r/LS_COLORS
 
 zplugin ice lucid wait"!0"
 zplugin light changyuheng/fz
 
 zplugin ice depth=1
 zplugin light romkatv/powerlevel10k
+
+# ==== 初始化补全 ====
+
+zpcompinit; zpcdreplay
 
 # ==== 加载自定义插件 ====
 
