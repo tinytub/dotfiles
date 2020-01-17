@@ -43,7 +43,8 @@
   "explorer.icon.enableNerdfont": true,
   "explorer.keyMappings": {
       "h" : "gotoParent",
-      "l" : "expandOrShrink"
+      "l" : "expandOrCollapse",
+      "<C-v>": "openInVsplit"
   },
   "explorer.sources": [
         {"name": "buffer", "expand": true},

@@ -26,11 +26,12 @@ highlight! link pythonIndentError NONE
 hi CocCursorRange guibg=#b16286 guifg=#ebdbb2
 "hi default CocHighlightText  guibg=#725972 ctermbg=96
 "hi default CocHighlightText  guibg=#5c475c ctermbg=96
-"from spacevim
-hi CocHighlightText ctermfg=235 guifg=#282828 ctermbg=109 guibg=#83a598
-hi link CocHighlightRead CocHighlightText
-hi link CocHighlightWrite CocHighlightText
-hi CocWarningSign  ctermfg=32 ctermbg=NONE guifg=#0087d7 guibg=NONE
+
+"from spacevim, 高亮光标所在字符串
+"hi CocHighlightText ctermfg=235 guifg=#282828 ctermbg=109 guibg=#83a598
+"hi link CocHighlightRead CocHighlightText
+"hi link CocHighlightWrite CocHighlightText
+"hi CocWarningSign  ctermfg=32 ctermbg=NONE guifg=#0087d7 guibg=NONE
 
 
 "GitGutter Coc-git Highlight
