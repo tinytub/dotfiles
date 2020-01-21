@@ -19,7 +19,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-source ~/.zplugin/bin/zplugin.zsh
+#source ~/.zinit/bin/zplugin.zsh
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
+    command mkdir -p $HOME/.zinit
+    command git clone https://github.com/zdharma/zinit $HOME/.zinit/bin && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%F" || \
+        print -P "%F{160}▓▒░ The clone has failed.%F"
+fi
+source "$HOME/.zinit/bin/zinit.zsh"
 
 # ==== 某些插件需要的环境变量 ====
 
@@ -34,7 +42,7 @@ forgit_diff=gdi
 forgit_log=glgi
 # ==== 加载 OMZ 插件 ====
 
-zplugin for \
+zinit for \
     OMZ::lib/clipboard.zsh \
     OMZ::lib/git.zsh \
     OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh \
@@ -43,15 +51,15 @@ zplugin for \
     OMZ::plugins/sudo/sudo.plugin.zsh \
     OMZ::plugins/git/git.plugin.zsh
 
-zplugin svn for \
+zinit svn for \
     OMZ::plugins/extract \
     OMZ::plugins/pip
 
-zplugin as="completion" for \
+zinit as="completion" for \
     OMZ::plugins/fd/_fd
 
 # ==== 加载 GitHub 插件 ====
-zplugin light-mode lucid wait for \
+zinit light-mode lucid wait for \
     zdharma/fast-syntax-highlighting \
     zsh-users/zsh-autosuggestions \
     hlissner/zsh-autopair \
@@ -60,7 +68,7 @@ zplugin light-mode lucid wait for \
     wfxr/forgit
 
 
-zplugin light-mode for \
+zinit light-mode for \
     blockf \
         zsh-users/zsh-completions \
     as="program" atclone="rm -f ^(rgg|agv)" \
@@ -68,15 +76,17 @@ zplugin light-mode for \
     atclone="dircolors -b LS_COLORS > c.zsh" atpull='%atclone' pick='c.zsh' \
         trapd00r/LS_COLORS
 
-zplugin ice lucid wait"!0"
-zplugin light changyuheng/fz
+zinit ice lucid wait"!0"
+zinit light changyuheng/fz
 
-zplugin ice depth=1
-zplugin light romkatv/powerlevel10k
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
 
 # ==== 初始化补全 ====
 
 zpcompinit; zpcdreplay
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
 # ==== 加载自定义插件 ====
 
@@ -223,3 +233,6 @@ ftpane() {
   fi
 }
 
+
+### Added by Zinit's installer
+### End of Zinit installer's chunk
