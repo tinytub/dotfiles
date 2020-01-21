@@ -20,6 +20,11 @@ if [ "$(uname)" == "Darwin" ]; then
     source install/osx.sh
 
 fi
+if [ "$(uname)" == "Linux" ]; then
+    echo -e "\\n\\nRunning on Linux"
+    source install/linux.sh
+
+fi
 
 source install/venv.sh
 source install/init_coc.sh

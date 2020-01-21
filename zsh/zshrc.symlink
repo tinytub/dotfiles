@@ -28,7 +28,6 @@ if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
         print -P "%F{160}▓▒░ The clone has failed.%F"
 fi
 source "$HOME/.zinit/bin/zinit.zsh"
-
 # ==== 某些插件需要的环境变量 ====
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
@@ -234,5 +233,4 @@ ftpane() {
 }
 
 
-### Added by Zinit's installer
-### End of Zinit installer's chunk
+
