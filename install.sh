@@ -23,7 +23,6 @@ fi
 if [ "$(uname)" == "Linux" ]; then
     echo -e "\\n\\nRunning on Linux"
     source install/linux.sh
-
 fi
 
 source install/venv.sh
