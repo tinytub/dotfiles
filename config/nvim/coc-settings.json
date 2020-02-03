@@ -58,13 +58,13 @@
   "explorer.file.column.git.icon.modified": "✹",
   "explorer.file.column.git.icon.ignored": "☒",
   "explorer.openAction.changeDirectory": false,
-  "go.goplsPath": "~/Documents/local_projects/goworks/bin/gopls",
-  "go.goplsOptions": {
-      "usePlaceholders": true,
-      "completeUnimported": true,
-      "deepCompletion": true,
-      "buildFlags": ["-tags=linux"]
-  },
+  //"go.goplsPath": "~/Documents/local_projects/goworks/bin/gopls",
+  //"go.goplsOptions": {
+  //    "usePlaceholders": true,
+  //    "completeUnimported": true,
+  //    "deepCompletion": true,
+  //    "buildFlags": ["-tags=linux"]
+  //},
   "python.jediEnabled": false,
   "languageserver": {
     "bash": {
@@ -72,17 +72,17 @@
       "args": ["start"],
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true,
+        "completeUnimported": true,
+        "deepCompletion": true,
+        "buildOnSave": false
+      }
     }
-    //    "golang": {
-    //      "command": "gopls",
-    //      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-    //      "filetypes": ["go"],
-    //      "initializationOptions": {
-    //        "usePlaceholders": true,
-    //        "completeUnimported": true,
-    //        "deepCompletion": true,
-    //        "buildOnSave": false
-    //      }
-    //    }
   }
 }
