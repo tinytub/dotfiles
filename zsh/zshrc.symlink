@@ -2,6 +2,9 @@
 # some config from https://github.com/taigacute/dotfiles
 # some config from https://github.com/Aloxaf/dotfiles
 
+export ZSH=$HOME/.oh-my-zsh
+source $ZSH/oh-my-zsh.sh
+
 #zmodload zsh/zprof
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -47,7 +50,6 @@ zinit for \
     OMZ::plugins/colored-man-pages/colored-man-pages.plugin.zsh \
     OMZ::plugins/git-extras/git-extras.plugin.zsh \
     OMZ::plugins/systemd/systemd.plugin.zsh \
-    OMZ::plugins/sudo/sudo.plugin.zsh \
     OMZ::plugins/git/git.plugin.zsh
 
 zinit svn for \
@@ -63,7 +65,6 @@ zinit light-mode lucid wait for \
     zsh-users/zsh-autosuggestions \
     hlissner/zsh-autopair \
     skywind3000/z.lua \
-    hchbaw/zce.zsh \
     wfxr/forgit
 
 
@@ -98,66 +99,6 @@ CUSTOM=~/.dotfiles/zsh
 source $CUSTOM/snippets/history.zsh
 #source $CUSTOM/snippets/key-bindings.zsh
 source $CUSTOM/snippets/misc.zsh
-
-
-
-# # zplug configruation
-# if [[ ! -d "${ZPLUG_HOME}" ]]; then
-#   if [[ ! -d ~/.zplug ]]; then
-#     git clone https://github.com/zplug/zplug ~/.zplug
-#     # If we can't get zplug, it'll be a very sobering shell experience. To at
-#     # least complete the sourcing of this file, we'll define an always-false
-#     # returning zplug function.
-#     if [[ $? != 0 ]]; then
-#       function zplug() {
-#         return 1
-#       }
-#     fi
-#   fi
-#   export ZPLUG_HOME=~/.zplug
-# fi
-# 
-# if [[ -d "${ZPLUG_HOME}" ]]; then
-#   source "${ZPLUG_HOME}/init.zsh"
-# fi
-# 
-# #zplug "junegunn/fzf-bin", \
-# #    from:gh-r, \
-# #    as:command, \
-# #    rename-to:fzf, \
-# #    use:"*darwin*amd64*"
-# 
-# zplug "zplug/zplug", hook-build:"zplug --self-manage"
-# zplug "plugins/git",               from:oh-my-zsh, if:"(( $+commands[git] ))"
-# #zplug "plugins/sudo",              from:oh-my-zsh, if:"(( $+commands[sudo] ))"
-# zplug "plugins/golang",            from:oh-my-zsh, if:"(( $+commands[go] ))"
-# zplug "plugins/node",              from:oh-my-zsh, if:"(( $+commands[node] ))"
-# zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"
-# zplug "plugins/docker",            from:oh-my-zsh, if:"(( $+commands[docker] ))"
-# zplug "plugins/docker-compose",    from:oh-my-zsh, if:"(( $+commands[docker-compose] ))"
-# zplug 'plugins/git', from:oh-my-zsh, if:'which git'
-# zplug "plugins/autojump", from:oh-my-zsh
-# zplug 'romkatv/powerlevel10k', use:powerlevel10k.zsh-theme
-# zplug 'zsh-users/zsh-autosuggestions'
-# zplug 'zsh-users/zsh-completions', defer:2
-# zplug 'zsh-users/zsh-history-substring-search'
-# zplug 'zsh-users/zsh-syntax-highlighting', defer:2
-# 
-# if ! zplug check; then
-#   zplug install
-# fi
-# 
-# zplug load
-# 
-# if zplug check 'zsh-users/zsh-autosuggestions'; then
-#   # Enable asynchronous fetching of suggestions.
-#   ZSH_AUTOSUGGEST_USE_ASYNC=1
-#   # For some reason, the offered completion winds up having the same color as
-#   # the terminal background color (when using a dark profile). Therefore, we
-#   # switch to gray.
-#   # See https://github.com/zsh-users/zsh-autosuggestions/issues/182.
-#   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-# fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -231,6 +172,5 @@ ftpane() {
     tmux select-window -t $target_window
   fi
 }
-
 
 
