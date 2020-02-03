@@ -533,7 +533,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     endfunction
 
 " FZF ----------------------------------------
-
     set wildmode=list:longest,list:full
     set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
     let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
@@ -633,6 +632,9 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
         let opts.options .= l:fzf_files_options
         call fzf#run(opts)
     endfunction
+
+    let g:fzf_buffers_jump = 1
+
 
 " ALE
     "仅仅在保存的时候跑 ale
