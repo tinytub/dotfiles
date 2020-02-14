@@ -22,7 +22,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-#source ~/.zinit/bin/zplugin.zsh
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
     command mkdir -p $HOME/.zinit
@@ -38,6 +37,8 @@ ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 ZSH_AUTOSUGGEST_USE_ASYNC=1
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 ZSH_AUTOSUGGEST_COMPLETION_IGNORE='( |man |pikaur -S )*'
+
+DISABLE_MAGIC_FUNCTIONS=true
 
 forgit_add=gai
 forgit_diff=gdi
@@ -60,7 +61,8 @@ zinit as="completion" for \
     OMZ::plugins/fd/_fd
 
 # ==== 加载 GitHub 插件 ====
-zinit light-mode lucid wait for \
+#zinit light-mode lucid wait for \
+zinit light-mode for \
     zdharma/fast-syntax-highlighting \
     zsh-users/zsh-autosuggestions \
     hlissner/zsh-autopair \
@@ -76,17 +78,19 @@ zinit light-mode for \
     atclone="dircolors -b LS_COLORS > c.zsh" atpull='%atclone' pick='c.zsh' \
         trapd00r/LS_COLORS
 
-zinit ice lucid wait"!0"
-zinit light changyuheng/fz
+zinit ice "rupa/z" pick"z.sh"; zinit light "rupa/z"
+zinit load changyuheng/fz
+#zinit ice lucid wait"!0"
+#zinit light changyuheng/fz
 
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
 # ==== 初始化补全 ====
 
-zpcompinit; zpcdreplay
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
+#zpcompinit; zpcdreplay
+#autoload -Uz _zinit
+#(( ${+_comps} )) && _comps[zinit]=_zinit
 
 # ==== 加载自定义插件 ====
 

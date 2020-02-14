@@ -16,7 +16,13 @@ export LANG=zh_CN.UTF-8
 export GOPATH="/Users/zhaopeng18/Documents/local_projects/goworks"
 #export GO111MODULE="off"
 #export GOROOT="/usr/local/go"
-export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home"
+export CLASSPATH="${CLASSPATH}:/Users/zhaopeng18/Documents/local_projects/algs4/algs4.jar"
+
+#java maven
+export M2_HOME=/Users/zhaopeng18/Documents/local_projects/apache-maven-3.6.3
+export PATH=$PATH:$M2_HOME/bin
+
 #export GOPATH="/home/zhaopeng/goworks1.8.3/src/jd.com/jstack-thirdparty-libs"
 #export GOROOT="/home/zhaopeng/go1.8.3"
 
