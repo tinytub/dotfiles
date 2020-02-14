@@ -1,0 +1,38 @@
+
+
+export TERM="xterm-256color"
+# LANG 如设置为 en_US 会导致特殊字符乱码
+export LANG=zh_CN.UTF-8
+
+#export LANG=en_US.UTF-8
+
+#source ~/.bash_profile
+#source ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
+#export GOPATH="/home/zhaopeng/goworks"
+#export GOROOT="/usr/local/go"
+
+# GVM
+#[[ -s "/Users/zhaopeng18/.gvm/scripts/gvm" ]] && source "/Users/zhaopeng18/.gvm/scripts/gvm"
+
+source /root/.gvm/scripts/gvm
+export GOPATH="/goworks"
+#export GO111MODULE="off"
+#export GOROOT="/usr/local/go"
+export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+#export GOPATH="/home/zhaopeng/goworks1.8.3/src/jd.com/jstack-thirdparty-libs"
+#export GOROOT="/home/zhaopeng/go1.8.3"
+
+export PATH=${JAVA_HOME}/bin:$PATH
+#export PATH=/usr/local/go/bin:$PATH
+export PATH="/usr/local/opt/ruby/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
+
+#autossh
+export AUTOSSH_PIDFILE=~/autossh.pid
+export AUTOSSH_POLL=60
+export AUTOSSH_FIRST_POLL=30
+export AUTOSSH_GATETIME=0
+export AUTOSSH_DEBUG=1
+
+# Editor
+export EDITOR="nvim"
+export GIT_EDITOR="nvim"
