@@ -1027,6 +1027,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 
         let g:coc_global_extensions = [
                 \ 'coc-python',
+                \ 'coc-java',
                 \ 'coc-css',
                 \ 'coc-json',
                 \ 'coc-git',

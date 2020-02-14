@@ -65,7 +65,16 @@
   //    "deepCompletion": true,
   //    "buildFlags": ["-tags=linux"]
   //},
+  "java.home": "/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home",
+  //"java.format.enabled": true,
+  //"java.format.onType.enabled": true,
+  //"java.format.settings.profile": "GoogleStyle",
+  //"java.completion.enabled":true,
   "python.jediEnabled": false,
+  //"python.linting.pylintEnabled": true,
+  //"python.formatting.provider": "black",
+  //"python.formatting.blackPath": "/usr/local/bin/black",
+  //"coc.preferences.formatOnSaveFiletypes": ["python"],
   "languageserver": {
     "bash": {
       "command": "bash-language-server",
