@@ -31,6 +31,10 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins'}
     Plug 'kristijanhusak/defx-git'
     Plug 'kristijanhusak/defx-icons'
+    Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'Shougo/neomru.vim'
+    Plug 'rafi/vim-denite-z'
+    Plug 'rafi/vim-denite-session'
 
     " tab控制,和 ale 有冲突,暂时不用
     "Plug 'bagrat/vim-buffet'
@@ -384,8 +388,8 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()
     	nnoremap <silent><buffer><expr> h     defx#async_action('cd', ['..'])
     	nnoremap <silent><buffer><expr> t     defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
-    	nnoremap <silent><buffer><expr> s     defx#do_action('open', 'botright vsplit')
-    	nnoremap <silent><buffer><expr> i     defx#do_action('open', 'botright split')
+    	nnoremap <silent><buffer><expr> <C-s>     defx#do_action('open', 'botright vsplit')
+    	nnoremap <silent><buffer><expr> <C-v>     defx#do_action('open', 'botright split')
     	nnoremap <silent><buffer><expr> P     defx#do_action('open', 'pedit')
     	nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
     	nnoremap <silent><buffer><expr> N     defx#do_action('new_multiple_files')
@@ -394,7 +398,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	nnoremap <silent><buffer><expr> x     defx#do_action('execute_system')
     	nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')
     	nnoremap <silent><buffer><expr> yy    defx#do_action('yank_path')
-    	nnoremap <silent><buffer><expr> ~     defx#async_action('cd')
+    	"nnoremap <silent><buffer><expr> ~     defx#async_action('cd')
     	nnoremap <silent><buffer><expr> q     defx#do_action('quit')
     	nnoremap <silent><buffer><expr> <Tab> winnr('$') != 1 ?
      		\ ':<C-u>wincmd w<CR>' :
@@ -407,6 +411,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     	nnoremap <silent><buffer><expr><nowait> c  defx#do_action('copy')
     	nnoremap <silent><buffer><expr><nowait> m  defx#do_action('move')
     	nnoremap <silent><buffer><expr><nowait> p  defx#do_action('paste')
+        nnoremap <silent><buffer><expr> cd defx#do_action('change_vim_cwd')
 
     	nnoremap <silent><buffer><expr><nowait> <Space>
     		\ defx#do_action('toggle_select') . 'j'
@@ -539,7 +544,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 
     let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
-      \ 'ctrl-x': 'split',
+      \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit' }
     
     " Customize fzf colors to match your color scheme
@@ -569,6 +574,12 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
         set grepprg=rg\ --vimgrep
         command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
     endif
+
+    "command! FZFCd call fzf#run(fzf#wrap({'source': 'find $HOME -path "${HOME}/\.*" -prune -o -type d -print 2> /dev/null', 'sink': 'cd'}))
+    "command! FZFCd call fzf#run(fzf#wrap({'source': 'z ', 'sink': 'cd'}))
+     command! -nargs=* -complete=dir Cd call fzf#run(fzf#wrap(
+  \ {'source': 'find '.(empty(<f-args>) ? '.' : <f-args>).' -type d',
+  \  'sink': 'cd'}))
     
     let $FZF_DEFAULT_OPTS='--layout=reverse'
     let g:fzf_layout = { 'window': 'call FloatingFZF()' }
@@ -1027,7 +1038,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 
         let g:coc_global_extensions = [
                 \ 'coc-python',
-                \ 'coc-java',
                 \ 'coc-css',
                 \ 'coc-json',
                 \ 'coc-git',
@@ -1277,3 +1287,161 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
       \ 'go',
       \]
 
+" denite
+" INTERFACE
+call denite#custom#option('_', {
+	\ 'prompt': '❯',
+	\ 'auto_resume': 1,
+	\ 'start_filter': 1,
+	\ 'statusline': 1,
+	\ 'smartcase': 1,
+	\ 'vertical_preview': 1,
+	\ 'max_dynamic_update_candidates': 50000,
+	\ })
+
+if has('nvim')
+	call denite#custom#option('_', { 'split': 'floating', 'statusline': 0 })
+endif
+
+" Allow customizable window positions: top (default), bottom, center
+function! s:denite_resize(position)
+	if a:position ==# 'top'
+		call denite#custom#option('_', {
+			\ 'winwidth': (&columns - (&columns / 3)) - 1,
+			\ 'winheight': &lines / 3,
+			\ 'wincol': 0,
+			\ 'winrow': 1,
+			\ })
+	elseif a:position ==# 'bottom'
+		call denite#custom#option('_', {
+			\ 'winwidth': (&columns / 2) - 1,
+			\ 'winheight': &lines / 3,
+			\ 'wincol': 0,
+			\ 'winrow': ((&lines - 3) - (&lines / 3)) - 1,
+			\ })
+	elseif a:position ==# 'center'
+		" This is denite's default
+	else
+		echoerr
+			\ 'Unknown position for s:denite_position (' . string(a:position) . ')'
+	endif
+endfunction
+
+call s:denite_resize(get(g:, 'denite_position', 'center'))
+
+" MATCHERS
+" Default is 'matcher/fuzzy'
+" call denite#custom#source('tag', 'matchers', ['matcher/substring'])
+
+" SORTERS
+" Default is 'sorter/rank'
+" call denite#custom#source('_', 'sorters', ['sorter/sublime'])
+call denite#custom#source('z', 'sorters', ['sorter_z'])
+
+" CONVERTERS
+" Default is none
+call denite#custom#source(
+	\ 'buffer,file_mru,file_old',
+	\ 'converters', ['converter_relative_word'])
+
+" FIND and GREP COMMANDS
+if executable('ag')
+	" The Silver Searcher
+	call denite#custom#var('file/rec', 'command',
+		\ ['ag', '-U', '--hidden', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+	" Setup ignore patterns in your .agignore file!
+	" https://github.com/ggreer/the_silver_searcher/wiki/Advanced-Usage
+
+	call denite#custom#var('grep', 'command', ['ag'])
+	call denite#custom#var('grep', 'recursive_opts', [])
+	call denite#custom#var('grep', 'pattern_opt', [])
+	call denite#custom#var('grep', 'separator', ['--'])
+	call denite#custom#var('grep', 'final_opts', [])
+	call denite#custom#var('grep', 'default_opts',
+		\ [ '--skip-vcs-ignores', '--vimgrep', '--smart-case', '--hidden' ])
+
+elseif executable('rg')
+	" Ripgrep
+	call denite#custom#var('file/rec', 'command',
+		\ ['rg', '--files', '--glob', '!.git'])
+	call denite#custom#var('grep', 'command', ['rg', '--threads', '1'])
+	call denite#custom#var('grep', 'recursive_opts', [])
+	call denite#custom#var('grep', 'final_opts', [])
+	call denite#custom#var('grep', 'separator', ['--'])
+	call denite#custom#var('grep', 'default_opts',
+		\ ['-i', '--vimgrep', '--no-heading'])
+
+elseif executable('ack')
+	" Ack command
+	call denite#custom#var('grep', 'command', ['ack'])
+	call denite#custom#var('grep', 'recursive_opts', [])
+	call denite#custom#var('grep', 'pattern_opt', ['--match'])
+	call denite#custom#var('grep', 'separator', ['--'])
+	call denite#custom#var('grep', 'final_opts', [])
+	call denite#custom#var('grep', 'default_opts',
+			\ ['--ackrc', $HOME.'/.config/ackrc', '-H',
+			\ '--nopager', '--nocolor', '--nogroup', '--column'])
+endif
+
+" EVENTS
+augroup user_plugin_denite
+	autocmd!
+
+	autocmd FileType denite call s:denite_settings()
+	autocmd FileType denite-filter call s:denite_filter_settings()
+
+	autocmd VimResized * call s:denite_resize(get(g:, 'denite_position', 'top'))
+
+	autocmd WinEnter * if &filetype =~# '^denite'
+		\ |   highlight! link CursorLine WildMenu
+		\ | endif
+
+	autocmd WinLeave * if &filetype ==# 'denite'
+		\ |   highlight! link CursorLine NONE
+		\ | endif
+augroup END
+
+function! s:denite_settings() abort
+	" Window options
+	setlocal signcolumn=no cursorline
+
+	" Key mappings
+	nnoremap <silent><buffer><expr> <CR> denite#do_map('do_action')
+	nnoremap <silent><buffer><expr> i    denite#do_map('open_filter_buffer')
+	nnoremap <silent><buffer><expr> /    denite#do_map('open_filter_buffer')
+	nnoremap <silent><buffer><expr> dd   denite#do_map('do_action', 'delete')
+	nnoremap <silent><buffer><expr> p    denite#do_map('do_action', 'preview')
+	nnoremap <silent><buffer><expr> st   denite#do_map('do_action', 'tabopen')
+	nnoremap <silent><buffer><expr> sg   denite#do_map('do_action', 'vsplit')
+	nnoremap <silent><buffer><expr> sv   denite#do_map('do_action', 'split')
+	nnoremap <silent><buffer><expr> '    denite#do_map('quick_move')
+	nnoremap <silent><buffer><expr> q    denite#do_map('quit')
+	nnoremap <silent><buffer><expr> r    denite#do_map('redraw')
+	nnoremap <silent><buffer><expr> yy   denite#do_map('do_action', 'yank')
+	nnoremap <silent><buffer><expr> <Esc>   denite#do_map('quit')
+	nnoremap <silent><buffer><expr> <Tab>   denite#do_map('choose_action')
+	nnoremap <silent><buffer><expr><nowait> <Space> denite#do_map('toggle_select').'j'
+endfunction
+
+function! s:denite_filter_settings() abort
+	" Window options
+	setlocal signcolumn=yes nocursorline nonumber norelativenumber
+	"call deoplete#custom#buffer_option('auto_complete', v:false)
+
+	" Key mappings
+	nnoremap <silent><buffer><expr> <Esc>  denite#do_map('quit')
+	" inoremap <silent><buffer><expr> <Esc>  denite#do_map('quit')
+	nnoremap <silent><buffer><expr> q      denite#do_map('quit')
+	inoremap <silent><buffer><expr> <C-c>  denite#do_map('quit')
+	nnoremap <silent><buffer><expr> <C-c>  denite#do_map('quit')
+	inoremap <silent><buffer>       kk     <Esc><C-w>p
+	nnoremap <silent><buffer>       kk     <C-w>p
+	inoremap <silent><buffer>       jj     <Esc><C-w>p
+	nnoremap <silent><buffer>       jj     <C-w>p
+endfunction
+
+" denite neomru
+    let g:neomru#directory_mru_path = $VARPATH . '/mru/dir'
+    let g:neomru#file_mru_path = $VARPATH . '/mru/file'
+    let g:unite_source_file_mru_limit = 5000
