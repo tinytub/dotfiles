@@ -128,35 +128,79 @@
 		"\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
     "nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
 
-" denite
-    nnoremap <silent><LocalLeader>m :<C-u>Denite menu<CR>
-    noremap zl :<C-u>call <SID>my_denite_outline(&filetype)<CR>
-    noremap zL :<C-u>call <SID>my_denite_decls(&filetype)<CR>
-    noremap zT :<C-u>call <SID>my_denite_file_rec_goroot()<CR>
 
-    nnoremap <silent> <Leader>gl :<C-u>Denite gitlog:all<CR>
-    nnoremap <silent> <Leader>gh :<C-u>Denite gitbranch<CR>
-    function! s:my_denite_outline(filetype) abort
-    execute 'Denite' a:filetype ==# 'go' ? "decls:'%:p'" : 'outline'
-    endfunction
-    function! s:my_denite_decls(filetype) abort
-    if a:filetype ==# 'go'
-        Denite decls
-    else
-        call denite#util#print_error('decls does not support filetypes except go')
-    endif
-    endfunction
-    function! s:my_denite_file_rec_goroot() abort
-    if !executable('go')
-        call denite#util#print_error('`go` executable not found')
-        return
-    endif
-    let out = system('go env | grep ''^GOROOT='' | cut -d\" -f2')
-    let goroot = substitute(out, '\n', '', '')
-    call denite#start(
-            \ [{'name': 'file/rec', 'args': [goroot]}],
-            \ {'input': '.go'})
-    endfunction
+" denite
+"    nnoremap <silent><LocalLeader>m :<C-u>Denite menu<CR>
+"    noremap zl :<C-u>call <SID>my_denite_outline(&filetype)<CR>
+"    noremap zL :<C-u>call <SID>my_denite_decls(&filetype)<CR>
+"    noremap zT :<C-u>call <SID>my_denite_file_rec_goroot()<CR>
+"
+"    nnoremap <silent> <Leader>gl :<C-u>Denite gitlog:all<CR>
+"    nnoremap <silent> <Leader>gh :<C-u>Denite gitbranch<CR>
+"    function! s:my_denite_outline(filetype) abort
+"    execute 'Denite' a:filetype ==# 'go' ? "decls:'%:p'" : 'outline'
+"    endfunction
+"    function! s:my_denite_decls(filetype) abort
+"    if a:filetype ==# 'go'
+"        Denite decls
+"    else
+"        call denite#util#print_error('decls does not support filetypes except go')
+"    endif
+"    endfunction
+"    function! s:my_denite_file_rec_goroot() abort
+"    if !executable('go')
+"        call denite#util#print_error('`go` executable not found')
+"        return
+"    endif
+"    let out = system('go env | grep ''^GOROOT='' | cut -d\" -f2')
+"    let goroot = substitute(out, '\n', '', '')
+"    call denite#start(
+"            \ [{'name': 'file/rec', 'args': [goroot]}],
+"            \ {'input': '.go'})
+"    endfunction
+	nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
+	nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
+	nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file_mru -default-action=switch<CR>
+	nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec directory_mru -default-action=cd<CR>
+"	nnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register<CR>
+"	xnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register -default-action=replace<CR>
+"	nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list -no-start-filter<CR>
+	"nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list -no-start-filter<CR>
+	"nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
+	nnoremap <silent><LocalLeader>g :<C-u>Denite grep -no-start-filter<CR>
+	nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file/point<CR>
+	"nnoremap <silent><LocalLeader>u :<C-u>Denite junkfile:new junkfile -buffer-name=list<CR>
+	nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
+	nnoremap <silent><LocalLeader>s :<C-u>Denite session -buffer-name=list<CR>
+	nnoremap <silent><LocalLeader>t :<C-u>Denite tag<CR>
+	nnoremap <silent><LocalLeader>p :<C-u>Denite jump<CR>
+	nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
+	nnoremap <silent><LocalLeader>m :<C-u>Denite file/rec -buffer-name=memo -path=~/docs/books<CR>
+	" nnoremap <silent><LocalLeader>m :<C-u>Denite mpc -buffer-name=mpc<CR>
+	nnoremap <silent><LocalLeader>z :<C-u>Denite z -buffer-name=list<CR>
+"	nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
+"	nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
+"	nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
+
+"	" chemzqm/denite-git
+"	nnoremap <silent> <Leader>gl :<C-u>Denite gitlog:all -no-start-filter<CR>
+"	nnoremap <silent> <Leader>gs :<C-u>Denite gitstatus -no-start-filter<CR>
+"	nnoremap <silent> <Leader>gc :<C-u>Denite gitbranch -no-start-filter<CR>
+"
+"	" Open Denite with word under cursor or selection
+"	nnoremap <silent> <Leader>gt :DeniteCursorWord tag:include -buffer-name=tag -immediately<CR>
+"	nnoremap <silent> <Leader>gf :DeniteCursorWord file/rec<CR>
+"	nnoremap <silent> <Leader>gg :DeniteCursorWord grep -buffer-name=search<CR>
+"	vnoremap <silent> <Leader>gg
+"		\ :<C-u>call <SID>get_selection('/')<CR>
+"		\ :execute 'Denite -buffer-name=search grep:::'.@/<CR><CR>
+"
+"	function! s:get_selection(cmdtype)
+"		let temp = @s
+"		normal! gv"sy
+"		let @/ = substitute(escape(@s, '\' . a:cmdtype), '\n', '\\n', 'g')
+"		let @s = temp
+"	endfunction
 
 "vim-go
 	 nnoremap <silent> <LocalLeader>gi :GoImpl<CR>
