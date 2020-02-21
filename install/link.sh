@@ -26,7 +26,7 @@ fi
 if [ -e "$HOME/.config/nvim" ]; then
     echo "nvim config ok"
 else
-    ln -s "$DOTFILES/config" "$HOME/.config/"
+    ln -s "$DOTFILES/config/nvim" "$HOME/.config/"
 fi
 #config_files=$( find "$DOTFILES/config" -d 1 2>/dev/null )
 ## nvim 相关目录及文件
