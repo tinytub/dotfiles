@@ -66,7 +66,6 @@ zinit light-mode for \
     zdharma/fast-syntax-highlighting \
     zsh-users/zsh-autosuggestions \
     hlissner/zsh-autopair \
-    skywind3000/z.lua \
     wfxr/forgit
 
 
@@ -78,6 +77,9 @@ zinit light-mode for \
     atclone="dircolors -b LS_COLORS > c.zsh" atpull='%atclone' pick='c.zsh' \
         trapd00r/LS_COLORS
 
+# zlua 和 fz 需要一起用
+zinit ice as="null" atload='eval "$(lua z.lua --init zsh enhanced once)"'
+zinit load skywind3000/z.lua
 zinit ice "rupa/z" pick"z.sh"; zinit light "rupa/z"
 zinit load changyuheng/fz
 #zinit ice lucid wait"!0"

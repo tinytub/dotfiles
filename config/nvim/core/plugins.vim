@@ -127,6 +127,8 @@ call plug#begin('~/.config/nvim/plugged')
         Plug 'junegunn/fzf.vim'
         " 黑魔法查询框架, 先不用,后期可以看看thinkvim 的配置
     endif
+
+    Plug 'skywind3000/z.lua', {'do': 'eval \"$(lua z.lua --init zsh enhanced once)\"'}
 call plug#end()
 
 
@@ -576,10 +578,10 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     endif
 
     "command! FZFCd call fzf#run(fzf#wrap({'source': 'find $HOME -path "${HOME}/\.*" -prune -o -type d -print 2> /dev/null', 'sink': 'cd'}))
-    "command! FZFCd call fzf#run(fzf#wrap({'source': 'z ', 'sink': 'cd'}))
-     command! -nargs=* -complete=dir Cd call fzf#run(fzf#wrap(
-  \ {'source': 'find '.(empty(<f-args>) ? '.' : <f-args>).' -type d',
-  \  'sink': 'cd'}))
+"    command! FZFCd call fzf#run(fzf#wrap({'source': 'z', 'sink': 'cd'}))
+"     command! -nargs=* -complete=dir Cd call fzf#run(fzf#wrap(
+"  \ {'source': 'find '.(empty(<f-args>) ? '.' : <f-args>).' -type d',
+"  \  'sink': 'cd'}))
     
     let $FZF_DEFAULT_OPTS='--layout=reverse'
     let g:fzf_layout = { 'window': 'call FloatingFZF()' }
