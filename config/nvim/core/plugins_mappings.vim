@@ -18,7 +18,8 @@
 "    nmap <leader>0 <Plug>BuffetSwitch(10)
 
 " vista
-    nnoremap <silent><localleader>v :Vista!!<CR>
+    "nnoremap <silent><localleader>v :Vista!!<CR>
+    nnoremap <silent><localleader>v :Vista coc<CR>
     nnoremap <silent><leader>fv     :Vista finder coc<CR>
 
 " whichkey
