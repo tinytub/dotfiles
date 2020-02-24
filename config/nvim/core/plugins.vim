@@ -38,6 +38,10 @@ call plug#begin('~/.config/nvim/plugged')
 
     " tab控制,和 ale 有冲突,暂时不用
     "Plug 'bagrat/vim-buffet'
+    
+
+    "Tame the quickfix window
+    Plug 'romainl/vim-qf'
 
     " Class/module 浏览器
     " tag 管理工具
@@ -308,40 +312,24 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
 
     augroup user_plugin_defx
     	autocmd!
+	    " Delete defx if it's the only buffer left in the window
+	    autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | bdel | endif
 
-    	" FIXME
-    	" autocmd DirChanged * call s:defx_refresh_cwd(v:event)
+	    " Move focus to the next window if current buffer is defx
+	    autocmd TabLeave * if &filetype == 'defx' | wincmd w | endif
 
-    	" Delete defx if it's the only buffer left in the window
-    	" autocmd WinEnter * if &filetype == 'defx' && winnr('$') == 1 | q | endif
+	    " Clean Defx window once a tab-page is closed
+	    " autocmd TabClosed * call <SID>defx_close_tab(expand('<afile>'))
 
-    	" Move focus to the next window if current buffer is defx
-    	autocmd TabLeave * if &filetype == 'defx' | wincmd w | endif
+	    " Automatically refresh opened Defx windows when changing working-directory
+	    " autocmd DirChanged * call <SID>defx_handle_dirchanged(v:event)
 
-    	autocmd TabClosed * call s:defx_close_tab(expand('<afile>'))
-
-    	" Define defx window mappings
-    	autocmd FileType defx call s:defx_mappings()
-
+	    " Define defx window mappings
+	    autocmd FileType defx call <SID>defx_mappings()
     augroup END
 
     " Internal functions
     " ---
-
-    function! s:defx_close_tab(tabnr)
-    	" When a tab is closed, find and delete any associated defx buffers
-    	for l:nr in range(1, bufnr('$'))
-    		let l:defx = getbufvar(l:nr, 'defx')
-    		if empty(l:defx)
-    			continue
-    		endif
-    		let l:context = get(l:defx, 'context', {})
-    		if get(l:context, 'buffer_name', '') ==# 'tab' . a:tabnr
-    			silent! execute 'bdelete '.l:nr
-    			break
-    		endif
-    	endfor
-    endfunction
 
     function! s:defx_toggle_tree() abort
     	" Open current file, or toggle directory expand/collapse
@@ -349,26 +337,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     		return defx#do_action('open_or_close_tree')
     	endif
     	return defx#do_action('multi', ['drop', 'quit'])
-    endfunction
-
-    function! s:defx_refresh_cwd(event)
-    	" Automatically refresh opened Defx windows when changing working-directory
-    	let l:cwd = get(a:event, 'cwd', '')
-    	let l:scope = get(a:event, 'scope', '')   " global, tab, window
-    	let l:is_opened = bufwinnr('defx') > -1
-    	if ! l:is_opened || empty(l:cwd) || empty(l:scope)
-    		return
-    	endif
-
-    	" Abort if Defx is already on the cwd triggered (new files trigger this)
-    	let l:paths = get(getbufvar('defx', 'defx', {}), 'paths', [])
-    	if index(l:paths, l:cwd) >= 0
-    		return
-    	endif
-
-    	let l:tab = tabpagenr()
-    	call execute(printf('Defx -buffer-name=tab%s %s', l:tab, l:cwd))
-    	wincmd p
     endfunction
 
     function! s:jump_dirty(dir) abort
@@ -999,17 +967,38 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     let g:vim_json_syntax_conceal = 0
 
 " coc.vim -----------------------------------------------
+        " Don't load the defx-git plugin file, not needed
+        let b:defx_git_loaded = 1
         "" coc tab 补全
-        inoremap <silent><expr> <TAB>
-              \ pumvisible() ? "\<C-n>" :
-              \ <SID>check_back_space() ? "\<TAB>" :
-              \ coc#refresh()
-        inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+        "inoremap <silent><expr> <TAB>
+        "      \ pumvisible() ? "\<C-n>" :
+        "      \ <SID>check_back_space() ? "\<TAB>" :
+        "      \ coc#refresh()
+        "inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+        " Use <Tab> for trigger completion and navigate to the next complete item
+        let g:coc_snippet_next = '<tab>'
+        inoremap <silent><expr> <Tab>
+        	\ pumvisible() ? "\<C-n>" :
+        	\ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+        	\ <SID>check_back_space() ? "\<Tab>" :
+        	\ coc#refresh()
+        inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+        inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() :
+        	\ delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" :
+        	\"\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
         function! s:check_back_space() abort
           let col = col('.') - 1
           return !col || getline('.')[col - 1]  =~# '\s'
         endfunction
+        
+        augroup user_plugin_coc
+        	autocmd!
+        	autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
+        augroup END
+
+        " use <c-space>for trigger completion
+        inoremap <silent><expr> <C-space> coc#refresh()
 
         " Highlight symbol under cursor on CursorHold
         autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -1021,22 +1010,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
                 call CocAction('doHover')
             endif
         endfunction
-
-        augroup coc
-          autocmd!
-          " Setup formatexpr specified filetype(s).
-          autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-          " Update signature help on jump placeholder
-          autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-        augroup end
-
-        augroup MyCoCAutoCmd
-          autocmd!
-          " Setup formatexpr specified filetype(s).
-          autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-          " Update signature help on jump placeholder
-          autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-        augroup end
 
         let g:coc_global_extensions = [
                 \ 'coc-python',
@@ -1079,24 +1052,37 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     let g:go_metalinter_autosave = 0
     let g:go_metalinter_autosave_enabled = ['golint', 'vet']
 
-"     let g:go_highlight_functions = 1
-"     let g:go_highlight_methods = 1
-"     let g:go_highlight_structs = 1
-"     let g:go_highlight_interfaces = 1
-"     let g:go_highlight_operators = 1
-"     let g:go_highlight_build_constraints = 1
-"     let g:go_highlight_extra_types = 1
-
-    let g:go_highlight_types = 1
+    let g:go_doc_popup_window = 1
+    let g:go_highlight_array_whitespace_error = 0
+    let g:go_highlight_chan_whitespace_error = 0
+    let g:go_highlight_space_tab_error = 0
+    let g:go_highlight_trailing_whitespace_error = 0
+    let g:go_highlight_build_constraints = 1
+    let g:go_highlight_extra_types = 1
     let g:go_highlight_fields = 1
+    let g:go_highlight_format_strings = 1
     let g:go_highlight_functions = 1
     let g:go_highlight_function_calls = 1
+    let g:go_highlight_function_parameters = 1
+    let g:go_highlight_types = 1
+    let g:go_highlight_generate_tags = 1
+    let g:go_highlight_operators = 1
     let g:go_highlight_methods = 1
     let g:go_highlight_structs = 1
-    let g:go_highlight_operators = 1
-    let g:go_highlight_extra_types = 1
-    let g:go_highlight_build_constraints = 1
-    let g:go_highlight_generate_tags = 1
+    let g:go_highlight_string_spellcheck = 0
+    let g:go_highlight_variable_declarations = 0
+    let g:go_highlight_variable_assignments = 0
+
+"    let g:go_highlight_types = 1
+"    let g:go_highlight_fields = 1
+"    let g:go_highlight_functions = 1
+"    let g:go_highlight_function_calls = 1
+"    let g:go_highlight_methods = 1
+"    let g:go_highlight_structs = 1
+"    let g:go_highlight_operators = 1
+"    let g:go_highlight_extra_types = 1
+"    let g:go_highlight_build_constraints = 1
+"    let g:go_highlight_generate_tags = 1
 
     "disable use K to run godoc
     let g:go_doc_keywordprg_enabled = 0

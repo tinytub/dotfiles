@@ -34,8 +34,8 @@
     "set diffopt+=vertical
 
 
-    set splitright
-    set splitbelow
+    "set splitright
+    "set splitbelow
 
     "最大可用内存
     set mmp=5000
@@ -74,7 +74,7 @@
     "set mouse=a
     "set wrap " turn on line wrapping
     "set wrapmargin=8 " wrap lines when coming within n characters from side
-    set whichwrap+=<,>,h,l,[,]
+    "set whichwrap+=<,>,h,l,[,]
     set background=dark
 
     if has('vim_starting')
@@ -82,8 +82,8 @@
     	scriptencoding UTF-8
     endif
 
-    set backspace=2 "退格数量,和其他 ide 适配
-    set backspace=indent,eol,start
+    "set backspace=2 "退格数量,和其他 ide 适配
+    "set backspace=indent,eol,start
 
     " error bells
     set noerrorbells
@@ -156,6 +156,21 @@
 ""    set list
 ""    set listchars=tab:»·,nbsp:+,trail:·,extends:→,precedes:←
 
+    " Behavior 
+    " --------
+    set nowrap                      " No wrap by default
+    set linebreak                   " Break long lines at 'breakat'
+    set breakat=\ \	;:,!?           " Long lines break chars
+    set nostartofline               " Cursor in same column for few commands
+    set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys
+    set splitbelow splitright       " Splits open bottom right
+    set switchbuf=useopen,usetab    " Jump to the first open window in any tab
+    set switchbuf+=vsplit           " Switch buffer behavior to vsplit
+    set backspace=indent,eol,start  " Intuitive backspacing in insert mode
+    "set diffopt=filler,iwhite       " Diff mode: show fillers, ignore whitespace
+    "set completeopt=menuone         " Always show menu, even for one item
+    "set completeopt+=noselect       " Do not select a match in the menu
+
     " UI Symbols
     " icons:  ▏│ ¦ ╎ ┆ ⋮ ⦙ ┊ 
     set showbreak=↪
@@ -204,10 +219,6 @@
     set undofile                      " persistent undos - undo after you re-open the file
     set undodir=$VARPATH/undos
 
-    " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
-    if has("autocmd")
-      au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-    endif
     " 适配 neovim 的viminfo
     if has('nvim')
         "  ShaDa/viminfo:
