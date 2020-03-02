@@ -140,13 +140,6 @@ alias la="ls -AF ${colorflag}"
 alias ll="ls -lFh ${colorflag}"
 alias lld="ls -l | grep ^d"
 alias rmf="rm -rf"
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ......="cd ../../../../.."
-alias ~="cd ~" # `cd` is probably faster to type though
-alias -- -="cd -"
 # tmux aliases
 alias ta='tmux attach'
 alias tls='tmux ls'

@@ -158,7 +158,7 @@
 
     " Behavior 
     " --------
-    set nowrap                      " No wrap by default
+    "set nowrap                      " No wrap by default
     set linebreak                   " Break long lines at 'breakat'
     set breakat=\ \	;:,!?           " Long lines break chars
     set nostartofline               " Cursor in same column for few commands
@@ -218,6 +218,11 @@
     set backupdir=$VARPATH/backups " where to put backup files
     set undofile                      " persistent undos - undo after you re-open the file
     set undodir=$VARPATH/undos
+
+    " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
+    if has("autocmd")
+      au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    endif
 
     " 适配 neovim 的viminfo
     if has('nvim')

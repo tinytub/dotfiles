@@ -36,10 +36,10 @@ augroup user_plugin_filetype
 		" When editing a file, always jump to the last known cursor position.
 		" Don't do it when the position is invalid or when inside an event handler
 		"autocmd BufReadPost *
-			\ if &ft !~# 'commit' && ! &diff &&
-			\      line("'\"") >= 1 && line("'\"") <= line("$")
-			\|   execute 'normal! g`"zvzz'
-			\| endif
+	""		\ if &ft !~# 'commit' && ! &diff &&
+	""		\      line("'\"") >= 1 && line("'\"") <= line("$")
+	""		\|   execute 'normal! g`"zvzz'
+	""		\| endif
 
 		autocmd WinEnter,InsertLeave * set cursorline
 		

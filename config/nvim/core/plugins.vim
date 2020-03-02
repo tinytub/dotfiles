@@ -129,6 +129,7 @@ call plug#begin('~/.config/nvim/plugged')
     if has("nvim")
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
+        "Plug 'yuki-ycino/fzf-preview.vim'
         " 黑魔法查询框架, 先不用,后期可以看看thinkvim 的配置
     endif
 
@@ -575,7 +576,7 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
         call setwinvar(win, '&number', 0)
         call setwinvar(win, '&relativenumber', 0)
     endfunction
-    
+    "https://gist.github.com/danmikita/d855174385b3059cd6bc399ad799555e
     " Files + devicons
     function! Fzf_dev()
     let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
@@ -625,17 +626,17 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     " if you don't want linters to run on opening a file
     let g:ale_lint_on_enter = 1
 
-    let g:ale_set_highlights = 1
     "let g:ale_change_sign_column_color = 1
-
+    "let g:ale_close_preview_on_insert = 1
 
     " 关闭本地列表,使用 quickfix
     let g:ale_set_loclist = 0
     let g:ale_set_quickfix = 1
     "let g:ale_list_vertical = 1
-    let g:ale_open_list = 0
+    "let g:ale_open_list = 0
 
-    let g:ale_sign_column_always = 0
+    let g:ale_sign_column_always = 1
+    let g:ale_set_highlights = 0
     "let g:ale_sign_error = '✖'
     "let g:ale_sign_warning = '⚠'
     let g:ale_sign_error = '🔥'
