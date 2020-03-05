@@ -546,12 +546,6 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
         command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
     endif
 
-    "command! FZFCd call fzf#run(fzf#wrap({'source': 'find $HOME -path "${HOME}/\.*" -prune -o -type d -print 2> /dev/null', 'sink': 'cd'}))
-"    command! FZFCd call fzf#run(fzf#wrap({'source': 'z', 'sink': 'cd'}))
-"     command! -nargs=* -complete=dir Cd call fzf#run(fzf#wrap(
-"  \ {'source': 'find '.(empty(<f-args>) ? '.' : <f-args>).' -type d',
-"  \  'sink': 'cd'}))
-    
     let $FZF_DEFAULT_OPTS='--layout=reverse'
     let g:fzf_layout = { 'window': 'call FloatingFZF()' }
     
@@ -606,13 +600,20 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
                 let i += 1
             endwhile
             call s:Sink(items)
+            "execute 'silent e' l:file_path
         endfunction
         let opts = fzf#wrap({})
         let opts.source = <sid>files()
         let s:Sink = opts['sink*']
         let opts['sink*'] = function('s:edit_file')
         let opts.options .= l:fzf_files_options
+        
         call fzf#run(opts)
+        "call fzf#run({
+        "\ 'source': <sid>files(),
+        "\ 'sink':   function('s:edit_file'),
+        "\ 'options': '-m ' . l:fzf_files_options,
+        "\ 'window': 'call FloatingFZF()' })
     endfunction
 
     let g:fzf_buffers_jump = 1
