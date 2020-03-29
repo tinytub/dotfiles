@@ -23,11 +23,20 @@ if [ ! -d "$HOME/.config" ]; then
     mkdir -p "$HOME/.config"
 fi
 
+# for nvim
 if [ -e "$HOME/.config/nvim" ]; then
     echo "nvim config ok"
 else
     ln -s "$DOTFILES/config/nvim" "$HOME/.config/"
 fi
+
+# for vim8
+if [ -e "$HOME/.config/nvim" ]; then
+    echo "vim8 config ok"
+else
+    ln -s "$DOTFILES/config/nvim" "$HOME/.vim"
+fi
+
 #config_files=$( find "$DOTFILES/config" -d 1 2>/dev/null )
 ## nvim 相关目录及文件
 #for config in $config_files; do
