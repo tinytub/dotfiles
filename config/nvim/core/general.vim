@@ -38,7 +38,9 @@
     set mmp=5000
 
     "syntax sync minlines=128 " 设置配色行数
-    "set synmaxcol=128
+    set synmaxcol=2500  " Don't syntax highlight long lines
+    set path+=**                 " Directories to search when using gf and friends
+    set isfname-==               " Remove =, detects filename in var=/foo/bar
 
     set hidden "current buffer can be put into background,
     "set hidden 会和 go-def-tab 冲突, 如果关闭 tab 再通过 go-def-tab 打开会导致在同屏 split horizon
@@ -134,9 +136,21 @@
     set incsearch " set incremental search, like modern browsers, 增量搜索
     set nolazyredraw " don't redraw while executing macros
 
+    set complete=.,w,b,k  " C-n completion: Scan buffers, windows and dictionary
 
-    " 搜索忽略大小写
-    set ignorecase
+    if exists('+inccommand')
+    	set inccommand=nosplit
+    endif
+    
+    if executable('rg')
+    	set grepformat=%f:%l:%m
+    	let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '')
+    elseif executable('ag')
+    	set grepformat=%f:%l:%m
+    	let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '')
+    endif
+
+
     " 进入搜索使用sane正则
     "nnoremap / /\v
     "vnoremap / /\v
@@ -218,12 +232,14 @@
         set t_ut=
     endif
 
-    " 更好的 backup, swap 和 undos storage
-    set directory=$VARPATH/tmp     " directory to place swap files in
-    set backup                        " make backup files
-    set backupdir=$VARPATH/backups " where to put backup files
-    set undofile                      " persistent undos - undo after you re-open the file
-    set undodir=$VARPATH/undos
+    "set backup                        " make backup files
+    "set undofile                      " persistent undos - undo after you re-open the file
+    set undofile swapfile nobackup
+    set directory=$DATA_PATH/swap//,$DATA_PATH,~/tmp,/var/tmp,/tmp
+    set undodir=$DATA_PATH/undo//,$DATA_PATH,~/tmp,/var/tmp,/tmp
+    set backupdir=$DATA_PATH/backup/,$DATA_PATH,~/tmp,/var/tmp,/tmp
+    set viewdir=$DATA_PATH/view/
+    set spellfile=$VIM_PATH/spell/en.utf-8.add
 
     " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
     if has("autocmd")
@@ -231,17 +247,10 @@
     endif
 
     " 适配 neovim 的viminfo
-    if has('nvim')
-        "  ShaDa/viminfo:
-        "   ' - Maximum number of previously edited files marks
-        "   < - Maximum number of lines saved for each register
-        "   @ - Maximum number of items in the input-line history to be
-        "   s - Maximum size of an item contents in KiB
-        "   h - Disable the effect of 'hlsearch' when loading the shada
-        set shada='300,<50,@100,s10,h
+    if has('nvim') && ! has('win32') && ! has('win64')
+    	set shada=!,'300,<50,@100,s10,h
     else
-        set viminfo='300,<10,@50,h,n$VARPATH/viminfo
-        set viminfo+=n~$VARPATH/dirs/viminfo
+    	set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
     endif
 
     if (has('nvim'))
@@ -251,18 +260,48 @@
     endif
 
     " store yankring history file there too
-    let g:yankring_history_dir = $VARPATH.'/dirs/'
+    let g:yankring_history_dir = $DATA_PATH.'/dirs/'
 
-    " create needed directories if they don't exist
-    if !isdirectory(&backupdir)
-        call mkdir(&backupdir, "p")
+    "" create needed directories if they don't exist
+    "if !isdirectory(&backupdir)
+    "    call mkdir(&backupdir, "p")
+    "endif
+    "if !isdirectory(&directory)
+    "    call mkdir(&directory, "p")
+    "endif
+    "if !isdirectory(&undodir)
+    "    call mkdir(&undodir, "p")
+    "endif
+
+    " If sudo, disable vim swap/backup/undo/shada/viminfo writing
+    if $SUDO_USER !=# '' && $USER !=# $SUDO_USER
+    		\ && $HOME !=# expand('~'.$USER)
+    		\ && $HOME ==# expand('~'.$SUDO_USER)
+    
+    	set noswapfile
+    	set nobackup
+    	set nowritebackup
+    	set noundofile
+    	if has('nvim')
+    		set shada="NONE"
+    	else
+    		set viminfo="NONE"
+    	endif
     endif
-    if !isdirectory(&directory)
-        call mkdir(&directory, "p")
+    
+    " Secure sensitive information, disable backup files in temp directories
+    if exists('&backupskip')
+    	set backupskip+=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*
+    	set backupskip+=.vault.vim
     endif
-    if !isdirectory(&undodir)
-        call mkdir(&undodir, "p")
-    endif
+    
+    " Disable swap/undo/viminfo/shada files in temp directories or shm
+    augroup user_secure
+    	autocmd!
+    	silent! autocmd BufNewFile,BufReadPre
+    		\ /tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim
+    		\ setlocal noswapfile noundofile nobackup nowritebackup viminfo= shada=
+    augroup END
 
     " 自动配置文件头
     autocmd BufNewFile *.sh,*.py,*.rb exec ":call SetTitle()"

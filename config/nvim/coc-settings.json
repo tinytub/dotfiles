@@ -1,6 +1,15 @@
 {
   "codeLens.enable": true,
-  "coc.preferences.formatOnSaveFiletypes": ["typescript", "javascript", "typescript.tsx", "typescriptreact", "javascriptreact"],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "html",
+    "css",
+    "markdown",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "go",
+    "json"],
   "suggest.enablePreview": true,
   "suggest.maxPreviewWidth": 100,
   "diagnostic.checkCurrentLine": true,
@@ -41,23 +50,14 @@
   "explorer.icon.collapsed": "▸",
   "explorer.width": 30,
   "explorer.icon.enableNerdfont": true,
-  "explorer.keyMappings": {
-      "h" : "gotoParent",
-      "l" : "expandOrCollapse",
-      "<C-v>": "openInVsplit"
-  },
+  "explorer.quitOnOpen": true,
+  "explorer.floating.width": -20,
+  "explorer.floating.height": -10,
+  "explorer.openAction.strategy": "sourceWindow",
   "explorer.sources": [
         {"name": "buffer", "expand": true},
         {"name": "file", "expand": true}
   ],
-  "explorer.file.column.git.icon.added": "✚",
-  "explorer.file.column.git.icon.deleted": "✖",
-  "explorer.file.column.git.icon.renamed": "➜",
-  "explorer.file.column.git.icon.unmerged": "═",
-  "explorer.file.column.git.icon.untracked": "?",
-  "explorer.file.column.git.icon.modified": "✹",
-  "explorer.file.column.git.icon.ignored": "☒",
-  "explorer.openAction.changeDirectory": false,
   //"go.goplsPath": "~/Documents/local_projects/goworks/bin/gopls",
   //"go.goplsOptions": {
   //    "usePlaceholders": true,
