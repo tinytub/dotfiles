@@ -30,10 +30,7 @@
     set lazyredraw
     set ttyfast "faster redrawing
 
-    set diffopt+=vertical,iwhite,internal,algorithm:patience,hiddenoff
-    "set diffopt+=vertical
-
-
+    
     "set splitright
     "set splitbelow
 
@@ -103,8 +100,10 @@
     "set statusline=-        " hide file name in statusline
     "set fillchars+=vert:\|  " add a bar for vertical splits
     "let g:gruvbox_transp_bg = 1
-    if get(g:,'gruvbox_transp_bg',1)
-        set fcs=eob:\           " hide ~
+    if has('nvim')
+        if get(g:,'gruvbox_transp_bg',1)
+            set fcs=eob:\           " hide ~
+        endif
     endif
     if has('mac')
     	let g:clipboard = {
@@ -167,9 +166,16 @@
     set switchbuf=useopen,usetab    " Jump to the first open window in any tab
     set switchbuf+=vsplit           " Switch buffer behavior to vsplit
     set backspace=indent,eol,start  " Intuitive backspacing in insert mode
-    "set diffopt=filler,iwhite       " Diff mode: show fillers, ignore whitespace
+    set diffopt=filler,iwhite       " Diff mode: show fillers, ignore whitespace
     "set completeopt=menuone         " Always show menu, even for one item
     "set completeopt+=noselect       " Do not select a match in the menu
+    "set diffopt+=vertical,iwhite,internal,algorithm:patience,hiddenoff
+
+    if has('patch-8.1.0360') || has('nvim-0.4')
+    	set diffopt+=internal,algorithm:patience
+    	" set diffopt=indent-heuristic,algorithm:patience
+    endif
+
 
     " UI Symbols
     " icons:  ▏│ ¦ ╎ ┆ ⋮ ⦙ ┊ 

@@ -3,7 +3,7 @@
         nnoremap <silent> <leader>bb :<C-u>FzfPreviewBuffers<CR>
         nnoremap <silent> <leader>bB :<C-u>FzfPreviewAllBuffers<CR>
         nnoremap <silent> <leader>ff :<C-u>FzfPreviewDirectoryFiles<CR>
-        nnoremap <silent> <leader>fr :<C-u>FzfPreviewProjectGrep .<CR>
+        nnoremap <silent> <leader>fr :<C-u>FzfPreviewProjectGrep <CR>
         nnoremap <silent> <leader>fw :<C-u>FzfPreviewProjectGrep <C-R><C-W><CR>
         nnoremap <silent> <leader>fo :<C-u>FzfPreviewOldFiles<CR>
         nnoremap <silent> <leader>fm :<C-u>FzfPreviewMruFiles<CR>
@@ -42,12 +42,6 @@
 
 " coc
     " Using CocList
-    " Remap for do codeAction of selected region
-    function! s:cocActionsOpenFromSelected(type) abort
-        execute 'CocCommand actions.open ' . a:type
-    endfunction
-    xmap <silent> <leader>ca :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-    nmap <silent> <leader>ca :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
     " Show all diagnostics
     nnoremap <silent> <leader>cd  :<C-u>CocList diagnostics<cr>
     " Manage extensions
@@ -73,8 +67,8 @@
     vmap <leader>cf  <Plug>(coc-format-selected)
     nmap <leader>cf  <Plug>(coc-format-selected)
     " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-    "xmap <leader>ca  <Plug>(coc-codeaction-selected)
-    "nmap <leader>ca  <Plug>(coc-codeaction-selected)
+    xmap <leader>ca  <Plug>(coc-codeaction-selected)
+    nmap <leader>ca  <Plug>(coc-codeaction-selected)
     " Remap for do codeAction of current line
     nmap <leader>ac  <Plug>(coc-codeaction)
     " Fix autofix problem of current line
@@ -103,6 +97,8 @@
     "和回车冲突
     "nmap <expr> <silent> <C-m> <SID>select_current_word()
     xmap <silent> <C-d> <Plug>(coc-cursors-range)
+    " use normal command like `<leader>xi(`
+    nmap <leader>x  <Plug>(coc-cursors-operator)
 
     function! s:select_current_word()
         if !get(g:, 'coc_cursors_activated', 0)
@@ -115,8 +111,6 @@
     nnoremap <silent> <leader>cw ::CocSearch
     " use normal command like `<leader>xi(`
     nmap <leader>x  <Plug>(coc-cursors-operator)
-
-    nnoremap <silent> <leader>ot :<C-u>CocCommand floaterm.new<cr>
 
     " coc-explorer
     noremap <silent> <leader>j :CocCommand explorer<cr>

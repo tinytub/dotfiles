@@ -115,6 +115,9 @@ call plug#begin('~/.config/nvim/plugged')
     "Plug 'plasticboy/vim-markdown'
     Plug 'tpope/vim-markdown'
 
+    "Plug 'voldikss/vim-floaterm',  {'on': ['FloatermNew','FloatermToggle','FloatermPrev','FloatermNext','FloatermSend']}
+    Plug 'voldikss/vim-floaterm'
+
     "JSON TOML XML
     Plug 'elzr/vim-json', { 'for': 'json' }
     let g:vim_json_syntax_conceal = 0
@@ -129,7 +132,7 @@ call plug#begin('~/.config/nvim/plugged')
     if has("nvim")
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
-        "Plug 'yuki-ycino/fzf-preview.vim'
+        Plug 'yuki-ycino/fzf-preview.vim'
         " 黑魔法查询框架, 先不用,后期可以看看thinkvim 的配置
     endif
 
@@ -513,30 +516,30 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
     set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
     let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
 
-    let g:fzf_action = {
-      \ 'ctrl-t': 'tab split',
-      \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit' }
-    
-    " Customize fzf colors to match your color scheme
-    let g:fzf_colors =
-    \ { 'fg':      ['fg', 'Normal'],
-      \ 'bg':      ['bg', '#5f5f87'],
-      \ 'hl':      ['fg', 'Comment'],
-      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-      \ 'hl+':     ['fg', 'Statement'],
-      \ 'info':    ['fg', 'PreProc'],
-      \ 'border':  ['fg', 'Ignore'],
-      \ 'prompt':  ['fg', 'Conditional'],
-      \ 'pointer': ['fg', 'Exception'],
-      \ 'marker':  ['fg', 'Keyword'],
-      \ 'spinner': ['fg', 'Label'],
-      \ 'header':  ['fg', 'Comment'] }
-    
-    let g:fzf_commits_log_options = '--graph --color=always
-      \ --format="%C(yellow)%h%C(red)%d%C(reset)
-      \ - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
+"    let g:fzf_action = {
+"      \ 'ctrl-t': 'tab split',
+"      \ 'ctrl-s': 'split',
+"      \ 'ctrl-v': 'vsplit' }
+"    
+"    " Customize fzf colors to match your color scheme
+"    let g:fzf_colors =
+"    \ { 'fg':      ['fg', 'Normal'],
+"      \ 'bg':      ['bg', '#5f5f87'],
+"      \ 'hl':      ['fg', 'Comment'],
+"      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"      \ 'hl+':     ['fg', 'Statement'],
+"      \ 'info':    ['fg', 'PreProc'],
+"      \ 'border':  ['fg', 'Ignore'],
+"      \ 'prompt':  ['fg', 'Conditional'],
+"      \ 'pointer': ['fg', 'Exception'],
+"      \ 'marker':  ['fg', 'Keyword'],
+"      \ 'spinner': ['fg', 'Label'],
+"      \ 'header':  ['fg', 'Comment'] }
+"    
+"    let g:fzf_commits_log_options = '--graph --color=always
+"      \ --format="%C(yellow)%h%C(red)%d%C(reset)
+"      \ - %C(bold green)(%ar)%C(reset) %s %C(blue)<%an>%C(reset)"'
     
     "let $FZF_DEFAULT_COMMAND = 'ag --hidden -l -g ""'
     " ripgrep
@@ -570,54 +573,120 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
         call setwinvar(win, '&number', 0)
         call setwinvar(win, '&relativenumber', 0)
     endfunction
+    " Add fzf quit mapping
+    let g:fzf_preview_quit_map = 1
     "https://gist.github.com/danmikita/d855174385b3059cd6bc399ad799555e
     " Files + devicons
-    function! Fzf_dev()
-    let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
-        function! s:files()
-            let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
-            return s:prepend_icon(l:files)
-            "return l:files
-        endfunction
-        function! s:prepend_icon(candidates)
-            let result = []
-            for candidate in a:candidates
-                let filename = fnamemodify(candidate, ':p:t')
-                let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
-                call add(result, printf("%s %s", icon, candidate))
-            endfor
-            return result
-        endfunction
-        function! s:edit_file(items)
-            let items = a:items
-            let i = 1
-            let ln = len(items)
-            while i < ln
-                let item = items[i]
-                let parts = split(item, ' ')
-                let file_path = get(parts, 1, '')
-                let items[i] = file_path
-                let i += 1
-            endwhile
-            call s:Sink(items)
-            "execute 'silent e' l:file_path
-        endfunction
-        let opts = fzf#wrap({})
-        let opts.source = <sid>files()
-        let s:Sink = opts['sink*']
-        let opts['sink*'] = function('s:edit_file')
-        let opts.options .= l:fzf_files_options
-        
-        call fzf#run(opts)
-        "call fzf#run({
-        "\ 'source': <sid>files(),
-        "\ 'sink':   function('s:edit_file'),
-        "\ 'options': '-m ' . l:fzf_files_options,
-        "\ 'window': 'call FloatingFZF()' })
-    endfunction
+   "" function! Fzf_dev()
+   "" let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
+   ""     function! s:files()
+   ""         let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+   ""         return s:prepend_icon(l:files)
+   ""         "return l:files
+   ""     endfunction
+   ""     function! s:prepend_icon(candidates)
+   ""         let result = []
+   ""         for candidate in a:candidates
+   ""             let filename = fnamemodify(candidate, ':p:t')
+   ""             let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
+   ""             call add(result, printf("%s %s", icon, candidate))
+   ""         endfor
+   ""         return result
+   ""     endfunction
+   ""     function! s:edit_file(items)
+   ""         let items = a:items
+   ""         let i = 1
+   ""         let ln = len(items)
+   ""         while i < ln
+   ""             let item = items[i]
+   ""             let parts = split(item, ' ')
+   ""             let file_path = get(parts, 1, '')
+   ""             let items[i] = file_path
+   ""             let i += 1
+   ""         endwhile
+   ""         call s:Sink(items)
+   ""         "execute 'silent e' l:file_path
+   ""     endfunction
+   ""     let opts = fzf#wrap({})
+   ""     let opts.source = <sid>files()
+   ""     let s:Sink = opts['sink*']
+   ""     let opts['sink*'] = function('s:edit_file')
+   ""     let opts.options .= l:fzf_files_options
+   ""     
+   ""     call fzf#run(opts)
+   ""     "call fzf#run({
+   ""     "\ 'source': <sid>files(),
+   ""     "\ 'sink':   function('s:edit_file'),
+   ""     "\ 'options': '-m ' . l:fzf_files_options,
+   ""     "\ 'window': 'call FloatingFZF()' })
+   "" endfunction
 
-    let g:fzf_buffers_jump = 1
+   "" let g:fzf_buffers_jump = 1
 
+   " Use floating window (for neovim)
+   let g:fzf_preview_use_floating_window = 1
+   " floating window size ratio
+   let g:fzf_preview_floating_window_rate = 0.8
+   " floating window winblend value
+   let g:fzf_preview_floating_window_winblend = 15
+   " Commands used for fzf preview.
+   " The file name selected by fzf becomes {}
+   " let g:fzf_preview_command = 'head -100 {-1}'                       " Not installed bat
+   let g:fzf_preview_command = 'bat --color=always --style=grid {-1}' " Installed bat
+   " g:fzf_binary_preview_command is executed if this command succeeds, and g:fzf_preview_command is executed if it fails
+   let g:fzf_preview_if_binary_command = '[[ "$(file --mime {})" =~ binary ]]'
+   " Commands used for binary file
+   let g:fzf_binary_preview_command = 'echo "{} is a binary file"'
+   " Commands used to get the file list from project
+   let g:fzf_preview_filelist_command = 'git ls-files --exclude-standard'               " Not Installed ripgrep
+   " let g:fzf_preview_filelist_command = 'rg --files --hidden --follow --no-messages -g \!"* *"' " Installed ripgrep
+   " Commands used to get the file list from git reposiroty
+   let g:fzf_preview_git_files_command = 'git ls-files --exclude-standard'
+   " Commands used to get the file list from current directory
+   let g:fzf_preview_directory_files_command = 'rg --files --hidden --follow --no-messages -g \!"* *"'
+   " Commands used to get the git status file list
+   let g:fzf_preview_git_status_command = "git status --short --untracked-files=all | awk '{if (substr($0,2,1) !~ / /) print $2}'"
+   " Commands used for project grep
+   let g:fzf_preview_grep_cmd = 'rg --line-number --no-heading'
+   " Commands used for preview of the grep result
+   let g:fzf_preview_grep_preview_cmd = expand('<sfile>:h:h') . '/bin/preview_fzf_grep'
+   " Keyboard shortcuts while fzf preview is active
+   let g:fzf_preview_preview_key_bindings = 'ctrl-d:preview-page-down,ctrl-u:preview-page-up,?:toggle-preview'
+   " Specify the color of fzf
+   let g:fzf_preview_fzf_color_option = 'dark'
+   " Set the processors when selecting an element with fzf
+   " Do not use with g:fzf_preview_*_key_map
+   let g:fzf_preview_custom_default_processors = {
+               \ '':       function('fzf_preview#resource_processor#edit'),
+               \ 'ctrl-x': function('fzf_preview#resource_processor#split'),
+               \ 'ctrl-v': function('fzf_preview#resource_processor#vsplit'),
+               \ 'ctrl-t': function('fzf_preview#resource_processor#tabedit'),
+               \ 'ctrl-q': function('fzf_preview#resource_processor#export_quickfix')
+               \}
+   " For example, set split to ctrl-s
+   " let g:fzf_preview_custom_default_processors = fzf_preview#resource_processor#get_default_processors()
+   " call remove(g:fzf_preview_custom_default_processors, 'ctrl-x')
+   " let g:fzf_preview_custom_default_processors['ctrl-s'] = function('fzf_preview#resource_processor#split')
+   " Use as fzf preview-window option
+   let g:fzf_preview_fzf_preview_window_option = ''
+   " let g:fzf_preview_fzf_preview_window_option = 'up:30%'
+   " Command to be executed after file list creation
+   let g:fzf_preview_filelist_postprocess_command = ''
+   " let g:fzf_preview_filelist_postprocess_command = 'xargs -d "\n" ls -U --color'      " Use dircolors
+   " let g:fzf_preview_filelist_postprocess_command = 'xargs -d "\n" exa --color=always' " Use exa
+   " Use vim-devicons
+   let g:fzf_preview_use_dev_icons = 0
+   " devicons character width
+   let g:fzf_preview_dev_icon_prefix_length = 2
+    " DEPRECATED
+   " fzf window layout
+   let g:fzf_preview_layout = 'top split new'
+   " DEPRECATED
+   " Rate of fzf window
+   let g:fzf_preview_rate = 0.3
+   " DEPRECATED
+   " Key to toggle fzf window size of normal size and full-screen
+   let g:fzf_full_preview_toggle_key = '<C-s>'
 
 " ALE
     "仅仅在保存的时候跑 ale
@@ -1023,6 +1092,8 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
                 \ 'coc-vimlsp',
                 \ 'coc-emmet',
                 \ 'coc-prettier',
+                \ 'coc-actions',
+                \ 'coc-floaterm',
                 \ 'coc-explorer'
                 \ ]
 
@@ -1161,15 +1232,21 @@ let g:gutentags_ctags_exclude = ['*.json', '*.js', '*.ts', '*.jsx', '*.css', '*.
           \ 'e' : 'open file explorer' ,
           \ '-' : 'choose window by {prompt char}' ,
           \ 'G' : 'distraction free writing' ,
+          \ 'F' : 'find current file' ,
           \ 'f' : {
                 \ 'name' : '+search {files cursorword word outline}',
-                \ 'f' : 'find file',
-                \ 'r' : 'search {word}',
+                \ 'f' : 'find file on directory',
+                \ 'r' : 'search {word} on project',
                 \ 'c' : 'change colorscheme',
-                \ 'w' : 'search cursorword 光标词',
-                \ 'v' : 'search outline 标签查询',
+                \ 'o' : 'find old files',
+                \ 'm' : 'find mru files',
+                \ 'p' : 'find on a project',
+                \ 'P' : 'find on a git project',
                 \ },
-          \ 'F' : 'find current file' ,
+          \ 'o' : {
+                \ 'name' : 'open {terminal}',
+                \ 't' : 'open a temrinal',
+                \ },
           \ 'j' : 'open coc-explorer',
           \ 'g'  :{
                     \'name':'+git-operate',
@@ -1435,3 +1512,11 @@ endfunction
     let g:neomru#directory_mru_path = $VARPATH . '/mru/dir'
     let g:neomru#file_mru_path = $VARPATH . '/mru/file'
     let g:unite_source_file_mru_limit = 5000
+
+" floaterm
+let g:floaterm_position = 'center'
+" Set floaterm window's background to black
+hi FloatermNF guibg=black
+" Set floating window border line color to cyan, and background to orange
+hi FloatermBorderNF guibg=none guifg=cyan
+

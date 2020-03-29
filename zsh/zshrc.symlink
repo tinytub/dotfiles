@@ -63,8 +63,6 @@ zinit as="completion" for \
 # ==== 加载 GitHub 插件 ====
 #zinit light-mode lucid wait for \
 zinit light-mode for \
-    zdharma/fast-syntax-highlighting \
-    zsh-users/zsh-autosuggestions \
     hlissner/zsh-autopair \
     wfxr/forgit
 
@@ -89,7 +87,9 @@ zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
 # ==== 初始化补全 ====
-
+zinit light-mode for \
+    zdharma/fast-syntax-highlighting \
+    zsh-users/zsh-autosuggestions
 #zpcompinit; zpcdreplay
 #autoload -Uz _zinit
 #(( ${+_comps} )) && _comps[zinit]=_zinit
