@@ -42,7 +42,9 @@
 # ==========================================
 
 # ale {{{
-- repo: w0rp/ale
+- repo: dense-analysis/ale
+  hook_add: source $VIM_PATH/core/plugins/ale.vim
+  on_event: FileType
 # }}}
 
 # Denite{{{
@@ -75,6 +77,12 @@
   hook_add: let g:webdevicons_enable_denite = 1
 
 - { repo: rhysd/accelerated-jk, on_map: { n: <Plug> } }
+
+- repo: honza/vim-snippets
+  depends : coc.nvim
+  on_event: FileType
+  if: has('python3')
+  merged: 0
 
 # tags管理
 - repo: ludovicchabant/vim-gutentags
@@ -326,8 +334,6 @@
   hook_source: |
         call echodoc#enable()
         let g:echodoc#type = "virtual"
-- repo: w0rp/ale
-  hook_add: source $VIM_PATH/core/plugins/ale.vim
 
 # }}}
 

@@ -4,7 +4,6 @@ if &compatible
 	" vint: +ProhibitSetNoCompatible
 endif
 
-" Set main configuration directory as parent directory
 let $VIM_PATH = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
 
 function! s:source_file(path, ...)
@@ -66,12 +65,6 @@ call s:source_file('core/terminal.vim')
 call s:source_file('core/theme.vim')
 call s:source_file('core/color.vim')
 
-"
-"" Load user custom local settings
-"if filereadable($VIM_PATH . '/config/local.vim')
-"	call s:source_file('config/local.vim')
-"endif
-"
 set secure
 "
 "" vim: set ts=2 sw=2 tw=80 noet :
