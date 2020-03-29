@@ -51,14 +51,13 @@ augroup user_plugin_filetype
 		
 		autocmd FileType css setlocal equalprg=csstidy\ -\ --silent=true
 		
-		autocmd BufWritePre *.js,*.jsx,*.less,*.css,*.html Neoformat
-
 		autocmd FileType javascript,javascriptreact set shiftwidth=2
 		
 		autocmd FileType json syntax match Comment +\/\/.\+$+
 		
 		" Go (Google)
 		autocmd FileType go let b:coc_pairs_disabled = ['<']
+    autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 		
 		" set filetypes as typescript && tsx
 		"autocmd BufNewFile,BufRead *.ts  set filetype=typescript

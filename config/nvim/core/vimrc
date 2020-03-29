@@ -54,11 +54,11 @@ endif
 
 " 初始化基本配置
 call s:source_file('core/init.vim')
-" 初始化 plugin
-call s:source_file('core/plugins.vim')
+"" 初始化 plugin
+"call s:source_file('core/plugins.vim')
 call s:source_file('core/plugins_mappings.vim')
-
-" 初始化其他配置文件
+"
+"" 初始化其他配置文件
 call s:source_file('core/general.vim')
 call s:source_file('core/filetype.vim')
 call s:source_file('core/mappings.vim')
