@@ -56,7 +56,7 @@
         source  $VIM_PATH/core/plugins/denite-menu.vim
 
 - repo: Shougo/neomru.vim
-  on_source: denite.nvim
+  on_source: [denite.nvim,fzf-preview.vim]
   hook_add: |
     let g:neomru#directory_mru_path = $DATA_PATH . '/mru/dir'
     let g:neomru#file_mru_path = $DATA_PATH . '/mru/file'

@@ -3,7 +3,7 @@ if dein#tap('fzf-preview.vim')
         nnoremap <silent> <leader>bb :<C-u>FzfPreviewBuffers<CR>
         nnoremap <silent> <leader>bB :<C-u>FzfPreviewAllBuffers<CR>
         nnoremap <silent> <leader>ff :<C-u>FzfPreviewDirectoryFiles<CR>
-        nnoremap <silent> <leader>fr :<C-u>FzfPreviewProjectGrep .<CR>
+        nnoremap          <leader>fr :<C-u>FzfPreviewProjectGrep<Space>
         nnoremap <silent> <leader>fw :<C-u>FzfPreviewProjectGrep <C-R><C-W><CR>
         nnoremap <silent> <leader>fo :<C-u>FzfPreviewOldFiles<CR>
         nnoremap <silent> <leader>fm :<C-u>FzfPreviewMruFiles<CR>
@@ -129,8 +129,8 @@ if dein#tap('coc.nvim')
         return "*\<Plug>(coc-cursors-word):nohlsearch\<CR>"
     endfunc
 
-    nnoremap <silent> <leader>cm ::CocSearch -w
-    nnoremap <silent> <leader>cw ::CocSearch
+    nnoremap <silent> <leader>cm :CocSearch -w
+    nnoremap <silent> <leader>cw :CocSearch
     " use normal command like `<leader>xi(`
     nmap <leader>x  <Plug>(coc-cursors-operator)
 
