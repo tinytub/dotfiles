@@ -50,12 +50,13 @@ let g:fzf_preview_if_binary_command = '[[ "$(file --mime {})" =~ binary ]]'
 " Commands used for binary file
 let g:fzf_binary_preview_command = 'echo "{} is a binary file"'
 " Commands used to get the file list from project
-let g:fzf_preview_filelist_command = 'git ls-files --exclude-standard'               " Not Installed ripgrep
-" let g:fzf_preview_filelist_command = 'rg --files --hidden --follow --no-messages -g \!"* *"' " Installed ripgrep
+"let g:fzf_preview_filelist_command = 'git ls-files --exclude-standard'               " Not Installed ripgrep
+let g:fzf_preview_filelist_command = 'rg --files --hidden --follow --no-messages -g \!"* *"' " Installed ripgrep
 " Commands used to get the file list from git reposiroty
 let g:fzf_preview_git_files_command = 'git ls-files --exclude-standard'
 " Commands used to get the file list from current directory
-let g:fzf_preview_directory_files_command = 'rg --files --hidden --follow --no-messages -g \!"* *"'
+"command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+let g:fzf_preview_directory_files_command = 'rg --files --hidden --follow --no-messages --fixed-strings --ignore-case -g \!".git/*" --color "always" '
 " Commands used to get the git status file list
 let g:fzf_preview_git_status_command = "git status --short --untracked-files=all | awk '{if (substr($0,2,1) !~ / /) print $2}'"
 " Commands used for project grep

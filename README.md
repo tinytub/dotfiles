@@ -1,7 +1,7 @@
 most using config from:
 
+[rafi/vim-config](https://github.com/rafi/vim-config)  
 [hardcoreplayers/ThinkVim](https://github.com/hardcoreplayers/ThinkVim)
-[rafi/vim-config](https://github.com/rafi/vim-config)
 
 ## Required Env
 

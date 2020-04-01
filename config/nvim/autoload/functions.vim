@@ -18,10 +18,10 @@
 "    endif
 "endfunction
 "
-""vim-plug 自动更新plugin
+"dein 自动更新plugin
 "function! OnVimEnter() abort
 "  " Run PlugUpdate every week automatically when entering Vim.
-"  if exists('g:plug_home')
+"  if exists('g:dein#_base_path')
 "    let l:filename = printf('%s/.vim_plug_update', g:plug_home)
 "    if filereadable(l:filename) == 0
 "      call writefile([], l:filename)
