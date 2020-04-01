@@ -5,7 +5,8 @@
   "suggest.detailField":"abbr",
  // "suggest.snippetIndicator": "🌟",
   "suggest.triggerCompletionWait": 100,
-  "suggest.echodocSupport": true,
+  "suggest.echodocSupport": true, // 在 function 后显示相关的参数或结构体
+  //"suggest.floatEnable": false, // 关掉补全后 function 的悬窗 doc
   "suggest.completionItemKindLabels": {
       "keyword": "\uf1de",
       "variable": "\ue79b",
@@ -42,8 +43,8 @@
     //git
   "git.enableGutters": true,
   "git.branchCharacter":"\uf408",
-  "git.addGBlameToBufferVar": false,
-  "git.addGBlameToVirtualText": false,
+  "git.addGBlameToBufferVar": false,   // 显示 git 信息,容易眼花
+  "git.addGBlameToVirtualText": false, // 显示 git 信息,容易眼花
   "git.virtualTextPrefix": " ❯❯❯ ",
   "git.addedSign.hlGroup": "GitGutterAdd",
   "git.changedSign.hlGroup": "GitGutterChange",
@@ -57,6 +58,7 @@
   "git.changeRemovedSign.text": "▋",
   //Snippet
   "coc.preferences.snippetStatusText": "Ⓢ ",
+  //"coc.preferences.hoverTarget": "echo",
   //CocList
   "list.source.files.defaultOptions": ["--auto-preview"],
   "list.source.outline.defaultOptions": ["--auto-preview"],
@@ -105,7 +107,7 @@
   //    "deepCompletion": true,
   //    "buildFlags": ["-tags=linux"]
   //},
-  "java.home": "/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home",
+  //"java.home": "/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home",
   //"java.format.enabled": true,
   //"java.format.onType.enabled": true,
   //"java.format.settings.profile": "GoogleStyle",
@@ -127,7 +129,7 @@
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"],
       "initializationOptions": {
-        "usePlaceholders": true,
+        "usePlaceholders": false, // 如果设为 true, 会包含 function 的参数或结构体字段
         "completeUnimported": true,
         "deepCompletion": true,
         "buildOnSave": false

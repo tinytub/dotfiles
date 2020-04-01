@@ -394,3 +394,25 @@ function! s:test_python_yaml()
 endfunction
 
 call s:main()
+
+function! OnVimEnter() abort
+  " Run PlugUpdate every week automatically when entering Vim.
+  " 和 use_dein 对齐
+  let l:cache_path = $DATA_PATH . '/dein'
+  if exists('l:cache_path')
+    let l:filename = printf('%s/.dein_update', l:cache_path) 
+    if filereadable(l:filename) == 0
+      call writefile([], l:filename)
+    endif
+
+    "let l:this_week = strftime('%Y_%V')
+    let l:this_day = strftime('%Y_%m_%d')
+    let l:contents = readfile(l:filename)
+    if index(l:contents, l:this_day) < 0
+      call dein#update()
+      call writefile([l:this_day], l:filename, 'a')
+    endif
+  endif
+endfunction
+
+autocmd VimEnter * call OnVimEnter()

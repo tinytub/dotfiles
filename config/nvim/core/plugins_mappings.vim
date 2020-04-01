@@ -2,7 +2,7 @@ if dein#tap('fzf-preview.vim')
     nnoremap <silent> <leader>fc :Colors<CR>
         nnoremap <silent> <leader>bb :<C-u>FzfPreviewBuffers<CR>
         nnoremap <silent> <leader>bB :<C-u>FzfPreviewAllBuffers<CR>
-        nnoremap <silent> <leader>ff :<C-u>FzfPreviewDirectoryFiles<CR>
+        nnoremap <silent> <leader>ff :<C-u>FzfPreviewDirectoryFiles <CR>
         nnoremap          <leader>fr :<C-u>FzfPreviewProjectGrep<Space>
         nnoremap <silent> <leader>fw :<C-u>FzfPreviewProjectGrep <C-R><C-W><CR>
         nnoremap <silent> <leader>fo :<C-u>FzfPreviewOldFiles<CR>

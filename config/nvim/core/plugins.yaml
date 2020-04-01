@@ -33,11 +33,6 @@
   rev: release
   hook_add: source $VIM_PATH/core/plugins/coc.vim
 
-#- repo: honza/vim-snippets
-#  depends : coc.nvim
-# }}}
-
-
 # Lazy Loading
 # ==========================================
 
@@ -78,8 +73,116 @@
 
 - { repo: rhysd/accelerated-jk, on_map: { n: <Plug> } }
 
+# ==========================================
+# Completion and code analysis
+# ----------
+
+#- repo: prabirshrestha/async.vim  # only autoload functions, lazy by nature
+#  #  太激进
+#- repo: prabirshrestha/asyncomplete.vim
+#  depends: async.vim
+#  hook_add: let g:asyncomplete_auto_completeopt = 0
+#  hook_source: source $VIM_PATH/core/plugins/asyncomplete.vim
+#
+#- repo: prabirshrestha/asyncomplete-lsp.vim
+#  depends: asyncomplete.vim
+#
+#- repo: prabirshrestha/vim-lsp
+#  depends: asyncomplete-lsp.vim
+#  hook_add: |
+#    let g:lsp_diagnostics_enabled = 0
+#    let g:lsp_virtual_text_enabled = 0
+#  hook_source: source $VIM_PATH/core/plugins/lsp-settings.vim
+#
+#- repo: mattn/vim-lsp-settings
+#  depends: vim-lsp
+#  merged: 0
+#
+#- repo: Shougo/neco-vim
+#  on_ft: vim
+#  merged: 0
+#
+#- repo: prabirshrestha/asyncomplete-necovim.vim
+#  depends: asyncomplete.vim
+#  hook_source: |
+#    autocmd User asyncomplete_setup call asyncomplete#register_source(
+#      \ asyncomplete#sources#necovim#get_source_options({
+#      \ 'name': 'necovim',
+#      \ 'whitelist': ['vim'],
+#      \ 'completor': function('asyncomplete#sources#necovim#completor'),
+#      \ }))
+#- repo: prabirshrestha/asyncomplete-tags.vim
+#  if: executable('ctags')
+#  depends: asyncomplete.vim
+#  hook_source: |
+#    autocmd User asyncomplete_setup call asyncomplete#register_source(
+#      \ asyncomplete#sources#tags#get_source_options({
+#      \ 'name': 'tags',
+#      \ 'whitelist': ['*'],
+#      \ 'blacklist': ['go', 'python', 'vim', 'denite-filter', 'clap_input'],
+#      \ 'completor': function('asyncomplete#sources#tags#completor'),
+#      \ 'config': { 'max_file_size': 5000000 },
+#      \ }))
+#- repo: prabirshrestha/asyncomplete-file.vim
+#  depends: asyncomplete.vim
+#  hook_source: |
+#    autocmd User asyncomplete_setup call asyncomplete#register_source(
+#      \ asyncomplete#sources#file#get_source_options({
+#      \ 'name': 'file',
+#      \ 'priority': 10,
+#      \ 'whitelist': ['*'],
+#      \ 'blacklist': ['denite-filter', 'clap_input'],
+#      \ 'completor': function('asyncomplete#sources#file#completor')
+#      \ }))
+#- repo: wellle/tmux-complete.vim
+#  if: "! (has('win32') || has('win64'))"
+#  depends: asyncomplete.vim
+#  hook_add: |
+#    let g:tmuxcomplete#trigger = ''
+#    let g:tmuxcomplete#asyncomplete_source_options = {
+#      \ 'name': 'tmux',
+#      \ 'priority': 0,
+#      \ 'whitelist': ['*'],
+#      \ 'blacklist': ['denite-filter', 'clap_input'],
+#      \ 'config': {
+#      \   'splitmode': 'words',
+#      \   'filter_prefix': 1,
+#      \   'show_incomplete': 1,
+#      \   'sort_candidates': 0,
+#      \   'scrollback': 0,
+#      \   'truncate': 0
+#      \   }
+#      \ }
+# 用不上,回头再说
+#- repo: prabirshrestha/asyncomplete-ultisnips.vim
+#  depends: asyncomplete.vim
+#  if: has('python3')
+#  hook_source: |
+#    autocmd User asyncomplete_setup call asyncomplete#register_source(
+#      \ asyncomplete#sources#ultisnips#get_source_options({
+#      \ 'name': 'snip',
+#      \ 'priority': 0,
+#      \ 'whitelist': ['*'],
+#      \ 'blacklist': ['denite-filter', 'clap_input'],
+#      \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+#      \ }))
+#- repo: SirVer/ultisnips
+#  if: has('python3')
+#  on_event: FileType
+#  hook_add: |
+#    let g:UltiSnipsExpandTrigger = '<C-l>'
+#    let g:UltiSnipsListSnippets = ''
+#    let g:UltiSnipsJumpForwardTrigger = '<C-f>'
+#    let g:UltiSnipsJumpBackwardTrigger = '<C-b>'
+#
+#- repo: honza/vim-snippets
+#  depends: [ultisnips,coc.nvim]
+#  on_event: FileType
+#  if: has('python3')
+#  merged: 0
+
 - repo: honza/vim-snippets
-  depends : coc.nvim
+  depends: [coc.nvim]
   on_event: FileType
   if: has('python3')
   merged: 0
@@ -236,25 +339,6 @@
     let g:go_def_mapping_enabled = 0
     let g:go_mod_fmt_autosave = 0
 
-    " 关闭 vim-go 的 gd :GoDef 由 coc 接管
-    let g:go_def_reuse_buffer = 1
-
-    let g:go_fmt_command = "goimports"
-    " 自动添加标签
-    let g:go_addtags_transform = "snakecase"
-    "let g:go_term_mode = "split"
-    "let g:go_term_enabled = 1
-
-    "据说可以解决和 ale 的冲突
-    let g:go_fmt_fail_silently = 1
-
-    let g:go_decls_mode = 'fzf'
-
-    " 关闭 vim-go 的 linter
-    let g:go_metalinter_autosave = 0
-    let g:go_metalinter_autosave_enabled = ['golint', 'vet']
-
-    let g:go_doc_popup_window = 1
     let g:go_highlight_array_whitespace_error = 0
     let g:go_highlight_chan_whitespace_error = 0
     let g:go_highlight_space_tab_error = 0
@@ -275,6 +359,24 @@
     let g:go_highlight_variable_declarations = 0
     let g:go_highlight_variable_assignments = 0
 
+    " 关闭 vim-go 的 gd :GoDef 由 coc 接管
+    "let g:go_def_reuse_buffer = 1
+
+    "let g:go_fmt_command = "goimports"
+    " 自动添加标签
+    let g:go_addtags_transform = "snakecase"
+    "let g:go_term_mode = "split"
+    "let g:go_term_enabled = 1
+
+    "据说可以解决和 ale 的冲突
+    let g:go_fmt_fail_silently = 1
+    let g:go_decls_mode = 'fzf'
+
+    " 关闭 vim-go 的 linter
+    "let g:go_metalinter_autosave = 0
+    "let g:go_metalinter_autosave_enabled = ['golint', 'vet']
+
+    "let g:go_doc_popup_window = 1
 
 # Markdown related
 #- repo: tpope/vim-markdown
