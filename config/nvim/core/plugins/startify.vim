@@ -1,26 +1,8 @@
 
 " For startify
 let g:startify_padding_left = 30
-let s:header = [
-      \ '',
-      \ '   __         _    _        _    _      _         _    ',
-      \ '  / /    ___ | |_ ( ) ___  | |_ | |__  (_) _ __  | | __',
-      \ ' / /    / _ \| __||/ / __| | __|| |_ \ | || |_ \ | |/ /',
-      \ '/ /___ |  __/| |_    \__ \ | |_ | | | || || | | ||   < ',
-      \ '\____/  \___| \__|   |___/  \__||_| |_||_||_| |_||_|\_\',
-      \ '                                                       ',
-      \ '             [ ThinkVim   Author:taigacute ]           ',
-      \ '',
-      \ ]
-
-let s:footer = [
-      \ '+-------------------------------------------+',
-      \ '|            ThinkVim ^_^                   |',
-      \ '|    Talk is cheap Show me the code         |',
-      \ '|                                           |',
-      \ '|            GitHub:taigacute               |',
-      \ '+-------------------------------------------+',
-      \ ]
+let s:header = []
+let s:footer = []
 
 function! s:center(lines) abort
   let longest_line   = max(map(copy(a:lines), 'strwidth(v:val)'))
@@ -31,3 +13,6 @@ endfunction
 
 let g:startify_custom_header = s:center(s:header)
 let g:startify_custom_footer = s:center(s:footer)
+autocmd! FileType startify
+autocmd  FileType startify set laststatus=0
+  \| autocmd BufLeave <buffer> set laststatus=2

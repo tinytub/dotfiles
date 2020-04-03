@@ -5,7 +5,6 @@ highlight! ParenMatch  ctermfg=NONE guifg=NONE ctermbg=236 guibg=#494d2a
 " ---------------------------------------------------------
 hi Whitespace ctermfg=96 guifg=#725972 guibg=NONE ctermbg=NONE
 hi VertSplit  ctermfg=Black  guifg=Black guibg=NONE ctermbg=NONE
-"hi Normal guibg=NONE ctermbg=NONE
 hi LineNr ctermbg=NONE guibg=NONE
 hi SignColumn ctermfg=187 ctermbg=NONE guifg=#ebdbb2 guibg=NONE guisp=NONE cterm=NONE gui=NONE
 highlight! link pythonSpaceError  NONE
@@ -51,10 +50,6 @@ highlight def link Defx_filename_3_Unknown Comment
 highlight def link Defx_filename_3_Renamed Title
 highlight def link Defx_filename_3_Unmerged Label
 " highlight Defx_git_Deleted   ctermfg=13 guifg=#b294bb
-
-" buftabline highlight
-" ---------------------------------------------------------
-highlight BufTabLineCurrent ctermbg=96 guibg=#5d4d7a
 
 " magit highlight
 " ---------------------------------------------------------

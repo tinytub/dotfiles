@@ -24,6 +24,7 @@ most using config from:
         # then compile and install ctags
         ```
 -   bat : [install bat](https://github.com/sharkdp/bat)
+-   exa : [install exa](https://github.com/ogham/exa)
 
 ```
 git clone https://github.com/tinytub/vim ~/.dotfiles

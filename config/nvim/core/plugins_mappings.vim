@@ -1,14 +1,91 @@
+if dein#tap('dein.vim')
+    nnoremap <silent> <Leader>pu  :call dein#update()<CR>
+	nnoremap <silent> <Leader>pr  :call dein#recache_runtimepath()<CR>
+	nnoremap <silent> <Leader>pl  :echo dein#get_updates_log()<CR>
+endif
+
 if dein#tap('fzf-preview.vim')
-    nnoremap <silent> <leader>fc :Colors<CR>
-        nnoremap <silent> <leader>bb :<C-u>FzfPreviewBuffers<CR>
-        nnoremap <silent> <leader>bB :<C-u>FzfPreviewAllBuffers<CR>
-        nnoremap <silent> <leader>ff :<C-u>FzfPreviewDirectoryFiles <CR>
-        nnoremap          <leader>fr :<C-u>FzfPreviewProjectGrep<Space>
-        nnoremap <silent> <leader>fw :<C-u>FzfPreviewProjectGrep <C-R><C-W><CR>
-        nnoremap <silent> <leader>fo :<C-u>FzfPreviewOldFiles<CR>
-        nnoremap <silent> <leader>fm :<C-u>FzfPreviewMruFiles<CR>
-        nnoremap <silent> <leader>fp :<C-u>FzfPreviewProjectFiles<CR>
-        nnoremap <silent> <leader>fP :<C-u>FzfPreviewFromResources project_mru git<CR>
+    "nnoremap <silent> <leader>fc :Colors<CR>
+    "nnoremap <silent> <leader>bb :<C-u>FzfPreviewBuffers<CR>
+    "nnoremap <silent> <leader>bB :<C-u>FzfPreviewAllBuffers<CR>
+    "nnoremap <silent> <leader>ff :<C-u>FzfPreviewDirectoryFiles <CR>
+    "nnoremap          <leader>fr :<C-u>FzfPreviewProjectGrep<Space>
+    "nnoremap <silent> <leader>fw :<C-u>FzfPreviewProjectGrep <C-R><C-W><CR>
+    "nnoremap <silent> <leader>fo :<C-u>FzfPreviewOldFiles<CR>
+    "nnoremap <silent> <leader>fm :<C-u>FzfPreviewMruFiles<CR>
+    "nnoremap <silent> <leader>fp :<C-u>FzfPreviewProjectFiles<CR>
+    "nnoremap <silent> <leader>fP :<C-u>FzfPreviewFromResources project_mru git<CR>
+	nnoremap <silent> <leader>fc :<C-u>Colors<CR>
+    nnoremap <silent> <leader>bb :<C-u>FzfPreviewBuffers -processors=g:fzf_preview_buffer_delete_processors<CR>
+	nnoremap <silent> <Leader>gS :<C-u>FzfPreviewGitStatus -processors=g:fzf_preview_gina_processors<CR>
+    nnoremap <silent> <leader>bB :<C-u>FzfPreviewAllBuffers -processors=g:fzf_preview_buffer_delete_processors<CR>
+    nnoremap <silent> <leader>ff :<C-u>FzfPreviewDirectoryFiles<CR>
+    nnoremap <silent> <leader>fa :<C-u>FzfPreviewProjectGrep .<CR>
+    nnoremap <silent> <leader>fo :<C-u>FzfPreviewOldFiles<CR>
+	nnoremap <silent> <leader>fC :<C-u>FzfPreviewChanges<CR>
+    nnoremap <silent> <leader>fm :<C-u>FzfPreviewMruFiles<CR>
+    nnoremap <silent> <leader>fp :<C-u>FzfPreviewProjectFiles<CR>
+    nnoremap <silent> <Leader>fw :<C-u>FzfPreviewProjectGrep <C-r>=expand('<cword>')<CR><CR>
+    nnoremap <silent> <leader>fP :<C-u>FzfPreviewFromResources project_mru git<CR>
+	augroup fzf_preview
+		autocmd!
+		autocmd User fzf_preview#initialized call s:fzf_preview_settings()
+	augroup END
+
+	function! s:fzf_preview_settings() abort
+		let g:fzf_preview_buffer_delete_processors = fzf_preview#resource_processor#get_default_processors()
+		let g:fzf_preview_buffer_delete_processors['ctrl-x'] = function('s:buffers_delete_from_lines')
+	endfunction
+
+	function! s:buffers_delete_from_lines(lines) abort
+		for line in a:lines
+			let matches = matchlist(line, '^buffer \(\d\+\)$')
+			if len(matches) >= 1
+				execute 'bdelete! ' . matches[1]
+			else
+				execute 'bdelete! ' . line
+			endif
+		endfor
+	endfunction
+
+	function! s:gina_add(paths) abort
+		for path in a:paths
+			execute 'silent Gina add ' . path
+		endfor
+
+		echomsg 'Git add ' . join(a:paths, ', ')
+	endfunction
+
+	function! s:gina_reset(paths) abort
+		for path in a:paths
+			execute 'silent Gina reset ' . path
+		endfor
+
+		echomsg 'Git reset ' . join(a:paths, ', ')
+	endfunction
+
+	function! s:gina_patch(paths) abort
+		for path in a:paths
+			execute 'silent Gina patch ' . path
+		endfor
+
+		echomsg 'Git add --patch ' . join(a:paths, ', ')
+	endfunction
+
+	function! s:fzf_preview_settings() abort
+		let g:fzf_preview_custom_default_processors = fzf_preview#resource_processor#get_default_processors()
+		call remove(g:fzf_preview_custom_default_processors, 'ctrl-x')
+		let g:fzf_preview_custom_default_processors['ctrl-s'] = function('fzf_preview#resource_processor#split')
+
+		let g:fzf_preview_buffer_delete_processors = fzf_preview#resource_processor#get_default_processors()
+		let g:fzf_preview_buffer_delete_processors['ctrl-x'] = function('s:buffers_delete_from_lines')
+
+		let g:fzf_preview_gina_processors = fzf_preview#resource_processor#get_processors()
+		let g:fzf_preview_gina_processors['ctrl-a'] = function('s:gina_add')
+		let g:fzf_preview_gina_processors['ctrl-r'] = function('s:gina_reset')
+		let g:fzf_preview_gina_processors['ctrl-c'] = function('s:gina_patch')
+	endfunction
+
 endif
 
 if dein#tap('vim-easy-align')
@@ -20,8 +97,10 @@ endif
 
 if dein#tap('vista.vim')
     "nnoremap <silent><localleader>v :Vista!!<CR>
-    nnoremap <silent><localleader>v :Vista coc<CR>
-    nnoremap <silent><leader>fv     :Vista finder coc<CR>
+    "nnoremap <silent><localleader>v :Vista coc<CR>
+    "nnoremap <silent><leader>fv     :Vista finder coc<CR>
+	nnoremap <silent> <Leader>i :<C-u>Vista!!<CR>
+
 endif
 
 if dein#tap('ale')
@@ -30,9 +109,8 @@ if dein#tap('ale')
 endif
 
 if dein#tap('vim-easymotion')
-        nmap <Leader><Leader>w <Plug>(easymotion-w)
-	    nmap <Leader><Leader>f <Plug>(easymotion-f)
-	    nmap <Leader><Leader>b <Plug>(easymotion-b)
+   	nmap gsj <Plug>(easymotion-w)
+	nmap gsk <Plug>(easymotion-b)
 endif
 
 if dein#tap('vim-which-key')
@@ -71,9 +149,9 @@ if dein#tap('coc.nvim')
     " Manage extensions
     nnoremap <silent> <leader>ce  :<C-u>CocList extensions<cr>
     " Show commands
-    nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
+    nnoremap <silent> <leader>,  :<C-u>CocList commands<cr>
     " Find symbol of current document
-    nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
+    "nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
     " Search workspace symbols
     nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
     " Do default action for next item.
@@ -81,26 +159,22 @@ if dein#tap('coc.nvim')
     " Do default action for previous item.
     nnoremap <silent> <leader>ck  :<C-u>CocPrev<CR>
     " Resume latest coc list
-    nnoremap <silent> <leader>cr  :<C-u>CocListResume<CR>
+    nnoremap <silent> <leader>cu  :<C-u>CocListResume<CR>
     " Use `[c` and `]c` for navigate diagnostics
     nmap <silent> ]c <Plug>(coc-diagnostic-prev)
     nmap <silent> [c <Plug>(coc-diagnostic-next)
     " Remap for rename current word
-    nmap <leader>cn <Plug>(coc-rename)
+    nmap <leader>cr <Plug>(coc-rename)
     " Remap for format selected region
     vmap <leader>cf  <Plug>(coc-format-selected)
     nmap <leader>cf  <Plug>(coc-format-selected)
-    " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-    "xmap <leader>ca  <Plug>(coc-codeaction-selected)
-    "nmap <leader>ca  <Plug>(coc-codeaction-selected)
-    " Remap for do codeAction of current line
-    nmap <leader>ac  <Plug>(coc-codeaction)
     " Fix autofix problem of current line
-    nmap <leader>qf  <Plug>(coc-fix-current)
+    nmap <leader>qF  <Plug>(coc-fix-current)
     " Remap keys for gotos
     nmap <silent> gd <Plug>(coc-definition)
     nmap <silent> gy <Plug>(coc-type-definition)
     nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> <leader>ci <Plug>(coc-implementation)
     nmap <silent> gr <Plug>(coc-references)
     " Use K for show documentation in float window
     nnoremap <silent> K :call CocActionAsync('doHover')<CR>
@@ -109,10 +183,10 @@ if dein#tap('coc.nvim')
     nmap [g <Plug>(coc-git-prevchunk)
     nmap ]g <Plug>(coc-git-nextchunk)
     " show chunk diff at current position
-    nmap gs <Plug>(coc-git-chunkinfo)
+    nmap <leader>gi <Plug>(coc-git-chunkinfo)
     " show commit contains current position
-    nmap gm <Plug>(coc-git-commit)
-    nnoremap <silent> <leader>cg  :<C-u>CocList --normal gstatus<CR>
+    nmap <leader>gm <Plug>(coc-git-commit)
+    "nnoremap <silent> <leader>cg  :<C-u>CocList --normal gstatus<CR>
     " float window scroll
 	nnoremap <expr><C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
 	nnoremap <expr><C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
@@ -129,8 +203,7 @@ if dein#tap('coc.nvim')
         return "*\<Plug>(coc-cursors-word):nohlsearch\<CR>"
     endfunc
 
-    nnoremap <silent> <leader>cm :CocSearch -w
-    nnoremap <silent> <leader>cw :CocSearch
+    nnoremap  <leader>fz :<C-u>CocSearch -w<Space>
     " use normal command like `<leader>xi(`
     nmap <leader>x  <Plug>(coc-cursors-operator)
 
@@ -173,11 +246,7 @@ if dein#tap('committia.vim')
 endif
 
 if dein#tap('vim-quickrun')
-    nnoremap <silent> <localleader>r :QuickRun<CR>
-endif
-
-if dein#tap('dash.vim')
-        nnoremap <silent><leader>d :Dash<CR>
+    nnoremap <silent> <leader>r :QuickRun<CR>
 endif
 
 if dein#tap('vim-expand-region')
@@ -192,25 +261,28 @@ if dein#tap('splitjoin.vim')
         nmap sk :SplitjoinSplit<CR>
 endif
 
+if dein#tap('vim-startify')
+	nnoremap <silent> <Leader>os  :<C-u>Startify<CR>
+endif
 
+if dein#tap('indentLine')
+	nnoremap <leader>ti :IndentLinesToggle<CR>
+endif
 
 if dein#tap('denite.nvim')
-    nnoremap <silent><LocalLeader>m :<C-u>Denite menu<CR>
     noremap zl :<C-u>call <SID>my_denite_outline(&filetype)<CR>
     noremap zL :<C-u>call <SID>my_denite_decls(&filetype)<CR>
     noremap zT :<C-u>call <SID>my_denite_file_rec_goroot()<CR>
 
-    nnoremap <silent> <Leader>gl :<C-u>Denite gitlog:all<CR>
-    nnoremap <silent> <Leader>gh :<C-u>Denite gitbranch<CR>
     function! s:my_denite_outline(filetype) abort
-    execute 'Denite' a:filetype ==# 'go' ? "decls:'%:p'" : 'outline'
+        execute 'Denite' a:filetype ==# 'go' ? "decls:'%:p'" : 'outline'
     endfunction
     function! s:my_denite_decls(filetype) abort
-    if a:filetype ==# 'go'
-        Denite decls
-    else
-        call denite#util#print_error('decls does not support filetypes except go')
-    endif
+        if a:filetype ==# 'go'
+            Denite decls
+        else
+            call denite#util#print_error('decls does not support filetypes except go')
+        endif
     endfunction
     function! s:my_denite_file_rec_goroot() abort
     if !executable('go')
@@ -303,8 +375,18 @@ if dein#tap('vimagit')
 	nnoremap <silent> <Leader>gg :Magit<CR>
 endif
 
+if dein#tap('vim-fugitive')
+	nnoremap <silent> <leader>ga :Git add %:p<CR>
+	nnoremap <silent> <leader>gd :Gdiffsplit<CR>
+	nnoremap <silent> <leader>gc :Git commit<CR>
+	nnoremap <silent> <leader>gb :Git blame<CR>
+	nnoremap <silent> <leader>gf :Gfetch<CR>
+	nnoremap <silent> <leader>gs :Git<CR>
+endif
+
 if dein#tap('gina.vim')
 	nnoremap <silent><Leader>gp :Gina push<CR>
+  	nnoremap <silent><Leader>gl :Gina log<CR>
 endif
 
 if dein#tap('vim-mundo')
@@ -313,7 +395,7 @@ endif
 
 if dein#tap('vim-choosewin')
 	nmap -         <Plug>(choosewin)
-	nmap <Leader>- :<C-u>ChooseWinSwapStay<CR>
+	nmap <Leader>- ;<C-u>ChooseWinSwapStay<CR>
 endif
 
 if dein#tap('accelerated-jk')
@@ -358,10 +440,6 @@ if dein#tap('caw.vim')
 	endfunction
 	autocmd FileType * call InitCaw()
 	call InitCaw()
-endif
-
-if dein#tap('vim-startify')
-    nnoremap <silent> <leader>s :Startify<CR>
 endif
 
 if dein#tap('vim-sandwich')

@@ -1,6 +1,5 @@
 # why use yaml to manage plugins
-# see http://genkisugimoto.com/blog/manage-vim-plugins-via-yaml/
-
+# see http://genkisugimoto.com/blog/manage-vim-plugins-via-yamsource
 # StartUp Plugins{{{
 - repo: Shougo/dein.vim
 - repo: wsdjeg/dein-ui.vim
@@ -12,13 +11,11 @@
 #- repo: bagrat/vim-buffet
 #  hook_add: source $VIM_PATH/modules/module-buffet.vim
 - repo: sgur/vim-editorconfig
-#- repo: christoomey/vim-tmux-navigator
-#  if: "! (has('win32') || has('win64'))"
-#}}}
+- repo: ryanoasis/vim-devicons
+
 #my
 - repo: benmills/vimux
 - repo: romainl/vim-qf
-- repo: tpope/vim-fugitive
 - repo: itchyny/vim-parenmatch # 括号 match, let g:loaded_matchparen = 1 "高亮括号,别瞎关... 或者用itchyny/vim-parenmatch
 
 # 配色{{{
@@ -43,33 +40,37 @@
 # }}}
 
 # Denite{{{
-- repo: Shougo/denite.nvim
-  on_cmd: Denite
-  depends: vim-devicons
-  hook_source: |
-        source  $VIM_PATH/core/plugins/denite.vim
-        source  $VIM_PATH/core/plugins/denite-menu.vim
+#- repo: Shougo/denite.nvim
+#  on_cmd: Denite
+#  depends: vim-devicons
+#  hook_source: |
+#        source  $VIM_PATH/core/plugins/denite.vim
+#
+#- repo: Shougo/neomru.vim
+#  on_source: [denite.nvim,fzf-preview.vim]
+#  hook_add: |
+#    let g:neomru#directory_mru_path = $DATA_PATH . '/mru/dir'
+#    let g:neomru#file_mru_path = $DATA_PATH . '/mru/file'
+#    let g:unite_source_file_mru_limit = 5000
+#
+#- { repo: rafi/vim-denite-session, on_source: denite.nvim }
+#
+#- repo: rafi/vim-denite-z
+#  on_source: denite.nvim
+#  hook_source: |
+#    command! -nargs=+ -complete=file Z call denite#start(
+#      \ [{'name': 'z', 'args': [<q-args>], {'immediately': 1}}])
 
 - repo: Shougo/neomru.vim
-  on_source: [denite.nvim,fzf-preview.vim]
+  on_source: fzf-preview.vim
   hook_add: |
     let g:neomru#directory_mru_path = $DATA_PATH . '/mru/dir'
     let g:neomru#file_mru_path = $DATA_PATH . '/mru/file'
     let g:unite_source_file_mru_limit = 5000
 
-- { repo: rafi/vim-denite-session, on_source: denite.nvim }
-
-- repo: rafi/vim-denite-z
-  on_source: denite.nvim
-  hook_source: |
-    command! -nargs=+ -complete=file Z call denite#start(
-      \ [{'name': 'z', 'args': [<q-args>], {'immediately': 1}}])
-
 # }}}
 
 # Interface{{{
-- repo: ryanoasis/vim-devicons
-  hook_add: let g:webdevicons_enable_denite = 1
 
 - { repo: rhysd/accelerated-jk, on_map: { n: <Plug> } }
 
@@ -199,8 +200,8 @@
 
 
 - repo: mhinz/vim-startify
-  on_cmd: Startify
-  depends: vim-devicons
+  #  on_cmd: Startify
+  #  depends: vim-devicons
   hook_source: source  $VIM_PATH/core/plugins/startify.vim
   hook_post_source: |
       function! StartifyEntryFormat()
@@ -215,15 +216,6 @@
   hook_add: |
         let g:comfortable_motion_no_default_key_mappings = 1
         let g:comfortable_motion_impulse_multiplier = 1
-- repo: rizzatti/dash.vim
-  on_map: { n: <Plug> }
-  hook_add: |
-      let g:dash_map = {
-        \ 'javascript': ['javascript', 'NodeJS'],
-        \ 'javascriptreact': ['react'],
-        \ 'html': ['html', 'svg'],
-        \ 'go' : 'Go',
-        \}
 - repo: thinca/vim-quickrun
   on_cmd: QuickRun
   hook_add: |
@@ -243,8 +235,6 @@
   hook_post_source: |
         call which_key#register('\', 'g:which_key_map')
         call which_key#register(';', 'g:which_key_localmap')
-        call which_key#register(']', 'g:which_key_rsbgmap')
-        call which_key#register('[', 'g:which_key_lsbgmap')
 - repo: easymotion/vim-easymotion
   on_map: { n: <Plug> }
   hook_source: |
@@ -262,10 +252,23 @@
 
 - repo: kristijanhusak/defx-git
   on_source: defx.nvim
-  hook_source: source  $VIM_PATH/core/plugins/defxgit.vim
+  hook_source: |
+    let g:defx_git#indicators = {
+      \ 'Modified'  : '•',
+      \ 'Staged'    : '✚',
+      \ 'Untracked' : 'ᵁ',
+      \ 'Renamed'   : '≫',
+      \ 'Unmerged'  : '≠',
+      \ 'Ignored'   : 'ⁱ',
+      \ 'Deleted'   : '✖',
+      \ 'Unknown'   : '⁇'
+      \ }
 
 - repo: kristijanhusak/defx-icons
   on_source: defx.nvim
+  hook_add: |
+    let g:defx_icons_column_length = 1
+    let g:defx_icons_mark_icon = ''
 
 # }}}
 
@@ -282,8 +285,7 @@
 
 - repo: junegunn/fzf.vim
   depends: fzf
-  on_cmd: [Colors,Rg,Buffers]
-  on_func: Fzf_dev
+  on_func: Colors
   hook_source: source  $VIM_PATH/core/plugins/fzf.vim
 
 - repo: yuki-ycino/fzf-preview.vim
@@ -299,6 +301,14 @@
 - repo: rhysd/committia.vim
   on_path: [ COMMIT_EDITMSG, MERGE_MSG ]
   hook_source: let g:committia_min_window_width = 7
+
+- repo: tpope/vim-fugitive
+  on_cmd: [ G, Git, Gfetch, Gpush, Glog, Gclog, Gdiffsplit ]
+  hook_source:
+    augroup user_fugitive_plugin
+      autocmd!
+      autocmd FileType fugitiveblame normal A
+    augroup END
 
 - { repo: lambdalisue/gina.vim, on_cmd: Gina }
 
@@ -412,12 +422,16 @@
   on_map: { nx: <Plug> }
 
 - repo: Yggdroot/indentLine
-  on_ft: [python,html,css,vim,javascript,javascriptreact,vue]
+  on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
   hook_source: source $VIM_PATH/core/plugin/indentline.vim
+#- repo: nathanaelkane/vim-indent-guides
+#  on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
+#  hook_post_source: IndentGuidesEnable
+#  hook_add: source  $VIM_PATH/core/plugins/indentline.vim
 
 - repo: liuchengxu/vista.vim
   on_cmd: [Vista,Vista!,Vista!!]
-  hook_add: source  $VIM_PATH/core/plugins/vista.vim
+  hook_source: source  $VIM_PATH/core/plugins/vista.vim
 
 - repo: mattn/emmet-vim
   on_event: InsertEnter
