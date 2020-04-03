@@ -1,15 +1,39 @@
 " Key-mappings
 " ===
+    nnoremap <leader>s :w<CR>
+
     " 关闭最后一次查询的高亮
     nnoremap <F2> :set hlsearch!<CR>
 
     " 取消查询结果高亮
     nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
-    " tab 导航 按键映射
-    noremap <leader>tn :tabnew<cr>
-    noremap <leader>te :tabedit
-    noremap <leader>tm :tabmove
+   "" tab 导航 按键映射
+   "noremap <leader>tn :tabnew<cr>
+   "noremap <leader>te :tabedit
+   "noremap <leader>tm :tabmove
+   "
+   "buffer
+   nnoremap <leader>bc :BufOnly<CR>
+   nnoremap <Leader>bo :BufOnly<Space>
+   "yank to end
+   nnoremap Y y$
+   
+   " window
+   nnoremap <leader>ws :sp<CR>
+   nnoremap <leader>wv :vs<CR>
+   nnoremap <leader>wh <C-w>h
+   nnoremap <leader>wj <C-w>j
+   nnoremap <leader>wk <C-w>k
+   nnoremap <leader>wl <C-w>l
+   nnoremap <leader>wH <C-w>H
+   nnoremap <leader>wJ <C-w>J
+   nnoremap <leader>wK <C-w>K
+   nnoremap <leader>wL <C-w>L
+   nnoremap <leader>wx <C-w>x
+   nnoremap <leader>wc <C-w>c
+   nnoremap <leader>wo <C-w>o
+   nnoremap <leader>wR <C-w>R
 
     " 窗口导航使用 meta+arrows
     "map <M-Right> <c-w>l

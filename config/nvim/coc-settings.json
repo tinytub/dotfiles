@@ -42,7 +42,7 @@
   //"codeLens.enable": true,
     //git
   "git.enableGutters": true,
-  "git.branchCharacter":"\uf408",
+  "git.branchCharacter":"\uf418",
   "git.addGBlameToBufferVar": false,   // 显示 git 信息,容易眼花
   "git.addGBlameToVirtualText": false, // 显示 git 信息,容易眼花
   "git.virtualTextPrefix": " ❯❯❯ ",

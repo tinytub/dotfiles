@@ -14,6 +14,7 @@ function! s:goyo_enter()
 	endif
 
 	" Activate Limelight
+	let g:loaded_spaceline=0
 	Limelight
 endfunction
 
@@ -32,15 +33,19 @@ function! s:goyo_leave()
 	endif
 
 	" De-activate Limelight
+	let g:loaded_spaceline =1
 	Limelight!
 endfunction
 " }}}
 
 " Goyo Commands {{{
-autocmd! User GoyoEnter
-autocmd! User GoyoLeave
-autocmd  User GoyoEnter nested call <SID>goyo_enter()
-autocmd  User GoyoLeave nested call <SID>goyo_leave()
+augroup user_plugin_goyo
+	autocmd!
+	autocmd! User GoyoEnter
+	autocmd! User GoyoLeave
+	autocmd  User GoyoEnter nested call <SID>goyo_enter()
+	autocmd  User GoyoLeave nested call <SID>goyo_leave()
+augroup END
 " }}}
 
 " vim: set foldmethod=marker ts=2 sw=2 tw=80 noet :
