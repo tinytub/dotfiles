@@ -1,6 +1,10 @@
 " Key-mappings
 " ===
-    nnoremap <leader>s :w<CR>
+    nnoremap <C-s> :<C-u>write<CR>
+
+    " Editor UI
+    nmap <Leader>tn :setlocal nonumber!<CR>
+
 
     " 关闭最后一次查询的高亮
     nnoremap <F2> :set hlsearch!<CR>
@@ -20,8 +24,8 @@
    nnoremap Y y$
    
    " window
-   nnoremap <leader>ws :sp<CR>
-   nnoremap <leader>wv :vs<CR>
+   nnoremap <leader>ws :<C-u>sp<CR>
+   nnoremap <leader>wv :<C-u>vs<CR>
    nnoremap <leader>wh <C-w>h
    nnoremap <leader>wj <C-w>j
    nnoremap <leader>wk <C-w>k
@@ -70,10 +74,10 @@
     nnoremap gk k
 
     "buffer 切换
-    nnoremap  ]b :bp<CR>
-    nnoremap  [b :bn<CR>
+    nnoremap  ]b :<C-u>bp<CR>
+    nnoremap  [b :<C-u>bn<CR>
     "delete buffer
-    nnoremap <C-x>  :bd<CR>
+    nnoremap <C-x> :<C-u>bd<CR>
 
     " So that I don't have to hit esc
     "inoremap jk
@@ -118,15 +122,16 @@
     " Improve scroll, credits: https://github.com/Shougo
     nnoremap <expr> zz (winline() == (winheight(0)+1) / 2) ?
 	\ 'zt' : (winline() == 1) ? 'zb' : 'zz'
-    noremap <expr> <C-f> max([winheight(0) - 2, 1])
-	\ ."\<C-d>".(line('w$') >= line('$') ? "L" : "M")
-    noremap <expr> <C-b> max([winheight(0) - 2, 1])
-	\ ."\<C-u>".(line('w0') <= 1 ? "H" : "M")
-    noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
-    noremap <expr> <C-y> (line("w0") <= 1         ? "k" : "3\<C-y>")
 
-
+    " Session management shortcuts (see plugin/sessions.vim)
+    nmap <Leader>ss :<C-u>SessionSave<CR>
+    nmap <Leader>sl :<C-u>SessionLoad<CR>
+    
+    " Whitespace jump (see plugin/whitespace.vim)
+    nnoremap ]w :<C-u>WhitespaceNext<CR>
+    nnoremap [w :<C-u>WhitespacePrev<CR>
 
 
 " Non-standard
 " ---
+" vim: set foldmethod=marker ts=2 sw=2 tw=80 noet :
