@@ -3,6 +3,10 @@ if dein#tap('dein.vim')
 	nnoremap <silent> <Leader>pr  :call dein#recache_runtimepath()<CR>
 	nnoremap <silent> <Leader>pl  :echo dein#get_updates_log()<CR>
 endif
+if dein#tap('fzf.vim')
+	nnoremap <silent> <leader>tc :<C-u>Colors<CR>
+	nnoremap <silent> <leader>fa :<C-u>Rg<CR>
+endif
 
 if dein#tap('fzf-preview.vim')
     "nnoremap <silent> <leader>fc :Colors<CR>
@@ -15,18 +19,18 @@ if dein#tap('fzf-preview.vim')
     "nnoremap <silent> <leader>fm :<C-u>FzfPreviewMruFiles<CR>
     "nnoremap <silent> <leader>fp :<C-u>FzfPreviewProjectFiles<CR>
     "nnoremap <silent> <leader>fP :<C-u>FzfPreviewFromResources project_mru git<CR>
-	nnoremap <silent> <leader>fc :<C-u>Colors<CR>
+	nnoremap <silent> <leader>tc :<C-u>Colors<CR>
     nnoremap <silent> <leader>bb :<C-u>FzfPreviewBuffers -processors=g:fzf_preview_buffer_delete_processors<CR>
 	nnoremap <silent> <Leader>gS :<C-u>FzfPreviewGitStatus -processors=g:fzf_preview_gina_processors<CR>
     nnoremap <silent> <leader>bB :<C-u>FzfPreviewAllBuffers -processors=g:fzf_preview_buffer_delete_processors<CR>
     nnoremap <silent> <leader>ff :<C-u>FzfPreviewDirectoryFiles<CR>
-    nnoremap <silent> <leader>fa :<C-u>FzfPreviewProjectGrep .<CR>
+    nnoremap <silent> <leader>fb :<C-u>FzfPreviewProjectGrep<Space>
     nnoremap <silent> <leader>fo :<C-u>FzfPreviewOldFiles<CR>
-	nnoremap <silent> <leader>fC :<C-u>FzfPreviewChanges<CR>
+	nnoremap <silent> <leader>fc :<C-u>FzfPreviewChanges<CR>
     nnoremap <silent> <leader>fm :<C-u>FzfPreviewMruFiles<CR>
     nnoremap <silent> <leader>fp :<C-u>FzfPreviewProjectFiles<CR>
     nnoremap <silent> <Leader>fw :<C-u>FzfPreviewProjectGrep <C-r>=expand('<cword>')<CR><CR>
-    nnoremap <silent> <leader>fP :<C-u>FzfPreviewFromResources project_mru git<CR>
+    nnoremap <silent> <leader>fp :<C-u>FzfPreviewFromResources project_mru git<CR>
 	augroup fzf_preview
 		autocmd!
 		autocmd User fzf_preview#initialized call s:fzf_preview_settings()
@@ -116,6 +120,7 @@ endif
 if dein#tap('vim-which-key')
 "		nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
     	nnoremap <silent> <leader>      :<c-u>WhichKey '\'<CR>
+		vnoremap <silent> <leader>      :<c-u>WhichKeyVisual '\'<CR>
 		nnoremap <silent> <localleader> :<c-u>WhichKey  ';'<CR>
 		nnoremap <silent>[              :<c-u>WhichKey  '['<CR>
 		nnoremap <silent>]              :<c-u>WhichKey  ']'<CR>
@@ -246,7 +251,7 @@ if dein#tap('committia.vim')
 endif
 
 if dein#tap('vim-quickrun')
-    nnoremap <silent> <leader>r :QuickRun<CR>
+    nnoremap <silent> <leader>rR :QuickRun<CR>
 endif
 
 if dein#tap('vim-expand-region')
@@ -263,6 +268,10 @@ endif
 
 if dein#tap('vim-startify')
 	nnoremap <silent> <Leader>os  :<C-u>Startify<CR>
+endif
+
+if dein#tap('markdown-preview.nvim')
+	nnoremap <silent> <Leader>om  :<C-u>MarkdownPreview<CR>
 endif
 
 if dein#tap('indentLine')
@@ -342,12 +351,14 @@ endif
 
 if dein#tap('vim-go')
 "vim-go
+  	 function! InitGoKeyMap() abort
 	 nnoremap <silent> <LocalLeader>gi :GoImpl<CR>
 	 nnoremap <silent> <LocalLeader>gd :GoDescribe<CR>
 	 nnoremap <silent> <LocalLeader>gc :GoCallees<CR>
 	 nnoremap <silent> <LocalLeader>gC :GoCallers<CR>
 	 nnoremap <silent> <LocalLeader>gs :GoCallstack<CR>
-
+	 endfunction
+	 autocmd FileType go call InitGoKeyMap()
 " vim-go: 按键映射 -------------------------
 "    augroup VimGo
 "      autocmd!
@@ -369,6 +380,19 @@ if dein#tap('vim-go')
 "      "autocmd FileType go nmap <Leader>dt <Plug>(go-def-tab)
 "      autocmd FileType go set nocursorcolumn
 "    augroup END
+endif
+
+if dein#tap('vim-delve')
+	function! InitGoDebugKeyMap() abort
+		nnoremap <silent> <Leader>da :DlvToggleBreakpoint<CR>
+		nnoremap <silent> <Leader>db :DlvToggleTracepoint<CR>
+		nnoremap <silent> <Leader>dc :DlvClearAll<CR>
+		nnoremap <silent> <Leader>dd :DlvDebug<Space>
+		nnoremap <silent> <Leader>dt :DlvTest<Space>
+		nnoremap <silent> <Leader>dr :DlvRemoveBreakpoint<CR>
+		nnoremap <silent> <Leader>dR :DlvRemoveTracepoint<CR>
+	endfunction
+	autocmd FileType go call InitGoDebugKeyMap()
 endif
 
 if dein#tap('vimagit')
@@ -415,6 +439,13 @@ if dein#tap('comfortable-motion.vim')
     nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -4)<CR>
 endif
 
+if dein#tap('vim-smoothie')
+  nnoremap <silent> <C-f> :<C-U>call smoothie#forwards()<CR>
+  nnoremap <silent> <C-b> :<C-U>call smoothie#backwards()<CR>
+  nnoremap <silent> <C-d> :<C-U>call smoothie#downwards()<CR>
+  nnoremap <silent> <C-u> :<C-U>call smoothie#upwards()<CR>
+endif
+
 if dein#tap('python_match.vim')
 	nmap <buffer> {{ [%
 	nmap <buffer> }} ]%
@@ -440,6 +471,17 @@ if dein#tap('caw.vim')
 	endfunction
 	autocmd FileType * call InitCaw()
 	call InitCaw()
+endif
+
+if dein#tap('iron.nvim')
+	nmap <silent> <Leader>rr :<C-u>IronRepl<CR><Esc>
+	nmap <silent> <Leader>rq <Plug>(iron-exit)
+	nmap <silent> <Leader>rl <Plug>(iron-send-line)
+	vmap <silent> <Leader>rl <Plug>(iron-visual-send)
+	nmap <silent> <Leader>rp <Plug>(iron-repeat-cmd)
+	nmap <silent> <Leader>rc <Plug>(iron-clear)
+	nmap <silent> <Leader>r<CR>  <Plug>(iron-cr)
+	nmap <silent> <Leader>r<Esc> <Plug>(iron-interrupt)
 endif
 
 if dein#tap('vim-sandwich')

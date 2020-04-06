@@ -37,19 +37,17 @@ let g:which_key_map = {
             \ 'l' : 'show git log',
             \ },
       \ 'G' : 'distraction free writing' ,
-      \ 'F' : 'find current file' ,
       \ 'F' : 'open current file on filetree' ,
       \ 'f' : {
             \ 'name' : '+find [files cursorword word outline]',
-            \ 'a' : 'find a word in project',
-            \ 'f' : 'find file in directory',
-            \ 'c' : 'change colorscheme',
-            \ 'C' : 'find Changes',
+            \ 'a' : 'find word in project',
+            \ 'b' : 'find word in large project',
+            \ 'f' : 'find file in current directory',
+            \ 'c' : 'find Changes',
             \ 'o' : 'find old files',
             \ 'm' : 'find mru files',
             \ 'w' : 'find current word in project',
-            \ 'p' : 'find in a project',
-            \ 'P' : 'find in a git project',
+            \ 'p' : 'find word in git project',
             \ 'z' : 'find word in all project files',
             \ },
       \ 'i' : 'Show symbols list' ,
@@ -57,11 +55,10 @@ let g:which_key_map = {
             \ 'name' : '+open [terminal startify]',
             \ 't' : 'open a temrinal',
             \ 's' : 'open stratify',
+            \ 'm' : 'open markdown preview',
             \ },
       \ 'm' : 'open mundotree' ,
       \ 'j' : 'open coc-explorer',
-      \ 's' : 'save file',
-      \ 'r' : 'quick run',
       \ 'x' : 'coc cursors operate',
       \ 'c'    : {
               \ 'name' : '+code' ,
@@ -76,9 +73,27 @@ let g:which_key_map = {
               \ 'k'    : 'coc Prev',
               \ 's'    : 'Lsp Show Isymbols',
               \ },
+      \ 'r' : {
+            \ 'name' : '+repl quickrun',
+            \ 'R' : 'Quick Run',
+            \ 'r' : 'Open Repl',
+            \ 'q' : 'Exit Repl',
+            \ 'l' : 'Send line',
+            \ 'p' : 'Repl repeat',
+            \ 'c' : 'Repl clear',
+            \ '<CR>': 'Repl return',
+            \ '<Esc>': 'Repl interrupt',
+            \ },
+      \ 's' : {
+            \ 'name' : '+session',
+            \ 's' : 'Save session',
+            \ 'l' : 'Load session',
+            \ },
       \ 't' : {
             \ 'name' : '+toggle',
             \ 'i' : 'Indentline toggle',
+            \ 'c' : 'Change colorscheme',
+            \ 'n' : 'Toggle line number',
             \ },
       \ 'w'    : {
               \ 'name' : '+window' ,
@@ -99,16 +114,30 @@ let g:which_key_map = {
               \ },
       \ }
 
-let g:which_key_localmap.g ={
-      \ 'name' : '+golang-toolkit',
-      \ 'i'    : 'go impl',
-      \ 'd'    : 'go describe',
-      \ 'c'    : 'go callees',
-      \ 'C'    : 'go callers',
-      \ 's'    : 'go callstack',
-      \ }
+function! WhichKeyForGo() abort
+  let g:which_key_localmap.g ={
+        \ 'name' : '+golang-toolkit',
+        \ 'i'    : 'go impl',
+        \ 'd'    : 'go describe',
+        \ 'c'    : 'go callees',
+        \ 'C'    : 'go callers',
+        \ 's'    : 'go callstack',
+        \ }
+endfunction
 
-let s:current_colorscheme = get(g:,"colors_name","")
-if  s:current_colorscheme == "base16-default-dark"
-    highlight WhichKeySeperator guibg=NONE ctermbg=NONE guifg=#a1b56c ctermfg=02
-endif
+function! WhichKeyForGoDebug() abort
+  let g:which_key_map.d ={
+    \ 'name' : 'Debugger',
+    \ 'a'    : 'Add or Remove BreakPoint',
+    \ 'b'    : 'Add or Remove TracePoint',
+    \ 'c'    : 'Clear All Point',
+    \ 'd'    : 'Start Debug',
+    \ 't'    : 'Start Debug Test',
+    \ 'r'    : 'Remove BreakPoint',
+    \ 'R'    : 'Remove TracePoint',
+    \ }
+endfunction
+
+autocmd FileType go
+     \ call WhichKeyForGo() |
+     \ call WhichKeyForGoDebug()
