@@ -88,6 +88,8 @@
   "cursors.cancelKey": "<esc>",
   //sessions
   "session.directory": "~/.cache/vim/session",
+  "project.dbpath": "~/.cache/vim/.coc-project",
+  "project.rootPatterns": [".git","go.mod","jsconfig.json","tsconfig.json","Cargo.toml"],
   // coc-explorer
   "explorer.icon.expanded": "▾",
   "explorer.icon.collapsed": "▸",
@@ -119,13 +121,7 @@
   //"python.formatting.blackPath": "/usr/local/bin/black",
   //"coc.preferences.formatOnSaveFiletypes": ["python"],
   "languageserver": {
-    "bash": {
-      "command": "bash-language-server",
-      "args": ["start"],
-      "filetypes": ["sh"],
-      "ignoredRootPaths": ["~"]
-    },
-    "golang": {
+   "golang": {
       "command": "gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"],

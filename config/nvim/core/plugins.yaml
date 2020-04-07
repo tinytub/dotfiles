@@ -1,12 +1,20 @@
 # why use yaml to manage plugins
 # see http://genkisugimoto.com/blog/manage-vim-plugins-via-yamsource
 # StartUp Plugins{{{
+
+# PackageManage{{{
 - repo: Shougo/dein.vim
+# }}}
+
+# Editor UI{{{
 - repo: wsdjeg/dein-ui.vim
 #- repo: taigacute/spaceline.vim
-- repo: vim-airline/vim-airline
-  hook_add: source $VIM_PATH/core/plugins/airline.vim
-- repo: vim-airline/vim-airline-themes
+#- repo: vim-airline/vim-airline
+#  hook_source: source $VIM_PATH/core/plugins/airline.vim
+#- repo: vim-airline/vim-airline-themes
+- repo: itchyny/lightline.vim
+  hook_add: source $VIM_PATH/core/plugins/lightline.vim
+- repo: mengelbrecht/lightline-bufferline
 
 #- repo: bagrat/vim-buffet
 #  hook_add: source $VIM_PATH/modules/module-buffet.vim
@@ -14,7 +22,8 @@
 #- repo: bagrat/vim-buffet
 #  on_event: VimEnter
 #  hook_add: source $VIM_PATH/core/plugins/buffet.vim
-- repo: sgur/vim-editorconfig
+- repo: editorconfig/editorconfig-vim
+  on_path: .*
 - repo: ryanoasis/vim-devicons
 
 #my
@@ -23,8 +32,9 @@
 - repo: itchyny/vim-parenmatch # 括号 match, let g:loaded_matchparen = 1 "高亮括号,别瞎关... 或者用itchyny/vim-parenmatch
 
 # 配色{{{
-- repo: morhetz/gruvbox
-- repo: taigacute/gruvbox9
+#- repo: morhetz/gruvbox
+#- repo: taigacute/gruvbox9
+- repo: rafi/awesome-vim-colorschemes
 # }}}
 
 
@@ -65,12 +75,6 @@
 #    command! -nargs=+ -complete=file Z call denite#start(
 #      \ [{'name': 'z', 'args': [<q-args>], {'immediately': 1}}])
 
-- repo: Shougo/neomru.vim
-  on_source: fzf-preview.vim
-  hook_add: |
-    let g:neomru#directory_mru_path = $DATA_PATH . '/mru/dir'
-    let g:neomru#file_mru_path = $DATA_PATH . '/mru/file'
-    let g:unite_source_file_mru_limit = 5000
 
 # }}}
 
@@ -283,20 +287,34 @@
   hook_source: source  $VIM_PATH/core/plugins/floaterm.vim
 # }}}
 
-# Search Plugins{{{
-- repo: junegunn/fzf
-  build: './install --all'
-  merged: 0
+## Search Plugins{{{
+#- repo: junegunn/fzf
+#  build: './install --all'
+#  merged: 0
+#
+#- repo: junegunn/fzf.vim
+#  depends: fzf
+#  on_cmd: [Colors,Rg,Files]
+#  hook_source: source  $VIM_PATH/core/plugins/fzf.vim
+#
+#- repo: yuki-ycino/fzf-preview.vim
+#  depends: fzf
+#  on_cmd: [FzfPreviewProjectFiles,FzfPreviewDirectoryFile,FzfPreviewBuffers,FzfPreviewMruFiles,FzfPreviewAllBuffers,FzfPreviewProjectGrep,FzfPreviewMruFiles,FzfPreviewFromResources]
+#  hook_source: source  $VIM_PATH/core/plugins/fzfpreview.vim
+#
+#- repo: Shougo/neomru.vim
+#  on_source: fzf-preview.vim
+#  hook_add: |
+#    let g:neomru#directory_mru_path = $DATA_PATH . '/mru/dir'
+#    let g:neomru#file_mru_path = $DATA_PATH . '/mru/file'
+#    let g:unite_source_file_mru_limit = 5000
 
-- repo: junegunn/fzf.vim
-  depends: fzf
-  on_cmd: [Colors,Rg,Files]
-  hook_source: source  $VIM_PATH/core/plugins/fzf.vim
 
-- repo: yuki-ycino/fzf-preview.vim
-  depends: fzf
-  on_cmd: [FzfPreviewProjectFiles,FzfPreviewDirectoryFile,FzfPreviewBuffers,FzfPreviewMruFiles,FzfPreviewAllBuffers,FzfPreviewProjectGrep,FzfPreviewMruFiles,FzfPreviewFromResources]
-  hook_source: source  $VIM_PATH/core/plugins/fzfpreview.vim
+# Find Everythins
+- repo: liuchengxu/vim-clap
+  build: 'sh ./install.sh'
+  on_cmd: Clap
+  hook_add: source $VIM_PATH/core/plugins/clap.vim
 
 # }}}
 
@@ -308,7 +326,6 @@
   hook_source: let g:committia_min_window_width = 7
 
 - repo: tpope/vim-fugitive
-  on_cmd: [ G, Git, Gfetch, Gpush, Glog, Gclog, Gdiffsplit ]
   hook_source:
     augroup user_fugitive_plugin
       autocmd!
@@ -451,7 +468,7 @@
 
 - repo: Yggdroot/indentLine
   on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
-  hook_source: source $VIM_PATH/core/plugin/indentline.vim
+  hook_source: source $VIM_PATH/core/plugins/indentline.vim
 #- repo: nathanaelkane/vim-indent-guides
 #  on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
 #  hook_post_source: IndentGuidesEnable
@@ -493,11 +510,22 @@
 
 #}}}
 
-# TextObjectOperator{{{
-- { repo: AndrewRadev/splitjoin.vim, on_map: { n: <Plug>Splitjoin }}
+# Operator
+- repo: kana/vim-operator-user
+
+- repo: kana/vim-operator-replace
+  on_map: { vnx: <Plug> }
+
+- repo: machakann/vim-sandwich
+  on_map: { vonx: <Plug>(operator-sandwich- }
+  hook_add: |
+    let g:sandwich_no_default_key_mappings = 1
+    let g:operator_sandwich_no_default_key_mappings = 1
+    let g:textobj_sandwich_no_default_key_mappings = 1
+# TextObjectOperator
+- repo: kana/vim-textobj-user
 - { repo: terryma/vim-expand-region, on_map: { x: <Plug> }}
-- { repo: kana/vim-textobj-user, on_func: textobj#user# }
-- { repo: kana/vim-operator-user, lazy: 1 }
+- { repo: AndrewRadev/splitjoin.vim, on_map: { n: <Plug>Splitjoin }}
 
 - repo: AndrewRadev/dsf.vim
   on_map: { n: <Plug>Dsf }
@@ -506,15 +534,7 @@
 - repo: kana/vim-smartchr
   on_event: InsertCharPre
 
-- repo: kana/vim-operator-replace
-  depends: vim-operator-user
-  on_map: { vnx: <Plug> }
-
-- repo: machakann/vim-sandwich
-  on_map: { vnx: [<Plug>(operator-sandwich-,<Plug>(textobj-sandwich-]}
-
 - repo: osyo-manga/vim-textobj-multiblock
-  depends: vim-textobj-user
   on_map: { ox: <Plug> }
   hook_add:  let g:textobj_multiblock_no_default_key_mappings = 1
 

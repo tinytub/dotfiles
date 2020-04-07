@@ -1,41 +1,32 @@
 " Vim Colors
-"highlight ParenMatch  ctermbg=236 guibg=#30302c
-highlight! ParenMatch  ctermfg=NONE guifg=NONE ctermbg=236 guibg=#494d2a
-
 " ---------------------------------------------------------
-hi Whitespace ctermfg=96 guifg=#725972 guibg=NONE ctermbg=NONE
+hi Whitespace ctermfg=238 guifg=#424450 guibg=NONE ctermbg=NONE
 hi VertSplit  ctermfg=Black  guifg=Black guibg=NONE ctermbg=NONE
 hi LineNr ctermbg=NONE guibg=NONE
 hi SignColumn ctermfg=187 ctermbg=NONE guifg=#ebdbb2 guibg=NONE guisp=NONE cterm=NONE gui=NONE
-" highlight NormalFloat cterm=NONE ctermfg=14 ctermbg=0 gui=NONE guifg=#93a1a1 guibg=#002931
 
 "Pmenu Colors
 " ---------------------------------------------------------
 " hi PMenuSel ctermfg=252 ctermbg=106 guifg=#d0d0d0 guibg=#ba8baf guisp=#ba8baf cterm=NONE gui=NONE
-"hi Pmenu ctermfg=103 ctermbg=236 guifg=#9a9aba guibg=#34323e guisp=NONE cterm=NONE gui=NONE
-"hi PmenuSbar ctermfg=NONE ctermbg=234 guifg=NONE guibg=#212026 guisp=NONE cterm=NONE gui=NONE
-"hi PmenuSel ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5e5079 guisp=NONE cterm=NONE gui=NONE
-"hi PmenuThumb ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5d4d7a guisp=NONE cterm=NONE gui=NONE
+hi Pmenu ctermfg=103 ctermbg=236 guifg=#9a9aba guibg=#34323e guisp=NONE cterm=NONE gui=NONE
+hi PmenuSbar ctermfg=NONE ctermbg=234 guifg=NONE guibg=#212026 guisp=NONE cterm=NONE gui=NONE
+hi PmenuSel ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5e5079 guisp=NONE cterm=NONE gui=NONE
+hi PmenuThumb ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5d4d7a guisp=NONE cterm=NONE gui=NONE
 
+"Startify Header
+" ---------------------------------------------------------
 hi StartifyHeader ctermfg=12 guifg=#68A8E4
 
 "coc setting
 " ---------------------------------------------------------
 hi CocCursorRange guibg=#b16286 guifg=#ebdbb2
-"hi default CocHighlightText  guibg=#725972 ctermbg=96
-"hi default CocHighlightText  guibg=#5c475c ctermbg=96
-
-"from spacevim, 高亮光标所在字符串
-"hi CocHighlightText ctermfg=235 guifg=#282828 ctermbg=109 guibg=#83a598
-"hi link CocHighlightRead CocHighlightText
-"hi link CocHighlightWrite CocHighlightText
-"hi CocWarningSign  ctermfg=32 ctermbg=NONE guifg=#0087d7 guibg=NONE
-
+hi default CocHighlightText  guibg=#725972 ctermbg=96
+hi CocWarningSign  ctermfg=32 ctermbg=NONE guifg=#0087d7 guibg=NONE
 
 "GitGutter Coc-git Highlight
 " ---------------------------------------------------------
 highlight GitGutterAdd ctermfg=22 guifg=#006000 ctermbg=NONE guibg=NONE
-highlight GitGutterChange ctermfg=58 guifg=#5F6000 ctermbg=NONE guibg=NONE
+highlight GitGutterChange ctermfg=208 guifg=#FF8800 ctermbg=NONE guibg=NONE
 highlight GitGutterDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
 highlight GitGutterChangeDelete ctermfg=52 guifg=#600000 ctermbg=NONE guibg=NONE
 
