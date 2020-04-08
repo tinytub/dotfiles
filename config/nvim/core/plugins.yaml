@@ -44,7 +44,7 @@
 # Core Plugins{{{
 - repo: neoclide/coc.nvim
   merge: 0
-  rev: release
+  build: 'yarn install --frozen-lockfile'
   hook_add: source $VIM_PATH/core/plugins/coc.vim
 
 # Lazy Loading

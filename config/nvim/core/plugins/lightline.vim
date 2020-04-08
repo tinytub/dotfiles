@@ -12,13 +12,8 @@ let g:lightline = {
   \   'right': [ [ 'coc_error', 'coc_warning', 'coc_info', 'coc_hint' ],
   \              [ 'lineinfo' ],
   \              [ 'percent' ],
-  \              [ 'filetype' , 'fileformat', 'fileencoding' ]]
-  \ },
-  \ 'inactive': {
-  \   'left':  [ [ 'filename' ] ],
-  \   'right': [ [ 'lineinfo' ],
-  \              [ 'percent' ],
-  \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+  \              [ 'filetype' , 'fileformat', 'fileencoding' ]
+  \            ]
   \ },
   \ 'component': {
   \   'lineinfo': ' %3l:%-2v'
@@ -60,6 +55,8 @@ let g:lightline = {
   \     'left': '', 'right': ''
   \ }
   \}
+
+let g:lightline.colorscheme = "forest_night"
 
 " lighline functions
 function! FileName()
