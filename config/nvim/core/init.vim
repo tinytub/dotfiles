@@ -136,6 +136,9 @@ function! s:use_dein()
 		" Use dein as a plugin manager
 		let g:dein#auto_recache = 1
 		let g:dein#install_max_processes = 12
+		let g:dein#install_progress_type = 'title'
+		let g:dein#enable_notification = 1
+		let g:dein#install_log_filename = $DATA_PATH . '/dein.log'
 
 		" Add dein to vim's runtimepath
 		if &runtimepath !~# '/dein.vim'
@@ -400,7 +403,7 @@ function! OnVimEnter() abort
   " 和 use_dein 对齐
   let l:cache_path = $DATA_PATH . '/dein'
   if exists('l:cache_path')
-    let l:filename = printf('%s/.dein_update', l:cache_path) 
+    let l:filename = printf('%s/.dein_update', l:cache_path)
     if filereadable(l:filename) == 0
       call writefile([], l:filename)
     endif

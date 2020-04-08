@@ -3,18 +3,24 @@
 let g:airline_powerline_fonts = 1
 "let g:airline_symbols_ascii = 1
 "let g:airline_theme = 'bubblegum'
+"let g:airline_theme = 'ayu_dark'
+"let g:airline_theme = 'one'
+"let g:airline_theme = 'nord'
+"let g:airline_theme = 'wombat'
+"let g:airline_theme = 'one'
 "let g:airline_theme = 'gruvbox'
-let g:airline_theme = 'onedark'
+let g:airline_theme = 'forest_night'
+"let g:airline_theme = 'molokai'
 
 if !exists('g:airline_symbols')
    let g:airline_symbols = {}
 endif
 
 " airline symbols
-"let g:airline_left_sep = ''
-"let g:airline_left_alt_sep = ''
-"let g:airline_right_sep = ''
-"let g:airline_right_alt_sep = ''
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.crypt = '🔒'
@@ -47,6 +53,9 @@ let g:airline#extensions#tabline#formatter = 'default'
 
 " 开启 coc
 let g:airline#extensions#coc#enabled = 1
+let airline#extensions#coc#error_symbol = '✖'
+let airline#extensions#coc#warning_symbol = '⚠'
+
 " 关闭 ale 支持
 let g:airline#extensions#ale#enabled = 0
 " 关闭 vista 支持

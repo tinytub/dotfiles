@@ -166,7 +166,7 @@ if dein#tap('coc.nvim')
     " Show all diagnostics
     nnoremap <silent> <leader>cd  :<C-u>CocList diagnostics<cr>
     " Manage extensions
-    nnoremap <silent> <leader>ce  :<C-u>CocList extensions<cr>
+    nnoremap <silent> <leader>;  :<C-u>CocList extensions<cr>
     " Show commands
     nnoremap <silent> <leader>,  :<C-u>CocList commands<cr>
     " Find symbol of current document
@@ -389,8 +389,8 @@ if dein#tap('vim-delve')
 		nnoremap <silent> <Leader>da :DlvToggleBreakpoint<CR>
 		nnoremap <silent> <Leader>db :DlvToggleTracepoint<CR>
 		nnoremap <silent> <Leader>dc :DlvClearAll<CR>
-		nnoremap <silent> <Leader>dd :DlvDebug<Space>
-		nnoremap <silent> <Leader>dt :DlvTest<Space>
+		nnoremap <silent> <Leader>dd :DlvDebug<CR>
+		nnoremap <silent> <Leader>dt :DlvTest<CR>
 		nnoremap <silent> <Leader>dr :DlvRemoveBreakpoint<CR>
 		nnoremap <silent> <Leader>dR :DlvRemoveTracepoint<CR>
 	endfunction
