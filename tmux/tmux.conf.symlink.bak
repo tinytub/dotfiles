@@ -1,0 +1,148 @@
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
+set -g @plugin 'tmux-plugins/tmux-copycat'
+set -g @plugin 'egel/tmux-gruvbox'
+set -g @prefix_highlight_show_copy_mode 'on'
+set -g @prefix_highlight_copy_mode_attr 'fg=white,bg=blue'
+set -g @continuum-save-interval '15'
+
+# 设置终端类型为256色
+set -g default-terminal "tmux-256color-italic"
+set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
+
+set -g default-terminal 'tmux-256color'
+#set -g default-terminal "tmux-256color-italic"
+
+# utf8 is on
+#set -g utf8 on
+#set -g status-utf8 on
+
+set -g history-limit 102400
+
+# tmux messages are displayed for 4 seconds
+set -g display-time 4000
+
+# Add truecolor support
+set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
+#set -g terminal-overrides ",alacritty:RGB"
+#set -ga terminal-overrides ",*256col*:Tc"
+
+
+# set -as terminal-overrides ',xterm*:sitm=\E[3m'
+# 开启剪切板
+set -g set-clipboard on
+
+# 关闭窗口后重新编号
+set -g renumber-windows on
+
+# Index starts from 1
+set-option -g base-index 1
+setw -g pane-base-index 1   # make pane numbering consistent with windows
+
+setw -g automatic-rename on # rename window to reflect current program
+set -g renumber-windows on  # renumber windows when a window is closed
+
+set -g set-titles on                        # set terminal title
+set -g set-titles-string '#h ❐ #S ● #I #W'
+
+# 事件窗口信息，如有内容变动，进行提示
+setw -g monitor-activity on
+set -g visual-activity on
+#set -g status-utf8 on          #  在状态栏开启UTF-8
+set -g history-limit 102400    #  scrollback buffer n lines
+set -g mode-keys vi    #  user vi mode
+
+set -g repeat-time 0
+
+# 设置重新连接不同窗口大小的tmux
+setw -g aggressive-resize on
+
+# focus events enabled for terminals that support them
+set -g focus-events on
+
+# select-pane (@george-b)
+bind-key 0 run "tmux split-window -p 40 'bash -ci ftpane'"
+
+# set -g default-shell /bin/zsh
+
+# 重新绑定纵向和横向切分window快捷键。|，-，更直观地表明了切割方向
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+# 解绑默认按键
+unbind '"'
+unbind %
+
+# 在不同面板间切换，改为vim风格
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+
+## synchronize all panes in a window
+bind y setw synchronize-panes
+
+# 创建session
+bind C-c new-session
+
+# 查找session
+bind C-f command-prompt -p find-session 'switch-client -t %%'
+
+# 快速选择面板
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+# 调整面板大
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# 设置前缀键，默认为Ctrl+b
+set -g prefix C-a
+bind C-a send-prefix
+
+# for nested tmux sessions
+bind-key a send-prefix
+
+# 释放之前的Ctrl-b前缀快捷键
+unbind C-b
+
+#jtmux有一个延时以方便用户按键组合，默认有点长。这里设置为1秒钟
+set -s escape-time 1
+
+# 设置动态加载tmux配置文件的快捷键
+bind r source-file ~/.tmux.conf \; display "Configuration Reloaded"
+
+# enable mouse support for switching panes/windows
+setw -g mouse on
+
+set -g set-titles-string '#T'
+
+####################  状态栏设置  ###############################
+# 主题使用 gruvbox ,暂不做自定义设置 set -g @plugin 'egel/tmux-gruvbox' 
+#
+## 窗口信息居中显示
+## set -g status-justify centre
+#set -g status-justify left
+## 设置状态栏更新时间 每60秒更新一次，默认是15秒更新
+#set -g status-interval 60
+
+# https://github.com/neovim/neovim/wiki/FAQ#cursor-shape-doesnt-change-in-tmux
+set -g -a terminal-overrides ',*:Ss=\E[%p1%d q:Se=\E[2 q'
+
+# Move status bar to the top
+#set-option -g status-position top
+set-option -g status-position bottom
+
+run '~/.tmux/plugins/tpm/tpm'
+
+## set active-inactive window styles
+#set -g window-style 'fg=colour247,bg=colour236'
+#set -g window-active-style 'fg=default,bg=colour234'
+## Pane border
+#set -g pane-border-style 'fg=colour237,bg=default'
+## Active pane border
+#set -g pane-active-border-style 'fg=colour250,bg=default'
+
+
