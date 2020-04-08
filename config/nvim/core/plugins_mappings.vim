@@ -229,7 +229,6 @@ if dein#tap('coc.nvim')
     nnoremap <silent> <leader>ot :<C-u>CocCommand floaterm.new<cr>
 
     " coc-explorer
-"    noremap <silent> <leader>j :CocCommand explorer<cr>
     noremap <silent> <leader>j :execute 'CocCommand explorer' .
     \ ' --toggle' .
     \ ' --position=floating' .

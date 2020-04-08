@@ -22,7 +22,7 @@
    nnoremap <Leader>bo :BufOnly<Space>
    "yank to end
    nnoremap Y y$
-   
+
    " window
    nnoremap <leader>ws :<C-u>sp<CR>
    nnoremap <leader>wv :<C-u>vs<CR>
@@ -72,6 +72,26 @@
     nnoremap gj j
     nnoremap k gk
     nnoremap gk k
+
+		" window
+		nnoremap <leader>ws :<C-u>sp<CR>
+		nnoremap <leader>wv :<C-u>vs<CR>
+		nnoremap <leader>wh <C-w>h
+		nnoremap <leader>wj <C-w>j
+		nnoremap <leader>wk <C-w>k
+		nnoremap <leader>wl <C-w>l
+		nnoremap <leader>wH <C-w>H
+		nnoremap <leader>wJ <C-w>J
+		nnoremap <leader>wK <C-w>K
+		nnoremap <leader>wL <C-w>L
+		nnoremap <leader>wx <C-w>x
+		nnoremap <leader>wc <C-w>c
+		nnoremap <leader>wo <C-w>o
+		nnoremap <leader>wR <C-w>R
+
+    " settings for resize splitted window
+    "nmap <C-w>[ :vertical resize -3<CR>
+    "nmap <C-w>] :vertical resize +3<CR>
 
     "buffer 切换
     nnoremap  ]b :<C-u>bp<CR>
@@ -126,7 +146,7 @@
     " Session management shortcuts (see plugin/sessions.vim)
     nmap <Leader>ss :<C-u>SessionSave<CR>
     nmap <Leader>sl :<C-u>SessionLoad<CR>
-    
+
     " Whitespace jump (see plugin/whitespace.vim)
     nnoremap ]w :<C-u>WhitespaceNext<CR>
     nnoremap [w :<C-u>WhitespacePrev<CR>

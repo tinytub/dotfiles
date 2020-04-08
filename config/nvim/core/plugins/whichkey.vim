@@ -140,5 +140,5 @@ function! WhichKeyForGoDebug() abort
 endfunction
 
 autocmd FileType go
-     \ call WhichKeyForGo() |
-     \ call WhichKeyForGoDebug()
+    \ call WhichKeyForGo() |
+    \ call WhichKeyForGoDebug()
