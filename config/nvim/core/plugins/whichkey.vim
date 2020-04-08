@@ -17,7 +17,8 @@ let g:which_key_map = {
             \ 'l' : 'plugins update log',
             \ },
       \ 'e' : 'open file explorer' ,
-      \ ';' : 'choose window by prompt' ,
+      \ ';' : 'coc extensions',
+      \ '-' : 'choose window by prompt' ,
       \ '/' : 'remove end spaces' ,
       \ ',' : 'Run coclist command' ,
       \ 'g' : {
@@ -65,7 +66,6 @@ let g:which_key_map = {
               \ 'name' : '+code' ,
               \ 'a'    : 'Lsp CodeActionSelected',
               \ 'd'    : 'Lsp Show Diagnostics',
-              \ 'e'    : 'coc Extensions',
               \ 'i'    : 'Lsp Find implementation',
               \ 'r'    : 'Lsp Rename',
               \ 'f'    : 'Lsp Format',

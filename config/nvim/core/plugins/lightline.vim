@@ -1,7 +1,7 @@
 " https://github.com/szorfein/dotfiles
 " default lightline configuration
 let g:lightline = {
-  \ 'colorscheme': 'gruvbox',
+  \ 'colorscheme': 'seoul256',
   \ 'tabline': {
   \     'left': [['buffers']], 'right': [['close']]
   \ },
@@ -9,10 +9,10 @@ let g:lightline = {
   \   'left':  [ [ 'mode', 'paste' ],
   \              [ 'fugitive', 'readonly', 'filename', 'modified' ],
   \              [ 'cocstatus', 'currentfunction' ]],
-  \   'right': [ [ 'lineinfo' ],
-  \              [ 'coc_error', 'coc_warning', 'coc_info', 'coc_hint' ],
+  \   'right': [ [ 'coc_error', 'coc_warning', 'coc_info', 'coc_hint' ],
+  \              [ 'lineinfo' ],
   \              [ 'percent' ],
-  \              [ 'fileformat', 'fileencoding', 'filetype' ],]
+  \              [ 'filetype' , 'fileformat', 'fileencoding' ]]
   \ },
   \ 'inactive': {
   \   'left':  [ [ 'filename' ] ],
@@ -39,14 +39,13 @@ let g:lightline = {
   \   'currentfunction': 'CocCurrentFunction'
   \ },
   \ 'component_expand': {
- \   'coc_error': 'LightlineCocErrors',
+  \   'coc_error': 'LightlineCocErrors',
   \   'coc_warning': 'LightlineCocWarnings',
   \   'coc_info': 'LightlineCocInfos',
   \   'coc_hint': 'LightlineCocHints',
   \   'buffers': 'lightline#bufferline#buffers',
   \ },
   \ 'component_type': {
-  \   'readonly': 'error',
   \   'coc_error': 'error',
   \   'coc_warning': 'warning',
   \   'coc_info': 'tabsel',
@@ -54,12 +53,12 @@ let g:lightline = {
   \   'coc_fix': 'middle',
   \   'buffers': 'tabsel',
   \ },
-    \ 'separator': {
-    \     'left': '', 'right': ''
-    \ },
-    \ 'subseparator': {
-    \     'left': '', 'right': ''
-    \ }
+  \ 'separator': {
+  \     'left': '', 'right': ''
+  \ },
+  \ 'subseparator': {
+  \     'left': '', 'right': ''
+  \ }
   \}
 
 " lighline functions
@@ -110,22 +109,10 @@ let g:lightline#bufferline#unicode_symbols = 1
 let g:lightline#bufferline#filename_modifier = ':t'
 let g:lightline#bufferline#unnamed      = '[No Name]'
 let g:lightline#bufferline#clickable = 1
+
 "let g:lightline#bufferline#number_map = {
 "  \ 0: '⓿ ', 1: '❶ ', 2: '❷ ', 3: '❸ ', 4: '❹ ',
 "  \ 5: '❺ ', 6: '❻ ', 7: '❼ ', 8: '❽ ', 9: '❾ '}
-
-" Leader is ,
-"nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-"nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-"nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-"nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-"nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-"nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-"nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-"nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-"nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-"nmap <Leader>0 <Plug>lightline#bufferline#go(10)
-
 
 " Helper function for LightlineCoc*() functions.
 function! s:lightline_coc_diagnostic(kind, sign) abort
