@@ -94,8 +94,8 @@
     "nmap <C-w>] :vertical resize +3<CR>
 
     "buffer 切换
-    nnoremap  ]b :<C-u>bp<CR>
-    nnoremap  [b :<C-u>bn<CR>
+    nnoremap  [b :<C-u>bp<CR>
+    nnoremap  ]b :<C-u>bn<CR>
     "delete buffer
     nnoremap <C-x> :<C-u>bd<CR>
 
