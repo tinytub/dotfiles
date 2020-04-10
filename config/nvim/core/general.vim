@@ -1,342 +1,277 @@
-" ----------------------------------------------------------------------------
-" 一般配置
-" ----------------------------------------------------------------------------
-    " 关闭 vi 兼容性
-    set nocompatible
 
-    " clipboard 配置
-    "if has('unnamedplus')
-    "  set clipboard=unnamed
-    "  "set clipboard^=unnamed
-    "  "set clipboard^=unnamedplus
-    "endif
+"General settins{{{
+set mouse=nv                 " Disable mouse in command-line mode
+set report=0                 " Don't report on line changes
+set errorbells               " Trigger bell on error
+set visualbell               " Use visual bell instead of beeping
+set hidden                   " hide buffers when abandoned instead of unload
+set fileformats=unix,dos,mac " Use Unix as the standard file type
+set magic                    " For regular expressions turn magic on
+set path+=**                 " Directories to search when using gf and friends
+set isfname-==               " Remove =, detects filename in var=/foo/bar
+set virtualedit=block        " Position cursor anywhere in visual block
+set synmaxcol=2500           " Don't syntax highlight long lines
+set formatoptions+=1         " Don't break lines after a one-letter word
+set formatoptions-=t         " Don't auto-wrap text
+set formatoptions-=o         " Disable comment-continuation (normal 'o'/'O')
+if has('patch-7.3.541')
+	set formatoptions+=j       " Remove comment leader when joining lines
+endif
 
-    " tabs 及 空格控制
-    set expandtab
-    set tabstop=4
-    set softtabstop=4
-    set shiftwidth=4
-    set smarttab
-    set autoindent      " Use same indenting on new lines
-    set smartindent     " Smart autoindenting on new lines
-    set shiftround      " Round indent to multiple of 'shiftwidth'
+if has('vim_starting')
+	set encoding=utf-8
+	scriptencoding utf-8
+endif
 
-    set magic " Set magic on, for regex
+" What to save for views and sessions:
+set viewoptions=folds,cursor,curdir,slash,unix
+set sessionoptions=curdir,help,tabpages,winsize
 
-    " 横竖行光标高亮
-    " set cursorline
-    " set cursorcolumn
+if has('mac')
+	let g:clipboard = {
+		\   'name': 'macOS-clipboard',
+		\   'copy': {
+		\      '+': 'pbcopy',
+		\      '*': 'pbcopy',
+		\    },
+		\   'paste': {
+		\      '+': 'pbpaste',
+		\      '*': 'pbpaste',
+		\   },
+		\   'cache_enabled': 0,
+		\ }
+endif
 
-    set lazyredraw
-    set ttyfast "faster redrawing
+if has('clipboard')
+	set clipboard& clipboard+=unnamedplus
+endif
 
-    
-    "set splitright
-    "set splitbelow
+" Wildmenu {{{
+" --------
+if has('wildmenu')
+	if ! has('nvim')
+		set wildmode=list:longest
+	endif
 
-    "最大可用内存
-    set mmp=5000
+	" if has('nvim')
+	" 	set wildoptions=pum
+	" else
+	" 	set nowildmenu
+	" 	set wildmode=list:longest,full
+	" 	set wildoptions=tagfile
+	" endif
+	set wildignorecase
+	set wildignore+=.git,.hg,.svn,.stversions,*.pyc,*.spl,*.o,*.out,*~,%*
+	set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
+	set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
+	set wildignore+=application/vendor/**,**/vendor/ckeditor/**,media/vendor/**
+	set wildignore+=__pycache__,*.egg-info,.pytest_cache,.mypy_cache/**
+	set wildcharm=<C-z>  " substitue for 'wildchar' (<Tab>) in macros
+endif
+" }}}
 
-    "syntax sync minlines=128 " 设置配色行数
-    set synmaxcol=2500  " Don't syntax highlight long lines
-    set path+=**                 " Directories to search when using gf and friends
-    set isfname-==               " Remove =, detects filename in var=/foo/bar
+" Vim Directories {{{
+" ---------------
+set nobackup
+set nowritebackup
+set undofile swapfile
+set directory=$DATA_PATH/swap//,$DATA_PATH,~/tmp,/var/tmp,/tmp
+set undodir=$DATA_PATH/undo//,$DATA_PATH,~/tmp,/var/tmp,/tmp
+set backupdir=$DATA_PATH/backup/,$DATA_PATH,~/tmp,/var/tmp,/tmp
+set viewdir=$DATA_PATH/view/
+set spellfile=$VIM_PATH/spell/en.utf-8.add
 
-    set hidden "current buffer can be put into background,
-    "set hidden 会和 go-def-tab 冲突, 如果关闭 tab 再通过 go-def-tab 打开会导致在同屏 split horizon
-    "set showcmd
-    "set showmode
-    "set showcmd " show incomplete commands
-    set noshowcmd noruler "关闭 showcmd 和 ruler 尝试加速 nvim, from: https://www.reddit.com/r/neovim/comments/7epa94/neovim_slowness_compared_to_vim_8/
-    set noshowmode " don't show which mode disabled for PowerLine
+" History saving
+set history=2000
 
-    set textwidth=120
+if has('nvim') && ! has('win32') && ! has('win64')
+	set shada=!,'300,<50,@100,s10,h
+else
+	set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
+endif
 
-    " 隐藏欢迎信息, neovim 下可能会造成 continue 及 press enter 问题
-    "set shortmess=atIo
-    " 文件切换自动保存
-    set autowrite
-    " 文件变更自动读取
-    set autoread
-    " 当操作未保存文件时,询问如何操作
-    set confirm
-    " 无备份文件
-    set nobackup
-    set nowritebackup
+augroup user_persistent_undo
+	autocmd!
+	au BufWritePre /tmp/*          setlocal noundofile
+	au BufWritePre COMMIT_EDITMSG  setlocal noundofile
+	au BufWritePre MERGE_MSG       setlocal noundofile
+	au BufWritePre *.tmp           setlocal noundofile
+	au BufWritePre *.bak           setlocal noundofile
+augroup END
 
-    set bsdir=buffer
+" If sudo, disable vim swap/backup/undo/shada/viminfo writing
+if $SUDO_USER !=# '' && $USER !=# $SUDO_USER
+		\ && $HOME !=# expand('~'.$USER)
+		\ && $HOME ==# expand('~'.$SUDO_USER)
 
-    " 其他设置
-    "set langmenu=zh_CN.UTF-8
-    set langmenu=en_US-UTF-8
-    set mouse-=a
-    "set mouse=a
-    "set wrap " turn on line wrapping
-    "set wrapmargin=8 " wrap lines when coming within n characters from side
-    "set whichwrap+=<,>,h,l,[,]
-    set background=dark
+	set noswapfile
+	set nobackup
+	set noundofile
+	if has('nvim')
+		set shada="NONE"
+	else
+		set viminfo="NONE"
+	endif
+endif
 
-    if has('vim_starting')
-    	set encoding=UTF-8
-    	scriptencoding UTF-8
-    endif
+" Secure sensitive information, disable backup files in temp directories
+if exists('&backupskip')
+	set backupskip+=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*
+	set backupskip+=.vault.vim
+endif
 
-    "set backspace=2 "退格数量,和其他 ide 适配
-    "set backspace=indent,eol,start
+" Disable swap/undo/viminfo/shada files in temp directories or shm
+augroup user_secure
+	autocmd!
+	silent! autocmd BufNewFile,BufReadPre
+		\ /tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim
+		\ setlocal noswapfile noundofile nobackup nowritebackup viminfo= shada=
+augroup END
 
-    " error bells
-    set noerrorbells
-    set visualbell
-    set t_vb=
-    set tm=500
+" }}}
 
-    " tab 在一些特殊文件中的特殊配置
-    autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
+" Tabs and Indents {{{
+" ----------------
+set textwidth=80    " Text width maximum chars before wrapping
+set noexpandtab     " Don't expand tabs to spaces
+set tabstop=2       " The number of spaces a tab is
+set shiftwidth=2    " Number of spaces to use in auto(indent)
+set softtabstop=-1  " Automatically keeps in sync with shiftwidth
+set smarttab        " Tab insert blanks according to 'shiftwidth'
+set autoindent      " Use same indenting on new lines
+set smartindent     " Smart autoindenting on new lines
+set shiftround      " Round indent to multiple of 'shiftwidth'
 
+if exists('&breakindent')
+	set breakindentopt=shift:2,min:20
+endif
 
-    " 永远显示状态栏
-    set laststatus=2
-    set showtabline=2
-    "set statusline=-        " hide file name in statusline
-    "set fillchars+=vert:\|  " add a bar for vertical splits
-    "let g:gruvbox_transp_bg = 1
-    if has('nvim')
-        if get(g:,'gruvbox_transp_bg',1)
-            set fcs=eob:\           " hide ~
-        endif
-    endif
-    if has('mac')
-    	let g:clipboard = {
-    		\   'name': 'macOS-clipboard',
-    		\   'copy': {
-    		\      '+': 'pbcopy',
-    		\      '*': 'pbcopy',
-    		\    },
-    		\   'paste': {
-    		\      '+': 'pbpaste',
-    		\      '*': 'pbpaste',
-    		\   },
-    		\   'cache_enabled': 0,
-    		\ }
-    endif
-    if has('clipboard')
-	    set clipboard& clipboard+=unnamedplus
-    endif
+" }}}
 
-    set history=2000
-    set number
-    set timeout ttimeout
+" Timing {{{
+" ------
+set timeout ttimeout
+set timeoutlen=500   " Time out on mappings
+set ttimeoutlen=10   " Time out on key codes
+set updatetime=100   " Idle time to write swap and trigger CursorHold
+set redrawtime=1500  " Time in milliseconds for stopping display redraw
 
-    " Searching
-    set ignorecase " case insensitive searching
-    set smartcase " case-sensitive if expresson contains a capital letter
-    set hlsearch " highlight search results, 高亮搜索结果
-    set incsearch " set incremental search, like modern browsers, 增量搜索
-    set nolazyredraw " don't redraw while executing macros
+" }}}
 
-    set complete=.,w,b,k  " C-n completion: Scan buffers, windows and dictionary
+" Searching {{{
+" ---------
+set ignorecase    " Search ignoring case
+set smartcase     " Keep case when searching with *
+set infercase     " Adjust case in insert completion mode
+set incsearch     " Incremental search
+set wrapscan      " Searches wrap around the end of the file
+set hlsearch      " Highlight search results
 
-    if exists('+inccommand')
-    	set inccommand=nosplit
-    endif
-    
-    if executable('rg')
-    	set grepformat=%f:%l:%m
-    	let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '')
-    elseif executable('ag')
-    	set grepformat=%f:%l:%m
-    	let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '')
-    endif
+set complete=.,w,b,k  " C-n completion: Scan buffers, windows and dictionary
 
+if exists('+inccommand')
+	set inccommand=nosplit
+endif
 
-    " 进入搜索使用sane正则
-    "nnoremap / /\v
-    "vnoremap / /\v
+if executable('rg')
+	set grepformat=%f:%l:%m
+	let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '')
+elseif executable('ag')
+	set grepformat=%f:%l:%m
+	let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '')
+endif
 
-    " 显示行号
-    set nu
+" }}}
 
-   " deoplete.nvim 推荐的补全选项
-    " set completeopt-=preview "关闭自带补全窗口
-    " set completeopt+=noinsert
-    " set completeopt+=noselect
+" Behavior {{{
+" --------
+set autoread                    " Auto readfile
+set nowrap                      " No wrap by default
+set linebreak                   " Break long lines at 'breakat'
+set breakat=\ \	;:,!?           " Long lines break chars
+set nostartofline               " Cursor in same column for few commands
+set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys
+set splitbelow splitright       " Splits open bottom right
+set switchbuf=useopen,vsplit    " Jump to the first open window
+set backspace=indent,eol,start  " Intuitive backspacing in insert mode
+set diffopt=filler,iwhite       " Diff mode: show fillers, ignore whitespace
+set completeopt=menu,menuone    " Always show menu, even for one item
+set completeopt+=noselect,noinsert
 
-    set completefunc=emoji#complete
-    set completeopt =longest,menu
-    set completeopt-=preview
-""    set list
-""    set listchars=tab:»·,nbsp:+,trail:·,extends:→,precedes:←
+if exists('+completepopup')
+	set completeopt+=popup
+	set completepopup=height:4,width:60,highlight:InfoPopup
+endif
 
-    " Behavior 
-    " --------
-    "set nowrap                      " No wrap by default
-    set linebreak                   " Break long lines at 'breakat'
-    set breakat=\ \	;:,!?           " Long lines break chars
-    set nostartofline               " Cursor in same column for few commands
-    set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys
-    set splitbelow splitright       " Splits open bottom right
-    set switchbuf=useopen,usetab    " Jump to the first open window in any tab
-    set switchbuf+=vsplit           " Switch buffer behavior to vsplit
-    set backspace=indent,eol,start  " Intuitive backspacing in insert mode
-    set diffopt=filler,iwhite       " Diff mode: show fillers, ignore whitespace
-    "set completeopt=menuone         " Always show menu, even for one item
-    "set completeopt+=noselect       " Do not select a match in the menu
-    "set diffopt+=vertical,iwhite,internal,algorithm:patience,hiddenoff
+if has('patch-8.1.0360') || has('nvim-0.4')
+	set diffopt+=internal,algorithm:patience
+	" set diffopt=indent-heuristic,algorithm:patience
+endif
+" }}}
 
-    if has('patch-8.1.0360') || has('nvim-0.4')
-    	set diffopt+=internal,algorithm:patience
-    	" set diffopt=indent-heuristic,algorithm:patience
-    endif
+" Editor UI {{{
+set termguicolors       " Enable true color
+set number              " Show number
+set relativenumber      " Show relative number
+set noshowmode          " Don't show mode on bottom
+set noruler             " Disable default status ruler
+set shortmess=aFc
+set scrolloff=2         " Keep at least 2 lines above/below
+set sidescrolloff=5     " Keep at least 5 lines left/right
+"set fillchars+=vert:\|  " add a bar for vertical splits
+set fcs=eob:\           " hide ~ tila
+"set list
+set listchars=tab:»·,nbsp:+,trail:·,extends:→,precedes:←
 
+set showtabline=2       " Always show the tabs line
+set winwidth=30         " Minimum width for active window
+set winminwidth=10      " Minimum width for inactive windows
+" set winheight=4         " Minimum height for active window
+set winminheight=1      " Minimum height for inactive window
+set pumheight=15        " Pop-up menu's line height
+set helpheight=12       " Minimum help window height
+set previewheight=12    " Completion preview height
 
-    " UI Symbols
-    " icons:  ▏│ ¦ ╎ ┆ ⋮ ⦙ ┊ 
-    set showbreak=↪
-    set listchars=tab:\▏\ ,extends:⟫,precedes:⟪,nbsp:␣,trail:·
+set showcmd             " Show command in status line
+set cmdheight=2         " Height of the command line
+set cmdwinheight=5      " Command-line lines
+set noequalalways       " Don't resize windows on split or close
+set laststatus=2        " Always show a status line
+"set colorcolumn=+0      " Column highlight at textwidth's max character-limit
+set display=lastline
 
-    " sudo 权限保存
-    ca w!! w !sudo tee "%"
+if has('folding') && has('vim_starting')
+	set foldenable
+	set foldmethod=indent
+	set foldlevelstart=99
+endif
 
-    " 滚动屏幕是保持3行在屏幕边界内
-    set scrolloff=5
+if has('nvim-0.4')
+	set signcolumn=yes:1
+else
+	set signcolumn=yes           " Always show signs column
+endif
 
-    " 自动补全文件名和命令行的行为,类似 zsh
-    set wildmenu
-    set wildmode=longest,full
-    set shell=$SHELL
-    set cmdheight=1 " command bar height
-    set title " set terminal title
-    set showmatch " show matching braces
-    set matchpairs+=<:> " Add HTML brackets to pair matching
-    set matchtime=10     " Tenths of a second to show the matching paren
-    set cpoptions-=m    " showmatch will wait 0.5s or until a char is typed
-    set grepprg=rg\ --vimgrep\ $*
-    set wildignore+=*.so,*~,*/.git/*,*/.svn/*,*/.DS_Store,*/tmp/*
+if has('conceal') && v:version >= 703
+	" For snippet_complete marker
+	set conceallevel=2 concealcursor=niv
+endif
 
-    set timeoutlen=500
-    set ttimeoutlen=10
-    set updatetime=100
-    set signcolumn=yes
-    set shortmess+=c
+if exists('+previewpopup')
+	set previewpopup=height:10,width:60
+endif
 
-    if has('conceal')
-    	set conceallevel=3 concealcursor=niv
-    endif
+" Pseudo-transparency for completion menu and floating windows
+if &termguicolors
+	if exists('&pumblend')
+		set pumblend=10
+	endif
+	if exists('&winblend')
+		set winblend=10
+	endif
+endif
 
-    set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors
+" }}}
 
-    if &term =~ '256color'
-        " disable background color erase
-        set t_ut=
-    endif
+" vim: set foldmethod=marker ts=2 sw=2 tw=80 noet :
 
-    "set backup                        " make backup files
-    "set undofile                      " persistent undos - undo after you re-open the file
-    set undofile swapfile nobackup
-    set directory=$DATA_PATH/swap//,$DATA_PATH,~/tmp,/var/tmp,/tmp
-    set undodir=$DATA_PATH/undo//,$DATA_PATH,~/tmp,/var/tmp,/tmp
-    set backupdir=$DATA_PATH/backup/,$DATA_PATH,~/tmp,/var/tmp,/tmp
-    set viewdir=$DATA_PATH/view/
-    set spellfile=$VIM_PATH/spell/en.utf-8.add
-
-    " 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
-    if has("autocmd")
-      au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-    endif
-
-    " 适配 neovim 的viminfo
-    if has('nvim') && ! has('win32') && ! has('win64')
-    	set shada=!,'300,<50,@100,s10,h
-    else
-    	set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
-    endif
-
-    if (has('nvim'))
-        " show results of substition as they're happening
-        " but don't open a split
-        set inccommand=nosplit
-    endif
-
-    " store yankring history file there too
-    let g:yankring_history_dir = $DATA_PATH.'/dirs/'
-
-    "" create needed directories if they don't exist
-    "if !isdirectory(&backupdir)
-    "    call mkdir(&backupdir, "p")
-    "endif
-    "if !isdirectory(&directory)
-    "    call mkdir(&directory, "p")
-    "endif
-    "if !isdirectory(&undodir)
-    "    call mkdir(&undodir, "p")
-    "endif
-
-    " If sudo, disable vim swap/backup/undo/shada/viminfo writing
-    if $SUDO_USER !=# '' && $USER !=# $SUDO_USER
-    		\ && $HOME !=# expand('~'.$USER)
-    		\ && $HOME ==# expand('~'.$SUDO_USER)
-    
-    	set noswapfile
-    	set nobackup
-    	set nowritebackup
-    	set noundofile
-    	if has('nvim')
-    		set shada="NONE"
-    	else
-    		set viminfo="NONE"
-    	endif
-    endif
-    
-    " Secure sensitive information, disable backup files in temp directories
-    if exists('&backupskip')
-    	set backupskip+=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*
-    	set backupskip+=.vault.vim
-    endif
-    
-    " Disable swap/undo/viminfo/shada files in temp directories or shm
-    augroup user_secure
-    	autocmd!
-    	silent! autocmd BufNewFile,BufReadPre
-    		\ /tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim
-    		\ setlocal noswapfile noundofile nobackup nowritebackup viminfo= shada=
-    augroup END
-
-    " 自动配置文件头
-    autocmd BufNewFile *.sh,*.py,*.rb exec ":call SetTitle()"
-    function! SetTitle()
-        if &filetype == 'sh'
-            call setline(1,"\#!/bin/bash")
-            call append(line("."), "")
-
-        elseif &filetype == 'python'
-            call setline(1,"#!/usr/bin/env python")
-            call append(line("."),"# coding=utf-8")
-            call append(line(".")+1, "")
-
-        elseif &filetype == 'ruby'
-            call setline(1,"#!/usr/bin/env ruby")
-            call append(line("."),"# encoding: utf-8")
-            call append(line(".")+1, "")
-        endif
-    endfunction
-
-    autocmd BufNewFile * normal G
-
-    " If sudo, disable vim swap/backup/undo/shada/viminfo writing
-    if $SUDO_USER !=# '' && $USER !=# $SUDO_USER
-    		\ && $HOME !=# expand('~'.$USER)
-    		\ && $HOME ==# expand('~'.$SUDO_USER)
-    
-    	set noswapfile
-    	set nobackup
-    	set nowritebackup
-    	set noundofile
-    	if has('nvim')
-    		set shada="NONE"
-    	else
-    		set viminfo="NONE"
-    	endif
-    endif
-"

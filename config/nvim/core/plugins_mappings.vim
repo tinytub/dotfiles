@@ -163,6 +163,10 @@ if dein#tap('coc.nvim')
     endfunction
     xmap <silent> <leader>ca :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
     nmap <silent> <leader>ca :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
+    " Do default action for next item.
+    nnoremap <silent> <leader>cn  :<C-u>CocNext<CR>
+    " Do default action for previous item.
+    nnoremap <silent> <leader>cp  :<C-u>CocPrev<CR>
     " Show all diagnostics
     nnoremap <silent> <leader>cd  :<C-u>CocList diagnostics<cr>
     " Manage extensions
@@ -173,12 +177,8 @@ if dein#tap('coc.nvim')
     "nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
     " Search workspace symbols
     nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
-    " Do default action for next item.
-    nnoremap <silent> <leader>cj  :<C-u>CocNext<CR>
-    " Do default action for previous item.
-    nnoremap <silent> <leader>ck  :<C-u>CocPrev<CR>
     " Resume latest coc list
-    nnoremap <silent> <leader>cu  :<C-u>CocListResume<CR>
+    nnoremap <silent> <leader>'  :<C-u>CocListResume<CR>
     " Use `[c` and `]c` for navigate diagnostics
     nmap <silent> ]c <Plug>(coc-diagnostic-prev)
     nmap <silent> [c <Plug>(coc-diagnostic-next)
@@ -205,10 +205,17 @@ if dein#tap('coc.nvim')
     nmap <leader>gi <Plug>(coc-git-chunkinfo)
     " show commit contains current position
     nmap <leader>gm <Plug>(coc-git-commit)
-    "nnoremap <silent> <leader>cg  :<C-u>CocList --normal gstatus<CR>
     " float window scroll
 	nnoremap <expr><C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
 	nnoremap <expr><C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
+	" Use <TAB> for selections ranges.
+	" NOTE: Requires 'textDocument/selectionRange' support from the language server.
+	" coc-tsserver, coc-python are the examples of servers that support it.
+	nmap <silent> <TAB> <Plug>(coc-range-select)
+	xmap <silent> <TAB> <Plug>(coc-range-select)
+    " Add `:OR` command for organize imports of the current buffer.
+    command! -nargs=0 OR  :call CocAction('runCommand', 'editor.action.organizeImport')
+	nnoremap <silent> <Leader>co :<C-u>OR<CR>
     " multiple cursors
     nmap <silent> <C-c> <Plug>(coc-cursors-position)
     "和回车冲突
@@ -264,7 +271,7 @@ if dein#tap('committia.vim')
 endif
 
 if dein#tap('vim-quickrun')
-    nnoremap <silent> <leader>rR :QuickRun<CR>
+    nnoremap <silent> <leader>cR :QuickRun<CR>
 endif
 
 if dein#tap('vim-startify')
@@ -279,80 +286,87 @@ if dein#tap('indentLine')
 	nnoremap <leader>ti :IndentLinesToggle<CR>
 endif
 
-if dein#tap('denite.nvim')
-    noremap zl :<C-u>call <SID>my_denite_outline(&filetype)<CR>
-    noremap zL :<C-u>call <SID>my_denite_decls(&filetype)<CR>
-    noremap zT :<C-u>call <SID>my_denite_file_rec_goroot()<CR>
-
-    function! s:my_denite_outline(filetype) abort
-        execute 'Denite' a:filetype ==# 'go' ? "decls:'%:p'" : 'outline'
-    endfunction
-    function! s:my_denite_decls(filetype) abort
-        if a:filetype ==# 'go'
-            Denite decls
-        else
-            call denite#util#print_error('decls does not support filetypes except go')
-        endif
-    endfunction
-    function! s:my_denite_file_rec_goroot() abort
-    if !executable('go')
-        call denite#util#print_error('`go` executable not found')
-        return
-    endif
-    let out = system('go env | grep ''^GOROOT='' | cut -d\" -f2')
-    let goroot = substitute(out, '\n', '', '')
-    call denite#start(
-            \ [{'name': 'file/rec', 'args': [goroot]}],
-            \ {'input': '.go'})
-    endfunction
-	" nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
-	" nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
-	" nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file_mru -default-action=switch<CR>
-	" nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec directory_mru -default-action=cd<CR>
-    " "nnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register<CR>
-    " "xnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register -default-action=replace<CR>
-    " "nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list -no-start-filter<CR>
-	" "nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list -no-start-filter<CR>
-	" "nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
-	" nnoremap <silent><LocalLeader>g :<C-u>Denite grep -no-start-filter<CR>
-	" nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file/point<CR>
-	" "nnoremap <silent><LocalLeader>u :<C-u>Denite junkfile:new junkfile -buffer-name=list<CR>
-	" nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
-	" nnoremap <silent><LocalLeader>s :<C-u>Denite session -buffer-name=list<CR>
-	" nnoremap <silent><LocalLeader>t :<C-u>Denite tag<CR>
-	" nnoremap <silent><LocalLeader>p :<C-u>Denite jump<CR>
-	" nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
-	" nnoremap <silent><LocalLeader>m :<C-u>Denite file/rec -buffer-name=memo -path=~/docs/books<CR>
-	" " nnoremap <silent><LocalLeader>m :<C-u>Denite mpc -buffer-name=mpc<CR>
-	" nnoremap <silent><LocalLeader>z :<C-u>Denite z -buffer-name=list<CR>
-"	nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
-"	nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
-"	nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
-
-"	" chemzqm/denite-git
-"	nnoremap <silent> <Leader>gl :<C-u>Denite gitlog:all -no-start-filter<CR>
-"	nnoremap <silent> <Leader>gs :<C-u>Denite gitstatus -no-start-filter<CR>
-"	nnoremap <silent> <Leader>gc :<C-u>Denite gitbranch -no-start-filter<CR>
+"if dein#tap('denite.nvim')
+"    noremap zl :<C-u>call <SID>my_denite_outline(&filetype)<CR>
+"    noremap zL :<C-u>call <SID>my_denite_decls(&filetype)<CR>
+"    noremap zT :<C-u>call <SID>my_denite_file_rec_goroot()<CR>
 "
-"	" Open Denite with word under cursor or selection
-"	nnoremap <silent> <Leader>gt :DeniteCursorWord tag:include -buffer-name=tag -immediately<CR>
-"	nnoremap <silent> <Leader>gf :DeniteCursorWord file/rec<CR>
-"	nnoremap <silent> <Leader>gg :DeniteCursorWord grep -buffer-name=search<CR>
-"	vnoremap <silent> <Leader>gg
-"		\ :<C-u>call <SID>get_selection('/')<CR>
-"		\ :execute 'Denite -buffer-name=search grep:::'.@/<CR><CR>
+"    function! s:my_denite_outline(filetype) abort
+"        execute 'Denite' a:filetype ==# 'go' ? "decls:'%:p'" : 'outline'
+"    endfunction
+"    function! s:my_denite_decls(filetype) abort
+"        if a:filetype ==# 'go'
+"            Denite decls
+"        else
+"            call denite#util#print_error('decls does not support filetypes except go')
+"        endif
+"    endfunction
+"    function! s:my_denite_file_rec_goroot() abort
+"    if !executable('go')
+"        call denite#util#print_error('`go` executable not found')
+"        return
+"    endif
+"    let out = system('go env | grep ''^GOROOT='' | cut -d\" -f2')
+"    let goroot = substitute(out, '\n', '', '')
+"    call denite#start(
+"            \ [{'name': 'file/rec', 'args': [goroot]}],
+"            \ {'input': '.go'})
+"    endfunction
+"	" nnoremap <silent><LocalLeader>r :<C-u>Denite -resume -refresh -no-start-filter<CR>
+"	" nnoremap <silent><LocalLeader>f :<C-u>Denite file/rec<CR>
+"	" nnoremap <silent><LocalLeader>b :<C-u>Denite buffer file_mru -default-action=switch<CR>
+"	" nnoremap <silent><LocalLeader>d :<C-u>Denite directory_rec directory_mru -default-action=cd<CR>
+"    " "nnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register<CR>
+"    " "xnoremap <silent><LocalLeader>v :<C-u>Denite neoyank -buffer-name=register -default-action=replace<CR>
+"    " "nnoremap <silent><LocalLeader>l :<C-u>Denite location_list -buffer-name=list -no-start-filter<CR>
+"	" "nnoremap <silent><LocalLeader>q :<C-u>Denite quickfix -buffer-name=list -no-start-filter<CR>
+"	" "nnoremap <silent><LocalLeader>n :<C-u>Denite dein<CR>
+"	" nnoremap <silent><LocalLeader>g :<C-u>Denite grep -no-start-filter<CR>
+"	" nnoremap <silent><LocalLeader>j :<C-u>Denite jump change file/point<CR>
+"	" "nnoremap <silent><LocalLeader>u :<C-u>Denite junkfile:new junkfile -buffer-name=list<CR>
+"	" nnoremap <silent><LocalLeader>o :<C-u>Denite outline<CR>
+"	" nnoremap <silent><LocalLeader>s :<C-u>Denite session -buffer-name=list<CR>
+"	" nnoremap <silent><LocalLeader>t :<C-u>Denite tag<CR>
+"	" nnoremap <silent><LocalLeader>p :<C-u>Denite jump<CR>
+"	" nnoremap <silent><LocalLeader>h :<C-u>Denite help<CR>
+"	" nnoremap <silent><LocalLeader>m :<C-u>Denite file/rec -buffer-name=memo -path=~/docs/books<CR>
+"	" " nnoremap <silent><LocalLeader>m :<C-u>Denite mpc -buffer-name=mpc<CR>
+"	" nnoremap <silent><LocalLeader>z :<C-u>Denite z -buffer-name=list<CR>
+""	nnoremap <silent><LocalLeader>; :<C-u>Denite command command_history<CR>
+""	nnoremap <silent><LocalLeader>/ :<C-u>Denite line<CR>
+""	nnoremap <silent><LocalLeader>* :<C-u>DeniteCursorWord line<CR>
 "
-"	function! s:get_selection(cmdtype)
-"		let temp = @s
-"		normal! gv"sy
-"		let @/ = substitute(escape(@s, '\' . a:cmdtype), '\n', '\\n', 'g')
-"		let @s = temp
-"	endfunction
+""	" chemzqm/denite-git
+""	nnoremap <silent> <Leader>gl :<C-u>Denite gitlog:all -no-start-filter<CR>
+""	nnoremap <silent> <Leader>gs :<C-u>Denite gitstatus -no-start-filter<CR>
+""	nnoremap <silent> <Leader>gc :<C-u>Denite gitbranch -no-start-filter<CR>
+""
+""	" Open Denite with word under cursor or selection
+""	nnoremap <silent> <Leader>gt :DeniteCursorWord tag:include -buffer-name=tag -immediately<CR>
+""	nnoremap <silent> <Leader>gf :DeniteCursorWord file/rec<CR>
+""	nnoremap <silent> <Leader>gg :DeniteCursorWord grep -buffer-name=search<CR>
+""	vnoremap <silent> <Leader>gg
+""		\ :<C-u>call <SID>get_selection('/')<CR>
+""		\ :execute 'Denite -buffer-name=search grep:::'.@/<CR><CR>
+""
+""	function! s:get_selection(cmdtype)
+""		let temp = @s
+""		normal! gv"sy
+""		let @/ = substitute(escape(@s, '\' . a:cmdtype), '\n', '\\n', 'g')
+""		let @s = temp
+""	endfunction
+"endif
+
+if dein#tap('any-jump.vim')
+	nnoremap <silent> <Leader>cj :AnyJump<CR>
+	xnoremap <silent> <Leader>cj :AnyJump<CR>
 endif
 
 if dein#tap('vim-go')
 "vim-go
   	 function! InitGoKeyMap() abort
+   	 nnoremap <silent> <LocalLeader>ga :GoAddTags<CR>
+	 nnoremap <silent> <LocalLeader>gr :GoRemoveTags<CR>
 	 nnoremap <silent> <LocalLeader>gi :GoImpl<CR>
 	 nnoremap <silent> <LocalLeader>gd :GoDescribe<CR>
 	 nnoremap <silent> <LocalLeader>gc :GoCallees<CR>

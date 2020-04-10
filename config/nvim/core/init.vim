@@ -103,9 +103,11 @@ function! s:main()
 			if empty(l:virtualenv) || ! filereadable(l:virtualenv)
 				" Fallback to old virtualenv location
 				let l:virtualenv = $DATA_PATH . '/venv/neovim3/bin/python'
+				let l:virtualenvpy2 = $DATA_PATH . '/venv/neovim2/bin/python'
 			endif
 			if filereadable(l:virtualenv)
 				let g:python3_host_prog = l:virtualenv
+                let g:python_host_prog = l:virtualenvpy2
 			endif
 		elseif has('pythonx')
             " 配置 neovim 使用的基础环境地址

@@ -150,6 +150,11 @@
     " Whitespace jump (see plugin/whitespace.vim)
     nnoremap ]w :<C-u>WhitespaceNext<CR>
     nnoremap [w :<C-u>WhitespacePrev<CR>
+		" Remove spaces at the end of lines
+    nnoremap <silent> <Space>/ :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
+    nnoremap <silent> <Space>cw :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
+
+
 
 
 " Non-standard
