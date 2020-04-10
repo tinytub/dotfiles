@@ -3,7 +3,7 @@
 "hi Whitespace ctermfg=238 guifg=#424450 guibg=NONE ctermbg=NONE
 "hi VertSplit  ctermfg=Black  guifg=Black guibg=NONE ctermbg=NONE
 "hi LineNr ctermbg=NONE guibg=NONE
-"hi SignColumn ctermfg=187 ctermbg=NONE guifg=#ebdbb2 guibg=NONE guisp=NONE cterm=NONE gui=NONE
+hi SignColumn ctermfg=187 ctermbg=NONE guifg=#ebdbb2 guibg=NONE guisp=NONE cterm=NONE gui=NONE
 "
 "Pmenu Colors
 " ---------------------------------------------------------

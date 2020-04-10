@@ -1,12 +1,15 @@
 " Defx
 call defx#custom#option('_', {
 	\ 'resume': 1,
-	\ 'columns': 'indent:git:icons:filename',
-	\ 'winwidth': 30,
+	\ 'winwidth': 25,
 	\ 'split': 'vertical',
 	\ 'direction': 'topleft',
 	\ 'show_ignored_files': 0,
+	\ 'columns': 'indent:git:icons:filename',
 	\ 'root_marker': ' ',
+	\ 'ignored_files':
+	\     '.mypy_cache,.pytest_cache,.git,.hg,.svn,.stversions'
+	\   . ',__pycache__,.sass-cache,*.egg-info,.DS_Store,*.pyc'
 	\ })
 
 call defx#custom#column('git', {
@@ -137,6 +140,7 @@ function! s:defx_mappings() abort
 	" Tools
  	nnoremap <silent><buffer><expr> w   defx#do_action('call', '<SID>toggle_width')
 	nnoremap <silent><buffer><expr> gd  defx#async_action('multi', ['drop', ['call', '<SID>git_diff']])
+	nnoremap <silent><buffer><expr> gr  defx#do_action('call', '<SID>grep')
   if exists('$TMUX')
 		nnoremap <silent><buffer><expr> gl  defx#async_action('call', '<SID>explorer')
 	endif
@@ -147,22 +151,6 @@ endfunction
 
 function! s:git_diff(context) abort
 	execute 'GdiffThis'
-endfunction
-
-function! s:find_files(context) abort
-	" Find files in parent directory with Denite
-	let l:target = a:context['targets'][0]
-	let l:parent = fnamemodify(l:target, ':h')
-	silent execute 'wincmd w'
-	silent execute 'Denite file/rec:'.l:parent
-endfunction
-
-function! s:grep(context) abort
-	" Grep in parent directory with Denite
-	let l:target = a:context['targets'][0]
-	let l:parent = fnamemodify(l:target, ':h')
-	silent execute 'wincmd w'
-	silent execute 'Denite grep:'.l:parent
 endfunction
 
 function! s:toggle_width(context) abort
