@@ -10,15 +10,12 @@ source install/link.sh
 
 #source install/git.sh
 source install/dep.sh
-#
+
 # only perform macOS-specific install
 if [ "$(uname)" == "Darwin" ]; then
     echo -e "\\n\\nRunning on macOS"
-
     source install/brew.sh
-
     source install/osx.sh
-
 fi
 if [ "$(uname)" == "Linux" ]; then
     echo -e "\\n\\nRunning on Linux"
@@ -38,5 +35,7 @@ elif ! [[ $SHELL =~ .*zsh.* ]]; then
     echo "Configuring zsh as default shell"
     chsh -s "$(command -v zsh)"
 fi
+
+echo "run: nvim -u init.vim -c 'call dein#recache_runtimepath()|q' to finish install vim plugins"
 
 echo "Done. Reload your terminal."
