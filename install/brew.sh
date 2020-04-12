@@ -9,7 +9,6 @@ echo -e "\\n\\nInstalling homebrew packages..."
 echo "=============================="
 
 formulas=(
-
     bat
     diff-so-fancy
     dnsmasq
