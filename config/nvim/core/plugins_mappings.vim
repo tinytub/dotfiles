@@ -103,7 +103,8 @@ if dein#tap('vim-clap')
 	nnoremap <silent> <leader>fW :<C-u>Clap windows<CR>
 	nnoremap <silent> <leader>fl :<C-u>Clap loclist<CR>
 	nnoremap <silent> <leader>fu :<C-u>Clap git_diff_files<CR>
-	nnoremap <silent> <leader>ft :<C-u>Clap grep ++query=@visual<CR>
+   	nnoremap <silent> <leader>fv :<C-u>Clap grep ++query=@visual<CR>
+	nnoremap <silent> <leader>oc :<C-u>Clap personalconf<CR>
 endif
 
 if dein#tap('vim-easy-align')
@@ -168,7 +169,7 @@ if dein#tap('coc.nvim')
     " Do default action for previous item.
     nnoremap <silent> <leader>cp  :<C-u>CocPrev<CR>
     " Show all diagnostics
-    nnoremap <silent> <leader>cd  :<C-u>CocList diagnostics<cr>
+    nnoremap <silent> <leader>ce  :<C-u>CocList diagnostics<cr>
     " Manage extensions
     nnoremap <silent> <leader>;  :<C-u>CocList extensions<cr>
     " Show commands
@@ -179,9 +180,9 @@ if dein#tap('coc.nvim')
     nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
     " Resume latest coc list
     nnoremap <silent> <leader>'  :<C-u>CocListResume<CR>
-    " Use `[c` and `]c` for navigate diagnostics
-    nmap <silent> ]c <Plug>(coc-diagnostic-prev)
-    nmap <silent> [c <Plug>(coc-diagnostic-next)
+    " Use `[e` and `]e` for navigate diagnostics
+    nmap <silent> ]e <Plug>(coc-diagnostic-prev)
+    nmap <silent> [e <Plug>(coc-diagnostic-next)
     " Remap for rename current word
     nmap <leader>cr <Plug>(coc-rename)
     " Remap for format selected region
@@ -197,10 +198,11 @@ if dein#tap('coc.nvim')
     nmap <silent> gr <Plug>(coc-references)
     " Use K for show documentation in float window
     nnoremap <silent> K :call CocActionAsync('doHover')<CR>
+    nnoremap <silent> <leader>cd :call CocActionAsync('doHover')<CR>
     " use <c-space> for trigger completion.
     inoremap <silent><expr> <c-space> coc#refresh()
-    nmap [g <Plug>(coc-git-prevchunk)
-    nmap ]g <Plug>(coc-git-nextchunk)
+    nmap ]g <Plug>(coc-git-prevchunk)
+    nmap [g <Plug>(coc-git-nextchunk)
     " show chunk diff at current position
     nmap <leader>gi <Plug>(coc-git-chunkinfo)
     " show commit contains current position
@@ -240,6 +242,13 @@ if dein#tap('coc.nvim')
     \ ' --toggle' .
     \ ' --position=floating' .
     \ ' --sources=file+'<CR>
+
+    " Introduce function text object
+    " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+    xmap if <Plug>(coc-funcobj-i)
+    xmap af <Plug>(coc-funcobj-a)
+    omap if <Plug>(coc-funcobj-i)
+    omap af <Plug>(coc-funcobj-a)
 
     " 使用 回车 确认补全 Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
     " Coc only does snippet and additional edit on confirm.

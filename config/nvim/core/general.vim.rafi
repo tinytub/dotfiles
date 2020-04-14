@@ -140,7 +140,7 @@ augroup END
 " ----------------
 set textwidth=120    " Text width maximum chars before wrapping
 "set noexpandtab     " Don't expand tabs to spaces
-set expandtab     " expand tabs to spaces
+set noexpandtab     " expand tabs to spaces
 set tabstop=4       " The number of spaces a tab is
 set shiftwidth=4    " Number of spaces to use in auto(indent)
 set softtabstop=-1  " Automatically keeps in sync with shiftwidth
@@ -161,13 +161,13 @@ set timeout ttimeout
 set timeoutlen=500   " Time out on mappings
 set ttimeoutlen=10   " Time out on key codes
 set updatetime=100   " Idle time to write swap and trigger CursorHold
-set redrawtime=1500  " Time in milliseconds for stopping display redraw
+"set redrawtime=1500  " Time in milliseconds for stopping display redraw
 
 " }}}
 "
 
 " 提高加载速度
-"set lazyredraw
+set nolazyredraw
 set ttyfast "faster redrawing
 
 
@@ -251,8 +251,8 @@ set cmdheight=1         " Height of the command line
 set cmdwinheight=5      " Command-line lines
 set noequalalways       " Don't resize windows on split or close
 set laststatus=2        " Always show a status line
-"set colorcolumn=+0     " Column highlight at textwidth's max character-limit
-"set display=lastline   "会导致滚屏
+"set colorcolumn=+0      " Column highlight at textwidth's max character-limit
+set display=lastline
 
 if has('folding') && has('vim_starting')
 	set foldenable
