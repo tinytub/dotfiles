@@ -14,6 +14,7 @@ augroup hugefile
         \ unlet size
 augroup END
 "CoC configlet
+
 let g:coc_snippet_next = '<TAB>'
 let g:coc_snippet_prev = '<S-TAB>'
 let g:coc_status_error_sign = '•'

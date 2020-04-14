@@ -3,7 +3,7 @@
   "suggest.timeout": 500,
   "suggest.noselect": false,
   "suggest.detailField":"abbr",
- // "suggest.snippetIndicator": "🌟",
+  "suggest.snippetIndicator": " ►",
   "suggest.triggerCompletionWait": 100,
   "suggest.echodocSupport": true, // 在 function 后显示相关的参数或结构体
   //"suggest.floatEnable": false, // 关掉补全后 function 的悬窗 doc
@@ -78,10 +78,6 @@
   "prettier.eslintIntegration": true,
   "prettier.tslintIntegration": true,
   "prettier.stylelintIntegration": true,
-  //emmet
-  "emmet.includeLanguages": {"vue-html": "html", "javascript": "javascriptreact"},
-  //imselect
-  "imselect.enableStatusItem": false,
   //multiple curssors
   "cursors.nextKey": "<C-n>",
   "cursors.previousKey": "<C-p>",
