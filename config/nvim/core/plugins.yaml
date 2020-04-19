@@ -244,8 +244,11 @@
   on_cmd: [Whichkey, Whichkey!]
   hook_add: source $VIM_PATH/core/plugins/whichkey.vim
   hook_post_source: |
-        call which_key#register('\', 'g:which_key_map')
-        call which_key#register(';', 'g:which_key_localmap')
+        function! s:register_whichkey()
+            call which_key#register('\', 'g:which_key_map')
+            call which_key#register(';', 'g:which_key_localmap')
+        endfunction
+        call s:register_whichkey()
 - repo: easymotion/vim-easymotion
   on_map: { n: <Plug> }
   hook_source: |
@@ -333,8 +336,6 @@
       autocmd!
       autocmd FileType fugitiveblame normal A
     augroup END
-
-- { repo: lambdalisue/gina.vim, on_cmd: Gina }
 
 - repo: Vigemus/iron.nvim
   if: has('nvim')

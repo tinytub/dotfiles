@@ -36,7 +36,6 @@ let g:coc_global_extensions = [
         \ 'coc-yaml',
         \ 'coc-gitignore',
         \ 'coc-actions',
-        \ 'coc-floaterm',
         \ 'coc-explorer'
         \ ]
 
