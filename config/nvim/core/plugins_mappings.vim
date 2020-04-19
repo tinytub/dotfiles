@@ -139,6 +139,12 @@ if dein#tap('vim-which-key')
 		nnoremap <silent> <localleader> :<c-u>WhichKey  ';'<CR>
 		nnoremap <silent>[              :<c-u>WhichKey  '['<CR>
 		nnoremap <silent>]              :<c-u>WhichKey  ']'<CR>
+    "function! InitWhickey()
+	"  execute 'nnoremap <silent> <Leader> :<c-u>WhichKey "\"<CR>'
+	"  execute 'vnoremap <silent> <Leader> :<c-u>WhichKeyVisual "\"<CR>'
+	"  execute 'nnoremap <silent> <LocalLeader> :<c-u>WhichKey " ;"<CR>'
+    "endfunction
+    "call InitWhickey()
 endif
 
 " git
@@ -154,6 +160,11 @@ if dein#tap('vim-smartchr')
             \ smartchr#loop(':=',';')
     autocmd FileType go inoremap <buffer> <expr> .
           \ smartchr#loop('.', '<-', '->','...')
+endif
+
+if dein#tap('vim-floaterm')
+  nnoremap <silent> <Leader>ot :<C-u>FloatermToggle<CR>
+  nnoremap <silent> <Leader>gz :<C-u>FloatermNew height=0.7 width=0.8 lazygit<CR>
 endif
 
 if dein#tap('coc.nvim')
@@ -234,8 +245,6 @@ if dein#tap('coc.nvim')
     nnoremap  <leader>fz :<C-u>CocSearch -w<Space>
     " use normal command like `<leader>xi(`
     nmap <leader>x  <Plug>(coc-cursors-operator)
-
-    nnoremap <silent> <leader>ot :<C-u>CocCommand floaterm.new<cr>
 
     " coc-explorer
     noremap <silent> <leader>j :execute 'CocCommand explorer' .
@@ -430,11 +439,7 @@ if dein#tap('vim-fugitive')
 	nnoremap <silent> <leader>gb :Git blame<CR>
 	nnoremap <silent> <leader>gf :Gfetch<CR>
 	nnoremap <silent> <leader>gs :Git<CR>
-endif
-
-if dein#tap('gina.vim')
-	nnoremap <silent><Leader>gp :Gina push<CR>
-  	nnoremap <silent><Leader>gl :Gina log<CR>
+	nnoremap <silent> <Leader>gp :Gpush<CR>
 endif
 
 if dein#tap('vim-mundo')

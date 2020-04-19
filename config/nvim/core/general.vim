@@ -229,7 +229,8 @@ set number              " Show number
 set relativenumber      " Show relative number
 set noshowmode          " Don't show mode on bottom
 set noruler             " Disable default status ruler
-set shortmess=aFc
+"set shortmess=aFc
+set shortmess+=c
 set scrolloff=2         " Keep at least 2 lines above/below
 set sidescrolloff=5     " Keep at least 5 lines left/right
 "set fillchars+=vert:\|  " add a bar for vertical splits
