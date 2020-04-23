@@ -16,6 +16,7 @@ set synmaxcol=2500           " Don't syntax highlight long lines
 set formatoptions+=1         " Don't break lines after a one-letter word
 set formatoptions-=t         " Don't auto-wrap text
 set formatoptions-=o         " Disable comment-continuation (normal 'o'/'O')
+set maxmempattern=5000
 set confirm							     " 当操作未保存文件时,询问如何操作
 set langmenu=en_US-UTF-8
 

@@ -52,6 +52,17 @@
 # Lazy Loading
 # ==========================================
 
+- repo: rizzatti/dash.vim
+  if: "has('mac')"
+  on_map: { n: <Plug> }
+  hook_source: |
+      let g:dash_map = {
+        \ 'javascript': ['javascript', 'NodeJS'],
+        \ 'javascriptreact': ['react'],
+        \ 'html': ['html', 'svg'],
+        \ 'go' : 'Go',
+        \}
+
 # ale {{{
 - repo: dense-analysis/ale
   hook_add: source $VIM_PATH/core/plugins/ale.vim
@@ -202,10 +213,10 @@
   merged: 0
 
 # tags管理
-- repo: ludovicchabant/vim-gutentags
-  if: executable('ctags')
-  on_path: .*
-  hook_source: source  $VIM_PATH/core/plugins/gutentags.vim
+#- repo: ludovicchabant/vim-gutentags
+#  #  if: executable('ctags')
+#  #  on_path: .*
+#  hook_source: source  $VIM_PATH/core/plugins/gutentags.vim
 
 - repo: t9md/vim-choosewin
   on_map: { n: <Plug> }

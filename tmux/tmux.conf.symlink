@@ -9,6 +9,8 @@ set -g default-terminal "screen-256color"
 # 设置 truecolor
 set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
 
+set -g status-interval 1
+
 set -g history-limit 102400
 # enable clipboard
 set -g set-clipboard on
@@ -44,8 +46,27 @@ setw -g mouse on
 # =====================================
 # ===    Appearence and status bar  ===
 # ======================================
+## Move status bar to the top
+#set-option -g status-position bottom
+#set -g status 'on'
+#set -g status-position bottom
+#set -g status-bg 'colour235'
+#set -g status-justify 'centre'
+#set -g status-left-length '100'
+#set -g status-right-length '100'
+#set -g message-style fg='colour222',bg='colour238'
+#set -g message-command-style fg='colour222',bg='colour238'
+#set -g pane-border-style fg='colour238'
+#set -g pane-active-border-style fg='colour154'
+#setw -g window-status-activity-style fg='colour154',bg='colour235',none
+#setw -g window-status-separator ''
+#setw -g window-status-style fg='colour121',bg='colour235',none
+#set -g status-left '#[fg=colour232,bg=colour154] #S #[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour222,bg=colour238] #W #[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]#[fg=colour121,bg=colour235] #(whoami)  #(uptime  | cut -d " " -f 1,2,3) #[fg=colour235,bg=colour235,nobold,nounderscore,noitalics]'
+#set -g status-right '#[fg=colour235,bg=colour235,nobold,nounderscore,noitalics]#[fg=colour121,bg=colour235] %r  %a  %Y #[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]#[fg=colour222,bg=colour238] #H #[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour232,bg=colour154] #(rainbarf --battery --remaining --no-rgb) '
+#setw -g window-status-format '#[fg=colour235,bg=colour236,nobold,nounderscore,noitalics]#[fg=colour221,bg=colour236] #I  #W #[fg=colour236,bg=colour235,nobold,nounderscore,noitalics]'
+#setw -g window-status-current-format '#[fg=colour235,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour222,bg=colour238] #I  #W  #F #[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]'
+
 # Move status bar to the top
-set-option -g status-position bottom
 set -g status 'on'
 set -g status-position bottom
 set -g status-bg 'colour235'
@@ -59,10 +80,35 @@ set -g pane-active-border-style fg='colour154'
 setw -g window-status-activity-style fg='colour154',bg='colour235',none
 setw -g window-status-separator ''
 setw -g window-status-style fg='colour121',bg='colour235',none
-set -g status-left '#[fg=colour232,bg=colour154] #S #[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour222,bg=colour238] #W #[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]#[fg=colour121,bg=colour235] #(whoami)  #(uptime  | cut -d " " -f 1,2,3) #[fg=colour235,bg=colour235,nobold,nounderscore,noitalics]'
-set -g status-right '#[fg=colour235,bg=colour235,nobold,nounderscore,noitalics]#[fg=colour121,bg=colour235] %r  %a  %Y #[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]#[fg=colour222,bg=colour238] #H #[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour232,bg=colour154] #(rainbarf --battery --remaining --no-rgb) '
-setw -g window-status-format '#[fg=colour235,bg=colour236,nobold,nounderscore,noitalics]#[fg=colour221,bg=colour236] #I  #W #[fg=colour236,bg=colour235,nobold,nounderscore,noitalics]'
-setw -g window-status-current-format '#[fg=colour235,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour222,bg=colour238] #I  #W  #F #[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]'
+
+set -g status-left '\
+#[fg=colour232,bg=colour154] #S \
+#[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]\
+#[fg=colour222,bg=colour238] #W \
+#[fg=colour238,bg=colour172,nobold,nounderscore,noitalics]\
+#[fg=colour232,bg=colour172] #{b:pane_current_path} \
+#[fg=colour172,bg=colour235]'
+
+set -g status-right '\
+#{?client_prefix,🐠,} \
+#[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]\
+#[fg=colour222,bg=colour238] CPU: #{cpu_percentage} \
+#[fg=colour172,bg=colour238,nobold,nounderscore,noitalics]\
+#[fg=colour232,bg=colour172] %H:%M %a \
+#[fg=colour238,bg=colour172,nobold,nounderscore,noitalics]\
+#[fg=colour222,bg=colour238] #(whoami) \
+#[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]\
+#[fg=colour232,bg=colour154] #(rainbarf --battery --remaining --no-rgb) '
+
+set-window-option -g window-status-format "\
+#[fg=colour235,bg=colour235,noitalics]\
+#[fg=colour240,bg=colour235]#I \
+#[fg=colour240, bg=colour235] #W "
+
+set -g window-status-current-format '\
+#[fg=colour235,bg=colour238,nobold,nounderscore,noitalics]\
+#[fg=colour222,bg=colour238] #I  #W  #F \
+#[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]'
 # ==========================
 # ===   Key bindings     ===
 # ==========================
@@ -105,7 +151,7 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
-set -g @plugin 'tmux-plugins/tmux-urlview'
+#set -g @plugin 'tmux-plugins/tmux-urlview'
 set -g @plugin 'tmux-plugins/tmux-battery'
 set -g @plugin 'tmux-plugins/tmux-cpu'
 set -g @plugin 'samoshkin/tmux-plugin-sysstat'
