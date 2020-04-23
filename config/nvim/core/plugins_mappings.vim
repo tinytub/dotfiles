@@ -105,6 +105,7 @@ if dein#tap('vim-clap')
 	nnoremap <silent> <leader>fu :<C-u>Clap git_diff_files<CR>
    	nnoremap <silent> <leader>fv :<C-u>Clap grep ++query=@visual<CR>
 	nnoremap <silent> <leader>oc :<C-u>Clap personalconf<CR>
+	nnoremap <silent> <leader>ft :<C-u>Clap tags<CR>
 endif
 
 if dein#tap('vim-easy-align')
@@ -119,7 +120,7 @@ if dein#tap('vista.vim')
     "nnoremap <silent><localleader>v :Vista coc<CR>
     "nnoremap <silent><leader>fv     :Vista finder coc<CR>
 	nnoremap <silent> <Leader>i :<C-u>Vista!!<CR>
-
+	"nnoremap <silent> <Leader>i :<C-u>Vista coc<CR>
 endif
 
 if dein#tap('ale')
@@ -165,6 +166,12 @@ endif
 if dein#tap('vim-floaterm')
   nnoremap <silent> <Leader>ot :<C-u>FloatermToggle<CR>
   nnoremap <silent> <Leader>gz :<C-u>FloatermNew height=0.7 width=0.8 lazygit<CR>
+endif
+
+if dein#tap('dash.vim')
+    nnoremap <silent><localleader>d :Dash<CR>
+		" which_key_localmap
+		let g:which_key_localmap.d="open doc on Dash.app"
 endif
 
 if dein#tap('coc.nvim')
@@ -448,7 +455,7 @@ endif
 
 if dein#tap('vim-choosewin')
 	nmap -         <Plug>(choosewin)
-	nmap <Leader>- ;<C-u>ChooseWinSwapStay<CR>
+	nmap <Leader>- :<C-u>ChooseWinSwapStay<CR>
 endif
 
 if dein#tap('accelerated-jk')

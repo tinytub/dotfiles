@@ -38,6 +38,7 @@ formulas=(
     --HEAD universal-ctags/universal-ctags/universal-ctags
     zsh-autosuggestions
     autojump
+    jesseduffield/lazygit/lazygit
 )
 
 for formula in "${formulas[@]}"; do
