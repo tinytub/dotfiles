@@ -100,7 +100,7 @@
     set laststatus=2
     set showtabline=2
     "set statusline=-        " hide file name in statusline
-    "set fillchars+=vert:\|  " add a bar for vertical splits
+    set fillchars+=vert:\|  " add a bar for vertical splits
     "let g:gruvbox_transp_bg = 1
     if has('nvim')
         if get(g:,'gruvbox_transp_bg',1)
@@ -169,7 +169,7 @@
 ""    set list
 ""    set listchars=tab:»·,nbsp:+,trail:·,extends:→,precedes:←
 
-    " Behavior 
+    " Behavior
     " --------
     "set nowrap                      " No wrap by default
     set linebreak                   " Break long lines at 'breakat'
@@ -208,6 +208,12 @@
     set shell=$SHELL
     set cmdheight=1 " command bar height
     set title " set terminal title
+    " Title length.
+    set titlelen=95
+    " Title string.
+    let &g:titlestring="
+        \ %{expand('%:p:~:.')}%(%m%r%w%)
+        \ %<\[%{fnamemodify(getcwd(), ':~')}\] - Neovim"
     set showmatch " show matching braces
     set matchpairs+=<:> " Add HTML brackets to pair matching
     set matchtime=10     " Tenths of a second to show the matching paren

@@ -239,6 +239,15 @@ set fcs=eob:\           " hide ~ tila
 "set list
 set listchars=tab:»·,nbsp:+,trail:·,extends:→,precedes:←
 
+set title " set terminal title
+" Title length.
+set titlelen=95
+" Title string.
+let &g:titlestring="
+    \ %{expand('%:p:~:.')}%(%m%r%w%)
+    \ %<\[%{fnamemodify(getcwd(), ':~')}\] - Neovim"
+
+
 set showmatch           " Jump to matching bracket
 set matchpairs+=<:>     " Add HTML brackets to pair matching
 set matchtime=1         " Tenths of a second to show the matching paren

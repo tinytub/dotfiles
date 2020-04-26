@@ -108,6 +108,19 @@ if dein#tap('vim-clap')
 	nnoremap <silent> <leader>ft :<C-u>Clap tags<CR>
 endif
 
+if dein#tap('coc-clap')
+        " Show all diagnostics
+        nnoremap <silent> <Leader>ce  :Clap coc_diagnostics<cr>
+        " Manage extensions
+        nnoremap <silent> <Leader>;  :Clap coc_extensions<cr>
+        " Show commands
+        nnoremap <silent> <Leader>,   :Clap coc_commands<cr>
+        " Search workspace symbols
+        nnoremap <silent> <Leader>cs  :Clap coc_symbols<cr>
+   		nnoremap <silent> <Leader>cS  :Clap coc_services<CR>
+		nnoremap <silent> <leader>ct  :Clap coc_outline<CR>
+endif
+
 if dein#tap('vim-easy-align')
     " Start interactive EasyAlign in visual mode (e.g. vipga)
     xmap ga <Plug>(EasyAlign)
@@ -183,26 +196,17 @@ if dein#tap('coc.nvim')
     xmap <silent> <leader>ca :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
     nmap <silent> <leader>ca :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
     " Do default action for next item.
-    nnoremap <silent> <leader>cn  :<C-u>CocNext<CR>
+    "nnoremap <silent> <leader>cn  :<C-u>CocNext<CR>
+    nmap <silent> [a  :<C-u>CocNext<CR>
     " Do default action for previous item.
-    nnoremap <silent> <leader>cp  :<C-u>CocPrev<CR>
-    " Show all diagnostics
-    nnoremap <silent> <leader>ce  :<C-u>CocList diagnostics<cr>
-    " Manage extensions
-    nnoremap <silent> <leader>;  :<C-u>CocList extensions<cr>
-    " Show commands
-    nnoremap <silent> <leader>,  :<C-u>CocList commands<cr>
-    " Find symbol of current document
-    "nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
-    " Search workspace symbols
-    nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
+    nmap <silent> ]a  :<C-u>CocPrev<CR>
     " Resume latest coc list
     nnoremap <silent> <leader>'  :<C-u>CocListResume<CR>
     " Use `[e` and `]e` for navigate diagnostics
     nmap <silent> ]e <Plug>(coc-diagnostic-prev)
     nmap <silent> [e <Plug>(coc-diagnostic-next)
     " Remap for rename current word
-    nmap <leader>cr <Plug>(coc-rename)
+    nmap <leader>cn <Plug>(coc-rename)
     " Remap for format selected region
     vmap <leader>cf  <Plug>(coc-format-selected)
     nmap <leader>cf  <Plug>(coc-format-selected)
@@ -237,10 +241,15 @@ if dein#tap('coc.nvim')
     command! -nargs=0 OR  :call CocAction('runCommand', 'editor.action.organizeImport')
 	nnoremap <silent> <Leader>co :<C-u>OR<CR>
     " multiple cursors
-    nmap <silent> <C-c> <Plug>(coc-cursors-position)
+    "nmap <silent> <C-c> <Plug>(coc-cursors-position)
+    nmap <silent>gzp <Plug>(coc-cursors-position)
+    nmap <expr> <silent>gzw <SID>select_current_word()
+    xmap <silent>gzr <Plug>(coc-cursors-range)
+    " use normal command like `<Leader>xi(`
+    nmap <silent>gzo  <Plug>(coc-cursors-operator)
     "和回车冲突
     "nmap <expr> <silent> <C-m> <SID>select_current_word()
-    xmap <silent> <C-d> <Plug>(coc-cursors-range)
+    "xmap <silent> <C-d> <Plug>(coc-cursors-range)
 
     function! s:select_current_word()
         if !get(g:, 'coc_cursors_activated', 0)
@@ -250,8 +259,6 @@ if dein#tap('coc.nvim')
     endfunc
 
     nnoremap  <leader>fz :<C-u>CocSearch -w<Space>
-    " use normal command like `<leader>xi(`
-    nmap <leader>x  <Plug>(coc-cursors-operator)
 
     " coc-explorer
     noremap <silent> <leader>j :execute 'CocCommand explorer' .
@@ -296,7 +303,7 @@ if dein#tap('committia.vim')
 endif
 
 if dein#tap('vim-quickrun')
-    nnoremap <silent> <leader>cR :QuickRun<CR>
+    nnoremap <silent> <leader>cr :QuickRun<CR>
 endif
 
 if dein#tap('vim-startify')
