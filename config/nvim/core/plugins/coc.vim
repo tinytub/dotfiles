@@ -23,10 +23,8 @@ let g:coc_global_extensions = [
         \ 'coc-html',
         \ 'coc-css',
         \ 'coc-snippets',
-        \ 'coc-prettier',
         \ 'coc-pairs',
         \ 'coc-json',
-        \ 'coc-python',
         \ 'coc-highlight',
         \ 'coc-git',
         \ 'coc-emoji',
@@ -37,7 +35,8 @@ let g:coc_global_extensions = [
         \ 'coc-gitignore',
         \ 'coc-actions',
         \ 'coc-vimlsp',
-        \ 'coc-explorer'
+        \ 'coc-explorer',
+        \ 'coc-db',
         \ ]
 
 " Don't load the defx-git plugin file, not needed

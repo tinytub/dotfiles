@@ -213,10 +213,10 @@
   merged: 0
 
 # tags管理
-#- repo: ludovicchabant/vim-gutentags
-#  #  if: executable('ctags')
-#  #  on_path: .*
-#  hook_source: source  $VIM_PATH/core/plugins/gutentags.vim
+- repo: ludovicchabant/vim-gutentags
+  if: executable('ctags')
+  on_event: [ BufReadPost, BufWritePost ]
+  hook_source: source  $VIM_PATH/core/plugins/gutentags.vim
 
 - repo: t9md/vim-choosewin
   on_map: { n: <Plug> }
@@ -297,6 +297,16 @@
 
 # }}}
 
+# Database{{{
+- repo: tpope/vim-dadbod
+  on_cmd: DB
+  depends: vim-dadbod-ui
+
+- repo: kristijanhusak/vim-dadbod-ui
+  on_cmd: [ DBUIAddConnection,DBUI,DBUIFindBuffer,DBUIRenameBuffer ]
+  hook_source: source $VIM_PATH/core/plugins/dadbod-ui.vim
+# }}}
+
 # Terminal {{{
 - repo: voldikss/vim-floaterm
   on_cmd: [FloatermNew,FloatermToggle,FloatermPrev,FloatermNext,FloatermSend]
@@ -332,6 +342,9 @@
   on_cmd: Clap
   hook_source: source $VIM_PATH/core/plugins/clap.vim
 
+- repo: vn-ki/coc-clap
+  depends: vim-clap
+
 # }}}
 
 # Git Plugins{{{
@@ -348,6 +361,9 @@
       autocmd FileType fugitiveblame normal A
     augroup END
 
+#}}}
+
+# Neovim Lua feature{{{
 - repo: Vigemus/iron.nvim
   if: has('nvim')
   on_cmd: [ IronRepl, IronReplHere, IronFocus, IronSend, IronWatchCurrentFile ]
@@ -445,6 +461,7 @@
 
     "let g:go_doc_popup_window = 1
 
+# Go debug support
 - repo: sebdah/vim-delve
   on_ft: go
 
@@ -475,6 +492,15 @@
       \ 'makefile=make',
       \ 'py=python'
       \ ]
+
+- repo: rhysd/vim-gfm-syntax
+  depends: vim-markdown
+  on_ft: markdown
+  hook_add: |
+    let g:gfm_syntax_enable_always = 0
+    let g:gfm_syntax_highlight_emoji = 0
+    let g:gfm_syntax_enable_filetypes = ['markdown']
+
 # }}}
 
 # Coding{{{
@@ -482,7 +508,7 @@
   on_map: { nx: <Plug> }
 
 - repo: Yggdroot/indentLine
-  on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
+  on_event: FileType
   hook_source: source $VIM_PATH/core/plugins/indentline.vim
 #- repo: nathanaelkane/vim-indent-guides
 #  on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
@@ -502,21 +528,15 @@
     let g:user_emmet_install_command = 0
     let g:user_emmet_mode = 'i'
 - repo: luochen1990/rainbow
-  on_ft: [python,javascript,javascriptreact,html,css,go,vim,toml]
+  on_event: BufRead
   hook_source: let g:rainbow_active = 1
-
-- repo: Shougo/echodoc.vim
-  on_event: CompleteDone
-  hook_source: |
-        call echodoc#enable()
-        let g:echodoc#type = "virtual"
 
 # }}}
 
 # Writing{{{
 - repo: iamcco/markdown-preview.nvim
   on_ft: [markdown,pandoc.markdown,rmd]
-  hook_post_source: 'call mkdp#util#install()'
+  build: 'sh -c "cd app & yarn install"'
   hook_source: |
       let g:mkdp_auto_start = 0
 - repo: junegunn/goyo.vim
