@@ -94,7 +94,7 @@ endif
 if dein#tap('vim-clap')
 	nnoremap <silent> <leader>tc :<C-u>Clap colors<CR>
 	nnoremap <silent> <leader>bb :<C-u>Clap buffers<CR>
-	nnoremap <silent> <leader>fa :<C-u>Clap grep<CR>
+	nnoremap <silent> <leader>fa :<C-u>Clap grep2<CR>
 	nnoremap <silent> <Leader>fe :<C-u>Clap filer<CR>
 	nnoremap <silent> <leader>ff :<C-u>Clap files ++finder=rg --no-ignore --hidden --files<cr>
 	nnoremap <silent> <leader>fg :<C-u>Clap gfiles<CR>
@@ -242,11 +242,11 @@ if dein#tap('coc.nvim')
 	nnoremap <silent> <Leader>co :<C-u>OR<CR>
     " multiple cursors
     "nmap <silent> <C-c> <Plug>(coc-cursors-position)
-    nmap <silent>gzp <Plug>(coc-cursors-position)
-    nmap <expr> <silent>gzw <SID>select_current_word()
-    xmap <silent>gzr <Plug>(coc-cursors-range)
+    nmap <silent><M-d> <Plug>(coc-cursors-position)
+    nmap <expr> <silent><M-d> <SID>select_current_word()
+    xmap <silent><M-d> <Plug>(coc-cursors-range)
     " use normal command like `<Leader>xi(`
-    nmap <silent>gzo  <Plug>(coc-cursors-operator)
+    nmap <silent><M-c>  <Plug>(coc-cursors-operator)
     "和回车冲突
     "nmap <expr> <silent> <C-m> <SID>select_current_word()
     "xmap <silent> <C-d> <Plug>(coc-cursors-range)
