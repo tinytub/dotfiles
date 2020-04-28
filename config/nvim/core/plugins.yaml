@@ -4,6 +4,8 @@
 
 # PackageManage{{{
 - repo: Shougo/dein.vim
+  on_func: dein#
+
 # }}}
 
 # Editor UI{{{
@@ -26,7 +28,6 @@
 #  on_event: VimEnter
 #  hook_add: source $VIM_PATH/core/plugins/buffet.vim
 - repo: editorconfig/editorconfig-vim
-  on_path: .*
 - repo: pechorin/any-jump.vim
   on_cmd: AnyJump
 - repo: ryanoasis/vim-devicons
@@ -343,6 +344,7 @@
   hook_source: source $VIM_PATH/core/plugins/clap.vim
 
 - repo: vn-ki/coc-clap
+  on_cmd: Clap
   depends: vim-clap
 
 # }}}
@@ -378,7 +380,7 @@
 # Neovim Lua feature{{{
 - repo: norcalli/nvim-colorizer.lua
   if: has('nvim-0.4')
-  on_event: FileType
+  on_ft: [ html,css,sass,scss,stylus,vim,javascript,javascriptreact,typescript,typescriptreact ]
   hook_source: luafile $VIM_PATH/core/plugins/colorizer.lua
 
 # Language{{{
@@ -508,7 +510,7 @@
   on_map: { nx: <Plug> }
 
 - repo: Yggdroot/indentLine
-  on_event: FileType
+  on_event: BufRead
   hook_source: source $VIM_PATH/core/plugins/indentline.vim
 #- repo: nathanaelkane/vim-indent-guides
 #  on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
