@@ -38,6 +38,7 @@
   "diagnostic.signOffset": 9999999,
   "diagnostic.errorSign": "●",
   "diagnostic.warningSign": "●",
+  "diagnostic.infoSign": "●",
   "diagnostic.displayByAle": false,
   "diagnostic.refreshOnInsertMode": true,
   //"codeLens.enable": true,
