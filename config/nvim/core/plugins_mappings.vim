@@ -144,6 +144,8 @@ endif
 if dein#tap('vim-easymotion')
    	nmap gsj <Plug>(easymotion-w)
 	nmap gsk <Plug>(easymotion-b)
+    nmap gsf <Plug>(easymotion-overwin-f)
+	nmap gss <Plug>(easymotion-overwin-f2)
 endif
 
 if dein#tap('vim-which-key')
@@ -173,12 +175,18 @@ if dein#tap('vim-smartchr')
     autocmd FileType go inoremap <buffer><expr> ;
             \ smartchr#loop(':=',';')
     autocmd FileType go inoremap <buffer> <expr> .
-          \ smartchr#loop('.', '<-', '->','...')
+            \ smartchr#loop('.', '<-', '->','...')
+	autocmd FileType typescript inoremap <buffer><expr>;
+			\ smartchr#loop(':',';')
 endif
 
 if dein#tap('vim-floaterm')
   nnoremap <silent> <Leader>ot :<C-u>FloatermToggle<CR>
   nnoremap <silent> <Leader>gz :<C-u>FloatermNew height=0.7 width=0.8 lazygit<CR>
+endif
+
+if dein#tap('vim-dadbod-ui')
+	nnoremap <silent> <Leader>od :DBUIToggle<CR>
 endif
 
 if dein#tap('dash.vim')
