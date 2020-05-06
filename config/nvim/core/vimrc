@@ -63,7 +63,7 @@ call s:source_file('core/filetype.vim')
 call s:source_file('core/mappings.vim')
 call s:source_file('core/terminal.vim')
 call s:source_file('core/theme.vim')
-call s:source_file('core/color.vim')
+"call s:source_file('core/color.vim')
 
 set secure
 "

@@ -50,6 +50,9 @@
   build: 'yarn install --frozen-lockfile'
   hook_add: source $VIM_PATH/core/plugins/coc.vim
 
+- repo: Shougo/context_filetype.vim
+  on_event: [ BufReadPre, BufNew ]
+
 # Lazy Loading
 # ==========================================
 
@@ -65,9 +68,9 @@
         \}
 
 # ale {{{
-- repo: dense-analysis/ale
-  hook_add: source $VIM_PATH/core/plugins/ale.vim
-  on_event: FileType
+#- repo: dense-analysis/ale
+#  hook_add: source $VIM_PATH/core/plugins/ale.vim
+#  on_event: FileType
 # }}}
 
 # Denite{{{
@@ -208,10 +211,7 @@
 #  merged: 0
 
 - repo: honza/vim-snippets
-  depends: [coc.nvim]
-  on_event: FileType
-  if: has('python3')
-  merged: 0
+  depends: coc.nvim
 
 # tags管理
 - repo: ludovicchabant/vim-gutentags

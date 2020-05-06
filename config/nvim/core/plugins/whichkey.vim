@@ -13,7 +13,7 @@ let g:which_key_map = {
       \ 'p' : {
             \ 'name' : '+plugin manage',
             \ 'u' : 'update all plugins',
-            \ 'r' : 'reache runtime path',
+            \ 'r' : 'recache runtime path',
             \ 'l' : 'plugins update log',
             \ },
       \ 'e' : 'open file explorer' ,
