@@ -76,12 +76,12 @@ augroup user_plugin_filetype
 
 		"autocmd Syntax * if 5000 < line('$') | syntax sync minlines=200 | endif
 
-		autocmd FileType css setlocal equalprg=csstidy\ -\ --silent=true
+		"autocmd FileType css setlocal equalprg=csstidy\ -\ --silent=true
 
 	  " https://webpack.github.io/docs/webpack-dev-server.html#working-with-editors-ides-supporting-safe-write
 	  autocmd FileType css,javascript,javascriptreact setlocal backupcopy=yes
 
-		autocmd FileType json syntax match Comment +\/\/.\+$+
+		"autocmd FileType json syntax match Comment +\/\/.\+$+
 
 		" Go (Google)
     autocmd FileType go

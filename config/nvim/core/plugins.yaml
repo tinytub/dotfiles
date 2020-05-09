@@ -241,7 +241,7 @@
 
 - repo: thinca/vim-quickrun
   on_cmd: QuickRun
-  hook_add: |
+  hook_source: |
         let g:quickrun_config = {
             \   "_" : {
             \       "outputter" : "message",
@@ -338,16 +338,18 @@
 
 # Find Everythins
 - repo: liuchengxu/vim-clap
-  build: 'sh ./install.sh'
+  build: 'bash install.sh'
   on_cmd: Clap
-  hook_source: source $VIM_PATH/core/plugins/clap.vim
+  hook_add: source $VIM_PATH/core/plugins/clap.vim
 
 - repo: vn-ki/coc-clap
   on_source: vim-clap
 # }}}
 
 # Git Plugins{{{
-- { repo: jreybert/vimagit, on_cmd: Magit }
+- repo: jreybert/vimagit
+  on_cmd: Magit
+  hook_source: autocmd User VimagitEnterCommit startinsert
 
 - repo: rhysd/committia.vim
   on_path: [ COMMIT_EDITMSG, MERGE_MSG ]
@@ -373,12 +375,11 @@
 
 
 # }}}
-
-# Neovim Lua feature{{{
+#
 - repo: norcalli/nvim-colorizer.lua
   if: has('nvim-0.4')
   on_ft: [ html,css,sass,scss,stylus,vim,javascript,javascriptreact,typescript,typescriptreact ]
-  hook_source: luafile $VIM_PATH/core/plugins/colorizer.lua
+  hook_source: luafile $VIM_PATH/core/plugin/colorizer.lua
 
 # Language{{{
 - { repo: rust-lang/rust.vim, on_ft: rust }
@@ -504,11 +505,13 @@
 
 # Coding{{{
 - repo: tyru/caw.vim
+  depends: context_filetype.vim
   on_map: { nx: <Plug> }
 
 - repo: Yggdroot/indentLine
   on_event: BufRead
   hook_source: source $VIM_PATH/core/plugins/indentline.vim
+
 #- repo: nathanaelkane/vim-indent-guides
 #  on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
 #  hook_post_source: IndentGuidesEnable
