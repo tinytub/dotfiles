@@ -9,7 +9,7 @@
 # }}}
 
 # Editor UI{{{
-- repo: wsdjeg/dein-ui.vim
+#- repo: wsdjeg/dein-ui.vim
 #- repo: taigacute/spaceline.vim
 - repo: vim-airline/vim-airline
   hook_source: source $VIM_PATH/core/plugins/airline.vim
@@ -379,7 +379,7 @@
 - repo: norcalli/nvim-colorizer.lua
   if: has('nvim-0.4')
   on_ft: [ html,css,sass,scss,stylus,vim,javascript,javascriptreact,typescript,typescriptreact ]
-  hook_source: luafile $VIM_PATH/core/plugin/colorizer.lua
+  hook_source: luafile $VIM_PATH/core/plugins/colorizer.lua
 
 # Language{{{
 - { repo: rust-lang/rust.vim, on_ft: rust }
@@ -518,8 +518,9 @@
 #  hook_add: source  $VIM_PATH/core/plugins/indentline.vim
 
 - repo: liuchengxu/vista.vim
-  on_cmd: [Vista,Vista!,Vista!!]
+  on_cmd: [ Vista, Vista!, Vista!! ]
   hook_source: source  $VIM_PATH/core/plugins/vista.vim
+- repo: majutsushi/tagbar
 
 - repo: mattn/emmet-vim
   on_event: InsertEnter
