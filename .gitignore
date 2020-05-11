@@ -7,10 +7,11 @@ config/nvim/spell
 config/nvim/shada
 config/nvim/plugged
 config/nvim/autoload/plug.vim
+config/nvim/sessions/default.vim
 vim/vim.symlink/spell/
 vim/vim.symlink/plugged/
 
-  
+
 dein/.DS_Store
 colors/
 coc-settings.json
