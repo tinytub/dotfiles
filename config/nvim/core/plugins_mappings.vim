@@ -132,8 +132,8 @@ if dein#tap('vista.vim')
     "nnoremap <silent><localleader>v :Vista!!<CR>
     "nnoremap <silent><localleader>v :Vista coc<CR>
     "nnoremap <silent><leader>fv     :Vista finder coc<CR>
-	"nnoremap <silent> <Leader>i :<C-u>Vista!!<CR>
-	nnoremap <silent> <Leader>i :<C-u>TagbarToggle<CR>
+	nnoremap <silent> <Leader>i :<C-u>Vista!!<CR>
+	"nnoremap <silent> <Leader>i :<C-u>TagbarToggle<CR>
 
 	"nnoremap <silent> <Leader>i :<C-u>Vista coc<CR>
 endif

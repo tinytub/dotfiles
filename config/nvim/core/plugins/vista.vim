@@ -8,6 +8,7 @@ let g:vista_executive_for = {
   \ 'pandoc': 'markdown',
   \ 'markdown': 'toc',
   \ 'yaml': 'coc',
+  \ 'typescript': 'coc',
   \ }
 let g:vista#renderer#icons = {
 \   "function": "\uf794",
