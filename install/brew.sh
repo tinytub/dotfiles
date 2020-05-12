@@ -35,7 +35,7 @@ formulas=(
     git-standup
     entr
     yarn
-    --HEAD universal-ctags/universal-ctags/universal-ctags
+    --with-jansson --HEAD universal-ctags/universal-ctags/universal-ctags
     zsh-autosuggestions
     autojump
     jesseduffield/lazygit/lazygit
