@@ -120,7 +120,7 @@ let g:which_key_map = {
 
 function! WhichKeyForGo() abort
   let g:which_key_localmap.g ={
-        \ 'name' : '+golang-toolkit',
+        \ 'name' : '+Golang-Toolkit',
         \ 'i'    : 'go impl',
         \ 'd'    : 'go describe',
         \ 'c'    : 'go callees',
