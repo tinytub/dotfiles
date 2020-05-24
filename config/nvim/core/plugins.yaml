@@ -242,16 +242,17 @@
   hook_add: |
         let g:smoothie_no_default_mappings = v:true
 
-- repo: thinca/vim-quickrun
-  on_cmd: QuickRun
-  hook_source: |
-        let g:quickrun_config = {
-            \   "_" : {
-            \       "outputter" : "message",
-            \   },
-            \}
-        let g:quickrun_no_default_key_mappings = 1
-- {repo: simnalamburt/vim-mundo , on_map: { n: <Plug> } }
+#- repo: thinca/vim-quickrun
+#  on_cmd: QuickRun
+#  hook_source: |
+#    let g:quickrun_config = {
+#      \   "_" : {
+#        \       "outputter" : "message",
+#        \   },
+#        \}
+#    let g:quickrun_no_default_key_mappings = 1
+- repo: simnalamburt/vim-mundo
+  on_cmd: MundoToggle
 
 - {repo: tpope/vim-repeat , on_map: .* }
 
@@ -341,8 +342,9 @@
 
 # Find Everythins
 - repo: liuchengxu/vim-clap
+  merged: 0
   build: 'bash install.sh'
-  on_cmd: Clap
+  on_map: { n: <Plug> }
   hook_add: source $VIM_PATH/core/plugins/clap.vim
 
 - repo: vn-ki/coc-clap
@@ -389,7 +391,7 @@
 - { repo: chr4/nginx.vim, on_ft: nginx }
 - { repo: honza/dockerfile.vim, on_ft: Dockerfile }
 - { repo: cespare/vim-toml, on_ft: toml }
-- { repo: elzr/vim-json, on_ft: json }
+- { repo: kevinoid/vim-jsonc, on_ft: json }
 
 - repo: pearofducks/ansible-vim
   on_ft: [ ansible, ansible_hosts, jinja2 ]
@@ -446,21 +448,21 @@
     let g:go_highlight_variable_assignments = 0
 
     " 关闭 vim-go 的 gd :GoDef 由 coc 接管
-    "let g:go_def_reuse_buffer = 1
+    " let g:go_def_reuse_buffer = 1
 
-    "let g:go_fmt_command = "goimports"
+    " let g:go_fmt_command = "goimports"
     " 自动添加标签
     let g:go_addtags_transform = "snakecase"
-    "let g:go_term_mode = "split"
-    "let g:go_term_enabled = 1
+    " let g:go_term_mode = "split"
+    " let g:go_term_enabled = 1
 
     "据说可以解决和 ale 的冲突
-    let g:go_fmt_fail_silently = 1
-    let g:go_decls_mode = 'fzf'
+    " let g:go_fmt_fail_silently = 1
+    " let g:go_decls_mode = 'fzf'
 
     " 关闭 vim-go 的 linter
-    "let g:go_metalinter_autosave = 0
-    "let g:go_metalinter_autosave_enabled = ['golint', 'vet']
+    " let g:go_metalinter_autosave = 0
+    " let g:go_metalinter_autosave_enabled = ['golint', 'vet']
 
     "let g:go_doc_popup_window = 1
 
@@ -533,7 +535,7 @@
     let g:user_emmet_install_command = 0
     let g:user_emmet_mode = 'i'
 - repo: luochen1990/rainbow
-  on_ft: [ go,rust,python,c,cpp,html,css,yaml,ini,toml,javascript,javascriptreact,vue,typescriptreact ]
+  on_ft: [ html,css,javascript,javascriptreact,vue,go,python,c,cpp,lua,rust,vim,less,stylus,sass,scss,json,ruby,scala,toml,php,haskell]
   hook_source: let g:rainbow_active = 1
 
 
