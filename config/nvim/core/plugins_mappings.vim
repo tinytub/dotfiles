@@ -213,8 +213,8 @@ if dein#tap('coc.nvim')
     " Resume latest coc list
     nnoremap <silent> <leader>'  :<C-u>CocListResume<CR>
     " Use `[e` and `]e` for navigate diagnostics
-    nmap <silent> ]e <Plug>(coc-diagnostic-prev)
-    nmap <silent> [e <Plug>(coc-diagnostic-next)
+    nmap <silent> [e <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]e <Plug>(coc-diagnostic-next)
     " Remap for rename current word
     nmap <leader>cn <Plug>(coc-rename)
     " Remap for format selected region

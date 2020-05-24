@@ -1,3 +1,26 @@
+# ============================
+# ===       Plugins        ===
+# ============================
+set -g @plugin 'tmux-plugins/tpm'
+#set -g @plugin 'egel/tmux-gruvbox'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
+#set -g @plugin 'tmux-plugins/tmux-urlview'
+set -g @plugin 'tmux-plugins/tmux-battery'
+set -g @plugin 'thewtex/tmux-mem-cpu-load'
+set -g @plugin 'tmux-plugins/tmux-copycat'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @prefix_highlight_show_copy_mode 'on'
+set -g @prefix_highlight_copy_mode_attr 'fg=white,bg=blue'
+set -g @continuum-save-interval '15'
+set -g @sysstat_mem_view_tmpl 'MEM: #[fg=#{mem.color}]#{mem.pused} (#{mem.used})#[default]'
+set -g @sysstat_swap_view_tmpl 'SW: #[fg=#{swap.color}]#{swap.pused} (#{swap.used})#[default]'
+
+if "test ! -d ~/.tmux/plugins/tpm" \
+   "run 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins'"
+
+run '~/.tmux/plugins/tpm/tpm'
 
 # ==========================
 # ===  General settings  ===
@@ -5,9 +28,9 @@
 # config color of tmux
 # Add truecolor support
 set -g default-terminal "screen-256color"
-#set-option -ga terminal-overrides ",*256col*:Tc"
+set-option -ga terminal-overrides ",*256col*:Tc"
 # 设置 truecolor
-set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
+#set -as terminal-overrides ',xterm*:Tc:sitm=\E[3m'
 
 set -g status-interval 1
 
@@ -46,69 +69,41 @@ setw -g mouse on
 # =====================================
 # ===    Appearence and status bar  ===
 # ======================================
-## Move status bar to the top
-#set-option -g status-position bottom
-#set -g status 'on'
-#set -g status-position bottom
-#set -g status-bg 'colour235'
-#set -g status-justify 'centre'
-#set -g status-left-length '100'
-#set -g status-right-length '100'
-#set -g message-style fg='colour222',bg='colour238'
-#set -g message-command-style fg='colour222',bg='colour238'
-#set -g pane-border-style fg='colour238'
-#set -g pane-active-border-style fg='colour154'
-#setw -g window-status-activity-style fg='colour154',bg='colour235',none
-#setw -g window-status-separator ''
-#setw -g window-status-style fg='colour121',bg='colour235',none
-#set -g status-left '#[fg=colour232,bg=colour154] #S #[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour222,bg=colour238] #W #[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]#[fg=colour121,bg=colour235] #(whoami)  #(uptime  | cut -d " " -f 1,2,3) #[fg=colour235,bg=colour235,nobold,nounderscore,noitalics]'
-#set -g status-right '#[fg=colour235,bg=colour235,nobold,nounderscore,noitalics]#[fg=colour121,bg=colour235] %r  %a  %Y #[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]#[fg=colour222,bg=colour238] #H #[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour232,bg=colour154] #(rainbarf --battery --remaining --no-rgb) '
-#setw -g window-status-format '#[fg=colour235,bg=colour236,nobold,nounderscore,noitalics]#[fg=colour221,bg=colour236] #I  #W #[fg=colour236,bg=colour235,nobold,nounderscore,noitalics]'
-#setw -g window-status-current-format '#[fg=colour235,bg=colour238,nobold,nounderscore,noitalics]#[fg=colour222,bg=colour238] #I  #W  #F #[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]'
-
 # Move status bar to the top
 set -g status 'on'
 set -g status-position bottom
-set -g status-bg 'colour235'
 set -g status-justify 'centre'
 set -g status-left-length '100'
 set -g status-right-length '100'
+
+set-option -g window-status-current-format  '\
+#[fg=colour15,bg=colour161] #W \
+#[bg=#1b2b34]'
+set-option -g window-status-format '#[fg=colour15,bg=colour24] #W '
+
+set -g status-left '\
+#[fg=colour232,bg=colour172] %H:%M %a '
+#[fg=colour232,bg=colour154] #(rainbarf --battery --remaining --no-rgb) '
+
+set -g status-right '\
+#{?client_prefix,🐠,} \
+#[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]\
+#[fg=green]\
+#($TMUX_PLUGIN_MANAGER_PATH/tmux-mem-cpu-load/tmux-mem-cpu-load -g 8 -t 0 -a 0 -c)'
+
+# ==========================
+# ===    Colorscheme     ===
+# ==========================
 set -g message-style fg='colour222',bg='colour238'
 set -g message-command-style fg='colour222',bg='colour238'
 set -g pane-border-style fg='colour238'
 set -g pane-active-border-style fg='colour154'
-setw -g window-status-activity-style fg='colour154',bg='colour235',none
-setw -g window-status-separator ''
-setw -g window-status-style fg='colour121',bg='colour235',none
 
-set -g status-left '\
-#[fg=colour232,bg=colour154] #S \
-#[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]\
-#[fg=colour222,bg=colour238] #W \
-#[fg=colour238,bg=colour172,nobold,nounderscore,noitalics]\
-#[fg=colour232,bg=colour172] #{b:pane_current_path} \
-#[fg=colour172,bg=colour235]'
+set-option -g status-style                 fg=colour15,bg=#1b2b34
+set-option -g pane-border-style            fg=green
+set-option -g pane-active-border-style     fg=yellow
+set-option -g window-status-activity-style fg=colour111
 
-set -g status-right '\
-#{?client_prefix,🐠,} \
-#[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]\
-#[fg=colour222,bg=colour238] CPU: #{cpu_percentage} \
-#[fg=colour172,bg=colour238,nobold,nounderscore,noitalics]\
-#[fg=colour232,bg=colour172] %H:%M %a \
-#[fg=colour238,bg=colour172,nobold,nounderscore,noitalics]\
-#[fg=colour222,bg=colour238] #(whoami) \
-#[fg=colour154,bg=colour238,nobold,nounderscore,noitalics]\
-#[fg=colour232,bg=colour154] #(rainbarf --battery --remaining --no-rgb) '
-
-set-window-option -g window-status-format "\
-#[fg=colour235,bg=colour235,noitalics]\
-#[fg=colour240,bg=colour235]#I \
-#[fg=colour240, bg=colour235] #W "
-
-set -g window-status-current-format '\
-#[fg=colour235,bg=colour238,nobold,nounderscore,noitalics]\
-#[fg=colour222,bg=colour238] #I  #W  #F \
-#[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]'
 # ==========================
 # ===   Key bindings     ===
 # ==========================
@@ -143,26 +138,14 @@ bind -r L resize-pane -R 5
 # reload the tmux config
 bind r source-file ~/.tmux.conf \; display "Configuration Reloaded"
 
-# ============================
-# ===       Plugins        ===
-# ============================
-set -g @plugin 'tmux-plugins/tpm'
-#set -g @plugin 'egel/tmux-gruvbox'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'tmux-plugins/tmux-continuum'
-set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
-#set -g @plugin 'tmux-plugins/tmux-urlview'
-set -g @plugin 'tmux-plugins/tmux-battery'
-set -g @plugin 'tmux-plugins/tmux-cpu'
-set -g @plugin 'samoshkin/tmux-plugin-sysstat'
-set -g @plugin 'tmux-plugins/tmux-copycat'
-set -g @prefix_highlight_show_copy_mode 'on'
-set -g @prefix_highlight_copy_mode_attr 'fg=white,bg=blue'
-set -g @continuum-save-interval '15'
-set -g @sysstat_mem_view_tmpl 'MEM: #[fg=#{mem.color}]#{mem.pused} (#{mem.used})#[default]'
-set -g @sysstat_swap_view_tmpl 'SW: #[fg=#{swap.color}]#{swap.pused} (#{swap.used})#[default]'
+# ==========================
+# ===   Plugin Resurrect ===
+# ==========================
 
-if "test ! -d ~/.tmux/plugins/tpm" \
-   "run 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins'"
-
-run '~/.tmux/plugins/tpm/tpm'
+# tmux-resurrect
+set -g @resurrect-save-bash-history 'on'
+set -g @resurrect-capture-pane-contents 'on'
+# save vim session
+set -g @resurrect-strategy-vim 'session'
+# save neovim session
+set -g @resurrect-strategy-nvim 'session'
