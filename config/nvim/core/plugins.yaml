@@ -31,8 +31,6 @@
 #  on_event: VimEnter
 #  hook_add: source $VIM_PATH/core/plugins/buffet.vim
 - repo: editorconfig/editorconfig-vim
-- repo: pechorin/any-jump.vim
-  on_cmd: AnyJump
 - repo: ryanoasis/vim-devicons
 
 #my
@@ -49,7 +47,7 @@
 
 # Core Plugins{{{
 - repo: neoclide/coc.nvim
-  merge: 0
+  merged: 0
   build: 'yarn install --frozen-lockfile'
   hook_add: source $VIM_PATH/core/plugins/coc.vim
 

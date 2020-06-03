@@ -9,6 +9,7 @@ let g:vista_executive_for = {
   \ 'markdown': 'toc',
   \ 'yaml': 'coc',
   \ 'typescript': 'coc',
+  \ 'typescriptreact': 'coc',
   \ }
 let g:vista#renderer#icons = {
 \   "function": "\uf794",
