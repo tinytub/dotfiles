@@ -203,6 +203,15 @@ if dein#tap('coc.nvim')
     function! s:cocActionsOpenFromSelected(type) abort
         execute 'CocCommand actions.open ' . a:type
     endfunction
+    " Jump definition in other window
+    function! s:definition_other_window() abort
+      if winnr('$') >= 4
+        exec "normal \<Plug>(coc-definition)"
+      else
+        exec 'vsplit'
+        exec "normal \<Plug>(coc-definition)"
+      endif
+    endfunction
     xmap <silent> <leader>ca :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
     nmap <silent> <leader>ca :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
     " Do default action for next item.
@@ -224,6 +233,7 @@ if dein#tap('coc.nvim')
     nmap <leader>qF  <Plug>(coc-fix-current)
     " Remap keys for gotos
     nmap <silent> gd <Plug>(coc-definition)
+    " nmap <silent> gd :<C-u>call <sid>definition_other_window()<CR>
     nmap <silent> gy <Plug>(coc-type-definition)
     nmap <silent> gi <Plug>(coc-implementation)
     nmap <silent> <leader>ci <Plug>(coc-implementation)
@@ -398,11 +408,6 @@ endif
 ""		let @s = temp
 ""	endfunction
 "endif
-
-if dein#tap('any-jump.vim')
-	nnoremap <silent> <Leader>cj :AnyJump<CR>
-	xnoremap <silent> <Leader>cj :AnyJump<CR>
-endif
 
 if dein#tap('vim-go')
 "vim-go
