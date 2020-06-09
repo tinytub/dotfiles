@@ -464,10 +464,6 @@
 
     "let g:go_doc_popup_window = 1
 
-# Go debug support
-- repo: sebdah/vim-delve
-  on_ft: go
-
 # Markdown related
 #- repo: tpope/vim-markdown
 - repo: plasticboy/vim-markdown
