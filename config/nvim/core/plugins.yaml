@@ -120,14 +120,6 @@
   on_map: { n: <Plug> }
   hook_source: source  $VIM_PATH/core/plugins/choosewin.vim
 
-- repo: mhinz/vim-startify
-  #  on_cmd: Startify
-  #  depends: vim-devicons
-  hook_source: source  $VIM_PATH/core/plugins/startify.vim
-  hook_post_source: |
-      function! StartifyEntryFormat()
-        return 'WebDevIconsGetFileTypeSymbol(absolute_path) ." ". entry_path'
-      endfunction
 - repo: junegunn/vim-easy-align
   on_ft: [vim,json,go,html,js,jsx,py,css,less,tmpl,toml,xml,sql,Dockerfile]
 
@@ -463,9 +455,6 @@
 - repo: AndrewRadev/dsf.vim
   on_map: { n: <Plug>Dsf }
   hook_add: let g:dsf_no_mappings = 1
-
-- repo: kana/vim-smartchr
-  on_event: InsertCharPre
 
 - repo: osyo-manga/vim-textobj-multiblock
   on_map: { ox: <Plug> }
