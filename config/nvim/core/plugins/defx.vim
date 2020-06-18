@@ -1,7 +1,7 @@
 " Defx
 call defx#custom#option('_', {
 	\ 'resume': 1,
-	\ 'winwidth': 25,
+	\ 'winwidth': 30,
 	\ 'split': 'vertical',
 	\ 'direction': 'topleft',
 	\ 'show_ignored_files': 0,
@@ -26,6 +26,14 @@ call defx#custom#column('git', {
 	\ })
 
 call defx#custom#column('mark', { 'readonly_icon': '', 'selected_icon': '' })
+
+" defx-icons plugin
+let g:defx_icons_column_length = 2
+let g:defx_icons_mark_icon = ''
+
+" Internal use
+let s:original_width = get(get(defx#custom#_get().option, '_'), 'winwidth')
+
 
 " Events
 " ---
@@ -74,8 +82,9 @@ function! s:defx_mappings() abort
 	nnoremap <silent><buffer><expr> l     <sid>defx_toggle_tree()
 	nnoremap <silent><buffer><expr> h     defx#async_action('cd', ['..'])
 	nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
-	nnoremap <silent><buffer><expr> s     defx#do_action('open', 'botright vsplit')
-	nnoremap <silent><buffer><expr> i     defx#do_action('open', 'botright split')
+	"nnoremap <silent><buffer><expr> s     defx#do_action('open', 'botright vsplit')
+	nnoremap <silent><buffer><expr> <C-v> defx#do_action('open', 'botright vsplit')
+	nnoremap <silent><buffer><expr> <C-s> defx#do_action('open', 'botright split')
 	nnoremap <silent><buffer><expr> P     defx#do_action('open', 'pedit')
 	nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
 	nnoremap <silent><buffer><expr> N     defx#do_action('new_multiple_files')
@@ -89,7 +98,7 @@ function! s:defx_mappings() abort
 	nnoremap <silent><buffer><expr> <Tab> winnr('$') != 1 ?
 		\ ':<C-u>wincmd w<CR>' :
 		\ ':<C-u>Defx -buffer-name=temp -split=vertical<CR>'
-   	" Defx's buffer management
+ 	" Defx's buffer management
 	nnoremap <silent><buffer><expr> q      defx#do_action('quit')
 	nnoremap <silent><buffer><expr> se     defx#do_action('save_session')
 	nnoremap <silent><buffer><expr> <C-r>  defx#do_action('redraw')
@@ -128,4 +137,47 @@ function! s:defx_mappings() abort
 
 endfunction
 
+" TOOLS
+" ---
+
+function! s:git_diff(context) abort
+	execute 'GdiffThis'
+endfunction
+
+function! s:toggle_width(context) abort
+	" Toggle between defx window width and longest line
+	let l:max = 0
+	for l:line in range(1, line('$'))
+		let l:len = len(getline(l:line))
+		let l:max = max([l:len, l:max])
+	endfor
+	let l:new = l:max == winwidth(0) ? s:original_width : l:max
+	call defx#call_action('resize', l:new)
+endfunction
+
+function! s:explorer(context) abort
+	" Open file-explorer split with tmux
+	let l:explorer = s:find_file_explorer()
+	if empty('$TMUX') || empty(l:explorer)
+		return
+	endif
+	let l:target = a:context['targets'][0]
+	let l:parent = fnamemodify(l:target, ':h')
+	let l:cmd = 'split-window -p 30 -c ' . l:parent . ' ' . l:explorer
+	silent execute '!tmux ' . l:cmd
+endfunction
+
+function! s:find_file_explorer() abort
+	" Detect terminal file-explorer
+	let s:file_explorer = get(g:, 'terminal_file_explorer', '')
+	if empty(s:file_explorer)
+		for l:explorer in ['lf', 'hunter', 'ranger', 'vifm']
+			if executable(l:explorer)
+				let s:file_explorer = l:explorer
+				break
+			endif
+		endfor
+	endif
+	return s:file_explorer
+endfunction
 " vim: set ts=2 sw=2 tw=80 noet :

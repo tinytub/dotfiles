@@ -26,6 +26,8 @@ export PATH=$PATH:$M2_HOME/bin
 #export GOPATH="/home/zhaopeng/goworks1.8.3/src/jd.com/jstack-thirdparty-libs"
 #export GOROOT="/home/zhaopeng/go1.8.3"
 
+export PATH=$PATH:/usr/local/opt/kubebuilder/bin
+
 export PATH=${JAVA_HOME}/bin:$PATH
 export PATH="/usr/local/opt/ruby/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
 
@@ -39,3 +41,7 @@ export AUTOSSH_DEBUG=1
 # Editor
 export EDITOR="nvim"
 export GIT_EDITOR="nvim"
+
+# minikube
+export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24,192.168.64.0/24
+

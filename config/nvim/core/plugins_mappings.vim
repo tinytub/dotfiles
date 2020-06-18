@@ -326,10 +326,6 @@ if dein#tap('vim-quickrun')
     nnoremap <silent> <leader>cr :QuickRun<CR>
 endif
 
-if dein#tap('vim-startify')
-	nnoremap <silent> <Leader>os  :<C-u>Startify<CR>
-endif
-
 if dein#tap('markdown-preview.nvim')
 	nnoremap <silent> <Leader>om  :<C-u>MarkdownPreview<CR>
 endif

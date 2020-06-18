@@ -13,10 +13,6 @@ hi PmenuSbar ctermfg=NONE ctermbg=234 guifg=NONE guibg=#212026 guisp=NONE cterm=
 hi PmenuSel ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5e5079 guisp=NONE cterm=NONE gui=NONE
 hi PmenuThumb ctermfg=NONE ctermbg=60 guifg=NONE guibg=#5d4d7a guisp=NONE cterm=NONE gui=NONE
 
-"Startify Header
-" ---------------------------------------------------------
-hi StartifyHeader ctermfg=12 guifg=#68A8E4
-
 "coc setting
 " ---------------------------------------------------------
 hi CocCursorRange guibg=#b16286 guifg=#ebdbb2

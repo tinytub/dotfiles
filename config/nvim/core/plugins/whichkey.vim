@@ -53,10 +53,9 @@ let g:which_key_map = {
             \ },
       \ 'i' : 'Show symbols list' ,
       \ 'o' : {
-            \ 'name' : '+open [terminal startify]',
+            \ 'name' : '+open [terminal]',
             \ 'd' : 'open database',
             \ 't' : 'open a terminal',
-            \ 's' : 'open stratify',
             \ 'm' : 'open markdown preview',
             \ },
       \ 'm' : 'open mundotree' ,
