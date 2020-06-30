@@ -6,7 +6,7 @@
   "suggest.snippetIndicator": " ►",
   "suggest.triggerCompletionWait": 100,
   "suggest.echodocSupport": true, // 在 function 后显示相关的参数或结构体
-  //"suggest.floatEnable": false, // 关掉补全后 function 的悬窗 doc
+  "suggest.floatEnable": true, // 补全后 function 的悬窗 doc
   "suggest.completionItemKindLabels": {
     "keyword": "\uf1de",
     "variable": "\ue79b",
@@ -80,10 +80,6 @@
     "go",
     "json"
   ],
-  "prettier.statusItemText": "ⓟ ",
-  "prettier.eslintIntegration": true,
-  "prettier.stylelintIntegration": true,
-  "prettier.disableSuccessMessage": true,
   //multiple curssors
   "cursors.nextKey": "<C-n>",
   "cursors.previousKey": "<C-p>",
@@ -121,7 +117,7 @@
   //"java.format.onType.enabled": true,
   //"java.format.settings.profile": "GoogleStyle",
   //"java.completion.enabled":true,
-  "python.jediEnabled": false,
+  //"python.jediEnabled": false,
   //"python.linting.pylintEnabled": true,
   //"python.formatting.provider": "black",
   //"python.formatting.blackPath": "/usr/local/bin/black",
