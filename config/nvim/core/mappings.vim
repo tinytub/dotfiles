@@ -97,7 +97,8 @@
     nnoremap  [b :<C-u>bp<CR>
     nnoremap  ]b :<C-u>bn<CR>
     "delete buffer
-    nnoremap <C-x> :<C-u>bd<CR>
+    nnoremap <C-x> :<C-u>BD<CR>
+    "nnoremap <C-x> :<C-u>bd<CR>
 
     " So that I don't have to hit esc
     "inoremap jk
