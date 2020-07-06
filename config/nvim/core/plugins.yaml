@@ -18,6 +18,7 @@
 - repo: rakr/vim-one
 - repo: sainnhe/forest-night
 - repo: wadackel/vim-dogrun
+- repo: qpkorr/vim-bufkill
 
 
 #- repo: itchyny/lightline.vim

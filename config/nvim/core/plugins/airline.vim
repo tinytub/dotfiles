@@ -64,7 +64,12 @@ let g:airline#extensions#coc#enabled = 1
 let airline#extensions#coc#error_symbol = '✖'
 let airline#extensions#coc#warning_symbol = '⚠'
 
-" 关闭 ale 支持
-let g:airline#extensions#ale#enabled = 0
 " 关闭 vista 支持
 let g:airline#extensions#vista#enabled=0
+
+
+"let g:airline_filetype_overrides = {
+"    \ 'defx':  [' Files', '%{b:defx.paths[0]}'],
+"    \ 'vista':  [' Outline', ''],
+"    \ 'fugitive':  [' Git', ''],
+"\ }
