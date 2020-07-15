@@ -208,10 +208,10 @@ set autoread                    " Auto readfile
 set linebreak                   " Break long lines at 'breakat'
 set breakat=\ \	;:,!?           " Long lines break chars
 set nostartofline               " Cursor in same column for few commands
-set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys
+set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys 光标循环
 set splitbelow splitright       " Splits open bottom right
 set switchbuf=useopen,vsplit    " Jump to the first open window
-set backspace=indent,eol,start  " Intuitive backspacing in insert mode
+set backspace=indent,eol,start  " Intuitive backspacing in insert mode 智能回删
 set diffopt=filler,iwhite       " Diff mode: show fillers, ignore whitespace
 set completeopt=menu,menuone    " Always show menu, even for one item
 set completeopt+=noselect,noinsert
