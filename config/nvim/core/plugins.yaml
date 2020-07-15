@@ -14,16 +14,18 @@
 - repo: vim-airline/vim-airline
   hook_source: source $VIM_PATH/core/plugins/airline.vim
 - repo: vim-airline/vim-airline-themes
+  #- repo: itchyny/lightline.vim
+  #  hook_add: source $VIM_PATH/core/plugins/lightline.vim
+  #- repo: mengelbrecht/lightline-bufferline
+  #- repo: josa42/vim-lightline-coc
+
+# themes
 - repo: arcticicestudio/nord-vim
 - repo: rakr/vim-one
 - repo: sainnhe/forest-night
 - repo: wadackel/vim-dogrun
 - repo: qpkorr/vim-bufkill
-
-
-#- repo: itchyny/lightline.vim
-#  hook_add: source $VIM_PATH/core/plugins/lightline.vim
-#- repo: mengelbrecht/lightline-bufferline
+- repo: ajmwagar/vim-deus
 
 #- repo: bagrat/vim-buffet
 #  hook_add: source $VIM_PATH/modules/module-buffet.vim
@@ -34,7 +36,7 @@
 - repo: editorconfig/editorconfig-vim
 - repo: ryanoasis/vim-devicons
 
-#my
+# my
 - repo: benmills/vimux
 - repo: romainl/vim-qf
 - repo: itchyny/vim-parenmatch # 括号 match, let g:loaded_matchparen = 1 "高亮括号,别瞎关... 或者用itchyny/vim-parenmatch
@@ -52,8 +54,6 @@
   build: 'yarn install --frozen-lockfile'
   hook_add: source $VIM_PATH/core/plugins/coc.vim
 
-- repo: Shougo/context_filetype.vim
-  on_event: [ BufReadPre, BufNew ]
 
 # Lazy Loading
 # ==========================================
@@ -68,35 +68,6 @@
         \ 'html': ['html', 'svg'],
         \ 'go' : 'Go',
         \}
-
-# ale {{{
-#- repo: dense-analysis/ale
-#  hook_add: source $VIM_PATH/core/plugins/ale.vim
-#  on_event: FileType
-# }}}
-
-# Denite{{{
-#- repo: Shougo/denite.nvim
-#  on_cmd: Denite
-#  depends: vim-devicons
-#  hook_source: |
-#        source  $VIM_PATH/core/plugins/denite.vim
-#
-#- repo: Shougo/neomru.vim
-#  on_source: [denite.nvim,fzf-preview.vim]
-#  hook_add: |
-#    let g:neomru#directory_mru_path = $DATA_PATH . '/mru/dir'
-#    let g:neomru#file_mru_path = $DATA_PATH . '/mru/file'
-#    let g:unite_source_file_mru_limit = 5000
-#
-#- { repo: rafi/vim-denite-session, on_source: denite.nvim }
-#
-#- repo: rafi/vim-denite-z
-#  on_source: denite.nvim
-#  hook_source: |
-#    command! -nargs=+ -complete=file Z call denite#start(
-#      \ [{'name': 'z', 'args': [<q-args>], {'immediately': 1}}])
-
 
 # }}}
 
@@ -129,15 +100,6 @@
   hook_add: |
         let g:smoothie_no_default_mappings = v:true
 
-#- repo: thinca/vim-quickrun
-#  on_cmd: QuickRun
-#  hook_source: |
-#    let g:quickrun_config = {
-#      \   "_" : {
-#        \       "outputter" : "message",
-#        \   },
-#        \}
-#    let g:quickrun_no_default_key_mappings = 1
 - repo: simnalamburt/vim-mundo
   on_cmd: MundoToggle
 
@@ -148,10 +110,11 @@
   hook_add: source $VIM_PATH/core/plugins/whichkey.vim
   hook_post_source: |
         function! s:register_whichkey()
-            call which_key#register('\', 'g:which_key_map')
+            call which_key#register(',', 'g:which_key_map')
             call which_key#register(';', 'g:which_key_localmap')
         endfunction
         call s:register_whichkey()
+
 - repo: easymotion/vim-easymotion
   on_map: { n: <Plug> }
   hook_source: |
@@ -342,19 +305,18 @@
     let g:go_addtags_transform = "snakecase"
     " let g:go_term_mode = "split"
     " let g:go_term_enabled = 1
-
-    "据说可以解决和 ale 的冲突
+    " 据说可以解决和 ale 的冲突
     " let g:go_fmt_fail_silently = 1
     " let g:go_decls_mode = 'fzf'
 
     " 关闭 vim-go 的 linter
     " let g:go_metalinter_autosave = 0
     " let g:go_metalinter_autosave_enabled = ['golint', 'vet']
+    " let g:go_doc_popup_window = 1
 
-    "let g:go_doc_popup_window = 1
-
-# Markdown related
-#- repo: tpope/vim-markdown
+# FileType {{{
+- repo: Shougo/context_filetype.vim
+- { repo: MTDL9/vim-log-highlighting, on_ft: log }
 - repo: plasticboy/vim-markdown
   on_ft: markdown
   hook_add: |
@@ -389,6 +351,11 @@
     let g:gfm_syntax_highlight_emoji = 0
     let g:gfm_syntax_enable_filetypes = ['markdown']
 
+- repo: iamcco/markdown-preview.nvim
+  on_ft: [markdown,pandoc.markdown,rmd]
+  build: 'sh -c "cd app & yarn install"'
+  hook_source: |
+      let g:mkdp_auto_start = 0
 # }}}
 
 # Coding{{{
@@ -399,11 +366,6 @@
 - repo: Yggdroot/indentLine
   on_event: BufReadPre
   hook_source: source $VIM_PATH/core/plugins/indentline.vim
-
-#- repo: nathanaelkane/vim-indent-guides
-#  on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
-#  hook_post_source: IndentGuidesEnable
-#  hook_add: source  $VIM_PATH/core/plugins/indentline.vim
 
 - repo: liuchengxu/vista.vim
   on_cmd: [ Vista, Vista!, Vista!! ]
@@ -417,6 +379,7 @@
     let g:user_emmet_install_global = 0
     let g:user_emmet_install_command = 0
     let g:user_emmet_mode = 'i'
+
 - repo: luochen1990/rainbow
   on_ft: [ html,css,javascript,javascriptreact,vue,go,python,c,cpp,lua,rust,vim,less,stylus,sass,scss,json,ruby,scala,toml,php,haskell]
   hook_source: let g:rainbow_active = 1
@@ -425,46 +388,45 @@
 # }}}
 
 # Writing{{{
-- repo: iamcco/markdown-preview.nvim
-  on_ft: [markdown,pandoc.markdown,rmd]
-  build: 'sh -c "cd app & yarn install"'
-  hook_source: |
-      let g:mkdp_auto_start = 0
 - repo: junegunn/goyo.vim
   on_cmd: Goyo
   hook_source: source  $VIM_PATH/core/plugins/goyo.vim
 
+- repo: junegunn/Limelight.vim
+  on_cmd: Limelight
+  hook_add: |
+    let g:limelight_conceal_ctermfg = 'gray'
+    let g:limelight_conceal_ctermfg = 240
+    let g:limelight_conceal_guifg = 'DarkGray'
+    let g:limelight_conceal_guifg = '#777777'
 #}}}
 
 # Operator
 - repo: kana/vim-operator-user
-
 - repo: kana/vim-operator-replace
   on_map: { vnx: <Plug> }
-
 - repo: machakann/vim-sandwich
   on_map: { vonx: <Plug>(operator-sandwich- }
   hook_add: |
     let g:sandwich_no_default_key_mappings = 1
     let g:operator_sandwich_no_default_key_mappings = 1
     let g:textobj_sandwich_no_default_key_mappings = 1
+
 # TextObjectOperator
-- repo: kana/vim-textobj-user
-- { repo: terryma/vim-expand-region, on_map: { x: <Plug> }}
-- { repo: AndrewRadev/splitjoin.vim, on_map: { n: <Plug>Splitjoin }}
-
-- repo: AndrewRadev/dsf.vim
-  on_map: { n: <Plug>Dsf }
-  hook_add: let g:dsf_no_mappings = 1
-
-- repo: osyo-manga/vim-textobj-multiblock
-  on_map: { ox: <Plug> }
-  hook_add:  let g:textobj_multiblock_no_default_key_mappings = 1
-
-- repo: kana/vim-textobj-function
-  on_map: { ox: <Plug> }
-  hook_add: let g:textobj_function_no_default_key_mappings = 1
-
+#- repo: kana/vim-textobj-user
+#- { repo: terryma/vim-expand-region, on_map: { x: <Plug> }}
+#- { repo: AndrewRadev/splitjoin.vim, on_map: { n: <Plug>Splitjoin }}
+#
+#- repo: AndrewRadev/dsf.vim
+#  on_map: { n: <Plug>Dsf }
+#  hook_add: let g:dsf_no_mappings = 1
+#- repo: osyo-manga/vim-textobj-multiblock
+#  on_map: { ox: <Plug> }
+#  hook_add:  let g:textobj_multiblock_no_default_key_mappings = 1
+#
+#- repo: kana/vim-textobj-function
+#  on_map: { ox: <Plug> }
+#  hook_add: let g:textobj_function_no_default_key_mappings = 1
 # }}}
 
 #  vim: set ts=2 sw=2 tw=80 et :

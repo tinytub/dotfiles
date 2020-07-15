@@ -141,47 +141,4 @@ function! s:defx_mappings() abort
 
 endfunction
 
-" TOOLS
-" ---
-
-function! s:git_diff(context) abort
-	execute 'GdiffThis'
-endfunction
-
-function! s:toggle_width(context) abort
-	" Toggle between defx window width and longest line
-	let l:max = 0
-	for l:line in range(1, line('$'))
-		let l:len = len(getline(l:line))
-		let l:max = max([l:len, l:max])
-	endfor
-	let l:new = l:max == winwidth(0) ? s:original_width : l:max
-	call defx#call_action('resize', l:new)
-endfunction
-
-function! s:explorer(context) abort
-	" Open file-explorer split with tmux
-	let l:explorer = s:find_file_explorer()
-	if empty('$TMUX') || empty(l:explorer)
-		return
-	endif
-	let l:target = a:context['targets'][0]
-	let l:parent = fnamemodify(l:target, ':h')
-	let l:cmd = 'split-window -p 30 -c ' . l:parent . ' ' . l:explorer
-	silent execute '!tmux ' . l:cmd
-endfunction
-
-function! s:find_file_explorer() abort
-	" Detect terminal file-explorer
-	let s:file_explorer = get(g:, 'terminal_file_explorer', '')
-	if empty(s:file_explorer)
-		for l:explorer in ['lf', 'hunter', 'ranger', 'vifm']
-			if executable(l:explorer)
-				let s:file_explorer = l:explorer
-				break
-			endif
-		endfor
-	endif
-	return s:file_explorer
-endfunction
 " vim: set ts=2 sw=2 tw=80 noet :

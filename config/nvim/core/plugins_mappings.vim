@@ -152,9 +152,9 @@ endif
 
 if dein#tap('vim-which-key')
 "		nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-    	nnoremap <silent> <leader>      :<c-u>WhichKey '\'<CR>
-		vnoremap <silent> <leader>      :<c-u>WhichKeyVisual '\'<CR>
-		nnoremap <silent> <localleader> :<c-u>WhichKey  ';'<CR>
+    	nnoremap <silent> <Leader>      :<c-u>WhichKey ','<CR>
+		vnoremap <silent> <Leader>      :<c-u>WhichKeyVisual ','<CR>
+		nnoremap <silent> <LocalLeader> :<c-u>WhichKey  ';'<CR>
 		nnoremap <silent>[              :<c-u>WhichKey  '['<CR>
 		nnoremap <silent>]              :<c-u>WhichKey  ']'<CR>
     "function! InitWhickey()
@@ -303,9 +303,9 @@ endif
 if dein#tap('defx.nvim')
    " 第一个是默认打开 defx 的方式,当前使用最下面定位到当前文件的方式
     nnoremap <silent> <Leader>e
-        \ :<C-u>Defx -resume -toggle -buffer-name=tab`tabpagenr()`<CR>
+        \ :<C-u>Defx -toggle -buffer-name=tab`tabpagenr()`<CR>
     nnoremap <silent> <Leader>F
-		\ :<C-u>Defx -resume -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
+		\ :<C-u>Defx -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
 		"\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
     "nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
 endif

@@ -33,7 +33,8 @@ if has('vim_starting')
 	" Use spacebar as leader and ; as secondary-leader
 	" Required before loading plugins!
     " default map leader '\'
-	let g:mapleader='\'
+	"let g:mapleader='\'
+	let g:mapleader=','
 	"let g:mapleader="\<Space>"
 	let g:maplocalleader=';'
 

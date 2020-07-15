@@ -53,7 +53,7 @@ zplug "junegunn/fzf-bin", \
     use:"*darwin*amd64*"
 ## ==== 加载 OMZ 插件 ====
 zplug "plugins/git",               from:oh-my-zsh, if:"(( $+commands[git] ))"
-zplug "plugins/sudo",              from:oh-my-zsh, if:"(( $+commands[sudo] ))"
+#zplug "plugins/sudo",              from:oh-my-zsh, if:"(( $+commands[sudo] ))"
 zplug "plugins/golang",            from:oh-my-zsh, if:"(( $+commands[go] ))"
 zplug "plugins/node",              from:oh-my-zsh, if:"(( $+commands[node] ))"
 zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"

@@ -30,7 +30,7 @@ let g:airline_right_alt_sep = ''
 "let g:airline_right_sep = ''
 "let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
+let g:airline_symbols.readonly = ''
 let g:airline_symbols.crypt = '🔒'
 let g:airline_symbols.linenr = '¶'
 let g:airline_symbols.maxlinenr = ''
@@ -67,9 +67,8 @@ let airline#extensions#coc#warning_symbol = '⚠'
 " 关闭 vista 支持
 let g:airline#extensions#vista#enabled=0
 
-
-"let g:airline_filetype_overrides = {
-"    \ 'defx':  [' Files', '%{b:defx.paths[0]}'],
-"    \ 'vista':  [' Outline', ''],
-"    \ 'fugitive':  [' Git', ''],
-"\ }
+let g:airline_filetype_overrides = {
+    \ 'defx':  [' Files', '%{b:defx.paths[0]}'],
+    \ 'vista':  [' Outline', ''],
+    \ 'fugitive':  [' Git', ''],
+\ }
