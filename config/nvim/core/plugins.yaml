@@ -239,7 +239,6 @@
 # Language{{{
 - { repo: rust-lang/rust.vim, on_ft: rust }
 - { repo: chr4/nginx.vim, on_ft: nginx }
-- { repo: honza/dockerfile.vim, on_ft: Dockerfile }
 - { repo: cespare/vim-toml, on_ft: toml }
 - { repo: kevinoid/vim-jsonc, on_ft: json }
 
