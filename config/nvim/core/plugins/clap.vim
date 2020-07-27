@@ -1,7 +1,8 @@
 let s:user_zshrc = expand($HOME . '/.zshrc')
 
 let g:clap_cache_directory = $DATA_PATH . '/clap'
-let g:clap_theme = 'gruvbox_light'
+"let g:clap_theme = 'gruvbox_light'
+let g:clap_theme = 'atom_dark'
 "let g:clap_theme = 'solarized'
 "let g:clap_theme = 'material_design_dark'
 let g:clap_current_selection_sign = {

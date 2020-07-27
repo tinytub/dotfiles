@@ -155,7 +155,12 @@
     nnoremap <silent> <Space>/ :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
     nnoremap <silent> <Space>cw :<C-u>silent! keeppatterns %substitute/\s\+$//e<CR>
 
-
+" Scroll step sideways
+nnoremap zl z4l
+nnoremap zh z4h
+" Resize tab windows after top/bottom window movement
+nnoremap <C-w>K <C-w>K<C-w>=
+nnoremap <C-w>J <C-w>J<C-w>=
 
 
 " Non-standard

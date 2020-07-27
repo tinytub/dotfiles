@@ -5,8 +5,8 @@ call defx#custom#option('_', {
 	\ 'split': 'vertical',
 	\ 'direction': 'topleft',
 	\ 'show_ignored_files': 0,
-	\ 'columns': 'indent:git:icons:filename',
-	\ 'root_marker': ' ',
+	\ 'columns': 'mark:indent:git:icons:filename',
+	\ 'root_marker': '[in]:',
 	\ 'ignored_files':
 	\     '.mypy_cache,.pytest_cache,.git,.hg,.svn,.stversions'
 	\   . ',__pycache__,.sass-cache,*.egg-info,.DS_Store,*.pyc'
@@ -26,10 +26,12 @@ call defx#custom#column('git', {
 	\ })
 
 call defx#custom#column('mark', { 'readonly_icon': '', 'selected_icon': '' })
+call defx#custom#column('filename', { 'root_marker_highlight': 'Comment' })
 
 " defx-icons plugin
 let g:defx_icons_column_length = 2
 let g:defx_icons_mark_icon = ''
+let g:defx_icons_parent_icon = ""
 
 " Internal use
 let s:original_width = get(get(defx#custom#_get().option, '_'), 'winwidth')
@@ -69,10 +71,8 @@ endfunction
 function! s:defx_toggle_tree() abort
 	" Open current file, or toggle directory expand/collapse
 	if defx#is_directory()
-		"return defx#do_action('open_or_close_tree')
 		return defx#do_action('open_tree', ['nested', 'toggle'])
 	endif
-	"return defx#do_action('multi', ['drop'])
 	return defx#do_action('multi', ['drop', 'quit'])
 endfunction
 
@@ -88,7 +88,7 @@ function! s:defx_mappings() abort
 	"nnoremap <silent><buffer><expr> s     defx#do_action('open', 'botright vsplit')
 	nnoremap <silent><buffer><expr> <C-v> defx#do_action('open', 'botright vsplit')
 	nnoremap <silent><buffer><expr> <C-s> defx#do_action('open', 'botright split')
-	nnoremap <silent><buffer><expr> P     defx#do_action('open', 'pedit')
+	nnoremap <silent><buffer><expr> P     defx#do_action('preview')
 	nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
 	nnoremap <silent><buffer><expr> N     defx#do_action('new_multiple_files')
 	nnoremap <silent><buffer><expr> dd    defx#do_action('remove_trash')
@@ -139,6 +139,58 @@ function! s:defx_mappings() abort
 	nnoremap <silent><buffer><expr> C
 		\ defx#do_action('toggle_columns', 'indent:mark:filename:type:size:time')
 
+	" Tools
+	nnoremap <silent><buffer><expr> w   defx#do_action('call', '<SID>toggle_width')
+	nnoremap <silent><buffer><expr> gd  defx#async_action('multi', ['drop', 'quit', ['call', '<SID>git_diff']])
+	if exists('$TMUX')
+		nnoremap <silent><buffer><expr> gl  defx#async_action('call', '<SID>explorer')
+	endif
+
+endfunction
+
+" TOOLS
+" ---
+
+function! s:git_diff(context) abort
+	Gdiffsplit
+endfunction
+
+
+function! s:toggle_width(context) abort
+	" Toggle between defx window width and longest line
+	let l:max = 0
+	for l:line in range(1, line('$'))
+		let l:len = strdisplaywidth(substitute(getline(l:line), '\s\+$', '', ''))
+		let l:max = max([l:len + 1, l:max])
+	endfor
+	let l:new = l:max == winwidth(0) ? s:original_width : l:max
+	call defx#call_action('resize', l:new)
+endfunction
+
+function! s:explorer(context) abort
+	" Open file-explorer split with tmux
+	let l:explorer = s:find_file_explorer()
+	if empty('$TMUX') || empty(l:explorer)
+		return
+	endif
+	let l:target = a:context['targets'][0]
+	let l:parent = fnamemodify(l:target, ':h')
+	let l:cmd = 'split-window -p 30 -c ' . l:parent . ' ' . l:explorer
+	silent execute '!tmux ' . l:cmd
+endfunction
+
+function! s:find_file_explorer() abort
+	" Detect terminal file-explorer
+	let s:file_explorer = get(g:, 'terminal_file_explorer', '')
+	if empty(s:file_explorer)
+		for l:explorer in ['lf', 'hunter', 'ranger', 'vifm']
+			if executable(l:explorer)
+				let s:file_explorer = l:explorer
+				break
+			endif
+		endfor
+	endif
+	return s:file_explorer
 endfunction
 
 " vim: set ts=2 sw=2 tw=80 noet :
