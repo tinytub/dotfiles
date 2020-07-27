@@ -105,23 +105,23 @@ function! s:main()
 			endif
 			if empty(l:virtualenv) || ! filereadable(l:virtualenv)
 				" Fallback to old virtualenv location
-				let l:virtualenv = $DATA_PATH . '/venv/neovim3/bin/python'
-				let l:virtualenvpy2 = $DATA_PATH . '/venv/neovim2/bin/python'
+				let l:virtualenv = $DATA_PATH . '/venv/bin/python'
+				"let l:virtualenvpy2 = $DATA_PATH . '/venv/neovim2/bin/python'
 			endif
 			if filereadable(l:virtualenv)
 				let g:python3_host_prog = l:virtualenv
-                let g:python_host_prog = l:virtualenvpy2
+                "let g:python_host_prog = l:virtualenvpy2
 			endif
 		elseif has('pythonx')
             " 配置 neovim 使用的基础环境地址
-            if isdirectory($DATA_PATH.'/venv/neovim3')
-                let g:python3_host_prog = $DATA_PATH.'/venv/neovim3/bin/python'
-                " 忽略 nvim 模块检查
-                let g:python3_host_skip_check = 1
-            endif
-            if isdirectory($DATA_PATH.'/venv/neovim2')
-                let g:python_host_prog = $DATA_PATH.'/venv/neovim2/bin/python'
-            endif
+            "if isdirectory($DATA_PATH.'/venv/neovim3')
+            "    let g:python3_host_prog = $DATA_PATH.'/venv/neovim3/bin/python'
+            "    " 忽略 nvim 模块检查
+            "    let g:python3_host_skip_check = 1
+            "endif
+            "if isdirectory($DATA_PATH.'/venv/neovim2')
+            "    let g:python_host_prog = $DATA_PATH.'/venv/neovim2/bin/python'
+            "endif
 			if has('python3')
 				set pyxversion=3
 			elseif has('python')
