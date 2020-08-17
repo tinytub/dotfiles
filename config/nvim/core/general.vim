@@ -108,8 +108,8 @@ augroup END
 
 " If sudo, disable vim swap/backup/undo/shada/viminfo writing
 if $SUDO_USER !=# '' && $USER !=# $SUDO_USER
-		\ && $HOME !=# expand('~'.$USER)
-		\ && $HOME ==# expand('~'.$SUDO_USER)
+		\ && $HOME !=# expand('~'.$USER, 1)
+		\ && $HOME ==# expand('~'.$SUDO_USER, 1)
 
 	set noswapfile
 	set nobackup
@@ -164,7 +164,7 @@ set timeout ttimeout
 set timeoutlen=500   " Time out on mappings
 set ttimeoutlen=10   " Time out on key codes
 set updatetime=100   " Idle time to write swap and trigger CursorHold
-set redrawtime=1500  " Time in milliseconds for stopping display redraw
+set redrawtime=2000  " Time in milliseconds for stopping display redraw
 
 " }}}
 "
@@ -212,7 +212,8 @@ set breakat=\ \	;:,!?           " Long lines break chars
 set nostartofline               " Cursor in same column for few commands
 set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys 光标循环
 set splitbelow splitright       " Splits open bottom right
-set switchbuf=useopen,vsplit    " Jump to the first open window
+"set switchbuf=useopen,vsplit    " Jump to the first open window
+set switchbuf=useopen           " Look for matching window buffers first
 set backspace=indent,eol,start  " Intuitive backspacing in insert mode 智能回删
 set diffopt=filler,iwhite       " Diff mode: show fillers, ignore whitespace
 set completeopt=menu,menuone    " Always show menu, even for one item
@@ -267,7 +268,7 @@ set showtabline=2       " Always show the tabs line
 set winwidth=30         " Minimum width for active window
 set winminwidth=10      " Minimum width for inactive windows
 " set winheight=4         " Minimum height for active window
-set winminheight=1      " Minimum height for inactive window
+" set winminheight=1      " Minimum height for inactive window
 set pumheight=15        " Pop-up menu's line height
 set helpheight=12       " Minimum help window height
 set previewheight=12    " Completion preview height
@@ -277,7 +278,7 @@ set cmdheight=1         " Height of the command line
 set cmdwinheight=5      " Command-line lines
 set noequalalways       " Don't resize windows on split or close
 set laststatus=2        " Always show a status line
-"set colorcolumn=+0     " Column highlight at textwidth's max character-limit
+set colorcolumn=+0     " Column highlight at textwidth's max character-limit
 "set display=lastline   "会导致滚屏
 
 if has('folding') && has('vim_starting')
@@ -287,9 +288,11 @@ if has('folding') && has('vim_starting')
 endif
 
 if has('nvim-0.4')
-	set signcolumn=auto:1
+	"set signcolumn=auto:1
+	set signcolumn=yes:1
 else
-	set signcolumn=auto           " Always show signs column
+	"set signcolumn=auto           " Always show signs column
+	set signcolumn=yes           " Always show signs column
 endif
 
 if has('conceal') && v:version >= 703
@@ -302,7 +305,7 @@ if exists('+previewpopup')
 endif
 
 " Pseudo-transparency for completion menu and floating windows
-if &termguicolors
+if has('termguicolors') && &termguicolors
 	if exists('&pumblend')
 		set pumblend=10
 	endif

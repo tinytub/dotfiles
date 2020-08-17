@@ -3,6 +3,9 @@ if dein#tap('dein.vim')
 	nnoremap <silent> <Leader>pr  :call dein#recache_runtimepath()<CR>
 	nnoremap <silent> <Leader>pl  :echo dein#get_updates_log()<CR>
 endif
+" Jump entire buffers in jumplist
+nnoremap g<C-i> :<C-u>call JumpBuffer(-1)<CR>
+nnoremap g<C-o> :<C-u>call JumpBuffer(1)<CR>
 "if dein#tap('fzf.vim')
 "	nnoremap <silent> <leader>tc :<C-u>Colors<CR>
 "	nnoremap <silent> <leader>fa :<C-u>Rg<CR>

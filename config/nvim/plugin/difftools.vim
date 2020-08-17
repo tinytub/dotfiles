@@ -14,7 +14,6 @@ let g:loaded_difftools = 1
 
 augroup plugin_difftools
 	autocmd!
-	autocmd InsertLeave * if &l:diff | diffupdate | endif
 	autocmd BufWinLeave __diff call s:close_diff()
 augroup END
 

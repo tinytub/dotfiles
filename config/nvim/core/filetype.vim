@@ -20,6 +20,9 @@ augroup user_plugin_filetype
 		" Automatically set read-only for files being edited elsewhere
 		autocmd SwapExists * nested let v:swapchoice = 'o'
 
+	  " Update diff comparison once leaving insert mode
+	  autocmd InsertLeave * if &l:diff | diffupdate | endif
+
 		" Equalize window dimensions when resizing vim window
 		autocmd VimResized * tabdo wincmd =
 
@@ -53,24 +56,15 @@ augroup user_plugin_filetype
 	""		\|   execute 'normal! g`"zvzz'
 	""		\| endif
 
-		"autocmd WinEnter,InsertLeave * set cursorline
-		"autocmd WinLeave,InsertEnter * set nocursorline
-  	autocmd WinEnter,InsertLeave * if &ft !~# '^\(denite\|clap_\)' |
-  		\ set cursorline | endif
-  	autocmd WinLeave,InsertEnter * if &ft !~# '^\(denite\|clap_\)' |
-  		\ set nocursorline | endif
-
-    " Automatically set read-only for files being edited elsewhere
-    autocmd SwapExists * nested let v:swapchoice = 'o'
-
-    " Equalize window dimensions when resizing vim window
-    autocmd VimResized * tabdo wincmd =
-
-    " Force write shada on leaving nvim
-    autocmd VimLeave * if has('nvim') | wshada! | else | wviminfo! | endif
-
-    " Check if file changed when its window is focus, more eager than 'autoread'
-    autocmd FocusGained * checktime
+    " Highlight current line only on focused window
+    autocmd WinEnter,InsertLeave *
+    	\ if ! &cursorline && &filetype !~# '^\(denite\|clap_\)'
+    	\ | setlocal cursorline
+    	\ | endif
+    autocmd WinLeave,InsertEnter *
+    	\ if &cursorline && &filetype !~# '^\(denite\|clap_\)'
+    	\ | setlocal nocursorline
+    	\ | endif
 
 		"autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g'\"" | endif
 
@@ -129,4 +123,5 @@ if dein#tap('html5.vim')
   let g:html5_microdata_attributes_complete = 0
   let g:html5_aria_attributes_complete = 0
 endif
+
 " vim: set foldmethod=marker ts=2 sw=2 tw=80 noet :
