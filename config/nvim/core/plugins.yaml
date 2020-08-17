@@ -39,6 +39,11 @@
 # my
 - repo: benmills/vimux
 - repo: romainl/vim-qf
+  on_ft: qf
+  on_event: QuickFixCmdPost
+  on_map: { n: <Plug> }
+  hook_add: source $VIM_PATH/core/plugins/qf.vim
+
 - repo: itchyny/vim-parenmatch # 括号 match, let g:loaded_matchparen = 1 "高亮括号,别瞎关... 或者用itchyny/vim-parenmatch
 
 # 配色{{{
@@ -51,7 +56,8 @@
 # Core Plugins{{{
 - repo: neoclide/coc.nvim
   merged: 0
-  build: 'yarn install --frozen-lockfile'
+  #build: 'yarn install --frozen-lockfile'
+  rev: 'release'
   hook_add: source $VIM_PATH/core/plugins/coc.vim
 
 
@@ -81,6 +87,8 @@
 
 - repo: honza/vim-snippets
   depends: coc.nvim
+  if: has('python3')
+  merged: 0
 
 # tags管理
 - repo: ludovicchabant/vim-gutentags
@@ -346,6 +354,8 @@
     let g:gfm_syntax_enable_always = 0
     let g:gfm_syntax_highlight_emoji = 0
     let g:gfm_syntax_enable_filetypes = ['markdown']
+
+- repo: google/vim-jsonnet
 
 - repo: iamcco/markdown-preview.nvim
   on_ft: [markdown,pandoc.markdown,rmd]

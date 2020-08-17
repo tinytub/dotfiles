@@ -30,7 +30,6 @@ let g:coc_global_extensions = [
         \ 'coc-emoji',
         \ 'coc-lists',
         \ 'coc-post',
-        \ 'coc-stylelint',
         \ 'coc-yaml',
         \ 'coc-gitignore',
         \ 'coc-actions',
