@@ -190,15 +190,15 @@ if exists('+inccommand')
 endif
 
 if executable('rg')
-	"set grepformat=%f:%l:%m
-	"let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '')
-	set grepformat=%f:%l:%c:%m
-	let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '') . ' --'
+	set grepformat=%f:%l:%m
+	let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '')
+	"set grepformat=%f:%l:%c:%m
+	"let &grepprg = 'rg --vimgrep' . (&smartcase ? ' --smart-case' : '') . ' --'
 elseif executable('ag')
-	"set grepformat=%f:%l:%m
-	"let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '')
-	set grepformat=%f:%l:%c:%m
-	let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '') . ' --'
+	set grepformat=%f:%l:%m
+	let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '')
+	"set grepformat=%f:%l:%c:%m
+	"let &grepprg = 'ag --vimgrep' . (&smartcase ? ' --smart-case' : '') . ' --'
 endif
 
 " }}}
@@ -225,7 +225,7 @@ if exists('+completepopup')
 	set completepopup=height:4,width:60,highlight:InfoPopup
 endif
 
-if has('patch-8.1.0360') || has('nvim-0.4')
+if has('patch-8.1.0360') || has('nvim-0.5')
 	set diffopt+=internal,algorithm:patience
 	" set diffopt=indent-heuristic,algorithm:patience
 endif
