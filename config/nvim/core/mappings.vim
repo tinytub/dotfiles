@@ -1,4 +1,16 @@
 " Key-mappings
+
+"" Elite-mode {{{
+" ----------
+if get(g:, 'elite_mode')
+
+	" Disable arrow movement, resize splits instead.
+	nnoremap <silent><Up>    :resize +1<CR>
+	nnoremap <silent><Down>  :resize -1<CR>
+	nnoremap <silent><Left>  :vertical resize +1<CR>
+	nnoremap <silent><Right> :vertical resize -1<CR>
+
+endif
 " ===
     nnoremap <C-s> :<C-u>write<CR>
 
@@ -23,21 +35,24 @@
    "yank to end
    nnoremap Y y$
 
-   " window
-   nnoremap <leader>ws :<C-u>sp<CR>
-   nnoremap <leader>wv :<C-u>vs<CR>
-   nnoremap <leader>wh <C-w>h
-   nnoremap <leader>wj <C-w>j
-   nnoremap <leader>wk <C-w>k
-   nnoremap <leader>wl <C-w>l
-   nnoremap <leader>wH <C-w>H
-   nnoremap <leader>wJ <C-w>J
-   nnoremap <leader>wK <C-w>K
-   nnoremap <leader>wL <C-w>L
-   nnoremap <leader>wx <C-w>x
-   nnoremap <leader>wc <C-w>c
-   nnoremap <leader>wo <C-w>o
-   nnoremap <leader>wR <C-w>R
+" Windows, buffers and tabs {{{
+" -------------------------
+" Window-control prefix
+nnoremap  [Window]   <Nop>
+nmap      s [Window]
+
+nnoremap <silent><C-w>z :vert resize<CR>:resize<CR>:normal! ze<CR>
+nnoremap <silent> [Window]v  :<C-u>split<CR>
+nnoremap <silent> [Window]g  :<C-u>vsplit<CR>
+nnoremap <silent> [Window]t  :tabnew<CR>
+nnoremap <silent> [Window]o  :<C-u>only<CR>
+nnoremap <silent> [Window]b  :b#<CR>
+nnoremap <silent> [Window]c  :close<CR>
+nnoremap <silent> [Window]x  :<C-u>call <SID>window_empty_buffer()<CR>
+
+" Split current buffer, go to previous window and previous buffer
+nnoremap <silent> [Window]sv :split<CR>:wincmd p<CR>:e#<CR>
+nnoremap <silent> [Window]sg :vsplit<CR>:wincmd p<CR>:e#<CR>
 
     " 窗口导航使用 meta+arrows
     "map <M-Right> <c-w>l
@@ -73,22 +88,6 @@
     nnoremap k gk
     nnoremap gk k
 
-		" window
-		nnoremap <leader>ws :<C-u>sp<CR>
-		nnoremap <leader>wv :<C-u>vs<CR>
-		nnoremap <leader>wh <C-w>h
-		nnoremap <leader>wj <C-w>j
-		nnoremap <leader>wk <C-w>k
-		nnoremap <leader>wl <C-w>l
-		nnoremap <leader>wH <C-w>H
-		nnoremap <leader>wJ <C-w>J
-		nnoremap <leader>wK <C-w>K
-		nnoremap <leader>wL <C-w>L
-		nnoremap <leader>wx <C-w>x
-		nnoremap <leader>wc <C-w>c
-		nnoremap <leader>wo <C-w>o
-		nnoremap <leader>wR <C-w>R
-
     " settings for resize splitted window
     "nmap <C-w>[ :vertical resize -3<CR>
     "nmap <C-w>] :vertical resize +3<CR>
@@ -96,26 +95,10 @@
     "buffer 切换
     nnoremap  [b :<C-u>bp<CR>
     nnoremap  ]b :<C-u>bn<CR>
+
     "delete buffer
     nnoremap <C-x> :<C-u>BD<CR>
     "nnoremap <C-x> :<C-u>bd<CR>
-
-    " So that I don't have to hit esc
-    "inoremap jk
-    "inoremap kj
-
-    " So I can move around in insert
-    "inoremap <C-k> <C-o>gk
-    "inoremap <C-h> <Left>
-    "inoremap <C-l> <Right>
-    "inoremap <C-j> <C-o>gj
-
-    " Make working with multiple buffers less of a pain
-    "nnoremap <C-w>v :vnew<cr>
-    "nnoremap <C-k> <C-w>k
-    "nnoremap <C-h> <C-w>h
-    "nnoremap <C-l> <C-w>l
-    "nnoremap <C-j> <C-w>j<Paste>
 
     " 离开插入模式时关闭粘贴模式
     au InsertLeave * set nopaste
@@ -158,9 +141,10 @@
 " Scroll step sideways
 nnoremap zl z4l
 nnoremap zh z4h
+
 " Resize tab windows after top/bottom window movement
-nnoremap <C-w>K <C-w>K<C-w>=
-nnoremap <C-w>J <C-w>J<C-w>=
+"nnoremap <C-w>K <C-w>K<C-w>=
+"nnoremap <C-w>J <C-w>J<C-w>=
 
 
 " Non-standard

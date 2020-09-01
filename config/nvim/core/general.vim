@@ -295,10 +295,10 @@ else
 	set signcolumn=yes           " Always show signs column
 endif
 
-if has('conceal') && v:version >= 703
-	" For snippet_complete marker
-	set conceallevel=2 concealcursor=niv
-endif
+"if has('conceal') && v:version >= 703
+"	" For snippet_complete marker
+"	set conceallevel=2 concealcursor=niv
+"endif
 
 if exists('+previewpopup')
 	set previewpopup=height:10,width:60

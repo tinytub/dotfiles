@@ -166,21 +166,25 @@
   hook_source: source  $VIM_PATH/core/plugins/floaterm.vim
 # }}}
 
-## Search Plugins{{{
+# Search Plugins{{{
 #- repo: junegunn/fzf
 #  build: './install --all'
 #  merged: 0
+#  on_cmd: FZF
+#  type__depth: 1
 #
 #- repo: junegunn/fzf.vim
 #  depends: fzf
-#  on_cmd: [Colors,Rg,Files]
+#  merged: 0
+#  on_cmd: [ Files, GitFiles, Buffers, Lines, Locate, Colors, Ag, Rg, Tags ]
+#  on_func: [ fzf#vim#with_preview, fzf#run, vista#finder#fzf#Run ]
 #  hook_source: source  $VIM_PATH/core/plugins/fzf.vim
-#
-#- repo: yuki-ycino/fzf-preview.vim
-#  depends: fzf
-#  on_cmd: [FzfPreviewProjectFiles,FzfPreviewDirectoryFile,FzfPreviewBuffers,FzfPreviewMruFiles,FzfPreviewAllBuffers,FzfPreviewProjectGrep,FzfPreviewMruFiles,FzfPreviewFromResources]
-#  hook_source: source  $VIM_PATH/core/plugins/fzfpreview.vim
-#
+
+ #- repo: yuki-ycino/fzf-preview.vim
+ #  depends: fzf
+ #  on_cmd: [FzfPreviewProjectFiles,FzfPreviewDirectoryFile,FzfPreviewBuffers,FzfPreviewMruFiles,FzfPreviewAllBuffers,FzfPreviewProjectGrep,FzfPreviewMruFiles,FzfPreviewFromResources]
+ #  hook_source: source  $VIM_PATH/core/plugins/fzfpreview.vim
+
 #- repo: Shougo/neomru.vim
 #  on_source: fzf-preview.vim
 #  hook_add: |
@@ -266,7 +270,7 @@
 - { repo: raimon49/requirements.txt.vim, on_ft: requirements }
 
 - repo: fatih/vim-go
-  on_ft: [go,gomod]
+  on_ft: [ go, gomod, gotexttmpl, gohtmltmpl ]
   hook_source: |
     let g:go_gopls_enabled = 1
     let g:go_code_completion_enabled = 0
@@ -274,6 +278,19 @@
     let g:go_imports_autosave = 0
     let g:go_def_mapping_enabled = 0
     let g:go_mod_fmt_autosave = 0
+
+    let g:go_jump_to_error = 0
+    let g:go_fmt_autosave = 1
+    let g:go_fmt_fail_silently = 1
+    let g:go_snippet_engine = 'ultisnips'
+    let g:go_textobj_enabled = 1
+    let g:go_list_height = 10
+    let g:go_list_autoclose = 0
+    let g:go_fold_enable = []
+    let g:go_info_mode = 'gopls'
+    let g:go_def_mode = 'gopls'
+    let g:go_referrers_mode = 'gopls'
+    let g:go_implements_mode = 'guru'
 
     let g:go_highlight_array_whitespace_error = 1
     let g:go_highlight_chan_whitespace_error = 1
@@ -311,6 +328,10 @@
     " let g:go_metalinter_autosave = 0
     " let g:go_metalinter_autosave_enabled = ['golint', 'vet']
     " let g:go_doc_popup_window = 1
+    if has('nvim') || exists(':terminal')
+      let g:go_term_enabled = 1
+      let g:go_term_close_on_exit = 0
+    endif
 
 # FileType {{{
 - repo: Shougo/context_filetype.vim
@@ -318,14 +339,15 @@
 - repo: plasticboy/vim-markdown
   on_ft: markdown
   hook_add: |
-    let g:vim_markdown_folding_level = 1
-    let g:vim_markdown_folding_style_pythonic = 1
     let g:vim_markdown_frontmatter = 1
-    let g:vim_markdown_auto_insert_bullets = 1
-    let g:vim_markdown_new_list_item_indent = 0
-    let g:vim_markdown_conceal_code_blocks = 0
-    let g:vim_markdown_conceal = 0
     let g:vim_markdown_strikethrough = 1
+    let g:vim_markdown_folding_level = 6
+    let g:vim_markdown_override_foldtext = 1
+    let g:vim_markdown_folding_style_pythonic = 1
+    let g:vim_markdown_conceal = 1
+    let g:vim_markdown_conceal_code_blocks = 1
+    let g:vim_markdown_new_list_item_indent = 0
+    let g:vim_markdown_toc_autofit = 0
     let g:vim_markdown_edit_url_in = 'vsplit'
     let g:vim_markdown_fenced_languages = [
       \ 'c++=cpp',
@@ -363,9 +385,9 @@
   depends: context_filetype.vim
   on_map: { nx: <Plug> }
 
-- repo: Yggdroot/indentLine
-  on_event: BufReadPre
-  hook_source: source $VIM_PATH/core/plugins/indentline.vim
+#- repo: Yggdroot/indentLine
+#  on_event: BufReadPre
+#  hook_source: source $VIM_PATH/core/plugins/indentline.vim
 
 - repo: liuchengxu/vista.vim
   on_cmd: [ Vista, Vista!, Vista!! ]

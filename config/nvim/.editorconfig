@@ -31,9 +31,9 @@ trim_trailing_whitespace = true
 # JavaScript, JSON, JSX, JavaScript Modules, TypeScript
 # https://github.com/feross/standard
 # https://prettier.io
-[*.{cjs,js,json,jsx,mjs,ts,tsx}]
-indent_size = 2
-indent_style = space
+#[*.{cjs,js,json,jsx,mjs,ts,tsx}]
+#indent_size = 2
+#indent_style = space
 
 # HTML
 # https://google.github.io/styleguide/htmlcssguide.xml#General_Formatting_Rules
