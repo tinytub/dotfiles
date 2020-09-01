@@ -1,4 +1,4 @@
-set wildmode=list:longest,list:full
+"set wildmode=list:longest,list:full
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 let $FZF_DEFAULT_COMMAND =  "find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o  -type f -print -o -type l -print 2> /dev/null"
 "let $FZF_DEFAULT_COMMAND = 'ag --hidden -l -g ""'
@@ -16,7 +16,10 @@ if executable('rg')
 endif
 
 let $FZF_DEFAULT_OPTS='--layout=reverse'
-let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
+"let g:fzf_layout = { 'down': '~25%' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+"let g:fzf_preview_window = 'down:30%'
+"let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 
 " advanced grep(faster with preview)
 function! RipgrepFzf(query, fullscreen)
@@ -29,25 +32,27 @@ endfunction
 command! -nargs=* -bang Rg call RipgrepFzf(<q-args>, <bang>0)
 
 " floating fzf window with borders
-function! CreateCenteredFloatingWindow()
-    let width = min([&columns - 4, max([80, &columns - 20])])
-    let height = min([&lines - 4, max([20, &lines - 10])])
-    let top = ((&lines - height) / 2) - 1
-    let left = (&columns - width) / 2
-    let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
-
-    let top = "╭" . repeat("─", width - 2) . "╮"
-    let mid = "│" . repeat(" ", width - 2) . "│"
-    let bot = "╰" . repeat("─", width - 2) . "╯"
-    let lines = [top] + repeat([mid], height - 2) + [bot]
-    let s:buf = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
-    call nvim_open_win(s:buf, v:true, opts)
-    set winhl=Normal:Floating
-    let opts.row += 1
-    let opts.height -= 2
-    let opts.col += 2
-    let opts.width -= 4
-    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
-    au BufWipeout <buffer> exe 'bw '.s:buf
-endfunction
+"function! CreateCenteredFloatingWindow()
+"    "let width = min([&columns - 4, max([80, &columns - 20])])
+"    "let height = min([&lines - 4, max([20, &lines - 10])])
+"    let width = float2nr(&columns * 0.6)
+"    let height = float2nr(&lines * 0.6)
+"    let top = ((&lines - height) / 2) - 1
+"    let left = (&columns - width) / 2
+"    let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
+"
+"    let top = "╭" . repeat("─", width - 2) . "╮"
+"    let mid = "│" . repeat(" ", width - 2) . "│"
+"    let bot = "╰" . repeat("─", width - 2) . "╯"
+"    let lines = [top] + repeat([mid], height - 2) + [bot]
+"    let s:buf = nvim_create_buf(v:false, v:true)
+"    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+"    call nvim_open_win(s:buf, v:true, opts)
+"    set winhl=Normal:Floating
+"    let opts.row += 1
+"    let opts.height -= 2
+"    let opts.col += 2
+"    let opts.width -= 4
+"    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+"    au BufWipeout <buffer> exe 'bw '.s:buf
+"endfunction

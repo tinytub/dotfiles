@@ -11,7 +11,7 @@ let b:undo_ftplugin .= 'setl modeline<'
 setlocal iskeyword+=:,#
 setlocal foldmethod=indent
 setlocal keywordprg=:help
-setlocal conceallevel=0
+"setlocal conceallevel=0
 
 " For gf
 let &l:path = join(map(split(&runtimepath, ','), 'v:val."/autoload"'), ',')

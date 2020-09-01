@@ -6,10 +6,13 @@ endif
 " Jump entire buffers in jumplist
 nnoremap g<C-i> :<C-u>call JumpBuffer(-1)<CR>
 nnoremap g<C-o> :<C-u>call JumpBuffer(1)<CR>
-"if dein#tap('fzf.vim')
-"	nnoremap <silent> <leader>tc :<C-u>Colors<CR>
-"	nnoremap <silent> <leader>fa :<C-u>Rg<CR>
-"endif
+
+if dein#tap('fzf.vim')
+	nnoremap <silent> <leader>tc :<C-u>Colors<CR>
+	nnoremap <silent> <leader>fa :<C-u>Rg<CR>
+	nnoremap <silent> <leader>bb :<C-u>Buffers<CR>
+	nnoremap <silent> <leader>ff :<C-u>Files<cr>
+endif
 "
 "if dein#tap('fzf-preview.vim')
 "    "nnoremap <silent> <leader>fc :Colors<CR>
@@ -97,7 +100,7 @@ nnoremap g<C-o> :<C-u>call JumpBuffer(1)<CR>
 if dein#tap('vim-clap')
 	nnoremap <silent> <leader>tc :<C-u>Clap colors<CR>
 	nnoremap <silent> <leader>bb :<C-u>Clap buffers<CR>
-	nnoremap <silent> <leader>fa :<C-u>Clap grep<CR>
+	nnoremap <silent> <leader>fa :<C-u>Clap grep2<CR>
 	nnoremap <silent> <Leader>fe :<C-u>Clap filer<CR>
 	nnoremap <silent> <leader>ff :<C-u>Clap files ++finder=rg --no-ignore --hidden --files<cr>
 	nnoremap <silent> <leader>fg :<C-u>Clap gfiles<CR>
@@ -306,9 +309,11 @@ endif
 if dein#tap('defx.nvim')
    " 第一个是默认打开 defx 的方式,当前使用最下面定位到当前文件的方式
     nnoremap <silent> <Leader>e
-        \ :<C-u>Defx -toggle -buffer-name=tab`tabpagenr()`<CR>
+        \ :<C-u>Defx -toggle -buffer-name=explorer`tabpagenr()`<CR>
+       " \ :<C-u>Defx -toggle -buffer-name=tab`tabpagenr()`<CR>
     nnoremap <silent> <Leader>F
-		\ :<C-u>Defx -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
+         \ :<C-u>Defx -search=`expand('%:p')` -buffer-name=explorer`tabpagenr()`<CR>
+		"\ :<C-u>Defx -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
 		"\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
     "nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
 endif

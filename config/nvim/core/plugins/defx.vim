@@ -80,6 +80,7 @@ endfunction
 function! s:defx_mappings() abort
 	" Defx window keyboard mappings
 	setlocal signcolumn=no expandtab
+	setlocal cursorline
 
 	nnoremap <silent><buffer><expr> <CR>  <SID>defx_toggle_tree()
 	nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()
@@ -103,6 +104,7 @@ function! s:defx_mappings() abort
 		\ ':<C-u>wincmd w<CR>' :
 		\ ':<C-u>Defx -buffer-name=temp -split=vertical<CR>'
  	" Defx's buffer management
+	nnoremap <silent><buffer><expr> <Esc>  defx#do_action('quit')
 	nnoremap <silent><buffer><expr> q      defx#do_action('quit')
 	nnoremap <silent><buffer><expr> se     defx#do_action('save_session')
 	nnoremap <silent><buffer><expr> <C-r>  defx#do_action('redraw')
