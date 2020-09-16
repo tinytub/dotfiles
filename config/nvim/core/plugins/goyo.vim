@@ -14,7 +14,6 @@ function! s:goyo_enter()
 	endif
 
 	" Activate Limelight
-	let g:loaded_spaceline=0
 	Limelight
 endfunction
 
@@ -33,7 +32,6 @@ function! s:goyo_leave()
 	endif
 
 	" De-activate Limelight
-	let g:loaded_spaceline =1
 	Limelight!
 endfunction
 " }}}
@@ -45,6 +43,7 @@ augroup user_plugin_goyo
 	autocmd! User GoyoLeave
 	autocmd  User GoyoEnter nested call <SID>goyo_enter()
 	autocmd  User GoyoLeave nested call <SID>goyo_leave()
+  let g:goyo_width = 120
 augroup END
 " }}}
 

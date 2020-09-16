@@ -8,3 +8,6 @@ let g:indentLine_fileTypeExclude = ['defx', 'denite', 'tagbar','vista_kind','vis
 "let g:indentLine_concealcursor = 'niv'
 "let g:indentLine_showFirstIndentLevel =1
 
+"let g:vim_json_syntax_conceal = 0
+"let g:vim_json_conceal = 0
+
