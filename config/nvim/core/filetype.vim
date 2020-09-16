@@ -76,6 +76,7 @@ augroup user_plugin_filetype
 	  autocmd FileType css,javascript,javascriptreact setlocal backupcopy=yes
 
 		"autocmd FileType json syntax match Comment +\/\/.\+$+
+    autocmd Filetype json,markdown let g:indentLine_enabled = 0
 
 		" Go (Google)
     autocmd FileType go

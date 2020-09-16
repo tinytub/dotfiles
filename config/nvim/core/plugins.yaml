@@ -8,19 +8,20 @@
 
 # }}}
 
+- repo: dstein64/vim-startuptime
 # Editor UI{{{
 #- repo: wsdjeg/dein-ui.vim
 #- repo: taigacute/spaceline.vim
-- repo: vim-airline/vim-airline
-  hook_source: source $VIM_PATH/core/plugins/airline.vim
-- repo: vim-airline/vim-airline-themes
-  #- repo: itchyny/lightline.vim
-  #  hook_add: source $VIM_PATH/core/plugins/lightline.vim
-  #- repo: mengelbrecht/lightline-bufferline
-  #- repo: josa42/vim-lightline-coc
+#- repo: vim-airline/vim-airline
+#  hook_source: source $VIM_PATH/core/plugins/airline.vim
+#- repo: vim-airline/vim-airline-themes
+- repo: itchyny/lightline.vim
+  hook_add: source $VIM_PATH/core/plugins/lightline.vim
+- repo: mengelbrecht/lightline-bufferline
+- repo: josa42/vim-lightline-coc
 
 # themes
-- repo: arcticicestudio/nord-vim
+#- repo: arcticicestudio/nord-vim
 - repo: rakr/vim-one
 - repo: sainnhe/forest-night
 - repo: wadackel/vim-dogrun
@@ -88,7 +89,13 @@
 - repo: ludovicchabant/vim-gutentags
   if: executable('ctags')
   on_event: [ BufReadPost, BufWritePost ]
-  hook_source: source  $VIM_PATH/core/plugins/gutentags.vim
+  hook_source: |
+    let g:gutentags_cache_dir = $DATA_PATH . '/tags'
+    let g:gutentags_project_root = ['.root', '.git', '.svn', '.hg', '.project','go.mod','.Cargo.toml','tsconfig.js','jsconfig.js']
+    let g:gutentags_generate_on_write = 0
+    let g:gutentags_generate_on_missing = 0
+    let g:gutentags_generate_on_new = 0
+    let g:gutentags_exclude_filetypes = [ 'defx', 'denite', 'vista', 'magit' ]
 
 - repo: t9md/vim-choosewin
   on_map: { n: <Plug> }
@@ -244,6 +251,7 @@
 - { repo: chr4/nginx.vim, on_ft: nginx }
 - { repo: cespare/vim-toml, on_ft: toml }
 - { repo: kevinoid/vim-jsonc, on_ft: json }
+- { repo: arzg/vim-sh,on_ft: [ sh,zsh ]}
 
 - repo: pearofducks/ansible-vim
   on_ft: [ ansible, ansible_hosts, jinja2 ]
@@ -336,6 +344,7 @@
 # FileType {{{
 - repo: Shougo/context_filetype.vim
 - { repo: MTDL9/vim-log-highlighting, on_ft: log }
+
 - repo: plasticboy/vim-markdown
   on_ft: markdown
   hook_add: |
@@ -412,7 +421,7 @@
 # Writing{{{
 - repo: junegunn/goyo.vim
   on_cmd: Goyo
-  hook_source: source  $VIM_PATH/core/plugins/goyo.vim
+  hook_source: source $VIM_PATH/core/plugins/goyo.vim
 
 - repo: junegunn/Limelight.vim
   on_cmd: Limelight
