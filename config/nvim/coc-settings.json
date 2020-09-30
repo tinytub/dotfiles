@@ -34,6 +34,7 @@
     "typeParameter": "\uf728",
     "default": "\uf29c"
   },
+  //"coc.preferences.useQuickfixForLocations": true,
   //diagnostic
   "diagnostic.signOffset": 9999999,
   "diagnostic.errorSign": "●",
@@ -139,8 +140,8 @@
         "usePlaceholders": false, // 如果设为 true, 会包含 function 的参数或结构体字段
         "completeUnimported": true,
         "deepCompletion": true,
-        "disableWorkspaceFolders": true,
-        "buildOnSave": false
+       // "disableWorkspaceFolders": true,
+       // "buildOnSave": false
       }
     },
     "bash": {

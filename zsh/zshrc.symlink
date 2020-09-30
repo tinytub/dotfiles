@@ -139,8 +139,12 @@ CUSTOM=~/.dotfiles/zsh
 ##source $CUSTOM/snippets/key-bindings.zsh
 #source $CUSTOM/snippets/misc.zsh
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/zsh/p10k.zsh.symlink.
+[[ ! -f ~/.dotfiles/zsh/p10k.zsh.symlink ]] || source ~/.dotfiles/zsh/p10k.zsh.symlink
+
 
 #zprof
 
@@ -204,5 +208,4 @@ ftpane() {
     tmux select-window -t $target_window
   fi
 }
-
 

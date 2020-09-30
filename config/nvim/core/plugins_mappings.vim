@@ -13,7 +13,7 @@ if dein#tap('fzf.vim')
 	nnoremap <silent> <leader>bb :<C-u>Buffers<CR>
 	nnoremap <silent> <leader>ff :<C-u>Files<cr>
 endif
-"
+
 "if dein#tap('fzf-preview.vim')
 "    "nnoremap <silent> <leader>fc :Colors<CR>
 "    "nnoremap <silent> <leader>bb :<C-u>FzfPreviewBuffers<CR>
@@ -100,7 +100,7 @@ endif
 if dein#tap('vim-clap')
 	nnoremap <silent> <leader>tc :<C-u>Clap colors<CR>
 	nnoremap <silent> <leader>bb :<C-u>Clap buffers<CR>
-	nnoremap <silent> <leader>fa :<C-u>Clap grep2<CR>
+	nnoremap <silent> <leader>fa :<C-u>Clap grep<CR>
 	nnoremap <silent> <Leader>fe :<C-u>Clap filer<CR>
 	nnoremap <silent> <leader>ff :<C-u>Clap files ++finder=rg --no-ignore --hidden --files<cr>
 	nnoremap <silent> <leader>fg :<C-u>Clap gfiles<CR>

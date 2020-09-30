@@ -91,6 +91,7 @@ function! s:main()
 				\ $DATA_PATH . '/undo',
 				\ $DATA_PATH . '/backup',
 				\ $DATA_PATH . '/session',
+				\ $DATA_PATH . '/swap',
 				\ $VIM_PATH . '/spell' ]
 			if ! isdirectory(s:path)
 				call mkdir(s:path, 'p')
@@ -99,11 +100,9 @@ function! s:main()
 
 		" Python interpreter settings
 		if has('nvim')
-			" Try using pyenv virtualenv called 'neovim'
-			let l:virtualenv = ''
-			if ! empty($PYENV_ROOT)
-				let l:virtualenv = $PYENV_ROOT . '/versions/neovim/bin/python'
-			endif
+			" Try the virtualenv created by venv.sh
+			let l:virtualenv = $DATA_PATH . '/venv/bin/python'
+
 			if empty(l:virtualenv) || ! filereadable(l:virtualenv)
 				" Fallback to old virtualenv location
 				let l:virtualenv = $DATA_PATH . '/venv/bin/python'
@@ -114,15 +113,6 @@ function! s:main()
                 "let g:python_host_prog = l:virtualenvpy2
 			endif
 		elseif has('pythonx')
-            " 配置 neovim 使用的基础环境地址
-            "if isdirectory($DATA_PATH.'/venv/neovim3')
-            "    let g:python3_host_prog = $DATA_PATH.'/venv/neovim3/bin/python'
-            "    " 忽略 nvim 模块检查
-            "    let g:python3_host_skip_check = 1
-            "endif
-            "if isdirectory($DATA_PATH.'/venv/neovim2')
-            "    let g:python_host_prog = $DATA_PATH.'/venv/neovim2/bin/python'
-            "endif
 			if has('python3')
 				set pyxversion=3
 			elseif has('python')
