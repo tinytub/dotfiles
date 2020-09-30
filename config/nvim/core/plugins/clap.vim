@@ -21,7 +21,8 @@ let g:clap_search_box_border_style = 'curve'
 let g:clap_provider_grep_enable_icon = 1
 let g:clap_prompt_format = '%spinner%%forerunner_status% %provider_id%: '
 
-let g:clap_provider_grep_opts = '-H --no-heading --vimgrep --smart-case --hidden -g "!.git/"'
+let g:clap_provider_grep_delay = 50
+"let g:clap_provider_grep_opts = '-H --no-heading --vimgrep --smart-case --hidden -g "!.git/"'
 
 highlight! link ClapMatches Function
 highlight! link ClapNoMatchesFound WarningMsg
