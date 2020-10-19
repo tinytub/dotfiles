@@ -16,8 +16,8 @@ open -a Safari \
 #  pre-patched fonts)
 cd ~/Downloads/Input-Font
 curl -o nerd-patcher.py -JO -fsSl --proto-redir -all,https \
-   https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v2.1.0/{font-patcher,changelog.md}
-svn checkout https://github.com/ryanoasis/nerd-fonts/branches/v2.1.0/src/glyphs src/glyphs
+   https://raw.githubusercontent.com/ryanoasis/nerd-fonts/2.1.0/{font-patcher,changelog.md}
+svn checkout https://github.com/ryanoasis/nerd-fonts/branches/2.1.0/src/glyphs src/glyphs
 
 # 3. Install the patcher-script's dependencies:
 brew install fontforge
