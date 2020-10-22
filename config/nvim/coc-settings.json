@@ -106,6 +106,9 @@
       "expand": true
     }
   ],
+  "yaml.schemas": {
+      "kubernetes": "/*.yaml"
+  },
   //"go.goplsPath": "~/Documents/local_projects/goworks/bin/gopls",
   //"go.goplsOptions": {
   //    "usePlaceholders": true,
