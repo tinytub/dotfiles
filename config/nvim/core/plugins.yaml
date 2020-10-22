@@ -36,6 +36,10 @@
 #  hook_add: source $VIM_PATH/core/plugins/buffet.vim
 - repo: editorconfig/editorconfig-vim
 - repo: ryanoasis/vim-devicons
+- repo: mhinz/vim-startify
+  #on_cmd: Startify
+  #depends: vim-devicons
+  hook_add: source $VIM_PATH/core/plugins/startify.vim
 
 # my
 - repo: benmills/vimux
