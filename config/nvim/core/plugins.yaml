@@ -8,6 +8,14 @@
 
 # }}}
 
+# leetcode
+#
+
+- repo: ianding1/leetcode.vim
+  hook_source: |
+    let g:leetcode_browser='chrome'
+    let g:leetcode_solution_filetype='golang'
+
 #- repo: dstein64/vim-startuptime
 # Editor UI{{{
 #- repo: wsdjeg/dein-ui.vim
@@ -29,7 +37,7 @@
 - repo: ajmwagar/vim-deus
 
 #- repo: bagrat/vim-buffet
-#  hook_add: source $VIM_PATH/modules/module-buffet.vim
+#  hook_add: source $VIM_PATH/core/plugins/buffet.vim
 
 #- repo: bagrat/vim-buffet
 #  on_event: VimEnter

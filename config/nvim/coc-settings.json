@@ -121,7 +121,7 @@
   //"java.format.onType.enabled": true,
   //"java.format.settings.profile": "GoogleStyle",
   //"java.completion.enabled":true,
-  //"python.jediEnabled": false,
+  "python.jediEnabled": false,
   //"python.linting.pylintEnabled": true,
   //"python.formatting.provider": "black",
   //"python.formatting.blackPath": "/usr/local/bin/black",

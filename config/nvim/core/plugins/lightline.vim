@@ -82,3 +82,5 @@ function! GitBlame()
     return winwidth(0) > 100 ? strpart(substitute(get(b:, 'coc_git_blame', ''), '[\(\)]', '', 'g'), 0, 50) : ''
 endfunction
 
+
+autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
