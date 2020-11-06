@@ -36,6 +36,7 @@ let g:coc_global_extensions = [
         \ 'coc-vimlsp',
         \ 'coc-explorer',
         \ 'coc-db',
+        \ 'coc-python',
         \ ]
 
 " Don't load the defx-git plugin file, not needed

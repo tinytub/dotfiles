@@ -38,14 +38,14 @@ highlight! link ClapNoMatchesFound WarningMsg
 "
 "autocmd User ClapOnEnter call s:ClapSymbolHL()
 
-function! MyClapOnEnter() abort
-  augroup ClapEnsureAllClosed
-    autocmd!
-    autocmd BufEnter,WinEnter,WinLeave * ++once call clap#floating_win#close()
-  augroup END
-endfunction
-
-autocmd User ClapOnEnter call MyClapOnEnter()
+"function! MyClapOnEnter() abort
+"  augroup ClapEnsureAllClosed
+"    autocmd!
+"    autocmd BufEnter,WinEnter,WinLeave * ++once call clap#floating_win#close()
+"  augroup END
+"endfunction
+"
+"autocmd User ClapOnEnter call MyClapOnEnter()
 
 autocmd FileType clap_input call s:clap_mappings()
 function! s:clap_mappings()
