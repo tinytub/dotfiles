@@ -67,8 +67,8 @@ let $DATA_PATH =
 
 " Collection of user plugin list config file-paths
 let s:config_paths = get(g:, 'etc_config_paths', [
-	\ $VIM_PATH . '/config/plugins.yaml',
-	\ $VIM_PATH . '/config/local.plugins.yaml',
+	\ $VIM_PATH . '/core/plugins.yaml',
+	\ $VIM_PATH . '/core/local.plugins.yaml',
 	\ $VIM_PATH . '/usr/vimrc.yaml',
 	\ $VIM_PATH . '/usr/vimrc.json',
 	\ $VIM_PATH . '/vimrc.yaml',
