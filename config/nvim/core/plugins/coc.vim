@@ -8,8 +8,7 @@
 "        \ if (size > g:trigger_size) || (size == -2) |
 "        \   echohl WarningMsg | echomsg 'WARNING: altering options for this huge file!' | echohl None |
 "        \   exec 'CocDisable' |
-"        \ else |
-"        \   exec 'CocEnable' |
+"        \ else | \   exec 'CocEnable' |
 "        \ endif |
 "        \ unlet size
 "augroup END
@@ -82,3 +81,7 @@ augroup END
 
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" 关闭 coclist goto reference 的 preview
+let g:coc_enable_locationlist = 0
+autocmd User CocLocationsChange CocList --normal location
