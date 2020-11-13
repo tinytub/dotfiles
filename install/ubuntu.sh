@@ -4,7 +4,10 @@ set -e
 
 set -x
 
-sudo apt-get install autoconf automake libtool python3-venv python3-wheel -y
+sudo apt-get install autoconf automake libtool python3-venv python3-wheel wget -y
+
+sudo wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64 -O /usr/bin/yq &&\
+sudo chmod +x /usr/bin/yq
 
 
 #ripgrep

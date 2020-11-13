@@ -2,7 +2,7 @@
   "suggest.triggerAfterInsertEnter": false,
   "suggest.timeout": 500,
   "suggest.noselect": false,
-  "suggest.detailField": "abbr",
+//  "suggest.detailField": "abbr",
   "suggest.snippetIndicator": " ►",
   "suggest.triggerCompletionWait": 100,
   "suggest.echodocSupport": true, // 在 function 后显示相关的参数或结构体
@@ -34,9 +34,9 @@
     "typeParameter": "\uf728",
     "default": "\uf29c"
   },
-  //"coc.preferences.useQuickfixForLocations": true,
+  "coc.preferences.useQuickfixForLocations": true,
   //diagnostic
-  "diagnostic.signOffset": 9999999,
+  //"diagnostic.signOffset": 9999999,
   "diagnostic.errorSign": "●",
   "diagnostic.warningSign": "●",
   "diagnostic.infoSign": "●",
