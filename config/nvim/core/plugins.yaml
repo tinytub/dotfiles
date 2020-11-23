@@ -107,6 +107,7 @@
       \| let g:vim_markdown_override_foldtext = 1
       \| unlet! g:vim_markdown_no_default_key_mappings
       \| unlet! g:vim_markdown_emphasis_multiline
+    autocmd FileType qf nnoremap <buffer><silent> <esc> :quit<CR>
 
 # ==========================================
 # Completion and code analysis
@@ -206,24 +207,24 @@
 # }}}
 
 # Search Plugins{{{
-- repo: junegunn/fzf
-  build: './install --all'
-  merged: 0
-  #on_cmd: FZF
-  type__depth: 1
-
-- repo: junegunn/fzf.vim
-  depends: fzf
-  merged: 0
-  #on_cmd: [ Files, GitFiles, Buffers, Lines, Locate, Colors, Ag, Rg, Tags ]
-  #on_func: [ fzf#vim#with_preview, fzf#run, vista#finder#fzf#Run ]
-  hook_source: source $VIM_PATH/core/plugins/fzf.vim
-
-- repo: yuki-ycino/fzf-preview.vim
-  depends: fzf
-  rev: 'release'
-  #  on_cmd: [FzfPreviewProjectFiles,FzfPreviewDirectoryFile,FzfPreviewBuffers,FzfPreviewMruFiles,FzfPreviewAllBuffers,FzfPreviewProjectGrep,FzfPreviewMruFiles,FzfPreviewFromResources]
-  hook_source: source $VIM_PATH/core/plugins/fzfpreview.vim
+#- repo: junegunn/fzf
+#  build: './install --all'
+#  merged: 0
+#  #on_cmd: FZF
+#  type__depth: 1
+#
+#- repo: junegunn/fzf.vim
+#  depends: fzf
+#  merged: 0
+#  #on_cmd: [ Files, GitFiles, Buffers, Lines, Locate, Colors, Ag, Rg, Tags ]
+#  on_func: [ fzf#vim#with_preview, fzf#run, vista#finder#fzf#Run ]
+#  hook_source: source $VIM_PATH/core/plugins/fzf.vim
+#
+#- repo: yuki-ycino/fzf-preview.vim
+#  depends: fzf
+#  rev: 'release'
+#  #on_cmd: [FzfPreviewProjectFiles,FzfPreviewDirectoryFile,FzfPreviewBuffers,FzfPreviewMruFiles,FzfPreviewAllBuffers,FzfPreviewProjectGrep,FzfPreviewMruFiles,FzfPreviewFromResources]
+#  hook_source: source $VIM_PATH/core/plugins/fzfpreview.vim
 
 #- repo: Shougo/neomru.vim
 #  on_source: fzf-preview.vim
@@ -234,14 +235,14 @@
 
 
 # Find Everythins
-#- repo: liuchengxu/vim-clap
-#  merged: 0
-#  build: 'bash install.sh'
-#  on_map: { n: <Plug> }
-#  hook_add: source $VIM_PATH/core/plugins/clap.vim
-#
-#- repo: vn-ki/coc-clap
-#  on_source: vim-clap
+- repo: liuchengxu/vim-clap
+  merged: 0
+  build: 'bash install.sh'
+  on_map: { n: <Plug> }
+  hook_add: source $VIM_PATH/core/plugins/clap.vim
+
+- repo: vn-ki/coc-clap
+  on_source: vim-clap
 # }}}
 
 # Git Plugins{{{

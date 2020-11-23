@@ -2,7 +2,7 @@
 "General settins{{{
 "set mouse=nv                 " Disable mouse in command-line mode
 set mouse-=a
-set report=0                 " Don't report on line changes
+set report=2                 " report on line changes
 set noerrorbells             " don't Trigger bell on error
 set visualbell               " Use visual bell instead of beeping
 set t_vb=
@@ -49,7 +49,8 @@ if has('mac')
 endif
 
 if has('clipboard')
-	set clipboard& clipboard+=unnamedplus
+	"set clipboard& clipboard+=unnamedplus
+  set clipboard& clipboard^=unnamed,unnamedplus
 endif
 
 " Wildmenu {{{
@@ -92,9 +93,9 @@ set spellfile=$VIM_PATH/spell/en.utf-8.add
 set history=2000
 
 if has('nvim') && ! has('win32') && ! has('win64')
-	set shada=!,'300,<50,@100,s10,h
+	set shada=!,'100,<20,@100,s10,h,r/tmp,r/private/var
 else
-	set viminfo='300,<10,@50,h,n$DATA_PATH/viminfo
+	set viminfo='100,<20,@50,h,n$DATA_PATH/viminfo
 endif
 
 augroup user_persistent_undo
@@ -163,7 +164,7 @@ endif
 set timeout ttimeout
 set timeoutlen=500   " Time out on mappings
 set ttimeoutlen=10   " Time out on key codes
-set updatetime=100   " Idle time to write swap and trigger CursorHold
+set updatetime=400   " Idle time to write swap and trigger CursorHold
 set redrawtime=2000  " Time in milliseconds for stopping display redraw
 
 " }}}
@@ -213,16 +214,21 @@ set nostartofline               " Cursor in same column for few commands
 set whichwrap+=h,l,<,>,[,],~    " Move to following line on certain keys 光标循环
 set splitbelow splitright       " Splits open bottom right
 "set switchbuf=useopen,vsplit    " Jump to the first open window
-set switchbuf=useopen           " Look for matching window buffers first
+"set switchbuf=useopen           " Look for matching window buffers first
 set backspace=indent,eol,start  " Intuitive backspacing in insert mode 智能回删
 set diffopt=filler,iwhite       " Diff mode: show fillers, ignore whitespace
 set completeopt=menu,menuone    " Always show menu, even for one item
-set completeopt+=noselect,noinsert
+"set completeopt+=noselect,noinsert
 "set completeopt-=preview
 
-if exists('+completepopup')
-	set completeopt+=popup
-	set completepopup=height:4,width:60,highlight:InfoPopup
+"if exists('+completepopup')
+"	set completeopt+=popup
+"	set completepopup=height:4,width:60,highlight:InfoPopup
+"endif
+if has('patch-7.4.775')
+	" Do not select a match in the menu.
+	" Do not insert any text for a match until the user selects from menu.
+	set completeopt+=noselect,noinsert
 endif
 
 if has('patch-8.1.0360') || has('nvim-0.5')
@@ -231,8 +237,12 @@ if has('patch-8.1.0360') || has('nvim-0.5')
 endif
 
 " Use the new Neovim :h jumplist-stack
-if has('nvim-0.5')
-	set jumpoptions=stack
+"if has('nvim-0.5')
+"	set jumpoptions=stack
+"endif
+if has('patch-8.1.0360') || has('nvim-0.5')
+	set diffopt=internal,algorithm:patience
+	" set diffopt=indent-heuristic,algorithm:patience
 endif
 " }}}
 

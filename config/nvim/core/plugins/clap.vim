@@ -1,6 +1,7 @@
 let s:user_zshrc = expand($HOME . '/.zshrc')
 
 let g:clap_cache_directory = $DATA_PATH . '/clap'
+let g:clap_disable_run_rooter = v:true
 "let g:clap_theme = 'gruvbox_light'
 let g:clap_theme = 'atom_dark'
 "let g:clap_theme = 'solarized'
@@ -16,12 +17,13 @@ let g:clap_selected_sign = {
 	\ 'linehl': 'ClapSelected',
 	\ }
 let g:clap_layout = { 'relative': 'editor' }
-let g:clap_enable_icon = 1
-let g:clap_search_box_border_style = 'curve'
-let g:clap_provider_grep_enable_icon = 1
+"let g:clap_enable_icon = 1
+"let g:clap_search_box_border_style = 'curve'
+"let g:clap_provider_grep_enable_icon = 1
 let g:clap_prompt_format = '%spinner%%forerunner_status% %provider_id%: '
+let g:clap_enable_background_shadow = v:false
 
-let g:clap_provider_grep_delay = 50
+"let g:clap_provider_grep_delay = 50
 "let g:clap_provider_grep_opts = '-H --no-heading --vimgrep --smart-case --hidden -g "!.git/"'
 
 highlight! link ClapMatches Function

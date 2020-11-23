@@ -24,7 +24,7 @@ augroup user_plugin_filetype
 	  autocmd InsertLeave * if &l:diff | diffupdate | endif
 
 		" Equalize window dimensions when resizing vim window
-		autocmd VimResized * tabdo wincmd =
+		autocmd VimResized * wincmd =
 
 
 		" Force write shada on leaving nvim
@@ -34,6 +34,16 @@ augroup user_plugin_filetype
 		autocmd FocusGained * checktime
 
 		autocmd Syntax * if line('$') > 5000 | syntax sync minlines=200 | endif
+
+	  if has('nvim-0.5')
+		    autocmd TermClose * buffer #
+		    " autocmd TextYankPost *
+		    "	\ silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=150}
+		    try
+		    	autocmd TextYankPost *
+		    		\ silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=150}
+		    endtry
+		endif
 
 		" Update filetype on save if empty
 		autocmd BufWritePost * nested
@@ -50,19 +60,38 @@ augroup user_plugin_filetype
 
 		" When editing a file, always jump to the last known cursor position.
 		" Don't do it when the position is invalid or when inside an event handler
+		" Credits: https://github.com/farmergreg/vim-lastplace
 		"autocmd BufReadPost *
 	""		\ if &ft !~# 'commit' && ! &diff &&
 	""		\      line("'\"") >= 1 && line("'\"") <= line("$")
 	""		\|   execute 'normal! g`"zvzz'
 	""		\| endif
+	  autocmd BufReadPost *
+	  	\ if index(['gitcommit', 'gitrebase', 'svn', 'hgcommit'], &buftype) == -1 &&
+	  	\      index(['quickfix', 'nofile', 'help'], &buftype) == -1 &&
+	  	\      ! &diff && ! &previewwindow &&
+	  	\      line("'\"") > 0 && line("'\"") <= line("$")
+	  	\|   if line("w$") == line("$")
+	  	\|     execute "normal! g`\""
+	  	\|   elseif line("$") - line("'\"") > ((line("w$") - line("w0")) / 2) - 1
+	  	\|     execute "normal! g`\"zz"
+	  	\|   else
+	  	\|     execute "normal! \G'\"\<c-e>"
+	  	\|   endif
+	  	\|   if foldclosed('.') != -1
+	  	\|     execute 'normal! zvzz'
+	  	\|   endif
+	  	\| endif
 
     " Highlight current line only on focused window
 		autocmd WinEnter,BufEnter,InsertLeave *
-      \ if ! &cursorline && &filetype !~# '^\(denite\|clap_\)' && ! &pvw
+    	\ if ! &cursorline && &filetype !~# '^\(denite\|clap_\)'
+    	\      && ! &previewwindow && ! pumvisible()
     	\ | setlocal cursorline
     	\ | endif
 	  autocmd WinLeave,BufLeave,InsertEnter *
-		\ if &cursorline && &filetype !~# '^\(denite\|clap_\)' && ! &pvw
+    	\ if &cursorline && &filetype !~# '^\(denite\|clap_\)'
+    	\      && ! &previewwindow && ! pumvisible()
     	\ | setlocal nocursorline
     	\ | endif
 
