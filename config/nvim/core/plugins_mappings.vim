@@ -39,6 +39,7 @@ if dein#tap('fzf-preview.vim')
     nnoremap <silent> <leader>fp :<C-u>FzfPreviewProjectFiles<CR>
     nnoremap <silent> <Leader>fw :<C-u>FzfPreviewProjectGrep <C-r>=expand('<cword>')<CR><CR>
     nnoremap <silent> <leader>fp :<C-u>FzfPreviewFromResources project_mru git<CR>
+	nnoremap <silent> <leader>ft :<C-u>Vista finder<CR>
 	augroup fzf_preview
 		autocmd!
 		autocmd User fzf_preview#initialized call s:fzf_preview_settings()

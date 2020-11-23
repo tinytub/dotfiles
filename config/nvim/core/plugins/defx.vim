@@ -73,8 +73,8 @@ function! s:defx_toggle_tree() abort
 	if defx#is_directory()
 		return defx#do_action('open_tree', ['nested', 'toggle'])
 	endif
-	"return defx#do_action('multi', ['drop', 'quit'])
-	return defx#do_action('multi', ['drop'])
+	return defx#do_action('multi', ['drop', 'quit'])
+	"return defx#do_action('multi', ['drop'])
 endfunction
 
 function! s:defx_mappings() abort
@@ -87,9 +87,11 @@ function! s:defx_mappings() abort
 	nnoremap <silent><buffer><expr> h     defx#async_action('cd', ['..'])
 	nnoremap <silent><buffer><expr> t     defx#do_action('open_tree', 'recursive')
 	nnoremap <silent><buffer><expr> st    defx#do_action('multi', [['drop', 'tabnew'], 'quit'])
+	nnoremap <silent><buffer><expr> <C-v> defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
+	nnoremap <silent><buffer><expr> <C-s> defx#do_action('multi', [['drop', 'split'], 'quit'])
 	"nnoremap <silent><buffer><expr> s     defx#do_action('open', 'botright vsplit')
-	nnoremap <silent><buffer><expr> <C-v> defx#do_action('open', 'botright vsplit')
-	nnoremap <silent><buffer><expr> <C-s> defx#do_action('open', 'botright split')
+	"nnoremap <silent><buffer><expr> <C-v> defx#do_action('open', 'botright vsplit')
+	"nnoremap <silent><buffer><expr> <C-s> defx#do_action('open', 'botright split')
 	nnoremap <silent><buffer><expr> P     defx#do_action('preview')
 	nnoremap <silent><buffer><expr> K     defx#do_action('new_directory')
 	nnoremap <silent><buffer><expr> N     defx#do_action('new_multiple_files')
