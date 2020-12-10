@@ -2,11 +2,10 @@
 # ===       Plugins        ===
 # ============================
 set -g @plugin 'tmux-plugins/tpm'
-#set -g @plugin 'egel/tmux-gruvbox'
+set -g @plugin 'tmux-plugins/tmux-cpu'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
-#set -g @plugin 'tmux-plugins/tmux-urlview'
 set -g @plugin 'tmux-plugins/tmux-battery'
 set -g @plugin 'thewtex/tmux-mem-cpu-load'
 set -g @plugin 'tmux-plugins/tmux-copycat'
@@ -14,8 +13,6 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @prefix_highlight_show_copy_mode 'on'
 set -g @prefix_highlight_copy_mode_attr 'fg=white,bg=blue'
 set -g @continuum-save-interval '15'
-set -g @sysstat_mem_view_tmpl 'MEM: #[fg=#{mem.color}]#{mem.pused} (#{mem.used})#[default]'
-set -g @sysstat_swap_view_tmpl 'SW: #[fg=#{swap.color}]#{swap.pused} (#{swap.used})#[default]'
 
 if "test ! -d ~/.tmux/plugins/tpm" \
    "run 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins'"
@@ -34,12 +31,11 @@ set-option -ga terminal-overrides ",*256col*:Tc"
 
 set -g status-interval 1
 
-set -g history-limit 102400
+set -g history-limit 10000
+
+set -s focus-events on
 # enable clipboard
 set -g set-clipboard on
-
-# renumber window
-set -g renumber-windows on
 
 # Enable vi keys.
 setw -g mode-keys vi
@@ -55,13 +51,13 @@ set -g set-titles on                        # set terminal title
 set -g set-titles-string '#h ❐ #S ● #I #W'
 
 # reduce the time when type prefix
-set -s escape-time 1
+set -s escape-time 0
 
 setw -g monitor-activity on
-set -g visual-activity on
+set -g visual-activity off
 set -g history-limit 102400    #  scrollback buffer n lines
 
-set -g repeat-time 0
+set -g repeat-time 400
 setw -g aggressive-resize on
 
 setw -g mouse on
@@ -69,27 +65,7 @@ setw -g mouse on
 # =====================================
 # ===    Appearence and status bar  ===
 # ======================================
-# Move status bar to the top
-set -g status 'on'
-set -g status-position bottom
-set -g status-justify 'centre'
-set -g status-left-length '100'
-set -g status-right-length '100'
-
-set-option -g window-status-current-format  '\
-#[fg=colour15,bg=colour161] #W \
-#[bg=#1b2b34]'
-set-option -g window-status-format '#[fg=colour15,bg=colour24] #W '
-
-set -g status-left '\
-#[fg=colour232,bg=colour172] %H:%M %a '
-#[fg=colour232,bg=colour154] #(rainbarf --battery --remaining --no-rgb) '
-
-set -g status-right '\
-#{?client_prefix,🐠,} \
-#[fg=colour238,bg=colour235,nobold,nounderscore,noitalics]\
-#[fg=green]\
-#($TMUX_PLUGIN_MANAGER_PATH/tmux-mem-cpu-load/tmux-mem-cpu-load -g 8 -t 0 -a 0 -c)'
+source-file ~/.dotfiles/tmux/magnet-line.tmux
 
 # ==========================
 # ===    Colorscheme     ===
@@ -107,7 +83,7 @@ set-option -g window-status-activity-style fg=colour111
 # ==========================
 # ===   Key bindings     ===
 # ==========================
-
+setw -g xterm-keys on
 # use vi mode
 set -g mode-keys vi
 # set prefix key
@@ -118,7 +94,7 @@ unbind '"'
 unbind %
 
 set -g prefix C-a
-bind C-a send-prefix
+#bind C-a send-prefix
 
 bind | split-window -h -c "#{pane_current_path}"
 bind - split-window -v -c "#{pane_current_path}"
@@ -143,7 +119,6 @@ bind r source-file ~/.tmux.conf \; display "Configuration Reloaded"
 # ==========================
 
 # tmux-resurrect
-set -g @resurrect-save-bash-history 'on'
 set -g @resurrect-capture-pane-contents 'on'
 # save vim session
 set -g @resurrect-strategy-vim 'session'

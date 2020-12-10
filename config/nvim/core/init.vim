@@ -54,6 +54,7 @@ let g:loaded_matchparen = 1   "高亮括号,别瞎关... 或者用itchyny/vim-pa
 let g:loaded_2html_plugin = 1
 let g:loaded_logiPat = 1
 let g:loaded_rrhelper = 1
+let g:no_gitrebase_maps = 1
 
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
