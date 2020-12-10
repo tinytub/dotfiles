@@ -1,34 +1,33 @@
-" from https://github.com/rafi/vim-config/blob/master/config/terminal.vim
 " Vim Only Terminal Tweaks: Colors, cursor shape, and tmux
 " ---
 
 " Paste
 " Credits: https://github.com/Shougo/shougo-s-github
 " ---
-let &t_ti .= "\e[?2004h"
-let &t_te .= "\e[?2004l"
-let &pastetoggle = "\e[201~"
-
-function! s:XTermPasteBegin(ret) abort
-	setlocal paste
-	return a:ret
-endfunction
-
-noremap  <special> <expr> <Esc>[200~ <SID>XTermPasteBegin('0i')
-inoremap <special> <expr> <Esc>[200~ <SID>XTermPasteBegin('')
-cnoremap <special> <Esc>[200~ <nop>
-cnoremap <special> <Esc>[201~ <nop>
+" let &t_ti .= "\e[?2004h"
+" let &t_te .= "\e[?2004l"
+" let &pastetoggle = "\e[201~"
+"
+" function! s:XTermPasteBegin(ret) abort
+" 	setlocal paste
+" 	return a:ret
+" endfunction
+"
+" noremap  <special> <expr> <Esc>[200~ <SID>XTermPasteBegin('0i')
+" inoremap <special> <expr> <Esc>[200~ <SID>XTermPasteBegin('')
+" cnoremap <special> <Esc>[200~ <nop>
+" cnoremap <special> <Esc>[201~ <nop>
 
 " Mouse settings
 " ---
-if has('mouse')
-	if !has('nvim')
-		if has('mouse_sgr')
-			set ttymouse=sgr
-		else
-			set ttymouse=xterm2
-		endif
-	endif
+if !has('nvim')
+  if has('mouse')
+  	if has('mouse_sgr')
+  		set ttymouse=sgr
+  	else
+  		set ttymouse=xterm2
+  	endif
+  endif
 endif
 
 " Disable modifyOtherKeys

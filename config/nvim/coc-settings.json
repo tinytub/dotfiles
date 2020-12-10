@@ -6,7 +6,7 @@
   "suggest.snippetIndicator": " ►",
   "suggest.triggerCompletionWait": 100,
   "suggest.echodocSupport": true, // 在 function 后显示相关的参数或结构体
-  "suggest.floatEnable": true, // 补全后 function 的悬窗 doc
+  "suggest.floatEnable": false, // 补全后 function 的悬窗 doc
   "suggest.completionItemKindLabels": {
     "keyword": "\uf1de",
     "variable": "\ue79b",

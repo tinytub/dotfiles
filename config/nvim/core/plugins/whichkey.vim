@@ -1,3 +1,9 @@
+let g:which_key_hspace = 3
+augroup user_events
+	autocmd! FileType which_key
+	autocmd  FileType which_key set laststatus=0 noshowmode noruler
+		\| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
 let g:which_key_map =  {}
 let g:which_key_localmap =  {
   \ 'name' : "LocalLeader"
@@ -145,3 +151,4 @@ autocmd FileType go
     \ call WhichKeyForGo() |
     \ call WhichKeyForGoDebug()
 
+" vim: set ts=2 sw=2 tw=80 noet :

@@ -8,7 +8,8 @@
 
 # 1. Customize your Input fontface, and download it from their website:
 open -a Safari \
-   "http://input.fontbureau.com/download/index.html?size=14&language=javascript&theme=base16-dark&family=InputMono&width=200&weight=300&line-height=1.2&a=0&g=ss&i=serif&l=serifs_round&zero=slash&asterisk=height&braces=straight&preset=dejavu&customize=please"
+   "http://input.fontbureau.com/download/index.html?size=14&language=javascript&theme=base16-dark&family=InputMono&width=200&weight=300&line-height=1.3&a=0&g=ss&i=serif&l=serifs_round&zero=slash&asterisk=height&braces=straight&preset=dejavu&customize=please"
+"https://input.fontbureau.com/download/index.html?customize&fontSelection=fourStyleFamily&regular=InputMonoNarrow-Light&italic=InputMonoNarrow-LightItalic&bold=InputMonoNarrow-Medium&boldItalic=InputMonoNarrow-MediumItalic&a=0&g=ss&i=serif&l=serifs_round&zero=slash&asterisk=height&braces=straight&preset=dejavu&line-height=1.3&email="
 
 # 2. Download the ‘patcher script’:
 # (I have no idea why the hell this script requires the `changelog.md` as well; and we [ab]use

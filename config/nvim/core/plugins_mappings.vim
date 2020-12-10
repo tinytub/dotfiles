@@ -298,10 +298,10 @@ if dein#tap('defx.nvim')
         \ :<C-u>Defx -toggle -buffer-name=explorer`tabpagenr()`<CR>
        " \ :<C-u>Defx -toggle -buffer-name=tab`tabpagenr()`<CR>
     nnoremap <silent> <Leader>F
-         \ :<C-u>Defx -search=`expand('%:p')` -buffer-name=explorer`tabpagenr()`<CR>
-		"\ :<C-u>Defx -buffer-name=tab`tabpagenr()` -search=`expand('%:p')`<CR>
-		"\ :<C-u>Defx -resume -toggle -search=`expand('%:p')` `getcwd()`<CR>
-    "nnoremap <silent><F3> :call <sid>defx_open({ 'find_current_file': v:true })<CR>
+		\ :<C-u>Defx
+		\   -search=`escape(expand('%:p'), ' :')`
+		\   -buffer-name=explorer`tabpagenr()`<CR>
+    "     \ :<C-u>Defx -search=`expand('%:p')` -buffer-name=explorer`tabpagenr()`<CR>
 endif
 
 if dein#tap('committia.vim')
@@ -486,20 +486,28 @@ if dein#tap('goyo.vim')
 endif
 
 if dein#tap('caw.vim')
-    function! InitCaw() abort
-		if ! &l:modifiable
-			silent! nunmap <buffer> gc
-			silent! xunmap <buffer> gc
-			silent! nunmap <buffer> gcc
-			silent! xunmap <buffer> gcc
-		else
+	function! InitCaw() abort
+		if &l:modifiable && &buftype ==# '' && &filetype != 'gitrebase'
+			xmap <buffer> <Leader>V <Plug>(caw:wrap:toggle)
+			nmap <buffer> <Leader>V <Plug>(caw:wrap:toggle)
+			xmap <buffer> <Leader>v <Plug>(caw:hatpos:toggle)
+			nmap <buffer> <Leader>v <Plug>(caw:hatpos:toggle)
 			nmap <buffer> gc <Plug>(caw:prefix)
 			xmap <buffer> gc <Plug>(caw:prefix)
 			nmap <buffer> gcc <Plug>(caw:hatpos:toggle)
 			xmap <buffer> gcc <Plug>(caw:hatpos:toggle)
+		else
+			silent! nunmap <buffer> <Leader>V
+			silent! xunmap <buffer> <Leader>V
+			silent! nunmap <buffer> <Leader>v
+			silent! xunmap <buffer> <Leader>v
+			silent! nunmap <buffer> gc
+			silent! xunmap <buffer> gc
+			silent! nunmap <buffer> gcc
+			silent! xunmap <buffer> gcc
 		endif
 	endfunction
-	autocmd FileType * call InitCaw()
+	autocmd user_events FileType * call InitCaw()
 	call InitCaw()
 endif
 

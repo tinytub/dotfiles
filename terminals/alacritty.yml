@@ -11,6 +11,7 @@
   # check the local terminfo database and use `alacritty` if it is
   # available, otherwise `xterm-256color` is used.
   #TERM: xterm-256color
+TERM: xterm-256color
 
 window:
   # Window dimensions (changes require restart)
@@ -148,13 +149,13 @@ window:
     #style: Bold Italic
 font:
   normal:
-    family: Hack Nerd Font
+    family: Input Nerd Font
     style: Regular
   bold:
-    family: Hack Nerd Font
+    family: Input Nerd Font
     style: Bold
   italic:
-    family: Hack Nerd Font
+    family: Input Nerd Font
     style: Italic
 
   # Point size
@@ -187,10 +188,10 @@ font:
   #
   # This is a global setting and will require a log out or restart to take
   # effect.
-  use_thin_strokes: false
+  #use_thin_strokes: false
 
 # If `true`, bold text is drawn using the bright color variants.
-draw_bold_text_with_bright_colors: true
+#draw_bold_text_with_bright_colors: true
 
 # Colors (Gruvbox dark)
 colors:
@@ -200,12 +201,10 @@ colors:
     # background: '0x181818'
     background: '#1d2021'
     foreground: '0xd8d8d8'
-
   # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
     text: '0xd8d8d8'
     cursor: '#A6E22E'
-
   # Normal colors
   normal:
     black:   '0x181818'
@@ -216,7 +215,6 @@ colors:
     magenta: '0xba8baf'
     cyan:    '0x86c1b9'
     white:   '0xd8d8d8'
-
   # Bright colors
   bright:
     black:   '0x585858'
@@ -228,7 +226,7 @@ colors:
     cyan:    '0x86c1b9'
     white:   '0xf8f8f8'
 
-## Colors (Gruvbox Material Dark Medium)
+# Colors (Gruvbox Material Dark Medium)
 #colors:
 #  primary:
 #    background: '0x282828'

@@ -429,7 +429,15 @@
 
 - repo: mattn/emmet-vim
   on_event: InsertEnter
-  on_ft: [python,html,css,javascript,javascriptreact,vue,c,c++,lua,rust,typescript,typescriptreact,php]
+  on_ft:
+    - css
+    - html
+    - vue
+    - svelte
+    - javascript
+    - javascriptreact
+    - typescript
+    - typescriptreact
   hook_source: |
     let g:user_emmet_complete_tag = 0
     let g:user_emmet_install_global = 0
