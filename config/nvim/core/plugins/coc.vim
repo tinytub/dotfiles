@@ -35,6 +35,7 @@ let g:coc_global_extensions = [
         \ 'coc-vimlsp',
         \ 'coc-explorer',
         \ 'coc-db',
+        \ 'coc-sql',
         \ 'coc-python',
         \ ]
 
