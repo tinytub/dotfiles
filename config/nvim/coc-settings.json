@@ -143,6 +143,7 @@
         "usePlaceholders": false, // 如果设为 true, 会包含 function 的参数或结构体字段
         "completeUnimported": true,
         "deepCompletion": true,
+        "allowModfileModifications": true
        // "disableWorkspaceFolders": true,
        // "buildOnSave": false
       }
@@ -152,6 +153,6 @@
       "args": ["start"],
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
-    },
+    }
   }
 }

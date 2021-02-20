@@ -243,6 +243,41 @@
 
 - repo: vn-ki/coc-clap
   on_source: vim-clap
+
+# Find Everythins
+#- repo: nvim-telescope/telescope.nvim
+#  on_cmd: Telescope
+#  hook_source: |-
+#    lua <<EOF
+#      require('telescope').setup {
+#        defaults = {
+#          prompt_prefix = '🤖',
+#          prompt_position = 'top',
+#          sorting_strategy = 'ascending',
+#        },
+#        extensions = {
+#            fzy_native = {
+#                override_generic_sorter = false,
+#                override_file_sorter = true,
+#            }
+#        }
+#      }
+#      require('telescope').load_extension('fzy_native')
+#    EOF
+#
+#- repo: nvim-telescope/telescope-fzy-native.nvim
+#  on_source: telescope.nvim
+#
+#- repo: nvim-lua/popup.nvim
+#  on_source: telescope.nvim
+#
+#- repo: nvim-lua/plenary.nvim
+#  on_source: telescope.nvim
+#
+#- repo: brooth/far.vim
+#  on_cmd: [ Far, Farp, F ]
+#  hook_source: |
+#    let g:far#source = 'rg'
 # }}}
 
 # Git Plugins{{{
@@ -492,5 +527,101 @@
 #  on_map: { ox: <Plug> }
 #  hook_add: let g:textobj_function_no_default_key_mappings = 1
 # }}}
+
+
+#- repo: prabirshrestha/async.vim  # only autoload functions, lazy by nature
+#
+#- repo: prabirshrestha/asyncomplete.vim
+#  on_source: asyncomplete-lsp.vim
+#  hook_add: let g:asyncomplete_auto_completeopt = 0
+#  hook_source: source $VIM_PATH/core/plugins/asyncomplete.vim
+#
+#- repo: prabirshrestha/asyncomplete-lsp.vim
+#  on_source: vim-lsp
+#
+#- repo: prabirshrestha/vim-lsp
+#  on_source: vim-lsp-settings
+#  hook_source: source $VIM_PATH/core/plugins/lsp.vim
+#  hook_add: |-
+#    let g:lsp_auto_enable = argc() > 0
+#    let g:lsp_ignorecase = 1
+#    let g:lsp_signs_enabled = 1
+#    let g:lsp_async_completion = 1
+#    let g:lsp_fold_enabled = 0
+#    let g:lsp_text_edit_enabled = 1
+#    let g:lsp_peek_alignment = 'top'
+#    let g:lsp_diagnostics_enabled = 1
+#    let g:lsp_diagnostics_echo_cursor = 1
+#    let g:lsp_diagnostics_echo_delay = 400
+#    let g:lsp_diagnostics_virtual_text_enabled = 0
+#    let g:lsp_diagnostics_highlights_delay = 400
+#    let g:lsp_diagnostics_signs_error = {'text': '✖'}
+#    let g:lsp_diagnostics_signs_warning = {'text': '⬪'}
+#    let g:lsp_diagnostics_signs_hint = {'text': '▪'}
+#    let g:lsp_diagnostics_signs_information = {'text': '▫'}
+#- repo: mattn/vim-lsp-settings
+#  on_event: [ BufReadPre, VimEnter ]
+#  merged: 0
+#  hook_post_source: |-
+#    if ! g:lsp_auto_enable
+#      call lsp#enable()
+#    endif
+#  hook_add: |-
+#    let g:lsp_settings = {
+#    \   'yaml-language-server': {
+#    \     'allowlist': ['yaml', 'yaml.ansible'],
+#    \   }
+#    \ }
+#- repo: prabirshrestha/asyncomplete-necovim.vim
+#  on_source: asyncomplete.vim
+#  hook_source: |-
+#    autocmd User asyncomplete_setup call asyncomplete#register_source(
+#      \ asyncomplete#sources#necovim#get_source_options({
+#      \ 'name': 'necovim',
+#      \ 'allowlist': ['vim'],
+#      \ 'completor': function('asyncomplete#sources#necovim#completor'),
+#      \ }))
+#- repo: Shougo/neco-vim
+#  on_source: asyncomplete-necovim.vim
+#
+#- repo: prabirshrestha/asyncomplete-buffer.vim
+#  on_source: asyncomplete.vim
+#  hook_source: |-
+#    autocmd User asyncomplete_setup call asyncomplete#register_source(
+#      \ asyncomplete#sources#buffer#get_source_options({
+#      \ 'name': 'buffer',
+#      \ 'allowlist': ['*'],
+#      \ 'blocklist': ['go', 'denite', 'denite-filter', 'clap_input',
+#      \               'quickpick-filter', 'lsp-quickpick-filter'],
+#      \ 'completor': function('asyncomplete#sources#buffer#completor'),
+#      \ 'config': {
+#      \    'max_buffer_size': 4000000,
+#      \  },
+#      \ }))
+#- repo: prabirshrestha/asyncomplete-tags.vim
+#  if: executable('ctags')
+#  on_source: asyncomplete.vim
+#  hook_source: |-
+#    autocmd User asyncomplete_setup call asyncomplete#register_source(
+#      \ asyncomplete#sources#tags#get_source_options({
+#      \ 'name': 'tags',
+#      \ 'allowlist': ['*'],
+#      \ 'blocklist': ['go', 'python', 'vim', 'denite', 'denite-filter',
+#      \               'clap_input', 'quickpick-filter', 'lsp-quickpick-filter'],
+#      \ 'completor': function('asyncomplete#sources#tags#completor'),
+#      \ 'config': { 'max_file_size': 5000000 },
+#      \ }))
+#- repo: prabirshrestha/asyncomplete-file.vim
+#  on_source: asyncomplete.vim
+#  hook_source: |-
+#    autocmd User asyncomplete_setup call asyncomplete#register_source(
+#      \ asyncomplete#sources#file#get_source_options({
+#      \ 'name': 'file',
+#      \ 'priority': 10,
+#      \ 'allowlist': ['*'],
+#      \ 'blocklist': ['denite', 'denite-filter', 'clap_input',
+#      \               'quickpick-filter', 'lsp-quickpick-filter'],
+#      \ 'completor': function('asyncomplete#sources#file#completor')
+#      \ }))
 
 #  vim: set ts=2 sw=2 tw=80 et :

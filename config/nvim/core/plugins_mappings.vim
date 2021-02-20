@@ -104,6 +104,15 @@ if dein#tap('vim-clap')
 	nnoremap <silent> <leader>oc :<C-u>Clap personalconf<CR>
 	nnoremap <silent> <leader>ft :<C-u>Clap tags<CR>
 endif
+if dein#tap('telescope.nvim')
+    nnoremap <leader>ff <cmd>Telescope find_files<cr>
+    nnoremap <leader>fa <cmd>Telescope live_grep<cr>
+    nnoremap <leader>bb <cmd>Telescope buffers<cr>
+    nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+    nnoremap <leader>fg <cmd>lua require'telescope.builtin'.git_files{}<cr>
+    "nnoremap <leader>fn <cmd>lua require'telescope.builtin'.find_files({ cwd = "~/.config/nvim/" })<cr>
+    nnoremap <leader>fr <cmd>lua require'telescope.builtin'.lsp_references{ shorten_path = true }<CR>
+endif
 
 if dein#tap('coc-clap')
         " Show all diagnostics
