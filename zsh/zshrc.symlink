@@ -162,6 +162,7 @@ bindkey '^[[3~' delete-char
 alias vi="nvim"
 #alias vim="vim"
 alias vim="nvim"
+alias sed="gsed"
 #alias lc='colorls -lA --sd'
 #alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
 alias reload="source ~/.zshrc"
