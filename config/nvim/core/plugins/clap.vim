@@ -23,6 +23,8 @@ let g:clap_layout = { 'relative': 'editor' }
 let g:clap_prompt_format = '%spinner%%forerunner_status% %provider_id%: '
 let g:clap_enable_background_shadow = v:false
 
+let g:clap_preview_direction = "UD"
+
 "let g:clap_provider_grep_delay = 50
 "let g:clap_provider_grep_opts = '-H --no-heading --vimgrep --smart-case --hidden -g "!.git/"'
 

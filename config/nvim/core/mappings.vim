@@ -97,8 +97,8 @@ nnoremap <silent> [Window]sg :vsplit<CR>:wincmd p<CR>:e#<CR>
     nnoremap  ]b :<C-u>bn<CR>
 
     "delete buffer
-    nnoremap <C-x> :<C-u>BD<CR>
-    "nnoremap <C-x> :<C-u>bd<CR>
+    "nnoremap <C-x> :<C-u>BD<CR>
+    nnoremap <C-x> :<C-u>bd<CR>
 
     " 离开插入模式时关闭粘贴模式
     au InsertLeave * set nopaste

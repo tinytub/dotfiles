@@ -12,7 +12,7 @@
 #
 
 - repo: ianding1/leetcode.vim
-  hook_source: |
+  hook_add: |
     let g:leetcode_browser='chrome'
     let g:leetcode_solution_filetype='golang'
 
@@ -33,7 +33,7 @@
 - repo: rakr/vim-one
 - repo: sainnhe/forest-night
 - repo: wadackel/vim-dogrun
-- repo: qpkorr/vim-bufkill # 关 buffer, 留 split
+#- repo: qpkorr/vim-bufkill # 关 buffer, 留 split
 - repo: ajmwagar/vim-deus
 
 #- repo: bagrat/vim-buffet
