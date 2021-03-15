@@ -89,7 +89,7 @@ if dein#tap('fzf-preview.vim')
 
 endif
 if dein#tap('vim-clap')
-	nnoremap <silent> <leader>tc :<C-u>Clap colors<CR>
+	"nnoremap <silent> <leader>tc :<C-u>Clap colors<CR>
 	nnoremap <silent> <leader>bb :<C-u>Clap buffers<CR>
 	nnoremap <silent> <leader>fa :<C-u>Clap grep<CR>
 	nnoremap <silent> <Leader>fe :<C-u>Clap filer<CR>
@@ -189,6 +189,16 @@ if dein#tap('vim-smartchr')
 endif
 
 if dein#tap('vim-floaterm')
+  nnoremap   <silent>    <Leader>tn    :FloatermNew<CR>
+  tnoremap   <silent>    <Leader>tn   <C-\><C-n>:FloatermNew<CR>
+  nnoremap   <silent>    <Leader>tk    :FloatermKill<CR>
+  tnoremap   <silent>    <Leader>tk   <C-\><C-n>:FloatermKill<CR>
+  "nnoremap   <silent>   <F8>    :FloatermPrev<CR>
+  "tnoremap   <silent>   <F8>    <C-\><C-n>:FloatermPrev<CR>
+  "nnoremap   <silent>   <F9>    :FloatermNext<CR>
+  "tnoremap   <silent>   <F9>    <C-\><C-n>:FloatermNext<CR>
+  nnoremap   <silent>   <Leader>tt   :FloatermToggle<CR>
+  tnoremap   <silent>   <Leader>tt   <C-\><C-n>:FloatermToggle<CR>
   nnoremap <silent> <Leader>ot :<C-u>FloatermToggle<CR>
   nnoremap <silent> <Leader>gz :<C-u>FloatermNew height=0.7 width=0.8 lazygit<CR>
 endif

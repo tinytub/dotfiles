@@ -112,8 +112,7 @@ augroup user_plugin_filetype
           \  let b:coc_pairs_disabled = ['<']
           \ | let b:coc_root_patterns = ['.git', 'go.mod']
 
-    " autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
-		"
+    autocmd BufWritePre *.go silent! :call CocAction('runCommand', 'editor.action.organizeImport')
     " Python
     autocmd FileType python
           \ setlocal expandtab smarttab nosmartindent

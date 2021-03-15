@@ -128,7 +128,7 @@
   //"coc.preferences.formatOnSaveFiletypes": ["python"],
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "languageserver": {
-    "golang": {
+    "go": {
       "command": "gopls",
       "rootPatterns": [
         "go.mod",
@@ -136,6 +136,7 @@
         ".git/",
         ".hg/"
       ],
+      "trace.server": "verbose",
       "filetypes": [
         "go"
       ],

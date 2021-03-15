@@ -99,10 +99,8 @@ let g:which_key_map = {
             \ 'l' : 'Load session',
             \ },
       \ 't' : {
-            \ 'name' : '+toggle',
-            \ 'i' : 'Indentline toggle',
+            \ 'name' : '+Terminal',
             \ 'c' : 'Change colorscheme',
-            \ 'n' : 'Toggle line number',
             \ },
       \ 'w'    : {
               \ 'name' : '+window' ,
