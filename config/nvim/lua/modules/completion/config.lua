@@ -7,6 +7,7 @@ end
 function config.nvim_compe()
   require'compe'.setup {
     enabled = true;
+    autocomplete = true;
     debug = false;
     min_length = 1;
     preselect = 'always';
