@@ -1,8 +1,13 @@
 local ui = {}
 local conf = require('modules.ui.config')
 
-ui['glepnir/zephyr-nvim'] = {
-  config = [[vim.cmd('colorscheme zephyr')]]
+--ui['glepnir/zephyr-nvim'] = {
+--  config = [[vim.cmd('colorscheme zephyr')]]
+--}
+
+
+ui['morhetz/gruvbox'] = {
+  config = [[vim.cmd('colorscheme gruvbox')]]
 }
 
 ui['glepnir/dashboard-nvim'] = {
@@ -25,7 +30,7 @@ ui['akinsho/nvim-bufferline.lua'] = {
 }
 
 ui['kyazdani42/nvim-tree.lua'] = {
-  cmd = {'NvimTreeToggle','NvimTreeOpen'},
+  cmd = {'NvimTreeToggle','NvimTreeOpen','NvimTreeFindFile'},
   config = conf.nvim_tree,
   requires = {'kyazdani42/nvim-web-devicons'}
 }
