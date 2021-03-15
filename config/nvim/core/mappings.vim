@@ -15,8 +15,7 @@ endif
     nnoremap <C-s> :<C-u>write<CR>
 
     " Editor UI
-    nmap <Leader>tn :setlocal nonumber!<CR>
-
+    " nmap <Leader>tn :setlocal nonumber!<CR>
 
     " 关闭最后一次查询的高亮
     nnoremap <F2> :set hlsearch!<CR>
@@ -128,8 +127,8 @@ nnoremap <silent> [Window]sg :vsplit<CR>:wincmd p<CR>:e#<CR>
 	\ 'zt' : (winline() == 1) ? 'zb' : 'zz'
 
     " Session management shortcuts (see plugin/sessions.vim)
-    nmap <Leader>ss :<C-u>SessionSave<CR>
-    nmap <Leader>sl :<C-u>SessionLoad<CR>
+    "nmap <Leader>ss :<C-u>SessionSave<CR>
+    "nmap <Leader>sl :<C-u>SessionLoad<CR>
 
     " Whitespace jump (see plugin/whitespace.vim)
     nnoremap ]w :<C-u>WhitespaceNext<CR>

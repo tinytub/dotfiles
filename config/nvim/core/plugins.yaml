@@ -33,6 +33,7 @@
 - repo: rakr/vim-one
 - repo: sainnhe/forest-night
 - repo: wadackel/vim-dogrun
+- repo: chriskempson/base16-vim
 #- repo: qpkorr/vim-bufkill # 关 buffer, 留 split
 - repo: ajmwagar/vim-deus
 
