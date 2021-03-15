@@ -30,15 +30,6 @@ command! -range=% WhitespaceNext call <SID>WhitespaceJump(1, <line1>, <line2>)
 " Search for trailing white space backwards
 command! -range=% WhitespacePrev call <SID>WhitespaceJump(-1, <line1>, <line2>)
 
-" Whitespace events
-if v:version >= 702
-	augroup plugin_whitespace
-		autocmd!
-		autocmd InsertEnter * call <SID>ToggleWhitespace('i')
-		autocmd InsertLeave * call <SID>ToggleWhitespace('n')
-	augroup END
-endif
-
 let s:ws_chars = get(g:, 'whitespace_characters', '\s')
 let s:ws_pattern = get(g:, 'whitespace_pattern', s:ws_chars . '\+$')
 let s:normal_pattern = get(g:, 'whitespace_pattern_normal',
@@ -47,10 +38,10 @@ let s:insert_pattern = get(g:, 'whitespace_pattern_insert',
 	\ s:ws_chars . '\+\%#\@<!$')
 
 let s:blacklist = get(g:, 'whitespace_filetype_blacklist', [
-	\ 'diff', 'git', 'gitcommit', 'help', 'qf', 'denite', 'defx','dashboard' ])
+	\ 'diff', 'git', 'gitcommit', 'help', 'qf', 'denite', 'defx' ])
 
 function! s:ToggleWhitespace(mode)
-	if &buftype =~? 'nofile\|help' || index(s:blacklist, &filetype) >= -1
+	if &buftype =~? 'nofile\|help' || index(s:blacklist, &filetype) > -1
 		return
 	elseif a:mode ==? ''
 		call matchdelete(w:whitespace_match_id)

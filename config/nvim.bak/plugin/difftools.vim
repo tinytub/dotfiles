@@ -14,7 +14,6 @@ let g:loaded_difftools = 1
 
 augroup plugin_difftools
 	autocmd!
-	autocmd InsertLeave * if &l:diff | diffupdate | endif
 	autocmd BufWinLeave __diff call s:close_diff()
 augroup END
 
@@ -59,3 +58,4 @@ endfunction
 command! -nargs=0 DiffOrig call s:open_diff()
 
 " vim: set ts=2 sw=2 tw=80 noet :
+
