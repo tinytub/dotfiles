@@ -14,6 +14,7 @@ local function load_options()
   local global_local = {
     termguicolors  = true;
     mouse          = "nv";
+    --mouse          = "-a";  这个暂时不支持配置？
     errorbells     = true;
     visualbell     = true;
     hidden         = true;

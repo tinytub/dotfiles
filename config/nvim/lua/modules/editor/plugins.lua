@@ -6,9 +6,9 @@ editor['Raimondi/delimitMate'] = {
   config = conf.delimimate,
 }
 
-editor['rhysd/accelerated-jk'] = {
-  opt = true
-}
+--editor['rhysd/accelerated-jk'] = {
+--  opt = true
+--}
 
 editor['norcalli/nvim-colorizer.lua'] = {
   ft = { 'html','css','sass','vim','typescript','typescriptreact'},
