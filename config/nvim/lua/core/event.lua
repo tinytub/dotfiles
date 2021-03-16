@@ -29,7 +29,7 @@ function autocmd.load_autocmds()
       {"BufWritePre","*.tmp","setlocal noundofile"};
       {"BufWritePre","*.bak","setlocal noundofile"};
       {"BufWritePre","*.tsx","lua vim.api.nvim_command('Format')"};
-      {"BufWritePre","*.go","lua require('internal.golines').golines_format()"};
+      --{"BufWritePre","*.go","lua require('internal.golines').golines_format()"};   -- 格式化，好像是有点问题，暂时先不用
     };
 
     wins = {
