@@ -13,8 +13,8 @@ end
 local function load_options()
   local global_local = {
     termguicolors  = true;
-    mouse          = "nv";
-    --mouse          = "-a";  这个暂时不支持配置？
+    --mouse          = "nv";
+    mouse          = "";
     errorbells     = true;
     visualbell     = true;
     hidden         = true;
@@ -72,7 +72,7 @@ local function load_options()
     sidescrolloff  = 5;
     foldlevelstart = 99;
     ruler          = false;
-    list           = true;
+    --list           = true;
     showtabline    = 2;
     winwidth       = 30;
     winminwidth    = 10;

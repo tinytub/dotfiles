@@ -36,6 +36,8 @@ function config.telescope()
     vim.cmd [[packadd popup.nvim]]
     vim.cmd [[packadd telescope-fzy-native.nvim]]
   end
+
+  local actions = require('telescope.actions')
   require('telescope').setup {
     defaults = {
       prompt_prefix = '🔭 ',
@@ -46,16 +48,41 @@ function config.telescope()
       grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
       qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
     },
+    mappings = {
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+        ["<TAB>"] = actions.toggle_selection + actions.move_selection_next,
+        ["<S-TAB>"] = actions.toggle_selection + actions.move_selection_previous,
+        ["<C-p>"] = false,
+        ["<C-n>"] = false,
+        ["<C-t>"] = false,
+        ["<C-c>"] = false,
+        ["<C-x>"] = false,
+      },
+    },
     extensions = {
         fzy_native = {
             override_generic_sorter = false,
             override_file_sorter = true,
         }
     }
+  --  Mappings	    Action
+  --  <C-n>/<Down>	Next item
+  --  <C-p>/<Up>	  Previous item
+  --  j/k	          Next/previous (in normal mode)
+  --  <CR>	        Confirm selection
+  --  <C-x>	        go to file selection as a split
+  --  <C-v>	        go to file selection as a vsplit
+  --  <C-t>	        go to a file in a new tab
+  --  <C-u>	        scroll up in preview window
+  --  <C-d>	        scroll down in preview window
+  --  <C-c>	        close telescope
+  --  <Esc>	        close telescope (in normal mode)
   }
   require('telescope').load_extension('fzy_native')
   require'telescope'.load_extension('dotfiles')
-  require'telescope'.load_extension('gosource')
+  --require'telescope'.load_extension('gosource')
 end
 
 function config.vim_sonictemplate()

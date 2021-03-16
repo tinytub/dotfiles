@@ -23,6 +23,12 @@ local def_map = {
     ["n|<C-q>"]      = map_cmd(':wq<CR>'),
     ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
     ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
+    ["n|<C-x>"]      = map_cu('bd'):with_noremap(),
+    ["n|j"]          = map_cu('gj'):with_noremap(),
+    ["n|gj"]         = map_cu('j'):with_noremap(),
+    ["n|k"]          = map_cu('gk'):with_noremap(),
+    ["n|gk"]         = map_cu('k'):with_noremap(),
+
   -- Insert
     ["i|<C-w>"]      = map_cmd('<C-[>diwa'):with_noremap(),
     ["i|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
@@ -31,8 +37,13 @@ local def_map = {
     ["i|<C-b>"]      = map_cmd('<Left>'):with_noremap(),
     ["i|<C-f>"]      = map_cmd('<Right>'):with_noremap(),
     ["i|<C-a>"]      = map_cmd('<ESC>^i'):with_noremap(),
-    ["i|<C-j>"]      = map_cmd('<Esc>o'):with_noremap(),
-    ["i|<C-k>"]      = map_cmd('<Esc>O'):with_noremap(),
+    --["i|<C-j>"]      = map_cmd('<Esc>o'):with_noremap(),
+    --["i|<C-k>"]      = map_cmd('<Esc>O'):with_noremap(),
+    -- Insert Mode 移动光标
+    ["i|<C-j>"]      = map_cmd('<Down>'):with_noremap(),
+    ["i|<C-k>"]      = map_cmd('<Up>'):with_noremap(),
+    ["i|<C-h>"]      = map_cmd('<Left>'):with_noremap(),
+    ["i|<C-l>"]      = map_cmd('<Right>'):with_noremap(),
     ["i|<C-s>"]      = map_cmd('<Esc>:w<CR>'),
     ["i|<C-q>"]      = map_cmd('<Esc>:wq<CR>'),
     ["i|<C-e>"]      = map_cmd([[pumvisible() ? "\<C-e>" : "\<End>"]]):with_noremap():with_expr(),
@@ -42,7 +53,12 @@ local def_map = {
     ["c|<C-a>"]      = map_cmd('<Home>'):with_noremap(),
     ["c|<C-e>"]      = map_cmd('<End>'):with_noremap(),
     ["c|<C-d>"]      = map_cmd('<Del>'):with_noremap(),
-    ["c|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
+    --["c|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
+    -- command line Mode 移动光标
+    ["c|<C-j>"]      = map_cmd('<Down>'):with_noremap(),
+    ["c|<C-k>"]      = map_cmd('<Up>'):with_noremap(),
+    ["c|<C-h>"]      = map_cmd('<Left>'):with_noremap(),
+    ["c|<C-l>"]      = map_cmd('<Right>'):with_noremap(),
     ["c|<C-t>"]      = map_cmd([[<C-R>=expand("%:p:h") . "/" <CR>]]):with_noremap(),
 }
 
