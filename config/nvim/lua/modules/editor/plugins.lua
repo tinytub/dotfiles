@@ -6,6 +6,7 @@ editor['Raimondi/delimitMate'] = {
   config = conf.delimimate,
 }
 
+-- 加速 jk 移动的速度
 --editor['rhysd/accelerated-jk'] = {
 --  opt = true
 --}
@@ -34,6 +35,17 @@ editor['kana/vim-operator-replace'] = {
   end,
   requires = 'kana/vim-operator-user'
 }
+
+
+editor['psliwka/vim-smoothie'] = {
+  opt = true
+  config = function()
+        vim.g.smoothie_no_default_mappings = true
+  end,
+
+  requires = 'kana/vim-operator-user'
+}
+
 
 editor['rhysd/vim-operator-surround'] = {
   event = 'BufRead',
