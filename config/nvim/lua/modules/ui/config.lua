@@ -7,13 +7,65 @@ end
 function config.nvim_bufferline()
   require('bufferline').setup{
     options = {
-      modified_icon = '✥',
-      buffer_close_icon = '',
+      buffer_close_icon = "",
+      modified_icon = "●",
+      close_icon = "",
+      left_trunc_marker = "",
+      right_trunc_marker = "",
+      max_name_length = 14,
+      max_prefix_length = 13,
+      tab_size = 18,
+      enforce_regular_tabs = true,
+      view = "multiwindow",
+      show_buffer_close_icons = true,
+      separator_style = "thin",
       mappings = true,
-      always_show_bufferline = false,
-    }
+      always_show_bufferline = true
+    },
+    highlights = {
+        background = {
+            guifg = comment_fg,
+            guibg = "#282c34"
+        },
+        fill = {
+            guifg = comment_fg,
+            guibg = "#282c34"
+        },
+        buffer_selected = {
+            guifg = normal_fg,
+            guibg = "#3A3E44",
+            gui = "bold"
+        },
+        separator_visible = {
+            guifg = "#282c34",
+            guibg = "#282c34"
+        },
+        separator_selected = {
+            guifg = "#282c34",
+            guibg = "#282c34"
+        },
+        separator = {
+            guifg = "#282c34",
+            guibg = "#282c34"
+        },
+        indicator_selected = {
+            guifg = "#282c34",
+            guibg = "#282c34"
+        },
+        modified_selected = {
+            guifg = string_fg,
+            guibg = "#3A3E44"
+        }
+     }
   }
 end
+
+--function config.barbar()
+--      vim.cmd("let bufferline = get(g:, "bufferline", {})")
+--      vim.cmd("let bufferline.animation = v:false")
+--      vim.cmd("let bufferline.closable = v:false")
+--      vim.cmd("let bufferline.icon_close_tab_modified = ''")
+--end
 
 function config.dashboard()
   local home = os.getenv('HOME')
@@ -53,6 +105,7 @@ function config.nvim_tree()
   vim.g.nvim_tree_follow = 1
   vim.g.nvim_tree_hide_dotfiles = 1
   vim.g.nvim_tree_indent_markers = 1
+  vim.g.nvim_tree_ignore = {'.git', 'node_modules', '.cache'}
   vim.g.nvim_tree_bindings = {
     ["l"] = ":lua require'nvim-tree'.on_keypress('edit')<CR>",
     ["s"] = ":lua require'nvim-tree'.on_keypress('vsplit')<CR>",

@@ -9,7 +9,7 @@ function config.nvim_compe()
     enabled = true;
     autocomplete = true;
     debug = false;
-    min_length = 1;
+    min_length = 2;
     preselect = 'always';
     allow_prefix_unmatch = false;
     source = {

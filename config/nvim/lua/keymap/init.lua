@@ -37,7 +37,9 @@ local plug_map = {
     ["n|gs"]             = map_cr('Lspsaga signature_help'):with_noremap():with_silent(),
     -- ["n|gr"]             = map_cr('Lspsaga rename'):with_noremap():with_silent(),
     -- ["n|gr"]             = map_cmd('<cmd>lua vim.lsp.buf.references()<CR>'):with_noremap():with_silent(),
-    ["n|gr"]             = map_cmd('Lspsaga lsp_finder'):with_noremap():with_silent(),
+    -- ["n|gr"]             = map_cr('Lspsaga lsp_finder'):with_noremap():with_silent(),
+    ["n|gr"]             = map_cr('Telescope lsp_references'):with_noremap():with_silent(),
+
     -- ["n|gh"]             = map_cr('Lspsaga lsp_finder'):with_noremap():with_silent(),
     ["n|gd"]             = map_cmd("<cmd>lua vim.lsp.buf.definition()<CR>"):with_noremap():with_silent(),
     ["n|<Leader>cw"]     = map_cmd("<cmd>lua vim.lsp.buf.workspace_symbol()<CR>"):with_noremap():with_silent(),
@@ -79,8 +81,8 @@ local plug_map = {
     ["x|gcc"]            = map_cr('ProComment'),
     ["n|gcj"]            = map_cu('ProDoc'):with_silent():with_silent(),
     -- Plugin acceleratedjk
-    --["n|j"]              = map_cmd('v:lua.enhance_jk_move("j")'):with_silent():with_expr(),
-    --["n|k"]              = map_cmd('v:lua.enhance_jk_move("k")'):with_silent():with_expr(),
+    ["n|j"]              = map_cmd('v:lua.enhance_jk_move("j")'):with_silent():with_expr(),
+    ["n|k"]              = map_cmd('v:lua.enhance_jk_move("k")'):with_silent():with_expr(),
     -- Plugin QuickRun
     ["n|<Leader>r"]     = map_cr("<cmd> lua require'internal.quickrun'.run_command()"):with_noremap():with_silent(),
     -- Plugin Vista

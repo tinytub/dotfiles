@@ -27,6 +27,11 @@ ui['glepnir/indent-guides.nvim'] = {
   event = 'BufRead',
 }
 
+--ui['romgrk/barbar.nvim'] = {
+--  config = conf.barbar,
+--  requires = {'kyazdani42/nvim-web-devicons'}
+--}
+
 ui['akinsho/nvim-bufferline.lua'] = {
   config = conf.nvim_bufferline,
   requires = {'kyazdani42/nvim-web-devicons'}
