@@ -7,9 +7,9 @@ editor['Raimondi/delimitMate'] = {
 }
 
 -- 加速 jk 移动的速度
---editor['rhysd/accelerated-jk'] = {
---  opt = true
---}
+editor['rhysd/accelerated-jk'] = {
+  opt = true
+}
 
 editor['norcalli/nvim-colorizer.lua'] = {
   ft = { 'html','css','sass','vim','typescript','typescriptreact'},
@@ -38,12 +38,9 @@ editor['kana/vim-operator-replace'] = {
 
 
 editor['psliwka/vim-smoothie'] = {
-  opt = true
   config = function()
         vim.g.smoothie_no_default_mappings = true
   end,
-
-  requires = 'kana/vim-operator-user'
 }
 
 

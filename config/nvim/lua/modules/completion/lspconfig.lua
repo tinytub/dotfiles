@@ -9,7 +9,30 @@ end
 
 local saga = require 'lspsaga'
 saga.init_lsp_saga({
-  code_action_icon = '💡'
+--  code_action_icon = '💡',
+-- 	error_sign = '❌',
+-- 	warn_sign = '⚠️',
+-- 	hint_sign = '💡',
+-- 	infor_sign = 'ℹ️',
+-- 	dianostic_header_icon = ' 🚒 ',
+ 	code_action_keys = {
+ 		quit = '<esc>',
+ 		exec = '<cr>'
+ 	},
+ 	finder_definition_icon = '📖 ',
+ 	finder_reference_icon = '🔖 ',
+ 	finder_action_keys = {
+    open = 'o', vsplit = 's',split = 'i',quit = 'q',scroll_down = '<C-f>', scroll_up = '<C-b>'
+ 	},
+ 	code_action_keys = {
+ 		quit = '<esc>',
+ 		exec = '<cr>'
+ 	},
+ 	rename_action_keys = {
+ 		quit = '<esc>',
+ 		exec = '<cr>'
+ 	},
+ 	definition_preview_icon = '📖 '
 })
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -56,6 +79,9 @@ lspconfig.gopls.setup {
   init_options = {
     usePlaceholders=true,
     completeUnimported=true,
+
+    gofumpt = false,
+    staticcheck = true,
     deepCompletion=true,
     allowModfileModifications=true
   }
