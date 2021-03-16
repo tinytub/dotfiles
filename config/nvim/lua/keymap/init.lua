@@ -75,7 +75,7 @@ local plug_map = {
     ["n|<Leader>fc"]     = map_cu('Telescope git_commits'):with_noremap():with_silent(),
     ["n|<Leader>ft"]     = map_cu('Telescope help_tags'):with_noremap():with_silent(),
     ["n|<Leader>fd"]     = map_cu('Telescope dotfiles path='..os.getenv("HOME")..'/.dotfiles'):with_noremap():with_silent(),
-    ["n|<Leader>fs"]     = map_cu('Telescope gosource'):with_noremap():with_silent(),
+    --["n|<Leader>fs"]     = map_cu('Telescope gosource'):with_noremap():with_silent(),
     -- prodoc
     ["n|gcc"]            = map_cu('ProComment'):with_noremap():with_silent(),
     ["x|gcc"]            = map_cr('ProComment'),
