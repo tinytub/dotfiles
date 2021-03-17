@@ -1,6 +1,10 @@
 local ui = {}
 local conf = require('modules.ui.config')
 
+--ui['kyazdani42/nvim-web-devicons'] = {
+--  config = conf.web_devicons,
+--}
+
 ui['glepnir/zephyr-nvim'] = {
   --config = [[vim.cmd('colorscheme zephyr')]]
 }

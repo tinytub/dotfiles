@@ -63,7 +63,7 @@ function config.telescope()
       n = {
         ["<Esc>"]  = actions.close,
         ["<CR>"]   = actions.select_default + actions.center,
-        ["<C-x>"]  = actions.select_horizontal,
+        ["<C-s>"]  = actions.select_horizontal,
         ["<C-v>"]  = actions.select_vertical,
         ["j"]      = actions.move_selection_next,
         ["k"]      = actions.move_selection_previous,
@@ -113,11 +113,11 @@ function config.vim_sonictemplate()
   vim.g.sonictemplate_vim_template_dir = os.getenv("HOME").. '/.config/nvim/template'
 end
 
-function config.smart_input()
-  require('smartinput').setup {
-    ['go'] = { ';',':=',';' }
-  }
-end
+--function config.smart_input()
+--  require('smartinput').setup {
+--    ['go'] = { ';',':=',';' }
+--  }
+--end
 
 function config.emmet()
   vim.g.user_emmet_complete_tag = 0

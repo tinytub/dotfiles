@@ -1,5 +1,7 @@
 local gl = require("galaxyline")
 local gls = gl.section
+local condition = require('galaxyline.condition')
+
 gl.short_line_list = {"LuaTree", "vista", "dbui"}
 
 local colors = {
@@ -139,16 +141,41 @@ gls.left[12] = {
 }
 
 gls.right[1] = {
+  FileEncode = {
+    provider = 'FileEncode',
+    condition = condition.hide_in_width,
+    separator = ' ',
+    separator_highlight = {'NONE',colors.bg},
+    --highlight = {colors.green,colors.bg,'bold'}
+    highlight = {colors.fg, colors.bg,'bold'}
+  }
+}
+
+gls.right[2] = {
+  FileFormat = {
+    provider = 'FileFormat',
+    condition = condition.hide_in_width,
+    separator = ' ',
+    separator_highlight = {'NONE',colors.bg},
+    --highlight = {colors.green,colors.bg,'bold'}
+    highlight = {colors.fg, colors.bg,'bold'}
+  }
+}
+
+gls.right[4] = {
     GitIcon = {
         provider = function()
             return "   "
         end,
         condition = require("galaxyline.provider_vcs").check_git_workspace,
+
+        separator = ' ',
+        separator_highlight = {'NONE',colors.bg},
         highlight = {colors.green, colors.line_bg}
     }
 }
 
-gls.right[2] = {
+gls.right[5] = {
     GitBranch = {
         provider = "GitBranch",
         condition = require("galaxyline.provider_vcs").check_git_workspace,
@@ -156,7 +183,7 @@ gls.right[2] = {
     }
 }
 
-gls.right[3] = {
+gls.right[6] = {
     right_LeftRounded = {
         provider = function()
             return ""
@@ -167,7 +194,7 @@ gls.right[3] = {
     }
 }
 
-gls.right[4] = {
+gls.right[7] = {
     SiMode = {
         provider = function()
             local alias = {
@@ -185,7 +212,7 @@ gls.right[4] = {
     }
 }
 
-gls.right[5] = {
+gls.right[8] = {
     PerCent = {
         provider = "LinePercent",
         separator = " ",
@@ -194,13 +221,37 @@ gls.right[5] = {
     }
 }
 
-gls.right[6] = {
+gls.right[9] = {
     rightRounded = {
         provider = function()
             return ""
         end,
         highlight = {colors.fg, colors.bg}
     }
+}
+
+gls.short_line_left[1] = {
+  BufferType = {
+    provider = 'FileTypeName',
+    separator = ' ',
+    separator_highlight = {'NONE',colors.bg},
+    highlight = {colors.blue,colors.bg,'bold'}
+  }
+}
+
+gls.short_line_left[2] = {
+  SFileName = {
+    provider =  'SFileName',
+    condition = condition.buffer_not_empty,
+    highlight = {colors.fg,colors.bg,'bold'}
+  }
+}
+
+gls.short_line_right[1] = {
+  BufferIcon = {
+    provider= 'BufferIcon',
+    highlight = {colors.fg,colors.bg}
+  }
 }
 
 --local gl = require('galaxyline')
