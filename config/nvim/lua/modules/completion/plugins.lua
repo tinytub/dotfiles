@@ -30,10 +30,10 @@ completion['nvim-telescope/telescope.nvim'] = {
   }
 }
 
-completion['glepnir/smartinput.nvim'] = {
-  ft = 'go',
-  config = conf.smart_input
-}
+--completion['glepnir/smartinput.nvim'] = {
+--  ft = 'go',
+--  config = conf.smart_input
+--}
 
 completion['mattn/vim-sonictemplate'] = {
   cmd = 'Template',
