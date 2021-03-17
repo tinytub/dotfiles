@@ -50,16 +50,39 @@ function config.telescope()
     },
     mappings = {
       i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
         ["<TAB>"] = actions.toggle_selection + actions.move_selection_next,
         ["<S-TAB>"] = actions.toggle_selection + actions.move_selection_previous,
+        ["<C-j>"]  = actions.move_selection_next,
+        ["<C-k>"]  = actions.move_selection_previous,
+        ["<C-c>"]  = actions.close,
+        ["<Down>"] = false,
+        ["<Up>"]   = false,
         ["<C-p>"] = false,
         ["<C-n>"] = false,
-        ["<C-t>"] = false,
-        ["<C-c>"] = false,
-        ["<C-x>"] = false,
       },
+      n = {
+        ["<Esc>"]  = actions.close,
+        ["<CR>"]   = actions.select_default + actions.center,
+        ["<C-x>"]  = actions.select_horizontal,
+        ["<C-v>"]  = actions.select_vertical,
+        ["j"]      = actions.move_selection_next,
+        ["k"]      = actions.move_selection_previous,
+        ["<Down>"] = false,
+        ["<Up>"]   = false,
+        ["<C-u>"]  = actions.preview_scrolling_up,
+        ["<C-d>"]  = actions.preview_scrolling_down,
+      }
+    },
+    file_ignore_patterns = {
+      '.git/*',
+      'node_modules/*',
+      'bower_components/*',
+      '.svn/*',
+      '.hg/*',
+      'CVS/*',
+      '.next/*',
+      '.docz/*',
+      '.DS_Store'
     },
     extensions = {
         fzy_native = {

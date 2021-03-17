@@ -110,6 +110,17 @@ function config.nvim_tree()
     ["l"] = ":lua require'nvim-tree'.on_keypress('edit')<CR>",
     ["s"] = ":lua require'nvim-tree'.on_keypress('vsplit')<CR>",
     ["i"] = ":lua require'nvim-tree'.on_keypress('split')<CR>",
+    ["<CR>"]  = ":lua require'nvim-tree'.on_keypress('edit')<CR>",
+    ["zh"]    = ":lua require'nvim-tree'.on_keypress('toggle_dotfiles')<CR>",
+    ["<Tab>"] = ":lua require'nvim-tree'.on_keypress('preview')<CR>",
+    ["cd"]    = ":lua require'nvim-tree'.on_keypress('cd')<CR>",
+    ["a"]     = ":lua require'nvim-tree'.on_keypress('create')<CR>",
+    ["rm"]    = ":lua require'nvim-tree'.on_keypress('remove')<CR>",
+    ["rn"]    = ":lua require'nvim-tree'.on_keypress('rename')<CR>",
+    ["dd"]    = ":lua require'nvim-tree'.on_keypress('cut')<CR>",
+    ["yy"]    = ":lua require'nvim-tree'.on_keypress('copy')<CR>",
+    ["p"]     = ":lua require'nvim-tree'.on_keypress('paste')<CR>",
+    ["q"]     = ":lua require'nvim-tree'.on_keypress('close')<CR>"
   }
   vim.g.nvim_tree_icons = {
     default =  '',
@@ -122,6 +133,10 @@ function config.nvim_tree()
      untracked = "★",
     },
   }
+end
+
+function config.lspkind_nvim()
+  require('lspkind').init()
 end
 
 function config._gitsigns()

@@ -27,6 +27,11 @@ ui['glepnir/indent-guides.nvim'] = {
   event = 'BufRead',
 }
 
+ui['onsails/lspkind-nvim'] = {
+  config = conf.lspkind_nvim,
+  requires = {'kyazdani42/nvim-web-devicons'}
+}
+
 --ui['romgrk/barbar.nvim'] = {
 --  config = conf.barbar,
 --  requires = {'kyazdani42/nvim-web-devicons'}
