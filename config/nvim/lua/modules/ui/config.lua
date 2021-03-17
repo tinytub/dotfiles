@@ -60,12 +60,18 @@ function config.nvim_bufferline()
   }
 end
 
---function config.barbar()
---      vim.cmd("let bufferline = get(g:, "bufferline", {})")
---      vim.cmd("let bufferline.animation = v:false")
---      vim.cmd("let bufferline.closable = v:false")
---      vim.cmd("let bufferline.icon_close_tab_modified = ''")
---end
+function config.barbar()
+      --vim.cmd("let bufferline = get(g:, 'bufferline', {})")
+      --vim.cmd("let bufferline.animation = v:false")
+      --vim.cmd("let bufferline.closable = v:false")
+      --vim.cmd("let bufferline.icon_close_tab_modified = '●'")
+      --
+      vim.cmd [[ let g:bufferline = {} ]]
+      vim.cmd [[ let bufferline.animation = v:false ]]
+      vim.cmd [[ let bufferline.closeable = v:false ]]
+      vim.cmd [[ let bufferline.clickable = v:false ]]
+      vim.cmd [[ let bufferline.icon_close_tab = '' ]]
+end
 
 function config.dashboard()
   local home = os.getenv('HOME')

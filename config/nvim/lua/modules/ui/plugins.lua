@@ -13,6 +13,8 @@ ui['chriskempson/base16-vim'] = {
   --config = [[vim.cmd('colorscheme base16-onedark')]]
 }
 
+
+
 ui['glepnir/dashboard-nvim'] = {
   config = conf.dashboard
 }
@@ -32,15 +34,15 @@ ui['onsails/lspkind-nvim'] = {
   requires = {'kyazdani42/nvim-web-devicons'}
 }
 
---ui['romgrk/barbar.nvim'] = {
---  config = conf.barbar,
---  requires = {'kyazdani42/nvim-web-devicons'}
---}
-
-ui['akinsho/nvim-bufferline.lua'] = {
-  config = conf.nvim_bufferline,
+ui['romgrk/barbar.nvim'] = {
+  config = conf.barbar,
   requires = {'kyazdani42/nvim-web-devicons'}
 }
+
+--ui['akinsho/nvim-bufferline.lua'] = {
+--  config = conf.nvim_bufferline,
+--  requires = {'kyazdani42/nvim-web-devicons'}
+--}
 
 ui['kyazdani42/nvim-tree.lua'] = {
   cmd = {'NvimTreeToggle','NvimTreeOpen','NvimTreeFindFile'},
