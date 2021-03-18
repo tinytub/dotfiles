@@ -2,6 +2,76 @@ local config = {}
 
 function config.galaxyline()
   require('modules.ui.eviline')
+  -- stand alone setup devicons
+  require "nvim-web-devicons".setup {
+    override = {
+        html = {
+            icon = "",
+            color = "#DE8C92",
+            name = "html"
+        },
+        css = {
+            icon = "",
+            color = "#61afef",
+            name = "css"
+        },
+        js = {
+            icon = "",
+            color = "#EBCB8B",
+            name = "js"
+        },
+        png = {
+            icon = " ",
+            color = "#BD77DC",
+            name = "png"
+        },
+        jpg = {
+            icon = " ",
+            color = "#BD77DC",
+            name = "jpg"
+        },
+        jpeg = {
+            icon = " ",
+            color = "#BD77DC",
+            name = "jpeg"
+        },
+        mp3 = {
+            icon = "",
+            color = "#C8CCD4",
+            name = "mp3"
+        },
+        mp4 = {
+            icon = "",
+            color = "#C8CCD4",
+            name = "mp4"
+        },
+        out = {
+            icon = "",
+            color = "#C8CCD4",
+            name = "out"
+        },
+        toml = {
+            icon = "",
+            color = "#61afef",
+            name = "toml"
+        },
+        lock = {
+            icon = "",
+            color = "#DE6B74",
+            name = "lock"
+        },
+        zip = {
+            icon = "",
+            color = "#EBCB8B",
+            name = "zip"
+        },
+        xz = {
+            icon = "",
+            color = "#EBCB8B",
+            name = "xz"
+        }
+    }
+  }
 end
 
 function config.nvim_bufferline()
@@ -143,6 +213,31 @@ end
 
 function config.lspkind_nvim()
   require('lspkind').init()
+--  require('lspkind').init({
+--    with_text = false,
+--    symbol_map = {
+--      Text = '  ',
+--      Method = '  ',
+--      Function = '  ',
+--      Constructor = '  ',
+--      Variable = '[]',
+--      Class = '  ',
+--      Interface = ' 蘒',
+--      Module = '  ',
+--      Property = '  ',
+--      Unit = ' 塞 ',
+--      Value = '  ',
+--      Enum = ' 練',
+--      Keyword = '  ',
+--      Snippet = '  ',
+--      Color = '',
+--      File = '',
+--      Folder = ' ﱮ ',
+--      EnumMember = '  ',
+--      Constant = '  ',
+--      Struct = '  '
+--    },
+--})
 end
 
 function config._gitsigns()
@@ -177,76 +272,5 @@ function config._gitsigns()
      },
   }
 end
-
--- stand alone setup devicons
-require "nvim-web-devicons".setup {
-    override = {
-        html = {
-            icon = "",
-            color = "#DE8C92",
-            name = "html"
-        },
-        css = {
-            icon = "",
-            color = "#61afef",
-            name = "css"
-        },
-        js = {
-            icon = "",
-            color = "#EBCB8B",
-            name = "js"
-        },
-        png = {
-            icon = " ",
-            color = "#BD77DC",
-            name = "png"
-        },
-        jpg = {
-            icon = " ",
-            color = "#BD77DC",
-            name = "jpg"
-        },
-        jpeg = {
-            icon = " ",
-            color = "#BD77DC",
-            name = "jpeg"
-        },
-        mp3 = {
-            icon = "",
-            color = "#C8CCD4",
-            name = "mp3"
-        },
-        mp4 = {
-            icon = "",
-            color = "#C8CCD4",
-            name = "mp4"
-        },
-        out = {
-            icon = "",
-            color = "#C8CCD4",
-            name = "out"
-        },
-        toml = {
-            icon = "",
-            color = "#61afef",
-            name = "toml"
-        },
-        lock = {
-            icon = "",
-            color = "#DE6B74",
-            name = "lock"
-        },
-        zip = {
-            icon = "",
-            color = "#EBCB8B",
-            name = "zip"
-        },
-        xz = {
-            icon = "",
-            color = "#EBCB8B",
-            name = "xz"
-        }
-    }
-}
 
 return config

@@ -15,9 +15,9 @@ lang['nvim-treesitter/nvim-treesitter-textobjects'] = {
   after = 'nvim-treesitter'
 }
 
-lang['fatih/vim-go'] = {
-  ft = {'go','golang'},
-  config = conf.vim_go,
-}
+--lang['fatih/vim-go'] = {
+--  ft = {'go','golang'},
+--  config = conf.vim_go,
+--}
 
 return lang
