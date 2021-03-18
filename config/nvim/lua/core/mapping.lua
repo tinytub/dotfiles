@@ -6,7 +6,7 @@ local map_cmd = bind.map_cmd
 -- default map
 local def_map = {
     -- Vim map
-    ["n|<C-x>k"]     = map_cr('Bdelete'):with_noremap():with_silent(),
+    --["n|<C-x>"]     = map_cr('Bdelete'):with_noremap():with_silent(),
     ["n|<C-s>"]      = map_cu('write'):with_noremap(),
     ["n|Y"]          = map_cmd('y$'),
     ["n|]w"]         = map_cu('WhitespaceNext'):with_noremap(),
@@ -24,10 +24,10 @@ local def_map = {
     ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
     ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
     ["n|<C-x>"]      = map_cu('bd'):with_noremap(),
-    ["n|j"]          = map_cu('gj'):with_noremap(),
-    ["n|gj"]         = map_cu('j'):with_noremap(),
-    ["n|k"]          = map_cu('gk'):with_noremap(),
-    ["n|gk"]         = map_cu('k'):with_noremap(),
+    --["n|j"]          = map_cu('gj'):with_noremap(),
+    --["n|gj"]         = map_cu('j'):with_noremap(),
+    --["n|k"]          = map_cu('gk'):with_noremap(),
+    --["n|gk"]         = map_cu('k'):with_noremap(),
 
   -- Insert
     ["i|<C-w>"]      = map_cmd('<C-[>diwa'):with_noremap(),

@@ -18,7 +18,7 @@ function config.nvim_treesitter()
           },
         },
       },
-    ensure_installed = 'all'
+    ensure_installed = 'maintained'
   }
 end
 

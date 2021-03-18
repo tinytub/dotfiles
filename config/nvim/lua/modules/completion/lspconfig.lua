@@ -77,7 +77,7 @@ lspconfig.gopls.setup {
   on_attach = enhance_attach,
   capabilities = capabilities,
   init_options = {
-    usePlaceholders=true,
+    usePlaceholders=false,
     completeUnimported=true,
 
     gofumpt = false,
