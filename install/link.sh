@@ -64,10 +64,11 @@ VIMFILES=( "$HOME/.vim:$DOTFILES/config/nvim"
 for file in "${VIMFILES[@]}"; do
     KEY=${file%%:*}
     VALUE=${file#*:}
+        ln -sf "${VALUE}" "${KEY}"
     if [ -e "${KEY}" ]; then
         echo "${KEY} already exists... skipping."
     else
         echo "Creating symlink for $KEY"
-        ln -s "${VALUE}" "${KEY}"
+        ln -sf "${VALUE}" "${KEY}"
     fi
 done
