@@ -43,6 +43,8 @@ ui['romgrk/barbar.nvim'] = {
   requires = {'kyazdani42/nvim-web-devicons'}
 }
 
+ui['itchyny/vim-parenmatch'] = {}
+
 --ui['akinsho/nvim-bufferline.lua'] = {
 --  config = conf.nvim_bufferline,
 --  requires = {'kyazdani42/nvim-web-devicons'}
