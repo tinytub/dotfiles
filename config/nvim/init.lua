@@ -1,5 +1,6 @@
 if vim.g.vscode then
+
 else
 -- Load Modules:
-require("core")
+  require("core")
 end
