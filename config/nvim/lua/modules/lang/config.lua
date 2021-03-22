@@ -4,6 +4,7 @@ function config.nvim_treesitter()
   vim.api.nvim_command('set foldmethod=expr')
   vim.api.nvim_command('set foldexpr=nvim_treesitter#foldexpr()')
   require'nvim-treesitter.configs'.setup {
+      ensure_installed = 'maintained',
       highlight = {
         enable = true,
       },
@@ -25,7 +26,6 @@ function config.nvim_treesitter()
       --  persist_queries = false -- Whether the query persists across vim sessions
       --},
       --rainbow = {enable = false},
-      ensure_installed = 'maintained'
   }
 end
 
