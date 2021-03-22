@@ -137,7 +137,7 @@ function config.barbar()
       --vim.cmd("let bufferline.icon_close_tab_modified = '●'")
       --
       vim.cmd [[ let g:bufferline = {} ]]
-      vim.cmd [[ let bufferline.animation = v:false ]]
+--      vim.cmd [[ let bufferline.animation = v:false ]]
       vim.cmd [[ let bufferline.closeable = v:false ]]
       vim.cmd [[ let bufferline.clickable = v:false ]]
       vim.cmd [[ let bufferline.icon_close_tab = '' ]]
