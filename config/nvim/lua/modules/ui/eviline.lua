@@ -35,6 +35,29 @@ gls.left[1] = {
 gls.left[2] = {
     ViMode = {
         provider = function()
+            local mode_color = {
+                n = colors.blue,
+                i = colors.green,
+                v = colors.purple,
+                [''] = colors.purple,
+                V = colors.purple,
+                c = colors.magenta,
+                no = colors.blue,
+                s = colors.orange,
+                S = colors.orange,
+                [''] = colors.orange,
+                ic = colors.yellow,
+                R = colors.red,
+                Rv = colors.red,
+                cv = colors.blue,
+                ce = colors.blue,
+                r = colors.cyan,
+                rm = colors.cyan,
+                ['r?'] = colors.cyan,
+                ['!'] = colors.blue,
+                t = colors.blue
+            }
+            vim.api.nvim_command('hi GalaxyViMode guifg=' .. mode_color[vim.fn.mode()])
             return "   "
         end,
         highlight = {colors.bg, colors.nord},

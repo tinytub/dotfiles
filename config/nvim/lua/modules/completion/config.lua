@@ -42,10 +42,14 @@ function config.telescope()
     defaults = {
       prompt_prefix = '🔭 ',
       prompt_position = 'top',
+      selection_caret = " ",
       sorting_strategy = 'ascending',
       results_width = 0.6,
+      shorten_path = true,
+      set_env = {['COLORTERM'] = 'truecolor'}, -- default = nil,
       file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
       grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
+      vimgrep_arguments = {'rg', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case'},
       qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
     },
     mappings = {
