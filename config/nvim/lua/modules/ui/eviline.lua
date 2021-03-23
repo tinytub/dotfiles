@@ -1,6 +1,7 @@
 local gl = require("galaxyline")
 local gls = gl.section
 local condition = require('galaxyline.condition')
+local fn = vim.fn
 
 gl.short_line_list = {"LuaTree", "vista", "dbui"}
 
@@ -35,29 +36,6 @@ gls.left[1] = {
 gls.left[2] = {
     ViMode = {
         provider = function()
-            local mode_color = {
-                n = colors.blue,
-                i = colors.green,
-                v = colors.purple,
-                [''] = colors.purple,
-                V = colors.purple,
-                c = colors.magenta,
-                no = colors.blue,
-                s = colors.orange,
-                S = colors.orange,
-                [''] = colors.orange,
-                ic = colors.yellow,
-                R = colors.red,
-                Rv = colors.red,
-                cv = colors.blue,
-                ce = colors.blue,
-                r = colors.cyan,
-                rm = colors.cyan,
-                ['r?'] = colors.cyan,
-                ['!'] = colors.blue,
-                t = colors.blue
-            }
-            vim.api.nvim_command('hi GalaxyViMode guifg=' .. mode_color[vim.fn.mode()])
             return "   "
         end,
         highlight = {colors.bg, colors.nord},
@@ -76,7 +54,10 @@ gls.left[3] = {
 
 gls.left[4] = {
     FileName = {
-        provider = {"FileName", "FileSize"},
+        --provider = {"FileName", "FileSize"},
+        provider = function()
+            return fn.expand("%:F")
+        end,
         condition = buffer_not_empty,
         highlight = {colors.fg, colors.lightbg}
     }
@@ -162,6 +143,21 @@ gls.left[12] = {
         highlight = {colors.blue, colors.bg}
     }
 }
+
+--gls.mid[1] = {
+--    ShowLspClient = {
+--      provider = 'GetLspClient',
+--      condition = function ()
+--        local tbl = {['dashboard'] = true,['']=true}
+--        if tbl[vim.bo.filetype] then
+--          return false
+--        end
+--        return true
+--      end,
+--      icon = ' LSP:',
+--      highlight = {colors.yellow, colors.bg}
+--    }
+--  }
 
 gls.right[1] = {
   FileEncode = {
@@ -264,7 +260,17 @@ gls.short_line_left[1] = {
 
 gls.short_line_left[2] = {
   SFileName = {
-    provider =  'SFileName',
+    --provider =  'SFileName',
+    provider = function()
+        local fileinfo = require("galaxyline.provider_fileinfo")
+        local fname = fileinfo.get_current_file_name()
+        for _, v in ipairs(gl.short_line_list) do
+          if v == vim.bo.filetype then
+            return ""
+          end
+        end
+        return fname
+      end,
     condition = condition.buffer_not_empty,
     highlight = {colors.fg,colors.bg,'bold'}
   }
