@@ -72,6 +72,7 @@ local function load_options()
     sidescrolloff  = 5;
     foldlevelstart = 99;
     ruler          = false;
+    title          = true;
     --list           = true;
     showtabline    = 2;
     winwidth       = 30;
