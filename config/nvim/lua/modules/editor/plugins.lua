@@ -2,8 +2,14 @@ local editor = {}
 local conf = require('modules.editor.config')
 
 editor['Raimondi/delimitMate'] = {
+  disable = true,
   event = 'InsertEnter',
   config = conf.delimimate,
+}
+
+editor['itchyny/vim-parenmatch'] = {}
+editor['windwp/nvim-autopairs'] = {
+    config = conf.autopairs,
 }
 
 -- 加速 jk 移动的速度

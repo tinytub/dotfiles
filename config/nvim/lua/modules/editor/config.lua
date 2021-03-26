@@ -20,6 +20,7 @@ function config.nvim_colorizer()
     'javascriptreact';
     'typescript';
     'typescriptreact';
+    'lua';
     html = {
       mode = 'foreground';
     }
@@ -35,5 +36,10 @@ function config.vim_cursorwod()
   vim.api.nvim_command('autocmd InsertLeave * let b:cursorword = 1')
   vim.api.nvim_command('augroup END')
 end
+
+function config.autopairs()
+    require('nvim-autopairs').setup()
+end
+
 
 return config
