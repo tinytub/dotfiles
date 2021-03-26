@@ -45,8 +45,8 @@ local function load_options()
     ttimeout       = true;
     timeoutlen     = 500;
     ttimeoutlen    = 10;
-    updatetime     = 100;
-    redrawtime     = 1500;
+    updatetime     = 400;
+    redrawtime     = 2000;
     ignorecase     = true;
     smartcase      = true;
     infercase      = true;
@@ -56,6 +56,7 @@ local function load_options()
     inccommand     = "nosplit";
     grepformat     = "%f:%l:%c:%m";
     grepprg        = 'rg --hidden --vimgrep --smart-case --';
+    --grepprg        = 'rg --vimgrep --no-heading' . (&smartcase ? ' --smart-case' : '') . ' --'
     breakat        = [[\ \	;:,!?]];
     startofline    = false;
     whichwrap      = "h,l,<,>,[,],~";
@@ -95,11 +96,11 @@ local function load_options()
   local bw_local  = {
     synmaxcol      = 2500;
     formatoptions  = "1jcroql";
-    textwidth      = 80;
+    textwidth      = 120;
     expandtab      = true;
     autoindent     = true;
-    tabstop        = 2;
-    shiftwidth     = 2;
+    tabstop        = 4;
+    shiftwidth     = 4;
     softtabstop    = -1;
     breakindentopt = "shift:2,min:20";
     wrap           = false;
@@ -110,6 +111,7 @@ local function load_options()
     signcolumn     = "yes";
     conceallevel   = 2;
     concealcursor  = "niv";
+    confirm        = true;
   }
 
   if global.is_mac then

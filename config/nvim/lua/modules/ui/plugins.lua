@@ -8,12 +8,19 @@ local conf = require('modules.ui.config')
 ui['glepnir/zephyr-nvim'] = {
   --config = [[vim.cmd('colorscheme zephyr')]]
 }
+ui['cocopon/iceberg.vim'] = {
+  disable = true,
+  config = [[vim.cmd('colorscheme iceberg')]]
+}
 
-ui['morhetz/gruvbox'] = {
-  config = [[vim.cmd('colorscheme gruvbox')]]
+--ui['morhetz/gruvbox'] = {
+ui['lifepillar/vim-gruvbox8'] = {
+  --disable = true,
+  config = [[vim.cmd('colorscheme gruvbox8')]]
 }
 
 ui['chriskempson/base16-vim'] = {
+    disable = true
   --config = [[vim.cmd('colorscheme base16-onedark')]]
 }
 

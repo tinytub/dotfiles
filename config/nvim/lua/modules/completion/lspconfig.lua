@@ -72,10 +72,16 @@ local enhance_attach = function(client,bufnr)
   api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 end
 
+--local util = require('nvim_lsp/util')
 lspconfig.gopls.setup {
   cmd = {"gopls","--remote=auto"},
   on_attach = enhance_attach,
   capabilities = capabilities,
+  on_attach=on_attach_vim,
+  root_dir = function(fname)
+    return lspconfig.util.root_pattern("go.mod", ".git")(fname) or
+      lspconfig.util.path.dirname(fname)
+  end,
   init_options = {
     usePlaceholders=true,
     completeUnimported=true,
