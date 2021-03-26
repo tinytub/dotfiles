@@ -36,7 +36,7 @@ _try_python() {
 
 main() {
 	# Concat a base path for vim cache and virtual environment
-	local __cache="${XDG_CACHE_HOME:-$HOME/.cache}/vim"
+	local __cache="${XDG_CACHE_HOME:-$HOME/.cache}/nvim"
 	local __venv="${__cache}/venv"
 	mkdir -p "${__cache}"
 
