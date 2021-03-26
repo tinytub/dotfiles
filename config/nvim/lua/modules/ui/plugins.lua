@@ -45,7 +45,6 @@ ui['onsails/lspkind-nvim'] = {
   requires = {'kyazdani42/nvim-web-devicons'}
 }
 
-ui['itchyny/vim-parenmatch'] = {}
 
 ui['romgrk/barbar.nvim'] = {
   config = conf.barbar,
