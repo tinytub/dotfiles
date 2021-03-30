@@ -58,5 +58,7 @@ editor['rhysd/vim-operator-surround'] = {
 editor['kana/vim-niceblock']  = {
   opt = true
 }
+editor['liuchengxu/vim-which-key'] = {
+}
 
 return editor

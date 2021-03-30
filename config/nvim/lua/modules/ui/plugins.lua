@@ -68,4 +68,7 @@ ui['lewis6991/gitsigns.nvim'] = {
   requires = {'nvim-lua/plenary.nvim',opt=true}
 }
 
+ui['tpope/vim-fugitive']  = {
+}
+
 return ui

@@ -21,8 +21,8 @@ local def_map = {
     ["n|<M-[>"]      = map_cr('vertical resize -5'):with_silent(),
     ["n|<M-]>"]      = map_cr('vertical resize +5'):with_silent(),
     ["n|<C-q>"]      = map_cmd(':wq<CR>'),
-    ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
-    ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
+--    ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
+--    ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
     ["n|<C-x>"]      = map_cu('bd'):with_noremap(),
     --["n|j"]          = map_cu('gj'):with_noremap(),
     --["n|gj"]         = map_cu('j'):with_noremap(),
@@ -31,7 +31,7 @@ local def_map = {
 
   -- Insert
     ["i|<C-w>"]      = map_cmd('<C-[>diwa'):with_noremap(),
-    ["i|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
+--    ["i|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
     ["i|<C-d>"]      = map_cmd('<Del>'):with_noremap(),
     ["i|<C-u>"]      = map_cmd('<C-G>u<C-U>'):with_noremap(),
     ["i|<C-b>"]      = map_cmd('<Left>'):with_noremap(),
