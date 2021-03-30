@@ -15,10 +15,10 @@ saga.init_lsp_saga({
 -- 	hint_sign = '💡',
 -- 	infor_sign = 'ℹ️',
 -- 	dianostic_header_icon = ' 🚒 ',
- 	code_action_keys = {
- 		quit = '<esc>',
- 		exec = '<cr>'
- 	},
+-- 	code_action_keys = {
+-- 		quit = '<esc>',
+-- 		exec = '<cr>'
+-- 	},
  	finder_definition_icon = '📖 ',
  	finder_reference_icon = '🔖 ',
  	finder_action_keys = {
@@ -77,7 +77,7 @@ lspconfig.gopls.setup {
   cmd = {"gopls","--remote=auto"},
   on_attach = enhance_attach,
   capabilities = capabilities,
-  on_attach=on_attach_vim,
+  --on_attach=on_attach_vim,
   root_dir = function(fname)
     return lspconfig.util.root_pattern("go.mod", ".git")(fname) or
       lspconfig.util.path.dirname(fname)
@@ -95,9 +95,12 @@ lspconfig.gopls.setup {
 
 lspconfig.sumneko_lua.setup {
   cmd = {
-    global.home.."/workstation/lua-language-server/bin/macOS/lua-language-server",
+    --global.home.."/workstation/lua-language-server/bin/macOS/lua-language-server",
+    --"-E",
+    --global.home.."/workstation/lua-language-server/main.lua"
+    global.home.."/Documents/local_projects/lua-language-server/bin/macOS/lua-language-server",
     "-E",
-    global.home.."/workstation/lua-language-server/main.lua"
+    global.home.."/Documents/local_projects/lua-language-server/main.lua"
   };
   settings = {
     Lua = {
