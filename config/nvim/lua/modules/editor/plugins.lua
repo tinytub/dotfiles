@@ -18,7 +18,7 @@ editor['rhysd/accelerated-jk'] = {
 }
 
 editor['norcalli/nvim-colorizer.lua'] = {
-  ft = { 'html','css','sass','vim','typescript','typescriptreact'},
+  ft = { 'html','css','sass','vim','lua','typescript','typescriptreact'},
   config = conf.nvim_colorizer
 }
 
