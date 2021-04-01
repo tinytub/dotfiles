@@ -47,7 +47,7 @@ gls.left[2] = {
 gls.left[3] = {
     FileIcon = {
         provider = "FileIcon",
-        condition = buffer_not_empty,
+        condition = condition.buffer_not_empty,
         highlight = {require("galaxyline.provider_fileinfo").get_file_icon_color, colors.lightbg}
     }
 }
@@ -58,7 +58,7 @@ gls.left[4] = {
         provider = function()
             return fn.expand("%:F")
         end,
-        condition = buffer_not_empty,
+        condition = condition.buffer_not_empty,
         highlight = {colors.fg, colors.lightbg}
     }
 }
@@ -157,7 +157,7 @@ gls.left[12] = {
 --      icon = ' LSP:',
 --      highlight = {colors.yellow, colors.bg}
 --    }
---  }
+--}
 
 gls.right[1] = {
   FileEncode = {
