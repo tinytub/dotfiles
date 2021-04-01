@@ -30,8 +30,8 @@ let g:which_key_map['M'] = [ ':MarkdownPreviewToggle'                          ,
 let g:which_key_map['h'] = [ ':let @/ = ""'                                    , 'no highlight' ]
 " TODO create entire treesitter section
 "let g:which_key_map['T'] = [ ':TSHighlightCapturesUnderCursor'                 , 'treesitter highlight' ]
-"let g:which_key_map['v'] = [ '<C-W>v'                                          , 'split right']
-let g:which_key_map['v'] = [ 'Vista'                                          , 'split right']
+let g:which_key_map['v'] = [ '<C-W>v'                                          , 'split right']
+let g:which_key_map['V'] = [ 'Vista'                                          , 'Vista']
 " TODO play nice with status line
 
 " Group mappings
@@ -162,15 +162,9 @@ let g:which_key_map.t = {
       \ ';' : [':FloatermNew --wintype=normal --height=6'       , 'terminal'],
       \ 'f' : [':FloatermNew fzf'                               , 'fzf'],
       \ 'g' : [':FloatermNew lazygit'                           , 'git'],
-      \ 'd' : [':FloatermNew lazydocker'                        , 'docker'],
       \ 'n' : [':FloatermNew node'                              , 'node'],
-      \ 'N' : [':FloatermNew nnn'                               , 'nnn'],
       \ 'p' : [':FloatermNew python'                            , 'python'],
-      \ 'm' : [':FloatermNew lazynpm'                           , 'npm'],
       \ 't' : [':FloatermToggle'                                , 'toggle'],
-      \ 'y' : [':FloatermNew ytop'                              , 'ytop'],
-      \ 'u' : [':FloatermNew ncdu'                              , 'ncdu'],
       \ }
-      " \ 'r' : [':FloatermNew ranger'                            , 'ranger'],
 
 call which_key#register('<Space>', "g:which_key_map")

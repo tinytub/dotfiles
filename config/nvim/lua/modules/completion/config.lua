@@ -40,12 +40,23 @@ function config.telescope()
   local actions = require('telescope.actions')
   require('telescope').setup {
     defaults = {
-      prompt_prefix = '🔭 ',
+--      prompt_prefix = '🔭 ',
+      prompt_prefix = ' ',
       prompt_position = 'top',
       selection_caret = " ",
       sorting_strategy = 'ascending',
       results_width = 0.6,
       shorten_path = true,
+      layout_defaults = {
+          horizontal = {
+              mirror = false,
+              preview_width = 0.5
+          },
+          vertical = {
+              mirror = false
+          }
+      },
+      color_devicons = true,
       set_env = {['COLORTERM'] = 'truecolor'}, -- default = nil,
       file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
       grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
