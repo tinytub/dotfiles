@@ -1,8 +1,10 @@
 " TODO there is a more contemporary version of this file
 " TODO Also some of it is redundant
+set packpath=~/.local/share/nvim/site/pack/packer/opt
 packadd quickscope
 
-luafile ~/.config/nvim/lua/settings.lua
+"luafile ~/.config/nvim/lua/settings.lua
+luafile ~/.config/nvim/lua/core/options.lua
 
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 

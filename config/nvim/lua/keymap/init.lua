@@ -57,7 +57,7 @@ local plug_map = {
     -- Plugin Floaterm
     --["n|<A-d>"]          = map_cu('Lspsaga open_floaterm'):with_noremap():with_silent(),
     --["t|<A-d>"]          = map_cu([[<C-\><C-n>:Lspsaga close_floaterm<CR>]]):with_noremap():with_silent(),
-    --["t|<A-d>"]          = map_cu([[<C-\><C-n>:Lspsaga close_floaterm<CR>]]):with_noremap():with_silent(),
+    ["t|<A-d>"]          = map_cu([[<C-\><C-n>:FloatermKill<CR>]]):with_noremap():with_silent(),
 --    ["n|<Leader>g"]      = map_cu("Lspsaga open_floaterm lazygit"):with_noremap():with_silent(),
     -- Far.vim
     ["n|<Leader>fz"]     = map_cr('Farf'):with_noremap():with_silent();
@@ -93,15 +93,15 @@ local plug_map = {
     ["n|sa"]             = map_cmd("<Plug>(operator-surround-append)"):with_silent(),
     ["n|sd"]             = map_cmd("<Plug>(operator-surround-delete)"):with_silent(),
     ["n|sr"]             = map_cmd("<Plug>(operator-surround-replace)"):with_silent(),
-    -- Plugin hrsh7th/vim-eft
-    ["n|;"]              = map_cmd("v:lua.enhance_ft_move(';')"):with_expr(),
-    ["x|;"]              = map_cmd("v:lua.enhance_ft_move(';')"):with_expr(),
-    ["n|f"]              = map_cmd("v:lua.enhance_ft_move('f')"):with_expr(),
-    ["x|f"]              = map_cmd("v:lua.enhance_ft_move('f')"):with_expr(),
-    ["o|f"]              = map_cmd("v:lua.enhance_ft_move('f')"):with_expr(),
-    ["n|F"]              = map_cmd("v:lua.enhance_ft_move('F')"):with_expr(),
-    ["x|F"]              = map_cmd("v:lua.enhance_ft_move('F')"):with_expr(),
-    ["o|F"]              = map_cmd("v:lua.enhance_ft_move('F')"):with_expr(),
+--    -- Plugin hrsh7th/vim-eft -- use quick-scope replace
+--    ["n|;"]              = map_cmd("v:lua.enhance_ft_move(';')"):with_expr(),
+--    ["x|;"]              = map_cmd("v:lua.enhance_ft_move(';')"):with_expr(),
+--    ["n|f"]              = map_cmd("v:lua.enhance_ft_move('f')"):with_expr(),
+--    ["x|f"]              = map_cmd("v:lua.enhance_ft_move('f')"):with_expr(),
+--    ["o|f"]              = map_cmd("v:lua.enhance_ft_move('f')"):with_expr(),
+--    ["n|F"]              = map_cmd("v:lua.enhance_ft_move('F')"):with_expr(),
+--    ["x|F"]              = map_cmd("v:lua.enhance_ft_move('F')"):with_expr(),
+--    ["o|F"]              = map_cmd("v:lua.enhance_ft_move('F')"):with_expr(),
     -- Plugin vim_niceblock
     ["x|I"]              = map_cmd("v:lua.enhance_nice_block('I')"):with_expr(),
     ["x|gI"]             = map_cmd("v:lua.enhance_nice_block('gI')"):with_expr(),

@@ -53,17 +53,17 @@ _G.enhance_jk_move = function(key)
   return t(map)
 end
 
-_G.enhance_ft_move = function(key)
-  if not packer_plugins['vim-eft'].loaded then
-    vim.cmd [[packadd vim-eft]]
-  end
-  local map = {
-    f = '<Plug>(eft-f)',
-    F = '<Plug>(eft-F)',
-    [';'] = '<Plug>(eft-repeat)'
-  }
-  return t(map[key])
-end
+--_G.enhance_ft_move = function(key)
+--  if not packer_plugins['vim-eft'].loaded then
+--    vim.cmd [[packadd vim-eft]]
+--  end
+--  local map = {
+--    f = '<Plug>(eft-f)',
+--    F = '<Plug>(eft-F)',
+--    [';'] = '<Plug>(eft-repeat)'
+--  }
+--  return t(map[key])
+--end
 
 _G.enhance_nice_block = function (key)
   if not packer_plugins['vim-niceblock'].loaded then

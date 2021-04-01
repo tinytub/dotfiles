@@ -20,6 +20,7 @@ tools['liuchengxu/vista.vim'] = {
   config = conf.vim_vista
 }
 
+-- find and replace
 tools['brooth/far.vim'] = {
   cmd = {'Far','Farp'},
   config = function ()

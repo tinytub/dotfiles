@@ -102,7 +102,7 @@ let g:which_key_map.f = {
       \ 'b' : [':Telescope file_browser'                , 'file browser'],
       \ 'u' : [':Telescope colorscheme'                 , 'colorschemes'],
       \ 'g' : [':Telescope git_files'                   , 'git_files'],
-      \ 'w' : ['Telescope grep_string'                 , 'grep_string'],
+      \ 'w' : [':Telescope grep_string'                 , 'grep_string'],
       \ 'o' : [':Telescope oldfiles'                    , 'oldfiles'],
       \ 'c' : [':Telescope git_commits'                 , 'git_commits'],
       \ }
@@ -165,6 +165,8 @@ let g:which_key_map.t = {
       \ 'n' : [':FloatermNew node'                              , 'node'],
       \ 'p' : [':FloatermNew python'                            , 'python'],
       \ 't' : [':FloatermToggle'                                , 'toggle'],
+      \ 'k' : [':FloatermKill'                                  , 'kill term'],
       \ }
-
+    "["t|<A-d>"]          = map_cu([[<C-\><C-n>:FloatermKill<CR>]]):with_noremap():with_silent(),
+    "
 call which_key#register('<Space>', "g:which_key_map")
