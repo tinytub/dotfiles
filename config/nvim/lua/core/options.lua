@@ -74,6 +74,7 @@ local function load_options()
     foldlevelstart = 99;
     ruler          = false;
     title          = true;
+    titlestring    = "%<%F%=%l/%L - nvim";
     --list           = true;
     showtabline    = 2;
     winwidth       = 30;
