@@ -133,8 +133,12 @@ lspconfig.clangd.setup {
   },
 }
 
+lspconfig.rust_analyzer.setup {
+  capabilities = capabilities,
+}
+
 local servers = {
-  'dockerls','bashls','rust_analyzer','pyright'
+  'dockerls','bashls','pyright'
 }
 
 for _,server in ipairs(servers) do
