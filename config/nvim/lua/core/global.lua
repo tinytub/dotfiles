@@ -13,6 +13,7 @@ function global:load_variables()
   self.path_sep = path_sep
   self.home = home
   self.data_dir = string.format('%s/site/',vim.fn.stdpath('data'))
+  self.lspinstall_dir =  string.format('%s/lspinstall/',vim.fn.stdpath('data'))
 end
 
 global:load_variables()

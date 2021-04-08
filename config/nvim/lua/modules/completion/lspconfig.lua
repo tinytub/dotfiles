@@ -1,5 +1,6 @@
 local api = vim.api
 local lspconfig = require 'lspconfig'
+local lspinstall_dir = require('core.global').lspinstall_dir
 local global = require 'core.global'
 local format = require('modules.completion.format')
 
@@ -74,7 +75,8 @@ end
 
 --local util = require('nvim_lsp/util')
 lspconfig.gopls.setup {
-  cmd = {"gopls","--remote=auto"},
+  --cmd = {"gopls","--remote=auto"},
+  cmd = {lspinstall_dir .. "go/gopls", "--remote=auto"},
   on_attach = enhance_attach,
   capabilities = capabilities,
   --on_attach=on_attach_vim,
@@ -93,14 +95,39 @@ lspconfig.gopls.setup {
   }
 }
 
+lspconfig.bashls.setup {
+    cmd = {lspinstall_dir .. "bash/node_modules/.bin/bash-language-server", "start"},
+    on_attach = enhance_attach,
+    filetypes = { "sh", "zsh" }
+}
+
+-- npm i -g pyright
+lspconfig.pyright.setup {
+    cmd = {lspinstall_dir .. "python/node_modules/.bin/pyright-langserver", "--stdio"},
+    --on_attach = require'lsp'.common_on_attach,
+    on_attach = enhance_attach,
+    --handlers = {
+    --    ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+    --        virtual_text = O.python.diagnostics.virtual_text,
+    --        signs = O.python.diagnostics.signs,
+    --        underline = O.python.diagnostics.underline,
+    --        update_in_insert = true
+
+    --    })
+    --}
+}
+
 lspconfig.sumneko_lua.setup {
   cmd = {
     --global.home.."/workstation/lua-language-server/bin/macOS/lua-language-server",
     --"-E",
     --global.home.."/workstation/lua-language-server/main.lua"
-    global.home.."/Documents/local_projects/lua-language-server/bin/macOS/lua-language-server",
+    --global.home.."/Documents/local_projects/lua-language-server/bin/macOS/lua-language-server",
+    --"-E",
+    --global.home.."/Documents/local_projects/lua-language-server/main.lua"
+    lspinstall_dir .. "lua/sumneko-lua-language-server",
     "-E",
-    global.home.."/Documents/local_projects/lua-language-server/main.lua"
+    lspinstall_dir .. "lua/main.lua",
   };
   settings = {
     Lua = {
@@ -110,10 +137,40 @@ lspconfig.sumneko_lua.setup {
       },
       runtime = {version = "LuaJIT"},
       workspace = {
-        library = vim.list_extend({[vim.fn.expand("$VIMRUNTIME/lua")] = true},{}),
+        library = {[vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true},
+       -- library = vim.list_extend({[vim.fn.expand("$VIMRUNTIME/lua")] = true},{}),
       },
     },
   }
+}
+
+lspconfig.clangd.setup {
+    cmd = {
+        lspinstall_dir .. "cpp/clangd/bin/clangd",
+        "--background-index",
+        "--suggest-missing-includes",
+        "--clang-tidy",
+        "--header-insertion=iwyu",
+    },
+    --on_attach = require'lsp'.common_on_attach,
+    on_attach = enhance_attach,
+    --handlers = {
+    --    ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+    --        virtual_text = O.clang.diagnostics.virtual_text,
+    --        signs = O.clang.diagnostics.signs,
+    --        underline = O.clang.diagnostics.underline,
+    --        update_in_insert = true
+
+    --    })
+    --}
+}
+
+-- npm install -g dockerfile-language-server-nodejs
+lspconfig.dockerls.setup {
+    cmd = {lspinstall_dir .. "dockerfile/node_modules/.bin/docker-langserver", "--stdio"},
+    --on_attach = require'lsp'.common_on_attach,
+    on_attach = enhance_attach,
+	root_dir = vim.loop.cwd
 }
 
 lspconfig.tsserver.setup {
@@ -123,22 +180,22 @@ lspconfig.tsserver.setup {
   end
 }
 
-lspconfig.clangd.setup {
-  cmd = {
-    "clangd",
-    "--background-index",
-    "--suggest-missing-includes",
-    "--clang-tidy",
-    "--header-insertion=iwyu",
-  },
-}
+--lspconfig.clangd.setup {
+--  cmd = {
+--    "clangd",
+--    "--background-index",
+--    "--suggest-missing-includes",
+--    "--clang-tidy",
+--    "--header-insertion=iwyu",
+--  },
+--}
 
 lspconfig.rust_analyzer.setup {
   capabilities = capabilities,
 }
 
 local servers = {
-  'dockerls','bashls','pyright'
+ -- 'dockerls',
 }
 
 for _,server in ipairs(servers) do
