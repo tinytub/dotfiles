@@ -243,28 +243,15 @@ function config.lspkind_nvim()
 end
 
 function config.gitsigns()
-  vim.cmd('autocmd ColorScheme * hi GitSignsAdd guifg=#98be65')
-  vim.cmd('autocmd ColorScheme * hi GitSignsChange guifg=#FF8800')
-  vim.cmd('autocmd ColorScheme * hi GitSignsDelete guifg=#ec5f67')
+
+  -- colors from gruvbox8
+  vim.cmd('autocmd ColorScheme * hi GitSignsAdd guifg=#b8bb26 guibg=none')
+  vim.cmd('autocmd ColorScheme * hi GitSignsChange guifg=#8ec07c guibg=none')
+  vim.cmd('autocmd ColorScheme * hi GitSignsDelete guifg=#fb4934 guibg=none')
   if not packer_plugins['plenary.nvim'].loaded then
     vim.cmd [[packadd plenary.nvim]]
   end
   require('gitsigns').setup {
-    --signs = {gitsigns
-    --  -- TODO add hl to colorscheme
-    --  add          = {hl = 'GitSignsAdd'   , text = '▎', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-    --  change       = {hl = 'GitSignsChange', text = '▎', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-    --  delete       = {hl = 'GitSignsDelete', text = '契', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    --  topdelete    = {hl = 'GitSignsDelete', text = '契', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    --  changedelete = {hl = 'GitSignsChange', text = '▎', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-    --},
-    --signs = {
-    --  add = {hl = 'GitGutterAdd', text = '▋'},
-    --  change = {hl = 'GitGutterChange',text= '▋'},
-    --  delete = {hl= 'GitGutterDelete', text = '▋'},
-    --  topdelete = {hl ='GitGutterDeleteChange',text = '▔'},
-    --  changedelete = {hl = 'GitGutterChange', text = '▎'},
-    --},
     numhl = false,
     linehl = false,
     watch_index = {
