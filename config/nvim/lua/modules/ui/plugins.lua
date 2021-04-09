@@ -10,8 +10,8 @@ ui['glepnir/zephyr-nvim'] = {
   --config = [[vim.cmd('colorscheme zephyr')]]
 }
 ui['cocopon/iceberg.vim'] = {
-  disable = true,
-  config = [[vim.cmd('colorscheme iceberg')]]
+  --disable = true,
+  --config = [[vim.cmd('colorscheme iceberg')]]
 }
 
 --ui['morhetz/gruvbox'] = {
@@ -24,9 +24,20 @@ ui['lifepillar/vim-gruvbox8'] = {
   end
 }
 
-ui['chriskempson/base16-vim'] = {
-    disable = true
+ui['norcalli/nvim-base16.lua'] = {
   --config = [[vim.cmd('colorscheme base16-onedark')]]
+}
+
+ui['mhartington/oceanic-next'] = {
+
+}
+
+ui['ayu-theme/ayu-vim'] = {
+  config = function ()
+    --vim.cmd('colorscheme ayu')
+    vim.cmd('let ayucolor="dark"')
+  end
+
 }
 
 ui['onsails/lspkind-nvim'] = {
