@@ -17,7 +17,11 @@ ui['cocopon/iceberg.vim'] = {
 --ui['morhetz/gruvbox'] = {
 ui['lifepillar/vim-gruvbox8'] = {
   --disable = true,
-  config = [[vim.cmd('colorscheme gruvbox8')]]
+  config = function ()
+    vim.cmd('colorscheme gruvbox8')
+    vim.cmd('set background=dark')
+    vim.cmd('let g:gruvbox_plugin_hi_groups = 1')
+  end
 }
 
 ui['chriskempson/base16-vim'] = {
