@@ -11,8 +11,8 @@ local plug_map = {
 --    ["i|<CR>"]       = map_cmd([[compe#confirm({ 'keys': "\<Plug>delimitMateCR", 'mode': '' })]]):with_noremap():with_expr():with_nowait(),
     ["i|<CR>"]       = map_cmd('v:lua.completions()'):with_expr(),
     -- person keymap
-    ["n|mf"]             = map_cr("<cmd>lua require('internal.fsevent').file_event()<CR>"):with_silent():with_nowait():with_noremap();
-    ["n|gb"]             = map_cr("BufferLinePick"):with_noremap():with_silent(),
+    -- ["n|mf"]             = map_cr("<cmd>lua require('internal.fsevent').file_event()<CR>"):with_silent():with_nowait():with_noremap();
+    -- ["n|gb"]             = map_cr("BufferLinePick"):with_noremap():with_silent(),
     -- Packer
 --    ["n|<leader>pu"]     = map_cr("PackerUpdate"):with_silent():with_noremap():with_nowait();
 --    ["n|<leader>pi"]     = map_cr("PackerInstall"):with_silent():with_noremap():with_nowait();
