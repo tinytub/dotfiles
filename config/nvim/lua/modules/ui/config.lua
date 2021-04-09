@@ -2,6 +2,11 @@ local config = {}
 
 function config.galaxyline()
   require('modules.ui.eviline')
+  -- inactive statuslines as thin splitlines
+  vim.cmd("highlight! StatusLineNC gui=underline guibg=NONE guifg=#383c44")
+
+  vim.cmd "hi clear CursorLine"
+  vim.cmd "hi cursorlinenr guibg=NONE guifg=#abb2bf"
   -- stand alone setup devicons
   require "nvim-web-devicons".setup {
     override = {
@@ -92,41 +97,41 @@ function config.nvim_bufferline()
       mappings = true,
       always_show_bufferline = true
     },
---    highlights = {
---        background = {
---            guifg = comment_fg,
---            guibg = "#282c34"
---        },
---        fill = {
---            guifg = comment_fg,
---            guibg = "#282c34"
---        },
---        buffer_selected = {
---            guifg = normal_fg,
---            guibg = "#3A3E44",
---            gui = "bold"
---        },
---        separator_visible = {
---            guifg = "#282c34",
---            guibg = "#282c34"
---        },
---        separator_selected = {
---            guifg = "#282c34",
---            guibg = "#282c34"
---        },
---        separator = {
---            guifg = "#282c34",
---            guibg = "#282c34"
---        },
---        indicator_selected = {
---            guifg = "#282c34",
---            guibg = "#282c34"
---        },
---        modified_selected = {
---            guifg = string_fg,
---            guibg = "#3A3E44"
---        }
---     }
+    highlights = {
+        background = {
+            guifg = comment_fg,
+            guibg = "#282c34"
+        },
+        fill = {
+            guifg = comment_fg,
+            guibg = "#282c34"
+        },
+        buffer_selected = {
+            guifg = normal_fg,
+            guibg = "#3A3E44",
+            gui = "bold"
+        },
+        separator_visible = {
+            guifg = "#282c34",
+            guibg = "#282c34"
+        },
+        separator_selected = {
+            guifg = "#282c34",
+            guibg = "#282c34"
+        },
+        separator = {
+            guifg = "#282c34",
+            guibg = "#282c34"
+        },
+        indicator_selected = {
+            guifg = "#282c34",
+            guibg = "#282c34"
+        },
+        modified_selected = {
+            guifg = string_fg,
+            guibg = "#3A3E44"
+        }
+     }
   }
 end
 
