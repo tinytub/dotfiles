@@ -6,6 +6,7 @@ local conf = require('modules.ui.config')
 --}
 
 ui['glepnir/zephyr-nvim'] = {
+    disable = true
   --config = [[vim.cmd('colorscheme zephyr')]]
 }
 ui['cocopon/iceberg.vim'] = {
@@ -22,22 +23,6 @@ ui['lifepillar/vim-gruvbox8'] = {
 ui['chriskempson/base16-vim'] = {
     disable = true
   --config = [[vim.cmd('colorscheme base16-onedark')]]
-}
-
-
-
-ui['glepnir/dashboard-nvim'] = {
-  config = conf.dashboard
-}
-
-ui['glepnir/galaxyline.nvim'] = {
-  branch = 'main',
-  config = conf.galaxyline,
-  requires = {'kyazdani42/nvim-web-devicons'}
-}
-
-ui['glepnir/indent-guides.nvim'] = {
-  event = 'BufRead',
 }
 
 ui['onsails/lspkind-nvim'] = {
@@ -57,18 +42,33 @@ ui['romgrk/barbar.nvim'] = {
 --}
 
 ui['kyazdani42/nvim-tree.lua'] = {
-  cmd = {'NvimTreeToggle','NvimTreeOpen','NvimTreeFindFile'},
+  --cmd = {'NvimTreeToggle','NvimTreeOpen','NvimTreeFindFile'},
   config = conf.nvim_tree,
   requires = {'kyazdani42/nvim-web-devicons'}
 }
 
 ui['lewis6991/gitsigns.nvim'] = {
-  event = {'BufRead','BufNewFile'},
-  config = conf._gitsigns,
+  --event = {'BufRead','BufNewFile'},
+  config = conf.gitsigns,
   requires = {'nvim-lua/plenary.nvim',opt=true}
 }
 
+ui['glepnir/dashboard-nvim'] = {
+  config = conf.dashboard
+}
+
+ui['glepnir/galaxyline.nvim'] = {
+  branch = 'main',
+  config = conf.galaxyline,
+  requires = {'kyazdani42/nvim-web-devicons'}
+}
+
+ui['glepnir/indent-guides.nvim'] = {
+  event = 'BufRead',
+}
+
 ui['tpope/vim-fugitive']  = {
+    --disable = true,
 }
 
 return ui

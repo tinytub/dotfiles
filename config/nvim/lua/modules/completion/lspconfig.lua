@@ -4,37 +4,37 @@ local lspinstall_dir = require('core.global').lspinstall_dir
 local global = require 'core.global'
 local format = require('modules.completion.format')
 
-if not packer_plugins['lspsaga.nvim'].loaded then
-  vim.cmd [[packadd lspsaga.nvim]]
-end
+--if not packer_plugins['lspsaga.nvim'].loaded then
+--  vim.cmd [[packadd lspsaga.nvim]]
+--end
 
-local saga = require 'lspsaga'
-saga.init_lsp_saga({
---  code_action_icon = '💡',
--- 	error_sign = '❌',
--- 	warn_sign = '⚠️',
--- 	hint_sign = '💡',
--- 	infor_sign = 'ℹ️',
--- 	dianostic_header_icon = ' 🚒 ',
+--local saga = require 'lspsaga'
+--saga.init_lsp_saga({
+----  code_action_icon = '💡',
+---- 	error_sign = '❌',
+---- 	warn_sign = '⚠️',
+---- 	hint_sign = '💡',
+---- 	infor_sign = 'ℹ️',
+---- 	dianostic_header_icon = ' 🚒 ',
+---- 	code_action_keys = {
+---- 		quit = '<esc>',
+---- 		exec = '<cr>'
+---- 	},
+-- 	finder_definition_icon = '📖 ',
+-- 	finder_reference_icon = '🔖 ',
+-- 	finder_action_keys = {
+--    open = 'o', vsplit = 's',split = 'i',quit = 'q',scroll_down = '<C-f>', scroll_up = '<C-b>'
+-- 	},
 -- 	code_action_keys = {
 -- 		quit = '<esc>',
 -- 		exec = '<cr>'
 -- 	},
- 	finder_definition_icon = '📖 ',
- 	finder_reference_icon = '🔖 ',
- 	finder_action_keys = {
-    open = 'o', vsplit = 's',split = 'i',quit = 'q',scroll_down = '<C-f>', scroll_up = '<C-b>'
- 	},
- 	code_action_keys = {
- 		quit = '<esc>',
- 		exec = '<cr>'
- 	},
- 	rename_action_keys = {
- 		quit = '<esc>',
- 		exec = '<cr>'
- 	},
- 	definition_preview_icon = '📖 '
-})
+-- 	rename_action_keys = {
+-- 		quit = '<esc>',
+-- 		exec = '<cr>'
+-- 	},
+-- 	definition_preview_icon = '📖 '
+--})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -51,6 +51,28 @@ end
 
 vim.cmd('command! -nargs=0 LspLog call v:lua.open_lsp_log()')
 vim.cmd('command! -nargs=0 LspRestart call v:lua.reload_lsp()')
+
+-- Define diagnostic signs and highlighting colors
+--vim.api.nvim_call_function('sign_define',{"LspDiagnosticsSignError", {text = "",
+--  texthl = "LspDiagnosticsDefaultError",
+--  numhl = "LspDiagnosticsDefaultError"
+--}})
+--vim.api.nvim_call_function('sign_define',{"LspDiagnosticsSignWarning", {text = "",
+--  texthl = "LspDiagnosticsDefaultWarning",
+--  numhl = "LspDiagnosticsDefaultWarning"
+--}})
+--vim.api.nvim_call_function('sign_define',{"LspDiagnosticsSignInformation", {text = "",
+--  texthl = "LspDiagnosticsDefaultInformation",
+--  numhl = "LspDiagnosticsDefaultInformation"
+--}})
+--vim.api.nvim_call_function('sign_define',{"LspDiagnosticsSignHint", {text = "",
+--  texthl = "LspDiagnosticsDefaultHint",
+--  numhl = "LspDiagnosticsDefaultHint"
+--}})
+vim.fn.sign_define("LspDiagnosticsSignError",{ text = "", texthl = "LspDiagnosticsDefaultError" })
+vim.fn.sign_define("LspDiagnosticsSignWarning",{ text = "", texthl = "LspDiagnosticsDefaultWarning" })
+vim.fn.sign_define("LspDiagnosticsSignInformation",{ text = "", texthl = "LspDiagnosticsDefaultInformation" })
+vim.fn.sign_define("LspDiagnosticsSignHint",{ text = "", texthl = "LspDiagnosticsDefaultHint" })
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {

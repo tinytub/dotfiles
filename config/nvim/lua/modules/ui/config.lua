@@ -92,41 +92,41 @@ function config.nvim_bufferline()
       mappings = true,
       always_show_bufferline = true
     },
-    highlights = {
-        background = {
-            guifg = comment_fg,
-            guibg = "#282c34"
-        },
-        fill = {
-            guifg = comment_fg,
-            guibg = "#282c34"
-        },
-        buffer_selected = {
-            guifg = normal_fg,
-            guibg = "#3A3E44",
-            gui = "bold"
-        },
-        separator_visible = {
-            guifg = "#282c34",
-            guibg = "#282c34"
-        },
-        separator_selected = {
-            guifg = "#282c34",
-            guibg = "#282c34"
-        },
-        separator = {
-            guifg = "#282c34",
-            guibg = "#282c34"
-        },
-        indicator_selected = {
-            guifg = "#282c34",
-            guibg = "#282c34"
-        },
-        modified_selected = {
-            guifg = string_fg,
-            guibg = "#3A3E44"
-        }
-     }
+--    highlights = {
+--        background = {
+--            guifg = comment_fg,
+--            guibg = "#282c34"
+--        },
+--        fill = {
+--            guifg = comment_fg,
+--            guibg = "#282c34"
+--        },
+--        buffer_selected = {
+--            guifg = normal_fg,
+--            guibg = "#3A3E44",
+--            gui = "bold"
+--        },
+--        separator_visible = {
+--            guifg = "#282c34",
+--            guibg = "#282c34"
+--        },
+--        separator_selected = {
+--            guifg = "#282c34",
+--            guibg = "#282c34"
+--        },
+--        separator = {
+--            guifg = "#282c34",
+--            guibg = "#282c34"
+--        },
+--        indicator_selected = {
+--            guifg = "#282c34",
+--            guibg = "#282c34"
+--        },
+--        modified_selected = {
+--            guifg = string_fg,
+--            guibg = "#3A3E44"
+--        }
+--     }
   }
 end
 
@@ -137,6 +137,7 @@ function config.barbar()
       --vim.cmd("let bufferline.icon_close_tab_modified = '●'")
       --
       vim.cmd [[ let g:bufferline = {} ]]
+      vim.cmd [[ let bufferline.icon_close_tab_modified = '✥' ]]
       vim.cmd [[ let bufferline.animation = v:false ]]
       vim.cmd [[ let bufferline.closeable = v:false ]]
       vim.cmd [[ let bufferline.clickable = v:false ]]
@@ -241,17 +242,53 @@ function config.lspkind_nvim()
 --})
 end
 
-function config._gitsigns()
+function config.gitsigns()
+  vim.cmd('autocmd ColorScheme * hi GitSignsAdd guifg=#98be65')
+  vim.cmd('autocmd ColorScheme * hi GitSignsChange guifg=#FF8800')
+  vim.cmd('autocmd ColorScheme * hi GitSignsDelete guifg=#ec5f67')
   if not packer_plugins['plenary.nvim'].loaded then
     vim.cmd [[packadd plenary.nvim]]
   end
   require('gitsigns').setup {
+    --signs = {gitsigns
+    --  -- TODO add hl to colorscheme
+    --  add          = {hl = 'GitSignsAdd'   , text = '▎', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+    --  change       = {hl = 'GitSignsChange', text = '▎', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    --  delete       = {hl = 'GitSignsDelete', text = '契', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    --  topdelete    = {hl = 'GitSignsDelete', text = '契', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    --  changedelete = {hl = 'GitSignsChange', text = '▎', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    --},
+    --signs = {
+    --  add = {hl = 'GitGutterAdd', text = '▋'},
+    --  change = {hl = 'GitGutterChange',text= '▋'},
+    --  delete = {hl= 'GitGutterDelete', text = '▋'},
+    --  topdelete = {hl ='GitGutterDeleteChange',text = '▔'},
+    --  changedelete = {hl = 'GitGutterChange', text = '▎'},
+    --},
+    numhl = false,
+    linehl = false,
+    watch_index = {
+      interval = 1000
+    },
+    sign_priority = 6,
+    update_debounce = 200,
+    status_formatter = nil, -- Use default
+    use_decoration_api = true,
+    use_internal_diff = true,  -- If luajit is present
+    debug_mode = true,
+    --signs = {
+    --  add = {hl = 'GitSignsAdd', text = '▎'},
+    --  change = {hl = 'GitSignsChange',text= '▎'},
+    --  delete = {hl= 'GitSignsDelete', text = '契'},
+    --  topdelete = {hl ='GitSignsDeleteChange',text = '▔'},
+    --  changedelete = {hl = 'GitSignsChange', text = '▎'},
+    --},
     signs = {
-      add = {hl = 'GitGutterAdd', text = '▋'},
-      change = {hl = 'GitGutterChange',text= '▋'},
-      delete = {hl= 'GitGutterDelete', text = '▋'},
-      topdelete = {hl ='GitGutterDeleteChange',text = '▔'},
-      changedelete = {hl = 'GitGutterChange', text = '▎'},
+      add = {hl = 'GitSignsAdd', text = '▋'},
+      change = {hl = 'GitSignsChange',text= '▋'},
+      delete = {hl= 'GitSignsDelete', text = '▋'},
+      topdelete = {hl ='GitSignsDeleteChange',text = '▔'},
+      changedelete = {hl = 'GitSignsChange', text = '▎'},
     },
     keymaps = {
        -- Default keymap options
@@ -270,8 +307,8 @@ function config._gitsigns()
        -- Text objects
        ['o ih'] = ':<C-U>lua require"gitsigns".text_object()<CR>',
        ['x ih'] = ':<C-U>lua require"gitsigns".text_object()<CR>'
-     },
-  }
+   },
+}
 end
 
 return config
