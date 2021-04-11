@@ -42,13 +42,13 @@ ui['ayu-theme/ayu-vim'] = {
 
 ui['onsails/lspkind-nvim'] = {
   config = conf.lspkind_nvim,
-  requires = {'kyazdani42/nvim-web-devicons'}
+  requires = 'kyazdani42/nvim-web-devicons'
 }
 
 
 ui['romgrk/barbar.nvim'] = {
   config = conf.barbar,
-  requires = {'kyazdani42/nvim-web-devicons'}
+  requires = 'kyazdani42/nvim-web-devicons'
 }
 
 --ui['akinsho/nvim-bufferline.lua'] = {
@@ -59,7 +59,7 @@ ui['romgrk/barbar.nvim'] = {
 ui['kyazdani42/nvim-tree.lua'] = {
   --cmd = {'NvimTreeToggle','NvimTreeOpen','NvimTreeFindFile'},
   config = conf.nvim_tree,
-  requires = {'kyazdani42/nvim-web-devicons'}
+  requires = 'kyazdani42/nvim-web-devicons'
 }
 
 ui['lewis6991/gitsigns.nvim'] = {
@@ -75,7 +75,7 @@ ui['glepnir/dashboard-nvim'] = {
 ui['glepnir/galaxyline.nvim'] = {
   branch = 'main',
   config = conf.galaxyline,
-  requires = {'kyazdani42/nvim-web-devicons'}
+  requires = 'kyazdani42/nvim-web-devicons'
 }
 
 ui['glepnir/indent-guides.nvim'] = {
