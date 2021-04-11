@@ -29,7 +29,6 @@ local function load_options()
     wildignore     = ".git,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**";
     backup         = false;
     writebackup    = false;
-    undofile       = true;
     swapfile       = false;
     directory      = global.cache_dir .. "swag/";
     undodir        = global.cache_dir .. "undo/";
@@ -95,6 +94,7 @@ local function load_options()
   }
 
   local bw_local  = {
+    undofile       = true;
     synmaxcol      = 2500;
     formatoptions  = "1jcroql";
     textwidth      = 120;
@@ -129,10 +129,10 @@ local function load_options()
       cache_enabled = 0
     }
 
-    virtualenv = global.cache_dir..'/venv/bin/python'
+    --virtualenv = global.cache_dir..'/venv/bin/python'
     --vim.g.python_host_prog = '/usr/bin/python'
     --vim.g.python3_host_prog = '/usr/local/bin/python3'
-    vim.g.python3_host_prog = virtualenv
+    vim.g.python3_host_prog = global.cache_dir..'/venv/bin/python'
   end
   for name, value in pairs(global_local) do
     vim.o[name] = value

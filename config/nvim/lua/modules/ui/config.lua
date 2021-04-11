@@ -141,7 +141,8 @@ function config.barbar()
       --vim.cmd("let bufferline.closable = v:false")
       --vim.cmd("let bufferline.icon_close_tab_modified = '●'")
       --
-      vim.cmd [[ let g:bufferline = {} ]]
+      --vim.cmd [[ let g:bufferline = {} ]]
+      vim.cmd [[ let bufferline = get(g:, 'bufferline', {}) ]]
       vim.cmd [[ let bufferline.icon_close_tab_modified = '✥' ]]
       vim.cmd [[ let bufferline.animation = v:false ]]
       vim.cmd [[ let bufferline.closeable = v:false ]]
@@ -250,9 +251,9 @@ end
 function config.gitsigns()
 
   -- colors from gruvbox8
-  vim.cmd('autocmd ColorScheme * hi GitSignsAdd guifg=#b8bb26 guibg=none')
-  vim.cmd('autocmd ColorScheme * hi GitSignsChange guifg=#8ec07c guibg=none')
-  vim.cmd('autocmd ColorScheme * hi GitSignsDelete guifg=#fb4934 guibg=none')
+  vim.cmd('autocmd ColorScheme * hi GitSignsAdd guifg=#b8bb26 guibg=NONE')
+  vim.cmd('autocmd ColorScheme * hi GitSignsChange guifg=#8ec07c guibg=NONE')
+  vim.cmd('autocmd ColorScheme * hi GitSignsDelete guifg=#fb4934 guibg=NONE')
   if not packer_plugins['plenary.nvim'].loaded then
     vim.cmd [[packadd plenary.nvim]]
   end
