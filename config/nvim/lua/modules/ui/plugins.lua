@@ -32,6 +32,12 @@ ui['mhartington/oceanic-next'] = {
 
 }
 
+ui['sainnhe/everforest'] = {
+    config = function ()
+--        vim.cmd('colorscheme everforest')
+    end
+}
+
 ui['ayu-theme/ayu-vim'] = {
   config = function ()
     --vim.cmd('colorscheme ayu')

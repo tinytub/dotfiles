@@ -3,7 +3,7 @@ local gls = gl.section
 local condition = require('galaxyline.condition')
 local fn = vim.fn
 
-gl.short_line_list = {"LuaTree", "vista", "dbui"}
+gl.short_line_list = {"LuaTree", "vista", "dbui",'NvimTree', 'vista', 'dbui', 'packer'}
 
 local colors = {
     bg = "#282c34",
@@ -69,7 +69,7 @@ gls.left[5] = {
             return ""
         end,
         separator = " ",
-        highlight = {colors.lightbg, colors.bg}
+        highlight = {colors.lightbg, colors.line_bg}
     }
 }
 

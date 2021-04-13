@@ -38,7 +38,9 @@ function config.vim_cursorwod()
 end
 
 function config.autopairs()
-    require('nvim-autopairs').setup()
+    require('nvim-autopairs').setup({
+      disable_filetype = { "TelescopePrompt", "NvimTree", "Vista" },
+    })
 end
 
 
