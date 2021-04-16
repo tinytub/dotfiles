@@ -190,64 +190,84 @@ function config.nvim_tree()
   vim.g.nvim_tree_indent_markers = 1
   vim.g.nvim_tree_quit_on_open = 1
   vim.g.nvim_tree_auto_close = 1
+  vim.g.nvim_tree_follow = 1
   vim.g.nvim_tree_ignore = {'.git', 'node_modules', '.cache'}
+
+  local tree_cb = require'nvim-tree.config'.nvim_tree_callback
   vim.g.nvim_tree_bindings = {
-    ["l"] = ":lua require'nvim-tree'.on_keypress('edit')<CR>",
-    ["s"] = ":lua require'nvim-tree'.on_keypress('vsplit')<CR>",
-    ["i"] = ":lua require'nvim-tree'.on_keypress('split')<CR>",
-    ["<CR>"]  = ":lua require'nvim-tree'.on_keypress('edit')<CR>",
-    ["zh"]    = ":lua require'nvim-tree'.on_keypress('toggle_dotfiles')<CR>",
-    ["<Tab>"] = ":lua require'nvim-tree'.on_keypress('preview')<CR>",
-    ["cd"]    = ":lua require'nvim-tree'.on_keypress('cd')<CR>",
-    ["a"]     = ":lua require'nvim-tree'.on_keypress('create')<CR>",
-    ["rm"]    = ":lua require'nvim-tree'.on_keypress('remove')<CR>",
-    ["rn"]    = ":lua require'nvim-tree'.on_keypress('rename')<CR>",
-    ["dd"]    = ":lua require'nvim-tree'.on_keypress('cut')<CR>",
-    ["yy"]    = ":lua require'nvim-tree'.on_keypress('copy')<CR>",
-    ["p"]     = ":lua require'nvim-tree'.on_keypress('paste')<CR>",
-    ["q"]     = ":lua require'nvim-tree'.on_keypress('close')<CR>"
+    ["l"]              = tree_cb('edit'),
+    ["<2-LeftMouse>"]  = tree_cb("edit"),
+    ["<2-RightMouse>"] = tree_cb("cd"),
+    ["<C-]>"]          = tree_cb("cd"),
+    ["<C-v>"]          = tree_cb('vsplit'),
+    ["<C-x>"]          = tree_cb('split'),
+    ["<CR>"]           = tree_cb('edit'),
+    ["<C-t>"]          = tree_cb("tabnew"),
+    ["<"]              = tree_cb("prev_sibling"),
+    [">"]              = tree_cb("next_sibling"),
+    ["<BS>"]           = tree_cb("close_node"),
+    ["h"]              = tree_cb("close_node"),
+    ["<S-CR>"]         = tree_cb("close_node"),
+    ["I"]              = tree_cb("toggle_ignored"),
+    ["H"]              = tree_cb("toggle_dotfiles"),
+    ["R"]              = tree_cb("refresh"),
+    ["d"]              = tree_cb("remove"),
+    ["r"]              = tree_cb("rename"),
+    ["<C-r>"]          = tree_cb("full_rename"),
+    ["[c"]             = tree_cb("prev_git_item"),
+    ["]c"]             = tree_cb("next_git_item"),
+    ["-"]              = tree_cb("dir_up"),
+    ["<Tab>"]          = tree_cb('preview'),
+    ["cd"]             = tree_cb('cd'),
+    ["a"]              = tree_cb('create'),
+    ["rm"]             = tree_cb('remove'),
+    ["dd"]             = tree_cb('cut'),
+    ["yy"]             = tree_cb('copy'),
+    ["p"]              = tree_cb('paste'),
+    ["q"]              = tree_cb('close')
   }
   vim.g.nvim_tree_icons = {
     default =  '',
     symlink =  '',
-    git = {
-     unstaged = "✚",
-     staged =  "✚",
-     unmerged =  "≠",
-     renamed =  "≫",
-     untracked = "★",
-    },
+    --git = {
+    -- unstaged = "✚",
+    -- staged =  "✚",
+    -- unmerged =  "≠",
+    -- renamed =  "≫",
+    -- untracked = "★",
+    --},
+    git = {unstaged = "", staged = "✓", unmerged = "", renamed = "➜", untracked = ""},
   }
 end
 
-function config.lspkind_nvim()
-  require('lspkind').init()
---  require('lspkind').init({
---    with_text = false,
---    symbol_map = {
---      Text = '  ',
---      Method = '  ',
---      Function = '  ',
---      Constructor = '  ',
---      Variable = '[]',
---      Class = '  ',
---      Interface = ' 蘒',
---      Module = '  ',
---      Property = '  ',
---      Unit = ' 塞 ',
---      Value = '  ',
---      Enum = ' 練',
---      Keyword = '  ',
---      Snippet = '  ',
---      Color = '',
---      File = '',
---      Folder = ' ﱮ ',
---      EnumMember = '  ',
---      Constant = '  ',
---      Struct = '  '
---    },
---})
-end
+--function config.lspkind_nvim()
+--  require('lspkind').init()
+----  require('lspkind').init({
+----    with_text = false,
+----    symbol_map = {
+----      Text = '  ',
+----      Method = '  ',
+----      Function = '  ',
+----      Constructor = '  ',
+----      Variable = '[]',
+----      Class = '  ',
+----      Interface = ' 蘒',
+----      Module = '  ',
+----      Property = '  ',
+----      Unit = ' 塞 ',
+----      Value = '  ',
+----      Enum = ' 練',
+----      Keyword = '  ',
+----      Snippet = '  ',
+----      Color = '',
+----      File = '',
+----      Folder = ' ﱮ ',
+----      EnumMember = '  ',
+----      Constant = '  ',
+----      Struct = '  '
+----    },
+----})
+--end
 
 function config.gitsigns()
 
