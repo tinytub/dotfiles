@@ -46,10 +46,10 @@ ui['ayu-theme/ayu-vim'] = {
 
 }
 
-ui['onsails/lspkind-nvim'] = {
-  config = conf.lspkind_nvim,
-  requires = 'kyazdani42/nvim-web-devicons'
-}
+--ui['onsails/lspkind-nvim'] = {
+--  config = conf.lspkind_nvim,
+--  requires = 'kyazdani42/nvim-web-devicons'
+--}
 
 
 ui['romgrk/barbar.nvim'] = {
