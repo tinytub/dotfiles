@@ -12,10 +12,16 @@
   "vim.neovimPath": "/usr/local/bin/nvim",
   "files.trimTrailingWhitespace": true,
   "vs-kubernetes": {
-      "vs-kubernetes.minikube-path": "/Users/zhaopeng18/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
-      "vs-kubernetes.helm-path": "/Users/zhaopeng18/.vs-kubernetes/tools/helm/darwin-amd64/helm",
-      "vs-kubernetes.draft-path": "/Users/zhaopeng18/.vs-kubernetes/tools/draft/darwin-amd64/draft",
-      "vs-kubernetes.minik2be-path.mac": "/Users/zhaopeng18/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+    "vs-kubernetes.minikube-path": "/Users/zhaopeng18/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
+    "vs-kubernetes.helm-path": "/Users/zhaopeng18/.vs-kubernetes/tools/helm/darwin-amd64/helm",
+    "vs-kubernetes.draft-path": "/Users/zhaopeng18/.vs-kubernetes/tools/draft/darwin-amd64/draft",
+    "vs-kubernetes.minik2be-path.mac": "/Users/zhaopeng18/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
+    "vs-kubernetes.knownKubeconfigs": [
+      "/Users/zhaopeng18/Documents/local_projects/userk8sconfigs/23demo",
+      "/Users/zhaopeng18/Documents/local_projects/userk8sconfigs/24demo",
+      "/Users/zhaopeng18/Documents/local_projects/userk8sconfigs/27demo"
+    ],
+    "vs-kubernetes.kubeconfig": "/Users/zhaopeng18/Documents/local_projects/userk8sconfigs/23demo"
   },
   "go.testFlags": ["-v","-count=1"],
   //"go.testFlags": ["-count=1"],
