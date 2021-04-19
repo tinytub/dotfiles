@@ -155,7 +155,7 @@ lspconfig.gopls.setup {
     usePlaceholders=true,
     completeUnimported=true,
 
-    gofumpt = false,
+--    gofumpt = false,
 --    staticcheck = true,
     deepCompletion=true,
     allowModfileModifications=true
