@@ -9,6 +9,7 @@ editor['Raimondi/delimitMate'] = {
 
 editor['itchyny/vim-parenmatch'] = {}
 editor['windwp/nvim-autopairs'] = {
+    after = 'nvim-treesitter',
     config = conf.autopairs,
 }
 
