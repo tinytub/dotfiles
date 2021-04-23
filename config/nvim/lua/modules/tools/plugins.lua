@@ -48,4 +48,20 @@ tools['voldikss/vim-floaterm'] = {
   end
 }
 
+tools['vim-test/vim-test'] = {
+    config = function ()
+      vim.g["test#strategy"] = "neovim"
+      --vim.g["test#strategy"] = {
+      --  nearest = "neovim",
+      --  file = "neovim",
+      --  suite = "neovim"
+      --}
+      vim.g["test#neovim#term_position"] = "vert"
+      vim.g['test#preserve_screen'] = 1
+      vim.g["test#go#runner"] = "gotest"
+      vim.g["test#go#gotest#options"] = "-v --count=1"
+
+    end
+}
+
 return tools
