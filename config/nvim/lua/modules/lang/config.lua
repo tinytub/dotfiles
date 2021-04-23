@@ -41,6 +41,7 @@ function config.vim_go()
   vim.g.go_diagnostics_enabled = 0
   vim.g.go_gopls_enabled = 0
   vim.g.go_echo_go_info = 0
+  vim.g.go_echo_command_info = 1
   vim.g.go_fmt_fail_silently = 1
   vim.g.go_term_enabled = 1
 
@@ -58,6 +59,7 @@ function config.vim_go()
   vim.g.go_updatetime = 500
   vim.g.go_doc_popup_window = 1
   vim.g.go_debug_mapping = {{}}
+
 end
 
 return config

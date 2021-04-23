@@ -12,6 +12,7 @@ lang['nvim-treesitter/nvim-treesitter-textobjects'] = {
 }
 
 lang['fatih/vim-go'] = {
+  opt = true,
   ft = {'go','golang'},
   config = conf.vim_go,
 }
