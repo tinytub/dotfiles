@@ -7,6 +7,7 @@ function config.nvim_treesitter()
       ensure_installed = 'maintained',
       highlight = {
         enable = true,
+--        disable = { "go" }
       },
       textobjects = {
         select = {
@@ -45,17 +46,18 @@ function config.vim_go()
   vim.g.go_fmt_fail_silently = 1
   vim.g.go_term_enabled = 1
 
-  vim.g.go_highlight_fields = 0
-  vim.g.go_highlight_functions = 0
-  vim.g.go_highlight_function_calls = 0
-  vim.g.go_highlight_extra_types = 0
-  vim.g.go_highlight_operators = 0
-  vim.g.go_highlight_string_spellcheck = 0
-  vim.g.go_highlight_variable_declarations = 0
-  vim.g.go_highlight_variable_assignments = 0
+  vim.g.go_auto_sameids = 0
+--  vim.g.go_highlight_fields = 1
+--  vim.g.go_highlight_function_parameters = 1
+--  vim.g.go_highlight_functions = 1
+--  vim.g.go_highlight_function_calls = 1
+--  vim.g.go_highlight_extra_types = 1
+--  vim.g.go_highlight_operators = 1
+--  vim.g.go_highlight_string_spellcheck = 1
+--  vim.g.go_highlight_variable_declarations = 1
+--  vim.g.go_highlight_variable_assignments = 1
   vim.g.go_fmt_command = "goimports"
   vim.g.go_version_warning = 1
-  vim.g.go_auto_sameids = 0
   vim.g.go_updatetime = 500
   vim.g.go_doc_popup_window = 1
   vim.g.go_debug_mapping = {{}}
