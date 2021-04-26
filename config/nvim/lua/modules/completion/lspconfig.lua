@@ -152,12 +152,16 @@ lspconfig.gopls.setup {
       lspconfig.util.path.dirname(fname)
   end,
   init_options = {
-    usePlaceholders=true,
+    analyses = {
+      fillstruct = false, -- 关闭自动填充 struct. 默认打开
+      unusedparams = true,
+    },
+    usePlaceholders=false, -- 填充补全后的 functions param. 默认打开
     completeUnimported=true,
 
---    gofumpt = false,
+    gofumpt = false,
 --    staticcheck = true,
-    deepCompletion=true,
+    deepCompletion=false,
     allowModfileModifications=true
   }
 }

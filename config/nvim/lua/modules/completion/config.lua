@@ -7,7 +7,7 @@ end
 function config.nvim_compe()
   require'compe'.setup {
     enabled = true;
-    autocomplete = true;
+    --autocomplete = true;
     debug = false;
     min_length = 2;
     preselect = 'always';
@@ -22,6 +22,7 @@ function config.nvim_compe()
       spell = true;
       tags = true;
       snippets_nvim = false;
+      treesitter = true;
     };
   }
 end
