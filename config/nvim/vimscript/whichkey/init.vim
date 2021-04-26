@@ -13,7 +13,7 @@ let g:which_key_map =  {}
 let g:which_key_sep = '→'
 
 " Not a fan of floating windows for this
-let g:which_key_use_floating_win = 0
+let g:which_key_use_floating_win = 0 " 使用 floatwin
 let g:which_key_max_size = 0
 
 " Hide status line

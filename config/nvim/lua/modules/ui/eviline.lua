@@ -6,8 +6,8 @@ local fn = vim.fn
 gl.short_line_list = {"LuaTree", "vista", "dbui",'NvimTree', 'vista', 'dbui', 'packer'}
 
 local colors = {
-    bg = "#282c34",
-    line_bg = "#282c34",
+    bg = "#1e222a",
+    line_bg = "#1e222a",
     fg = "#D8DEE9",
     fg_green = "#65a380",
     yellow = "#A3BE8C",
@@ -19,7 +19,7 @@ local colors = {
     magenta = "#c678dd",
     blue = "#22262C",
     red = "#DF8890",
-    lightbg = "#3C4048",
+    lightbg = "#282c34",
     nord = "#81A1C1",
     greenYel = "#EBCB8B"
 }

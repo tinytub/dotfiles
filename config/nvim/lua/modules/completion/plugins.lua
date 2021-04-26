@@ -9,7 +9,7 @@ completion['kabouzeid/nvim-lspinstall'] = {
 }
 
 completion['glepnir/lspsaga.nvim'] = {
-  disable = true,
+  --disable = true,
   cmd = 'Lspsaga',
 }
 
