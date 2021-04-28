@@ -74,6 +74,16 @@ function config.galaxyline()
             icon = "",
             color = "#EBCB8B",
             name = "xz"
+        },
+        deb = {
+            icon = "",
+            color = "#a3b8ef",
+            name = "deb"
+        },
+        rpm = {
+            icon = "",
+            color = "#fca2aa",
+            name = "rpm"
         }
     }
   }
@@ -83,7 +93,7 @@ function config.nvim_bufferline()
   require('bufferline').setup{
     options = {
       buffer_close_icon = "",
-      modified_icon = "●",
+      modified_icon = "",
       close_icon = "",
       left_trunc_marker = "",
       right_trunc_marker = "",

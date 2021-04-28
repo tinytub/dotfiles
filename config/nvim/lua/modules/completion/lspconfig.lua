@@ -137,6 +137,12 @@ local enhance_attach = function(client,bufnr)
   if client.resolved_capabilities.document_formatting then
     format.lsp_before_save()
   end
+  require "lsp_signature".on_attach({   -- add lsp_signature support
+      bind = true, -- This is mandatory, otherwise border config won't get registered.
+      handler_opts = {
+        border = "single"
+      }
+  })
   api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 end
 
@@ -266,6 +272,9 @@ lspconfig.rust_analyzer.setup {
 }
 
 local servers = {
+    "html",
+    "cssls",
+    "tsserver",
  -- 'dockerls',
 }
 
