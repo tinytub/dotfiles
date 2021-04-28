@@ -144,8 +144,8 @@ let g:which_key_map.l = {
       \ 'x' : [':cclose'                             , 'close quickfix'],
       \ 's' : [':Telescope lsp_document_symbols'     , 'document symbols'],
       \ 'S' : [':Telescope lsp_workspace_symbols'    , 'workspace symbols'],
+      \ 'H' : [':Lspsaga signature_help'             , 'signature_help'],
       \ }
-      " \ 'H' : [':Lspsaga signature_help'             , 'signature_help'],
       " \ 'o' : [':Vista!!'                            , 'outline'],
 
 " t is for terminal

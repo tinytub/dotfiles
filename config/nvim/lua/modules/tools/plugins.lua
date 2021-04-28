@@ -28,12 +28,20 @@ tools['brooth/far.vim'] = {
   end
 }
 
+tools["plasticboy/vim-markdown"] = {
+  ft = "markdown",
+  requires = {"godlygeek/tabular"},
+  cmd = {"Toc"},
+  config = conf.markdown,
+  opt = true,
+}
+
 tools['iamcco/markdown-preview.nvim'] = {
-  ft = 'markdown',
+  opt = true,
+  ft = {"markdown", 'pandoc.markdown', 'rmd'},
+  cmd = {"MarkdownPreview"},
   run = 'cd app && npm install',
-  config = function ()
-    vim.g.mkdp_auto_start = 0
-  end
+  config = conf.mkdp,
 }
 
 tools['voldikss/vim-floaterm'] = {
