@@ -45,6 +45,7 @@ function config.vim_go()
   vim.g.go_echo_command_info = 1
   vim.g.go_fmt_fail_silently = 1
   vim.g.go_term_enabled = 1
+  vim.g.go_fillstruct_mode = 'gopls'
 
   vim.g.go_auto_sameids = 0
 --  vim.g.go_highlight_fields = 1

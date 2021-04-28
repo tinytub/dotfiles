@@ -148,7 +148,7 @@ lspconfig.gopls.setup {
   capabilities = capabilities,
   --on_attach=on_attach_vim,
   root_dir = function(fname)
-    return lspconfig.util.root_pattern("go.mod", ".git")(fname) or
+    return lspconfig.util.root_pattern("go.mod", ".git", ".")(fname) or
       lspconfig.util.path.dirname(fname)
   end,
   init_options = {

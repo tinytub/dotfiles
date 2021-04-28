@@ -11,6 +11,7 @@ completion['kabouzeid/nvim-lspinstall'] = {
 completion['glepnir/lspsaga.nvim'] = {
   --disable = true,
   cmd = 'Lspsaga',
+  config = conf.lspsaga,
 }
 
 completion['hrsh7th/nvim-compe'] = {

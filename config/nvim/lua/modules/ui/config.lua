@@ -292,7 +292,7 @@ function config.gitsigns()
     sign_priority = 6,
     update_debounce = 200,
     status_formatter = nil, -- Use default
-    use_decoration_api = true,
+    use_decoration_api = false,
     use_internal_diff = true,  -- If luajit is present
     debug_mode = true,
     --signs = {
@@ -314,8 +314,8 @@ function config.gitsigns()
        noremap = true,
        buffer = true,
 
-       ['n ]g'] = { expr = true, "&diff ? ']g' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
-       ['n [g'] = { expr = true, "&diff ? '[g' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
+       --['n ]g'] = { expr = true, "&diff ? ']g' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
+       --['n [g'] = { expr = true, "&diff ? '[g' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
 
        ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
        ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
