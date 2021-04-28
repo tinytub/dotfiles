@@ -4,10 +4,21 @@ function config.nvim_lsp()
   require('modules.completion.lspconfig')
 end
 
+function config.lspsaga()
+  require'lspsaga'.init_lsp_saga({
+ 	code_action_keys = {
+ 		quit = '<esc>',
+ 		exec = '<cr>'
+ 	},
+  })
+    -- body
+end
+
 function config.nvim_compe()
   require'compe'.setup {
     enabled = true;
-    --autocomplete = true;
+    autocomplete = true;
+    throttle_time = 80;
     debug = false;
     min_length = 2;
     preselect = 'always';
@@ -18,11 +29,11 @@ function config.nvim_compe()
       calc = true;
       vsnip = true;
       nvim_lsp = true;
-      nvim_lua = true;
+      nvim_lua = false;
       spell = true;
-      tags = true;
+      tags = false;
       snippets_nvim = false;
-      treesitter = true;
+      --treesitter = true;
     };
   }
 end

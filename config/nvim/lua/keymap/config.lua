@@ -79,69 +79,69 @@ function _G.completions()
 end
 _G.MUtils = {}
 -- TEST
-vim.g.completion_confirm_key = ""
-MUtils.completion_confirm = function()
-    local npairs = require('nvim-autopairs')
-    if vim.fn.pumvisible() ~= 0 then
-        if vim.fn.complete_info()["selected"] ~= -1 then
-            vim.fn["compe#confirm"]()
-            -- return npairs.esc("<c-y>")
-            return npairs.esc("")
-        else
-            vim.defer_fn(function()
-                vim.fn["compe#confirm"]("<cr>")
-            end, 20)
-            return npairs.esc("<c-n>")
-        end
-    else
-        return npairs.check_break_line_char()
-    end
-end
--- TEST
-MUtils.completion_confirm = function()
-    local npairs = require('nvim-autopairs')
-    --if vim.fn.pumvisible() ~= 0 then
-    --    if vim.fn.complete_info()["selected"] ~= -1 then
-    --        vim.fn["compe#confirm"]()
-    --        return npairs.esc("")
-    if vim.fn.pumvisible() == 1 then
-        if vim.fn.complete_info()["selected"] ~= -1 then
-            return vim.fn["compe#confirm"](npairs.esc("<CR>"))
-        else
-            vim.api.nvim_select_popupmenu_item(0, false, false, {})
-            vim.fn["compe#confirm"]()
-            return npairs.esc("<c-n>")
-        end
-    else
-        return npairs.check_break_line_char()
-    end
-end
-MUtils.tab = function()
-    local npairs = require('nvim-autopairs')
-    if vim.fn.pumvisible() ~= 0 then
-        return npairs.esc("<C-n>")
-    else
-        if vim.fn["vsnip#available"](1) ~= 0 then
-            vim.fn.feedkeys(string.format('%c%c%c(vsnip-expand-or-jump)', 0x80, 253, 83))
-            return npairs.esc("")
-        else
-            return npairs.esc("<Tab>")
-        end
-    end
-end
-MUtils.s_tab = function()
-    local npairs = require('nvim-autopairs')
-    if vim.fn.pumvisible() ~= 0 then
-        return npairs.esc("<C-p>")
-    else
-        if vim.fn["vsnip#jumpable"](-1) ~= 0 then
-            vim.fn.feedkeys(string.format('%c%c%c(vsnip-jump-prev)', 0x80, 253, 83))
-            return npairs.esc("")
-        else
-            return npairs.esc("<C-h>")
-        end
-    end
-end
+--vim.g.completion_confirm_key = ""
+--MUtils.completion_confirm = function()
+--    local npairs = require('nvim-autopairs')
+--    if vim.fn.pumvisible() ~= 0 then
+--        if vim.fn.complete_info()["selected"] ~= -1 then
+--            vim.fn["compe#confirm"]()
+--            -- return npairs.esc("<c-y>")
+--            return npairs.esc("")
+--        else
+--            vim.defer_fn(function()
+--                vim.fn["compe#confirm"]("<cr>")
+--            end, 20)
+--            return npairs.esc("<c-n>")
+--        end
+--    else
+--        return npairs.check_break_line_char()
+--    end
+--end
+---- TEST
+--MUtils.completion_confirm = function()
+--    local npairs = require('nvim-autopairs')
+--    --if vim.fn.pumvisible() ~= 0 then
+--    --    if vim.fn.complete_info()["selected"] ~= -1 then
+--    --        vim.fn["compe#confirm"]()
+--    --        return npairs.esc("")
+--    if vim.fn.pumvisible() == 1 then
+--        if vim.fn.complete_info()["selected"] ~= -1 then
+--            return vim.fn["compe#confirm"](npairs.esc("<CR>"))
+--        else
+--            vim.api.nvim_select_popupmenu_item(0, false, false, {})
+--            vim.fn["compe#confirm"]()
+--            return npairs.esc("<c-n>")
+--        end
+--    else
+--        return npairs.check_break_line_char()
+--    end
+--end
+--MUtils.tab = function()
+--    local npairs = require('nvim-autopairs')
+--    if vim.fn.pumvisible() ~= 0 then
+--        return npairs.esc("<C-n>")
+--    else
+--        if vim.fn["vsnip#available"](1) ~= 0 then
+--            vim.fn.feedkeys(string.format('%c%c%c(vsnip-expand-or-jump)', 0x80, 253, 83))
+--            return npairs.esc("")
+--        else
+--            return npairs.esc("<Tab>")
+--        end
+--    end
+--end
+--MUtils.s_tab = function()
+--    local npairs = require('nvim-autopairs')
+--    if vim.fn.pumvisible() ~= 0 then
+--        return npairs.esc("<C-p>")
+--    else
+--        if vim.fn["vsnip#jumpable"](-1) ~= 0 then
+--            vim.fn.feedkeys(string.format('%c%c%c(vsnip-jump-prev)', 0x80, 253, 83))
+--            return npairs.esc("")
+--        else
+--            return npairs.esc("<C-h>")
+--        end
+--    end
+--end
 -- Autocompletion and snippets
 --    vim.api.nvim_set_keymap('i', '<CR>', 'v:lua.MUtils.completion_confirm()', {expr = true, noremap = true})
 --    -- imap("<CR>", "v:lua.MUtils.completion_confirm()", {expr = true, noremap = true})
@@ -150,3 +150,19 @@ end
 -- with autopairs configurations done --
 
 
+-- skip it, if you use another global object
+_G.MUtils= {}
+
+vim.g.completion_confirm_key = ""
+MUtils.completion_confirm=function()
+  local npairs = require('nvim-autopairs')
+  if vim.fn.pumvisible() ~= 0  then
+    if vim.fn.complete_info()["selected"] ~= -1 then
+      return vim.fn["compe#confirm"](npairs.esc("<cr>"))
+    else
+      return npairs.esc("<cr>")
+    end
+  else
+    return npairs.autopairs_cr()
+  end
+end
