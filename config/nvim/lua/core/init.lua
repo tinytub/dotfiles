@@ -62,7 +62,7 @@ local load_core =function()
   require('keymap')
   require('core.event')
 
-  vim.cmd('source ~/.config/nvim/vimscript/whichkey/init.vim')
+--  vim.cmd('source ~/.config/nvim/vimscript/whichkey/init.vim')
   pack.load_compile()
 end
 
