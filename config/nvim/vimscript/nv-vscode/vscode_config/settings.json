@@ -1208,5 +1208,7 @@
       "before": ["<space>"],
       "commands": ["whichkey.show"]
     }
-  ]
+  ],
+  "editor.semanticHighlighting.enabled": true,
+  "Lua.telemetry.enable": false
 }
