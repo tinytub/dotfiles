@@ -51,6 +51,10 @@ ui['ayu-theme/ayu-vim'] = {
 
 }
 
+ui['folke/lsp-colors.nvim'] = {
+
+}
+
 --ui['onsails/lspkind-nvim'] = {
 --  config = conf.lspkind_nvim,
 --  requires = 'kyazdani42/nvim-web-devicons'

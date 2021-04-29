@@ -9,6 +9,7 @@ function config.nvim_treesitter()
         enable = true,
 --        disable = { "go" }
       },
+      autopairs = { enable = true },
       textobjects = {
         select = {
           enable = true,

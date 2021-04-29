@@ -162,12 +162,12 @@
     "key": "ctrl+f",
     "command": "-vscode-neovim.ctrl-f",
     "when": "editorTextFocus && neovim.ctrlKeysNormal && neovim.init && neovim.mode != 'insert'"
-  },
-  {
-    "key": "space",
-    "command": "whichkey.show",
-    "when": "neovim.mode != 'insert' || neovim.mode != 'command'"
   }
+  //{
+  //  "key": "space",
+  //  "command": "whichkey.show",
+  //  "when": "neovim.mode != 'insert' || neovim.mode != 'command'"
+  //}
 ]
 // Place your key bindings in this file to override the defaultsauto[]
 //[

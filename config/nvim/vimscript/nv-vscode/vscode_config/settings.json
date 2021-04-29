@@ -1067,7 +1067,7 @@
     "**/.factorypath": true
   },
   "terminal.external.osxExec": "iTerm.app",
-  "editor.minimap.enabled": true,
+  "editor.minimap.enabled": false,
   "workbench.activityBar.visible": true,
   "leetcode.hint.commentDescription": false,
   //"window.zoomLevel": 2,
@@ -1196,5 +1196,17 @@
   "python.showStartPage": false,
   "editor.snippetSuggestions": "bottom",
   "terminal.integrated.fontSize": 14,
-  "editor.suggest.showStatusBar": true
+  "editor.suggest.showStatusBar": true,
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<space>"],
+      "commands": ["whichkey.show"]
+    }
+  ],
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<space>"],
+      "commands": ["whichkey.show"]
+    }
+  ]
 }

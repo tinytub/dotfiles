@@ -72,4 +72,11 @@ tools['vim-test/vim-test'] = {
     end
 }
 
+-- some day migrate to this
+tools['folke/which-key.nvim'] = {
+--    disable = true,
+--    opt =true,
+    config = conf.whichkey,
+}
+
 return tools
