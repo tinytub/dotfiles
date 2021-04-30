@@ -195,7 +195,7 @@ function config.whichkey()
     },
     g = {
         name = "+Git",
-        b = {"<cmd>Git Blame<cr>", "Git Blame"},
+        b = {"<cmd>Git blame<cr>", "Git Blame"},
         d = {"<cmd>Git diff<cr>", "Git Diff"},
         l = {"<cmd>Git log<cr>", "Git Log"},
         s = {"<cmd>Git status<cr>", "Git Status"},
@@ -230,10 +230,10 @@ function config.whichkey()
     },
     p = {
         name = 'Packer' ,
-        ["u"]  = {"PackerUpdate"      ,  'packer update'},
-        ["i"]  = {"PackerInstall"     ,  'packer install'},
-        ["c"]  = {"PackerCompile"     ,  'packer compile'},
-        ["s"]  = {"PackerSync"        ,  'packer sync'},
+        ["u"]  = {"<cmd>PackerUpdate<cr>"      ,  'packer update'},
+        ["i"]  = {"<cmd>PackerInstall<cr>"     ,  'packer install'},
+        ["c"]  = {"<cmd>PackerCompile<cr>"     ,  'packer compile'},
+        ["s"]  = {"<cmd>PackerSync<cr>"        ,  'packer sync'},
     },
     S = {name = "+Session", s = {"<cmd>SessionSave<cr>", "Save Session"}, l = {"<cmd>SessionLoad<cr>", "Load Session"}}
   }
