@@ -53,6 +53,7 @@ completion['mattn/emmet-vim'] = {
 }
 
 completion['ray-x/lsp_signature.nvim'] = {
+    disable = true,
 }
 
 return completion
