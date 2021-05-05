@@ -73,22 +73,27 @@ vim.cmd('command! -nargs=0 LspRestart call v:lua.reload_lsp()')
 --vim.fn.sign_define("LspDiagnosticsSignWarning",{ text = "", texthl = "LspDiagnosticsDefaultWarning" })
 --vim.fn.sign_define("LspDiagnosticsSignInformation",{ text = "", texthl = "LspDiagnosticsDefaultInformation" })
 --vim.fn.sign_define("LspDiagnosticsSignHint",{ text = "", texthl = "LspDiagnosticsDefaultHint" })
-vim.fn.sign_define(
-    "LspDiagnosticsSignError",
-    {texthl = "LspDiagnosticsSignError", text = "", numhl = "LspDiagnosticsSignError"}
-)
-vim.fn.sign_define(
-    "LspDiagnosticsSignWarning",
-    {texthl = "LspDiagnosticsSignWarning", text = "", numhl = "LspDiagnosticsSignWarning"}
-)
-vim.fn.sign_define(
-    "LspDiagnosticsSignHint",
-    {texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint"}
-)
-vim.fn.sign_define(
-    "LspDiagnosticsSignInformation",
-    {texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation"}
-)
+--vim.fn.sign_define(
+--    "LspDiagnosticsSignError",
+--    {texthl = "LspDiagnosticsSignError", text = "", numhl = "LspDiagnosticsSignError"}
+--)
+--vim.fn.sign_define(
+--    "LspDiagnosticsSignWarning",
+--    {texthl = "LspDiagnosticsSignWarning", text = "", numhl = "LspDiagnosticsSignWarning"}
+--)
+--vim.fn.sign_define(
+--    "LspDiagnosticsSignHint",
+--    {texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint"}
+--)
+--vim.fn.sign_define(
+--    "LspDiagnosticsSignInformation",
+--    {texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation"}
+--)
+
+vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnosticsDefaultError"})
+vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "", numhl = "LspDiagnosticsDefaultWarning"})
+vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
+vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
 
 -- replace lsp-kind
 vim.lsp.protocol.CompletionItemKind = {

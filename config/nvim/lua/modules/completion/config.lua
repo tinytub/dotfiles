@@ -34,9 +34,9 @@ function config.nvim_compe()
     allow_prefix_unmatch = false;
     source = {
       path = true;
-      buffer = true;
+      buffer = {kind = "﬘" , true},
       calc = true;
-      vsnip = true;
+      vsnip = {kind = "﬌"}, --replace to what sign you prefer
       nvim_lsp = true;
       nvim_lua = false;
       spell = true;
