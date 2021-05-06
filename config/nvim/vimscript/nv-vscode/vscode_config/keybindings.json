@@ -169,21 +169,3 @@
   //  "when": "neovim.mode != 'insert' || neovim.mode != 'command'"
   //}
 ]
-// Place your key bindings in this file to override the defaultsauto[]
-//[
-//    {
-//        "key": "ctrl+o",
-//        "command": "-lineBreakInsert",
-//        "when": "textInputFocus && !editorReadonly"
-//    },
-//    {
-//        "key": "g r",
-//        "command": "editor.action.goToReferences",
-//        "when": "editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor"
-//    },
-//    {
-//        "key": "g d",
-//        "command": "editor.action.revealDefinition",
-//        "when": "editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor"
-//    }
-//]
