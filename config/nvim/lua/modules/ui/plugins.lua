@@ -17,11 +17,25 @@ ui['cocopon/iceberg.vim'] = {
 
 --ui['morhetz/gruvbox'] = {
 ui['lifepillar/vim-gruvbox8'] = {
-  --disable = true,
+  disable = true,
   config = function ()
     vim.cmd('colorscheme gruvbox8')
     vim.cmd('set background=dark')
     vim.cmd('let g:gruvbox_plugin_hi_groups = 1')
+  end
+}
+
+ui['sainnhe/gruvbox-material'] = {
+    config = function ()
+      vim.cmd('colorscheme gruvbox-material')
+      vim.cmd('set background=dark')
+    end
+}
+
+ui['ajmwagar/vim-deus'] = {
+    disable = true,
+  config = function ()
+    vim.cmd('colorscheme deus')
   end
 }
 
