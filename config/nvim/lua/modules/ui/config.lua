@@ -3,10 +3,10 @@ local config = {}
 function config.galaxyline()
   require('modules.ui.eviline')
   -- inactive statuslines as thin splitlines
-  vim.cmd("highlight! StatusLineNC gui=underline guibg=NONE guifg=#383c44")
+  vim.cmd("highlight! StatusLineNC gui=underline guifg=#383c44")
 
   vim.cmd "hi clear CursorLine"
-  vim.cmd "hi cursorlinenr guibg=NONE guifg=#abb2bf"
+  vim.cmd "hi cursorlinenr guifg=#abb2bf"
   -- stand alone setup devicons
   require "nvim-web-devicons".setup {
     override = {
@@ -99,7 +99,7 @@ function config.nvim_bufferline()
       right_trunc_marker = "",
       max_name_length = 14,
       max_prefix_length = 13,
-      tab_size = 18,
+      tab_size = 20,
       enforce_regular_tabs = true,
       view = "multiwindow",
       show_buffer_close_icons = true,

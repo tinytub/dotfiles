@@ -58,7 +58,8 @@ tools['voldikss/vim-floaterm'] = {
 
 tools['vim-test/vim-test'] = {
     config = function ()
-      vim.g["test#strategy"] = "neovim"
+      vim.g["test#strategy"] = "floaterm"
+      --vim.g["test#strategy"] = "neovim"
       --vim.g["test#strategy"] = {
       --  nearest = "neovim",
       --  file = "neovim",
