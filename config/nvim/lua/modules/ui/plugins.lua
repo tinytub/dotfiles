@@ -27,8 +27,12 @@ ui['lifepillar/vim-gruvbox8'] = {
 
 ui['sainnhe/gruvbox-material'] = {
     config = function ()
-      vim.cmd('colorscheme gruvbox-material')
-      vim.cmd('set background=dark')
+
+      vim.cmd ([[ 
+          let g:gruvbox_material_background = 'hard'
+          set background=dark
+          colorscheme gruvbox-material
+      ]])
     end
 }
 
