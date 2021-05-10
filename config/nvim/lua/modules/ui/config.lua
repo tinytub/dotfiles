@@ -145,6 +145,7 @@ function config.nvim_bufferline()
   }
 end
 
+
 function config.barbar()
       --vim.cmd("let bufferline = get(g:, 'bufferline', {})")
       --vim.cmd("let bufferline.animation = v:false")
@@ -152,12 +153,20 @@ function config.barbar()
       --vim.cmd("let bufferline.icon_close_tab_modified = '●'")
       --
       --vim.cmd [[ let g:bufferline = {} ]]
-      vim.cmd [[ let bufferline = get(g:, 'bufferline', {}) ]]
-      vim.cmd [[ let bufferline.icon_close_tab_modified = '✥' ]]
-      vim.cmd [[ let bufferline.animation = v:false ]]
-      vim.cmd [[ let bufferline.closeable = v:false ]]
-      vim.cmd [[ let bufferline.clickable = v:false ]]
-      vim.cmd [[ let bufferline.icon_close_tab = '' ]]
+      vim.cmd ([[ 
+          let bufferline = get(g:, 'bufferline', {})
+          let bufferline.icon_close_tab_modified = '✥'
+          let bufferline.animation = v:false
+          let bufferline.closeable = v:false
+          let bufferline.clickable = v:false
+          let bufferline.icon_close_tab = ''
+      ]])
+
+      vim.cmd("hi BufferCurrent guifg=#ffffff guibg=#232323")
+      vim.cmd("hi BufferCurrentIndex guibg=#232323")
+      vim.cmd("hi BufferCurrentMod guibg=#232323")
+      vim.cmd("hi BufferCurrentSign guifg=#9dccde guibg=#232323")
+      vim.cmd("hi BufferCurrentTarget guibg=#232323")
 end
 
 function config.dashboard()
@@ -339,5 +348,6 @@ function config.gitsigns()
    },
 }
 end
+
 
 return config
