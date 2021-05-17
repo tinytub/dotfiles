@@ -107,7 +107,7 @@ local function load_options()
     wrap           = false;
     linebreak      = true;
     number         = true;
-    colorcolumn    = "80";
+    colorcolumn    = "120";
     foldenable     = true;
     signcolumn     = "yes";
     --conceallevel   = 2;

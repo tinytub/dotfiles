@@ -215,7 +215,19 @@ function config.nvim_tree()
   vim.g.nvim_tree_quit_on_open = 1
   vim.g.nvim_tree_auto_close = 1
   vim.g.nvim_tree_follow = 1
+  vim.g.nvim_tree_width = 26
+  vim.g.nvim_tree_root_folder_modifier = ":t"
+  vim.g.nvim_tree_tab_open = 0
   vim.g.nvim_tree_ignore = {'.git', 'node_modules', '.cache'}
+  vim.cmd([[
+      hi NvimTreeFolderIcon guifg = #61afef
+      hi NvimTreeFolderName guifg = #61afef
+      hi NvimTreeIndentMarker guifg=#383c44
+      hi NvimTreeNormal guibg=#1b1f27
+      hi NvimTreeVertSplit guifg=#1e222a
+      hi NvimTreeRootFolder guifg=#f9929b
+  ]])
+
 
   local tree_cb = require'nvim-tree.config'.nvim_tree_callback
   vim.g.nvim_tree_bindings = {
