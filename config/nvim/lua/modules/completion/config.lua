@@ -1,4 +1,5 @@
 local config = {}
+local vim = vim
 
 function config.nvim_lsp()
   require('modules.completion.lspconfig')
@@ -44,7 +45,25 @@ function config.nvim_compe()
       snippets_nvim = false;
       --treesitter = true;
     };
+    -- speeden up compe
   }
+  vim.g.loaded_compe_calc = 0
+  vim.g.loaded_compe_emoji = 0
+
+  vim.g.loaded_compe_luasnip = 0
+  vim.g.loaded_compe_nvim_lua = 0
+
+  vim.g.loaded_compe_path = 0
+  vim.g.loaded_compe_spell = 0
+  vim.g.loaded_compe_tags = 0
+  vim.g.loaded_compe_treesitter = 0
+
+  vim.g.loaded_compe_snippets_nvim = 0
+
+  vim.g.loaded_compe_ultisnips = 0
+  vim.g.loaded_compe_vim_lsc = 0
+  vim.g.loaded_compe_vim_lsp = 0
+  vim.g.loaded_compe_omni = 0
 end
 
 function config.vim_vsnip()
