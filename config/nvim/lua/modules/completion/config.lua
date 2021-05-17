@@ -62,10 +62,14 @@ function config.telescope()
   require('telescope').setup {
     defaults = {
 --      prompt_prefix = '🔭 ',
+--      prompt_prefix = " ",
       prompt_prefix = ' ',
+      entry_prefix = "  ",
+      initial_mode = "insert",
       prompt_position = 'top',
       selection_caret = " ",
       sorting_strategy = 'ascending',
+      selection_strategy = "reset",
       results_width = 0.6,
       shorten_path = true,
       layout_defaults = {
@@ -86,8 +90,10 @@ function config.telescope()
     },
     mappings = {
       i = {
-        ["<TAB>"] = actions.toggle_selection + actions.move_selection_next,
-        ["<S-TAB>"] = actions.toggle_selection + actions.move_selection_previous,
+        --["<TAB>"] = actions.toggle_selection + actions.move_selection_next,
+        --["<S-TAB>"] = actions.toggle_selection + actions.move_selection_previous,
+        --["<TAB>"] =  actions.move_selection_next,
+        --["<S-TAB>"] =  actions.move_selection_previous,
         ["<C-j>"]  = actions.move_selection_next,
         ["<C-k>"]  = actions.move_selection_previous,
         ["<C-c>"]  = actions.close,
@@ -101,6 +107,8 @@ function config.telescope()
         ["<CR>"]   = actions.select_default + actions.center,
         ["<C-s>"]  = actions.select_horizontal,
         ["<C-v>"]  = actions.select_vertical,
+--        ["<C-j>"] = actions.move_selection_next,
+--        ["<C-k>"] = actions.move_selection_previous,
         ["j"]      = actions.move_selection_next,
         ["k"]      = actions.move_selection_previous,
         ["<Down>"] = false,
