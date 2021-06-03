@@ -23,7 +23,7 @@ completion['hrsh7th/vim-vsnip'] = {
   event = 'InsertCharPre',
   config = conf.vim_vsnip,
 --  requires = 'hrsh7th/vim-vsnip-integ'
-  requires = 'rafamadriz/friendly-snippets'
+  requires = {{'rafamadriz/friendly-snippets'}}
 }
 
 --completion['rafamadriz/friendly-snippets'] = {
@@ -34,9 +34,9 @@ completion['nvim-telescope/telescope.nvim'] = {
   cmd = 'Telescope',
   config = conf.telescope,
   requires = {
-    {'nvim-lua/popup.nvim', opt = true},
-    {'nvim-lua/plenary.nvim',opt = true},
-    {'nvim-telescope/telescope-fzy-native.nvim',opt = true},
+    {'nvim-lua/popup.nvim'},
+    {'nvim-lua/plenary.nvim'},
+    {'nvim-telescope/telescope-fzy-native.nvim'},
   }
 }
 
