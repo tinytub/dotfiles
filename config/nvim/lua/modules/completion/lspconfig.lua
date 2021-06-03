@@ -1,7 +1,7 @@
 local api = vim.api
 local lspconfig = require 'lspconfig'
 local lspinstall_dir = require('core.global').lspinstall_dir
-local global = require 'core.global'
+--local global = require 'core.global'
 local format = require('modules.completion.format')
 
 --if not packer_plugins['lspsaga.nvim'].loaded then

@@ -203,6 +203,18 @@ gls.right[5] = {
 }
 
 gls.right[6] = {
+    TreesitterIcon = {
+        provider = function()
+            if next(vim.treesitter.highlighter.active) ~= nil then return ' ' end
+            return ''
+        end,
+        separator = ' ',
+        separator_highlight = {'NONE', colors.bg},
+        highlight = {colors.green, colors.bg}
+    }
+}
+
+gls.right[7] = {
     right_LeftRounded = {
         provider = function()
             return ""
@@ -213,7 +225,7 @@ gls.right[6] = {
     }
 }
 
-gls.right[7] = {
+gls.right[8] = {
     SiMode = {
         provider = function()
             local alias = {
@@ -231,7 +243,7 @@ gls.right[7] = {
     }
 }
 
-gls.right[8] = {
+gls.right[9] = {
     PerCent = {
         provider = "LinePercent",
         separator = " ",
@@ -240,7 +252,7 @@ gls.right[8] = {
     }
 }
 
-gls.right[9] = {
+gls.right[10] = {
     rightRounded = {
         provider = function()
             return ""

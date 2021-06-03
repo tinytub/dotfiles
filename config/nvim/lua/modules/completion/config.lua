@@ -1,5 +1,4 @@
 local config = {}
-local vim = vim
 
 function config.nvim_lsp()
   require('modules.completion.lspconfig')
@@ -31,22 +30,17 @@ function config.nvim_compe()
     throttle_time = 80;
     debug = false;
     min_length = 2;
-    preselect = 'always';
+    preselect = "always";
     allow_prefix_unmatch = false;
     source = {
-      path = true;
       buffer = {kind = "﬘" , true},
-      calc = true;
       vsnip = {kind = "﬌"}, --replace to what sign you prefer
-      nvim_lsp = true;
-      nvim_lua = false;
-      spell = true;
-      tags = false;
-      snippets_nvim = false;
+      nvim_lsp = true
       --treesitter = true;
     };
     -- speeden up compe
   }
+  local vim = vim
   vim.g.loaded_compe_calc = 0
   vim.g.loaded_compe_emoji = 0
 
@@ -109,10 +103,6 @@ function config.telescope()
     },
     mappings = {
       i = {
-        --["<TAB>"] = actions.toggle_selection + actions.move_selection_next,
-        --["<S-TAB>"] = actions.toggle_selection + actions.move_selection_previous,
-        --["<TAB>"] =  actions.move_selection_next,
-        --["<S-TAB>"] =  actions.move_selection_previous,
         ["<C-j>"]  = actions.move_selection_next,
         ["<C-k>"]  = actions.move_selection_previous,
         ["<C-c>"]  = actions.close,
@@ -126,8 +116,6 @@ function config.telescope()
         ["<CR>"]   = actions.select_default + actions.center,
         ["<C-s>"]  = actions.select_horizontal,
         ["<C-v>"]  = actions.select_vertical,
---        ["<C-j>"] = actions.move_selection_next,
---        ["<C-k>"] = actions.move_selection_previous,
         ["j"]      = actions.move_selection_next,
         ["k"]      = actions.move_selection_previous,
         ["<Down>"] = false,
@@ -167,12 +155,12 @@ function config.telescope()
   --  <Esc>	        close telescope (in normal mode)
   }
   require('telescope').load_extension('fzy_native')
-  require'telescope'.load_extension('dotfiles')
+--  require'telescope'.load_extension('dotfiles')
   --require'telescope'.load_extension('gosource')
 end
 
 function config.vim_sonictemplate()
-  vim.g.sonictemplate_postfix_key = '<C-,>'
+  vim.g.sonictemplate_postfix_key = "<C-,>"
   vim.g.sonictemplate_vim_template_dir = os.getenv("HOME").. '/.config/nvim/template'
 end
 
