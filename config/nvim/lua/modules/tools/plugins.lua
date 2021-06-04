@@ -80,4 +80,8 @@ tools['folke/which-key.nvim'] = {
     config = conf.whichkey,
 }
 
+tools["kevinhwang91/nvim-bqf"] = {
+--    config = conf.bqf
+}
+
 return tools
