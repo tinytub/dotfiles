@@ -42,9 +42,10 @@ local plug_map = {
     -- ["n|ip"]             = map_cmd("<cmd>lua vim.lsp.buf.implementation()<CR>"):with_noremap():with_silent(),
     ["n|gs"]             = map_cr('Lspsaga signature_help'):with_noremap():with_silent(),
     -- ["n|gr"]             = map_cr('Lspsaga rename'):with_noremap():with_silent(),
-    -- ["n|gr"]             = map_cmd('<cmd>lua vim.lsp.buf.references()<CR>'):with_noremap():with_silent(),
-    -- ["n|gr"]             = map_cr('Lspsaga lsp_finder'):with_noremap():with_silent(),
+    --["n|gr"]             = map_cmd('<cmd>lua vim.lsp.buf.references()<CR>'):with_noremap():with_silent(),
+    --["n|gr"]             = map_cr('Lspsaga lsp_finder'):with_noremap():with_silent(),
     ["n|gr"]             = map_cr('Telescope lsp_references'):with_noremap():with_silent(),
+    --["n|gr"]             = map_cr('<cmd>Trouble lsp_references'):with_noremap():with_silent(),
 
     -- ["n|gh"]             = map_cr('Lspsaga lsp_finder'):with_noremap():with_silent(),
     ["n|gd"]             = map_cmd("<cmd>lua vim.lsp.buf.definition()<CR>"):with_noremap():with_silent(),
