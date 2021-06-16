@@ -34,42 +34,69 @@ return require("packer").startup(function(use)
 
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
     use {"neovim/nvim-lspconfig", opt = true}
+    require_plugin("nvim-lspconfig")
+
     use {"glepnir/lspsaga.nvim", opt = true}
+    require_plugin("lspsaga.nvim")
+
     use {"kabouzeid/nvim-lspinstall", opt = true}
+    require_plugin("nvim-lspinstall")
+
     use {"folke/trouble.nvim", opt = true}
+    require_plugin('trouble.nvim')
 
     -- Telescope
     use {"nvim-lua/popup.nvim", opt = true}
+    require_plugin("popup.nvim")
+
     use {"nvim-lua/plenary.nvim", opt = true}
+    require_plugin("plenary.nvim")
+
     use {"nvim-telescope/telescope.nvim", opt = true}
+    require_plugin("telescope.nvim")
     use {"nvim-telescope/telescope-fzy-native.nvim", opt = true}
     use {"nvim-telescope/telescope-project.nvim", opt = true}
+    require_plugin('telescope-project.nvim')
 
     -- Debugging
     use {"mfussenegger/nvim-dap", opt = true}
+    require_plugin("nvim-dap")
 
     -- Autocomplete
     use {"hrsh7th/nvim-compe", opt = true}
+    require_plugin("nvim-compe")
     use {"hrsh7th/vim-vsnip", opt = true}
+    require_plugin("vim-vsnip")
     use {"rafamadriz/friendly-snippets", opt = true}
+    require_plugin("friendly-snippets")
 
     -- Treesitter
     use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
+    require_plugin("nvim-treesitter")
     use {"windwp/nvim-ts-autotag", opt = true}
+    require_plugin("nvim-ts-autotag")
     use {'andymass/vim-matchup', opt = true}
+    require_plugin('vim-matchup')
 
     -- Explorer
     use {"kyazdani42/nvim-tree.lua", opt = true}
+    require_plugin("nvim-tree.lua")
     use {"ahmedkhalf/lsp-rooter.nvim", opt = true} -- with this nvim-tree will follow you
+    require_plugin('lsp-rooter.nvim')
     -- TODO remove when open on dir is supported by nvimtree
     use "kevinhwang91/rnvimr"
 
     -- use {'lukas-reineke/indent-blankline.nvim', opt=true, branch = 'lua'}
     use {"lewis6991/gitsigns.nvim", opt = true}
+    require_plugin("gitsigns.nvim")
     use {"folke/which-key.nvim", opt = true}
+    require_plugin("which-key.nvim")
     use {"ChristianChiarulli/dashboard-nvim", opt = true}
+    require_plugin("dashboard-nvim")
     use {"windwp/nvim-autopairs", opt = true}
+    require_plugin("nvim-autopairs")
     use {"kevinhwang91/nvim-bqf", opt = true}  -- better quickfix window
+    require_plugin("nvim-bqf")
 
     -- Comments
     -- use {"terrortylor/nvim-comment", opt = true}
@@ -77,13 +104,17 @@ return require("packer").startup(function(use)
 
     -- Color
     use {"christianchiarulli/nvcode-color-schemes.vim", opt = true}
+    require_plugin("nvcode-color-schemes.vim")
 
     -- Icons
     use {"kyazdani42/nvim-web-devicons", opt = true}
+    require_plugin("nvim-web-devicons")
 
     -- Status Line and Bufferline
     use {"glepnir/galaxyline.nvim", opt = true}
+    require_plugin("galaxyline.nvim")
     use {"romgrk/barbar.nvim", opt = true}
+    require_plugin("barbar.nvim")
 
     -- Language
     use {'fatih/vim-go', opt = true, ft = {'go','golang'}}
@@ -94,36 +125,8 @@ return require("packer").startup(function(use)
     use {"sainnhe/gruvbox-material"}
     require_plugin("gruvbox-material")
     use {"voldikss/vim-floaterm", opt = true, cmd = {'FloatermNew','FloatermPrev','FloatermNext','FloatermFirst','FloatermLast','FloatermUpdate','FloatermToggle','FloatermShow','FloatermHide','FloatermKill','FloatermSend'}}
-
     require_plugin("voldikss/vim-floaterm")
 
-    require_plugin("nvim-lspconfig")
-    require_plugin("lspsaga.nvim")
-    require_plugin("nvim-lspinstall")
-    require_plugin('trouble.nvim')
-    require_plugin("friendly-snippets")
-    require_plugin("popup.nvim")
-    require_plugin("plenary.nvim")
-    require_plugin("telescope.nvim")
-    require_plugin('telescope-project.nvim')
-    require_plugin("nvim-dap")
-    require_plugin("nvim-compe")
-    require_plugin("vim-vsnip")
-    require_plugin("nvim-treesitter")
-    require_plugin("nvim-ts-autotag")
-    require_plugin('vim-matchup')
-    require_plugin("nvim-tree.lua")
-    require_plugin("gitsigns.nvim")
-    require_plugin("which-key.nvim")
-    require_plugin("dashboard-nvim")
-    require_plugin("nvim-autopairs")
-    require_plugin("nvim-comment")
-    require_plugin("nvim-bqf")
-    require_plugin("nvcode-color-schemes.vim")
-    require_plugin("nvim-web-devicons")
-    require_plugin("galaxyline.nvim")
-    require_plugin("barbar.nvim")
-    require_plugin('lsp-rooter.nvim')
 --    require_plugin("nvim-ts-context-commentstring")
 
     -- Extras
