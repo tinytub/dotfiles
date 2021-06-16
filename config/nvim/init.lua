@@ -3,39 +3,40 @@ vim.cmd('luafile '..CONFIG_PATH..'/settings.lua')
 require('settings')
 require('plugins')
 require('utils')
-require('autocommands')
+require('n-autocommands')
 require('keymappings')
-require("themes")
-require('nvimtree') -- This plugin must be required somewhere before colorscheme.  Placing it after will break navigation keymappings
+require("n-themes")
+require('n-nvimtree') -- This plugin must be required somewhere before colorscheme.  Placing it after will break navigation keymappings
 require('colorscheme') -- This plugin must be required somewhere after nvimtree. Placing it before will break navigation keymappings
-require('galaxyline-nvim')
+require('n-galaxyline')
 --require('nvim-comment')
-require('nvim-compe')
-require('barbar')
-require('dashboard')
-require('telescope-nvim')
-require('gitsigns-nvim')
-require('treesitter')
-require('matchup')
-require('autopairs')
-require('rnvimr')
+require('n-nvim-compe')
+require('n-barbar')
+require('n-dashboard')
+require('n-telescope')
+require('n-gitsigns')
+require('n-treesitter')
+require('n-matchup')
+require('n-autopairs')
+require('n-rnvimr')
 require('folke-which-key')
-require('lsprooter')
-require('lspsaga-nvim')
+require('n-lsprooter')
+require('n-lspsaga-nvim')
+require('n-floaterm')
 
 -- extras
 if O.extras then
-    require('numb-nvim')
+    require('n-numb-nvim')
 --    require('dial')
-    require('hop')
-    require('colorizer')
-    require('symbols-outline')
+    require('n-hop')
+    require('n-colorizer')
+--    require('n-symbols-outline')
 end
 
 
 
 -- TODO is there a way to do this without vimscript
-vim.cmd('source '..CONFIG_PATH..'/vimscript/functions.vim')
+--vim.cmd('source '..CONFIG_PATH..'/vimscript/functions.vim')
 -- LSP
 require('lsp')
 require('lsp.angular-ls')

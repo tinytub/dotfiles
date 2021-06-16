@@ -69,11 +69,11 @@ return require("packer").startup(function(use)
     use {"folke/which-key.nvim", opt = true}
     use {"ChristianChiarulli/dashboard-nvim", opt = true}
     use {"windwp/nvim-autopairs", opt = true}
-    use {"kevinhwang91/nvim-bqf", opt = true}
+    use {"kevinhwang91/nvim-bqf", opt = true}  -- better quickfix window
 
     -- Comments
     -- use {"terrortylor/nvim-comment", opt = true}
-    use {'JoosepAlviste/nvim-ts-context-commentstring', opt = true}
+    -- use {'JoosepAlviste/nvim-ts-context-commentstring', opt = true}
 
     -- Color
     use {"christianchiarulli/nvcode-color-schemes.vim", opt = true}
@@ -93,6 +93,9 @@ return require("packer").startup(function(use)
     require_plugin("vim-smoothie")
     use {"sainnhe/gruvbox-material"}
     require_plugin("gruvbox-material")
+    use {"voldikss/vim-floaterm", opt = true, cmd = {'FloatermNew','FloatermPrev','FloatermNext','FloatermFirst','FloatermLast','FloatermUpdate','FloatermToggle','FloatermShow','FloatermHide','FloatermKill','FloatermSend'}}
+
+    require_plugin("voldikss/vim-floaterm")
 
     require_plugin("nvim-lspconfig")
     require_plugin("lspsaga.nvim")
@@ -121,7 +124,7 @@ return require("packer").startup(function(use)
     require_plugin("galaxyline.nvim")
     require_plugin("barbar.nvim")
     require_plugin('lsp-rooter.nvim')
-    require_plugin("nvim-ts-context-commentstring")
+--    require_plugin("nvim-ts-context-commentstring")
 
     -- Extras
     if O.extras then
@@ -133,7 +136,7 @@ return require("packer").startup(function(use)
         require_plugin('numToStr/FTerm.nvim')
 --        use {'monaqa/dial.nvim', opt = true}
 --        require_plugin('dial.nvim')
-        use {'nacro90/numb.nvim', opt = true}
+        use {'nacro90/numb.nvim', opt = true} -- 自动跳转行数
         require_plugin('numb.nvim')
         use {'turbio/bracey.vim', run = 'npm install --prefix server', opt = true}
         require_plugin('bracey.vim')
@@ -141,10 +144,10 @@ return require("packer").startup(function(use)
         require_plugin('hop.nvim')
         use {'norcalli/nvim-colorizer.lua', opt = true}
         require_plugin('nvim-colorizer.lua')
-        use {'windwp/nvim-spectre', opt = true}
-        require_plugin('windwp/nvim-spectre')
-        use {'simrat39/symbols-outline.nvim', opt = true}
-        require_plugin('symbols-outline.nvim')
+        --use {'windwp/nvim-spectre', opt = true}
+        --require_plugin('windwp/nvim-spectre')
+        --use {'simrat39/symbols-outline.nvim', opt = true}
+        --require_plugin('symbols-outline.nvim')
         use {'nvim-treesitter/playground', opt = true}
         require_plugin('playground')
         -- folke/todo-comments.nvim
