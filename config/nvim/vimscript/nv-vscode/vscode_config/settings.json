@@ -1,37 +1,108 @@
 {
+  "editor.fontSize": 15,
+  "editor.fontFamily": "'Input Nerd Font','Hack Nerd Font', Menlo, Monaco, 'Courier New', monospace",
+  "editor.snippetSuggestions": "bottom",
+  "editor.suggest.showStatusBar": true,
+  "editor.semanticHighlighting.enabled": true,
+  "editor.cursorBlinking": "solid",
+
+  "files.trimTrailingWhitespace": true,
+  "window.zoomLevel": 0,
+
   "workbench.editor.enablePreview": false,
-  "editor.fontSize": 14,
-  "editor.fontFamily": "'Input Nerd Font', Menlo, Monaco, 'Courier New', monospace",
+  "workbench.sideBar.location": "left",
+  "workbench.statusBar.visible": true,
+  "workbench.list.automaticKeyboardNavigation": false,
+  "workbench.editor.showTabs": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.activityBar.visible": true,
+
+  "leetcode.workspaceFolder": "/Users/zhaopeng18/.leetcode",
+  "leetcode.defaultLanguage": "golang",
+  "leetcode.hint.configWebviewMarkdown": false,
+  "leetcode.showDescription": "In File Comment",
+  "leetcode.hint.commandShortcut": false,
+  "leetcode.endpoint": "leetcode-cn",
+  // golang
   "go.addTags": {
       "tags": "json,db",
       "options": "json=omitempty",
       "promptForTags": false,
       "transform": "snakecase"
   },
-  "files.trimTrailingWhitespace": true,
-"go.testFlags": [
-    "-v",
-    "-count=1"
-],
-"window.zoomLevel": 0,
-  "workbench.sideBar.location": "left",
-  "workbench.statusBar.visible": true,
-  "[go]": {
-      "editor.snippetSuggestions": "none",
-      "editor.formatOnSave": true,
-      "editor.codeActionsOnSave": {
-          "source.organizeImports": true
-      }
-  },
-  "files.eol": "\n",
-  "go.formatTool": "goimports", // formatting only supports LF line endings
+  "go.testFlags": [
+      "-v",
+      "-count=1"
+  ],
+  "go.formatTool": "goimports",
   "go.lintFlags": [
-      "--disable=errcheck",
-      "--disable=deadcode",
-      "--disable=ineffassign"
+    "--disable=errcheck",
+    "--disable=deadcode",
+    "--disable=ineffassign"
   ],
   "go.useLanguageServer": true,
   "go.testTimeout": "30s",
+  "go.gopath": "/Users/zhaopeng18/Documents/local_projects/goworks",
+  "go.toolsManagement.autoUpdate": true,
+  "go.alternateTools": {
+  },
+  "[go]": {
+        "editor.snippetSuggestions": "none",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+  },
+
+  // python
+  //"python.pythonPath": "/home/chris/.miniconda/envs/ds/bin/python",
+  //"python.languageServer": "Pylance",
+  //"python.terminal.activateEnvironment": false,
+  //"python.condaPath": "$HOME/.miniconda/bin/conda",
+  //"python.formatting.provider": "black",
+  //"python.insidersChannel": "off",
+  //"python.showStartPage": false,
+
+  //"editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "java.semanticHighlighting.enabled": true,
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:\"/home/chris/.vscode-oss/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar\"",
+
+
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+
+  "editor.minimap.enabled": false,
+  "leetcode.hint.commentDescription": false,
+  "window.menuBarVisibility":"toggle",
+
+  "terminal.integrated.shell.linux": "/bin/zsh",
+  "terminal.external.linuxExec": "/usr/bin/alacritty",
+  "terminal.integrated.fontSize": 14,
+  "terminal.external.osxExec": "iTerm.app",
+
+
+  "code-runner.executorMap": {
+    "python": "$pythonPath $fileName",
+    "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
+    "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+  },
+
+  "gitlens.currentLine.enabled": false,
+  "gitlens.codeLens.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
+  "git.autofetch": true,
+
+  "Lua.telemetry.enable": false,
+  "emmet.showSuggestionsAsSnippets": true,
+
+  "material-icon-theme.showWelcomeMessage": false,
+
   "vscode-neovim.highlightGroups.highlights": {
       "Directory": "vim",
       "IncSearch": {
@@ -48,70 +119,13 @@
       "Conceal": "vim",
       "Substitute": "vim"
   },
-  "leetcode.workspaceFolder": "/Users/zhaopeng18/.leetcode",
-  "leetcode.defaultLanguage": "golang",
-  "leetcode.hint.configWebviewMarkdown": false,
-  "leetcode.showDescription": "In File Comment",
-  "leetcode.hint.commandShortcut": false,
-  "go.gopath": "/Users/zhaopeng18/Documents/local_projects/goworks",
-  "leetcode.endpoint": "leetcode-cn",
-  "go.toolsManagement.autoUpdate": true,
-  "go.alternateTools": {
-
-  },
-  "workbench.editor.showTabs": true,
-  "gitlens.hovers.currentLine.over": "line",
-//  "editor.suggestSelection": "first",
-  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-  "python.pythonPath": "/home/chris/.miniconda/envs/ds/bin/python",
-  "java.semanticHighlighting.enabled": true,
-  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:\"/home/chris/.vscode-oss/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar\"",
-  "workbench.list.automaticKeyboardNavigation": false,
-  "python.languageServer": "Pylance",
-  "python.terminal.activateEnvironment": false,
-  "editor.cursorBlinking": "solid",
-  "files.exclude": {
-    "**/.classpath": true,
-    "**/.project": true,
-    "**/.settings": true,
-    "**/.factorypath": true
-  },
-  "terminal.external.osxExec": "iTerm.app",
-  "editor.minimap.enabled": false,
-  "workbench.activityBar.visible": true,
-  "leetcode.hint.commentDescription": false,
-  "window.menuBarVisibility": "toggle",
-  "python.dataScience.alwaysTrustNotebooks": true,
-  "python.condaPath": "$HOME/.miniconda/bin/conda",
-  "python.formatting.provider": "black",
-  "python.insidersChannel": "off",
-  "terminal.integrated.shell.linux": "/bin/zsh",
-  "terminal.external.linuxExec": "/usr/bin/alacritty",
-  "code-runner.executorMap": {
-    "python": "$pythonPath $fileName",
-    "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
-    "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
-  },
-  "gitlens.currentLine.enabled": false,
-  "emmet.showSuggestionsAsSnippets": true,
-  "material-icon-theme.showWelcomeMessage": false,
-  "gitlens.codeLens.enabled": false,
-  "workbench.iconTheme": "material-icon-theme",
-  "git.autofetch": true,
-  "workbench.startupEditor": "newUntitledFile",
-  "python.showStartPage": false,
-  "editor.snippetSuggestions": "bottom",
-  "terminal.integrated.fontSize": 14,
-  "editor.suggest.showStatusBar": true,
-  "editor.semanticHighlighting.enabled": true,
-  "Lua.telemetry.enable": false,
-  "workbench.colorTheme": "Gruvbox Dark Hard",
 //------------------------------------------------------------------------------------//
 
   "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim",
   "vscode-neovim.neovimExecutablePaths.linux": "/usr/local/bin/nvim",
   "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.config/nvim/vimscript/nv-vscode/init.vim",
-  "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.config/nvim/vimscript/nv-vscode/init.vim",
+  "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.config/nvim/vimscript/nvvscode/init.vim",
+
   "whichkey.sortOrder": "alphabetically",
   "whichkey.delay": 0,
   "whichkey.bindings": [
@@ -1077,107 +1091,9 @@
     }
   ],
 
-  "editor.tokenColorCustomizations": {
-    "[One Dark Pro]": {
-      "textMateRules": [
-        {
-          "scope": [
-            "support.class.component.open.jsx",
-            "support.class.component.close.jsx",
-            "entity.name.function.js"
-          ],
-          "settings": {
-            "foreground": "#61afef"
-          }
-        },
-
-        {
-          "scope": [
-            "variable.other.constant.object.js",
-
-            "punctuation.section.embedded.begin.jsx",
-            "punctuation.section.embedded.end.jsx"
-          ],
-          "settings": {
-            "foreground": "#abb2bf"
-          }
-        },
-        {
-          "scope": ["punctuation.definition.tag.jsx"],
-          "settings": {
-            "foreground": "#5c6370"
-          }
-        },
-        {
-          "scope": [
-            "variable.other.readwrite.js",
-            "variable.other.property.js",
-            "variable.parameter",
-            "variable.other.object.js"
-          ],
-          "settings": {
-            "foreground": "#56b6c2"
-          }
-        },
-        {
-          "scope": ["entity.other.attribute-name.jsx"],
-          "settings": {
-            "foreground": "#e5c07b"
-          }
-        },
-        {
-          "scope": [
-            "keyword.operator.assignment.js",
-            "keyword.operator.assignment.jsx",
-            "string.unquoted.js",
-            "keyword.operator.typeof.js",
-            "meta.embedded.expression.js",
-            "constant.other.object.key.js",
-            "keyword.operator.logical.js"
-          ],
-          "settings": {
-            "foreground": "#c678dd"
-          }
-        },
-        {
-          "scope": ["variable.other.constant.object.js"],
-          "settings": {
-            "foreground": "#e06c75"
-          }
-        }
-      ]
-    }
-  },
-
-  "workbench.colorCustomizations": {
-    "[Default Dark+]": {
-      "statusBar.background": "#2E2E2E",
-      "statusBar.foreground": "#8C8C8C",
-      "statusBarItem.remoteBackground": "#2E2E2E",
-      "statusBarItem.remoteForeground": "#8C8C8C",
-      "activityBar.background": "#2E2E2E",
-      "tab.inactiveBackground": "#2E2E2E"
-    },
-    "[One Dark Pro]": {
-      "editor.background": "#1e2127",
-      "terminal.foreground": "#abb2bf",
-      "terminal.ansiBlack": "#1e2127",
-      "terminal.ansiBlue": "#61afef",
-      "terminal.ansiCyan": "#56b6c2",
-      "terminal.ansiGreen": "#98C379",
-      "terminal.ansiMagenta": "#c678dd",
-      "terminal.ansiRed": "#e06c75",
-      "terminal.ansiWhite": "#abb2bf",
-      "terminal.ansiYellow": "#d19a66",
-      "terminal.ansiBrightBlack": "#5c6370",
-      "terminal.ansiBrightBlue": "#61afef",
-      "terminal.ansiBrightCyan": "#56b6c2",
-      "terminal.ansiBrightGreen": "#98c379",
-      "terminal.ansiBrightMagenta": "#c678dd",
-      "terminal.ansiBrightRed": "#e06c75",
-      "terminal.ansiBrightWhite": "#ffffff",
-      "terminal.ansiBrightYellow": "#d19a66"
-    }
-  },
   "vscode-neovim.neovimExecutablePaths.win32": "C:\\tools\\neovim\\Neovim\\bin\\nvim.exe",
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter.notebook.ipynb"
+  },
+  "security.workspace.trust.untrustedFiles": "open",
 }
