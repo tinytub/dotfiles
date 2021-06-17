@@ -1,6 +1,8 @@
 " packadd quickscope
 
-execute 'luafile ' . stdpath('config') . '/lua/settings.lua'
+" #execute 'luafile ' . stdpath('config') . '/lua/settings.lua'
+execute 'luafile ' . stdpath('config') . '/lua/globals.lua'
+execute 'luafile ' . stdpath('config') . '/lua/options.lua'
 
 function! s:manageEditorSize(...)
     let count = a:1
