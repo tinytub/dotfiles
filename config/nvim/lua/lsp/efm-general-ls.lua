@@ -15,15 +15,15 @@ local isort = {formatCommand = "isort --quiet -", formatStdin = true}
 local yapf = {formatCommand = "yapf --quiet", formatStdin = true}
 local black = {formatCommand = "black --quiet -", formatStdin = true}
 
-if O.python.linter == 'flake8' then table.insert(python_arguments, flake8) end
-
-if O.python.isort then table.insert(python_arguments, isort) end
-
-if O.python.formatter == 'yapf' then
-    table.insert(python_arguments, yapf)
-elseif O.python.formatter == 'black' then
-    table.insert(python_arguments, black)
-end
+--if O.python.linter == 'flake8' then table.insert(python_arguments, flake8) end
+--
+--if O.python.isort then table.insert(python_arguments, isort) end
+--
+--if O.python.formatter == 'yapf' then
+--    table.insert(python_arguments, yapf)
+--elseif O.python.formatter == 'black' then
+--    table.insert(python_arguments, black)
+--end
 
 -- lua
 local lua_arguments = {}

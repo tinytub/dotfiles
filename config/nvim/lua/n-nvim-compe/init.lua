@@ -1,38 +1,23 @@
-vim.o.completeopt = "menuone,noselect"
-
 require'compe'.setup {
-    enabled = O.auto_complete,
-    autocomplete = true,
-    debug = false,
-    min_length = 1,
-    preselect = 'enable',
-    throttle_time = 80,
-    source_timeout = 200,
-    incomplete_delay = 400,
-    max_abbr_width = 100,
-    max_kind_width = 100,
-    max_menu_width = 100,
-    documentation = true,
-
-    source = {
-        path = {kind = "   (Path)"},
-        buffer = {kind = "   (Buffer)"},
-        calc = {kind = "   (Calc)"},
-        vsnip = {kind = "   (Snippet)"},
-        nvim_lsp = {kind = "   (LSP)"},
-        -- nvim_lua = {kind = "  "},
-		    nvim_lua = false,
-        spell = {kind = "   (Spell)"},
-        tags = false,
-        vim_dadbod_completion = true,
-        -- snippets_nvim = {kind = "  "},
-        -- ultisnips = {kind = "  "},
-        -- treesitter = {kind = "  "},
-        emoji = {kind = " ﲃ  (Emoji)", filetypes={"markdown", "text"}}
-        -- for emoji press : (idk if that in compe tho)
-    }
+  enabled = true;
+  autocomplete = true;
+  throttle_time = 80;
+  debug = false;
+  min_length = 2;
+  preselect = "always";
+  allow_prefix_unmatch = false;
+  source = {
+    buffer = {kind = "﬘" , true};
+    vsnip = {kind = "﬌"}; --replace to what sign you prefer
+    nvim_lsp = true;
+    nvim_lua = true;
+    --path = true;
+    --calc = true;
+    --ultisnips = true;
+    --treesitter = true;
+  };
+  -- speeden up compe
 }
-
 local vim = vim
 vim.g.loaded_compe_calc = 0
 vim.g.loaded_compe_emoji = 0
@@ -51,6 +36,7 @@ vim.g.loaded_compe_ultisnips = 0
 vim.g.loaded_compe_vim_lsc = 0
 vim.g.loaded_compe_vim_lsp = 0
 vim.g.loaded_compe_omni = 0
+
 -- 
 -- 
 -- 
@@ -162,7 +148,73 @@ _G.s_tab_complete = function()
   end
 end
 
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+--- move to prev/next item in completion menuone
+--- jump to prev/next snippet's placeholder
+_G.tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-n>"
+  elseif vim.fn.call("vsnip#available", {1}) == 1 then
+    return t "<Plug>(vsnip-expand-or-jump)"
+  elseif check_back_space() then
+    return t "<Tab>"
+  else
+    return vim.fn['compe#complete']()
+  end
+end
+
+_G.s_tab_complete = function()
+  if vim.fn.pumvisible() == 1 then
+    return t "<C-p>"
+  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
+    return t "<Plug>(vsnip-jump-prev)"
+  else
+    return t "<S-Tab>"
+  end
+end
+
+_G.enhance_jk_move = function(key)
+  if packer_plugins['accelerated-jk'] and not packer_plugins['accelerated-jk'].loaded then
+    vim.cmd [[packadd accelerated-jk]]
+  end
+  local map = key == 'j' and '<Plug>(accelerated_jk_gj)' or '<Plug>(accelerated_jk_gk)'
+  return t(map)
+end
+
+--_G.enhance_ft_move = function(key)
+--  if not packer_plugins['vim-eft'].loaded then
+--    vim.cmd [[packadd vim-eft]]
+--  end
+--  local map = {
+--    f = '<Plug>(eft-f)',
+--    F = '<Plug>(eft-F)',
+--    [';'] = '<Plug>(eft-repeat)'
+--  }
+--  return t(map[key])
+--end
+
+-- with autopairs configurations --
+function _G.completions()
+    local npairs = require("nvim-autopairs")
+    if vim.fn.pumvisible() == 1 then
+        if vim.fn.complete_info()["selected"] ~= -1 then
+            return vim.fn["compe#confirm"]("<CR>")
+        end
+    end
+    return npairs.check_break_line_char()
+end
+-- skip it, if you use another global object
+_G.MUtils= {}
+
+vim.g.completion_confirm_key = ""
+MUtils.completion_confirm=function()
+  local npairs = require('nvim-autopairs')
+  if vim.fn.pumvisible() ~= 0  then
+    if vim.fn.complete_info()["selected"] ~= -1 then
+      return vim.fn["compe#confirm"](npairs.esc("<cr>"))
+    else
+      return npairs.esc("<cr>")
+    end
+  else
+    return npairs.autopairs_cr()
+  end
+end

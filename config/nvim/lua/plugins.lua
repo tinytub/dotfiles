@@ -84,7 +84,7 @@ return require("packer").startup(function(use)
     use {"ahmedkhalf/lsp-rooter.nvim", opt = true} -- with this nvim-tree will follow you
     require_plugin('lsp-rooter.nvim')
     -- TODO remove when open on dir is supported by nvimtree
-    use "kevinhwang91/rnvimr"
+    --use "kevinhwang91/rnvimr"
 
     -- use {'lukas-reineke/indent-blankline.nvim', opt=true, branch = 'lua'}
     use {"lewis6991/gitsigns.nvim", opt = true}
@@ -93,7 +93,7 @@ return require("packer").startup(function(use)
     require_plugin("which-key.nvim")
     use {"ChristianChiarulli/dashboard-nvim", opt = true}
     require_plugin("dashboard-nvim")
-    use {"windwp/nvim-autopairs", opt = true}
+    use {"windwp/nvim-autopairs",after = 'nvim-treesitter', opt = true}
     require_plugin("nvim-autopairs")
     use {"kevinhwang91/nvim-bqf", opt = true}  -- better quickfix window
     require_plugin("nvim-bqf")
@@ -130,7 +130,6 @@ return require("packer").startup(function(use)
 --    require_plugin("nvim-ts-context-commentstring")
 
     -- Extras
-    if O.extras then
         use {'metakirby5/codi.vim', opt = true}
         require_plugin('codi.vim')
         use {'iamcco/markdown-preview.nvim', run = 'cd app && npm install', opt = true}
@@ -167,6 +166,5 @@ return require("packer").startup(function(use)
         -- Easily Create Gists
         -- use {'mattn/vim-gist', opt = true}
         -- use {'mattn/webapi-vim', opt = true}
-    end
 
 end)
