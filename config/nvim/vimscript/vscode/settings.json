@@ -7,7 +7,7 @@
   "editor.cursorBlinking": "solid",
 
   "files.trimTrailingWhitespace": true,
-  "window.zoomLevel": 0,
+  "window.zoomLevel": -1,
 
   "workbench.editor.enablePreview": false,
   "workbench.sideBar.location": "left",
@@ -342,22 +342,15 @@
       "bindings": [
         {
           "key": "f",
-          "name": "File",
+          "name": "Files",
           "type": "command",
-          "command": "editor.action.startFindReplaceAction"
+          "command": "workbench.action.quickOpen"
         },
         {
-          "key": "s",
-          "name": "Symbol",
+          "key": "a",
+          "name": "Text",
           "type": "command",
-          "command": "editor.action.rename",
-          "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
-        },
-        {
-          "key": "p",
-          "name": "Project",
-          "type": "command",
-          "command": "workbench.action.replaceInFiles"
+          "command": "workbench.action.findInFiles"
         }
       ]
     },
@@ -825,25 +818,6 @@
       ]
     },
     {
-      "key": "s",
-      "name": "Search...",
-      "type": "bindings",
-      "bindings": [
-        {
-          "key": "f",
-          "name": "Files",
-          "type": "command",
-          "command": "workbench.action.quickOpen"
-        },
-        {
-          "key": "t",
-          "name": "Text",
-          "type": "command",
-          "command": "workbench.action.findInFiles"
-        }
-      ]
-    },
-    {
       "key": "S",
       "name": "Show...",
       "type": "bindings",
@@ -1096,4 +1070,10 @@
     "*.ipynb": "jupyter.notebook.ipynb"
   },
   "security.workspace.trust.untrustedFiles": "open",
+  "redhat.telemetry.enabled": false,
+  "editor.smoothScrolling": true,
+  "workbench.list.smoothScrolling": true,
+  "vs-kubernetes": {
+    "vscode-kubernetes.minikube-path.mac": "/Users/zhaopeng18/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+  },
 }
