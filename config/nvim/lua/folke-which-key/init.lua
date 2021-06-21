@@ -85,7 +85,7 @@ local mappings = {
         o = {"<cmd>Telescope oldfiles<cr>"                   , "oldfiles"},
         c = {"<cmd>Telescope git_commits<cr>"                , "git_commits"},
         s = {"<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
-        S = {"<cmd>Telescope lsp_workspace_symbols<cr>", "Workspace Symbols"},
+        S = {"<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols"},
         q = {"<cmd>Telescope quickfix<cr>", "Quickfix"},
       },
 
