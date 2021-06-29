@@ -1,4 +1,6 @@
+local M = {}
 
+M.config = function()
     require'lspsaga'.init_lsp_saga({
       finder_action_keys = {
         open = 'o', vsplit = 's',split = 'i',quit = '<esc>',scroll_down = '<C-f>', scroll_up = '<C-b>' -- quit can be a table
@@ -14,3 +16,6 @@
            exec = '<cr>'
        },
     })
+end
+
+return M

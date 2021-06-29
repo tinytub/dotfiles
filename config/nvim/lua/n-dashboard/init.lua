@@ -1,4 +1,6 @@
+local M = {}
 
+M.config = function()
 vim.g.dashboard_default_executive = 'telescope'
 
 vim.g.dashboard_custom_section = {
@@ -22,3 +24,5 @@ vim.g.dashboard_custom_section = {
 -- find_history = 'SPC f h',
 
 -- vim.g.dashboard_session_directory = CACHE_PATH..'/session'
+end
+return M

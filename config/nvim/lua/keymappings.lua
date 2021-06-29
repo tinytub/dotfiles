@@ -6,19 +6,66 @@ vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', {silent = true})
 vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', {silent = true})
 vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', {silent = true})
 
+-- Insert Mode 移动光标
+vim.api.nvim_set_keymap('i', '<C-h>', '<Left>', {silent = true, noremap = true})
+vim.api.nvim_set_keymap('i', '<C-l>', '<Right>', {silent = true, noremap = true})
+vim.api.nvim_set_keymap('i', '<C-j>', '<Down>', {silent = true, noremap = true})
+vim.api.nvim_set_keymap('i', '<C-k>', '<Up>', {silent = true, noremap = true})
+vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:w<CR>', {silent = true, noremap = true})
+
+-- command line Mode 移动光标
+vim.api.nvim_set_keymap('c', '<C-h>', '<Left>', {silent = true, noremap = true})
+vim.api.nvim_set_keymap('c', '<C-l>', '<Right>', {silent = true, noremap = true})
+vim.api.nvim_set_keymap('c', '<C-j>', '<Down>', {silent = true, noremap = true})
+vim.api.nvim_set_keymap('c', '<C-k>', '<Up>', {silent = true, noremap = true})
+vim.api.nvim_set_keymap('c', '<C-t>', '[[<C-R>=expand("%:p:h") . "/" <CR>]]', {silent = true, noremap = true})
+
+
+--  -- Insert
+--    ["i|<C-w>"]      = map_cmd('<C-[>diwa'):with_noremap(),
+----    ["i|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
+--    ["i|<C-d>"]      = map_cmd('<Del>'):with_noremap(),
+--    ["i|<C-u>"]      = map_cmd('<C-G>u<C-U>'):with_noremap(),
+--    ["i|<C-b>"]      = map_cmd('<Left>'):with_noremap(),
+--    ["i|<C-f>"]      = map_cmd('<Right>'):with_noremap(),
+--    ["i|<C-a>"]      = map_cmd('<ESC>^i'):with_noremap(),
+--    --["i|<C-j>"]      = map_cmd('<Esc>o'):with_noremap(),
+--    --["i|<C-k>"]      = map_cmd('<Esc>O'):with_noremap(),
+--    -- Insert Mode 移动光标
+--    ["i|<C-j>"]      = map_cmd('<Down>'):with_noremap(),
+--    ["i|<C-k>"]      = map_cmd('<Up>'):with_noremap(),
+--    ["i|<C-h>"]      = map_cmd('<Left>'):with_noremap(),
+--    ["i|<C-l>"]      = map_cmd('<Right>'):with_noremap(),
+--    ["i|<C-s>"]      = map_cmd('<Esc>:w<CR>'),
+--    ["i|<C-q>"]      = map_cmd('<Esc>:wq<CR>'),
+--    ["i|<C-e>"]      = map_cmd([[pumvisible() ? "\<C-e>" : "\<End>"]]):with_noremap():with_expr(),
+--  -- command line
+--    ["c|<C-b>"]      = map_cmd('<Left>'):with_noremap(),
+--    ["c|<C-f>"]      = map_cmd('<Right>'):with_noremap(),
+--    ["c|<C-a>"]      = map_cmd('<Home>'):with_noremap(),
+--    ["c|<C-e>"]      = map_cmd('<End>'):with_noremap(),
+--    ["c|<C-d>"]      = map_cmd('<Del>'):with_noremap(),
+--    --["c|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
+--    -- command line Mode 移动光标
+--    ["c|<C-j>"]      = map_cmd('<Down>'):with_noremap(),
+--    ["c|<C-k>"]      = map_cmd('<Up>'):with_noremap(),
+--    ["c|<C-h>"]      = map_cmd('<Left>'):with_noremap(),
+--    ["c|<C-l>"]      = map_cmd('<Right>'):with_noremap(),
+--    ["c|<C-t>"]      = map_cmd([[<C-R>=expand("%:p:h") . "/" <CR>]]):with_noremap(),
+
 -- TODO fix this
 -- Terminal window navigation
-vim.cmd([[
-  tnoremap <C-h> <C-\><C-N><C-w>h
-  tnoremap <C-j> <C-\><C-N><C-w>j
-  tnoremap <C-k> <C-\><C-N><C-w>k
-  tnoremap <C-l> <C-\><C-N><C-w>l
-  inoremap <C-h> <C-\><C-N><C-w>h
-  inoremap <C-j> <C-\><C-N><C-w>j
-  inoremap <C-k> <C-\><C-N><C-w>k
-  inoremap <C-l> <C-\><C-N><C-w>l
-  tnoremap <Esc> <C-\><C-n>
-]])
+--vim.cmd([[
+--  tnoremap <C-h> <C-\><C-N><C-w>h
+--  tnoremap <C-j> <C-\><C-N><C-w>j
+--  tnoremap <C-k> <C-\><C-N><C-w>k
+--  tnoremap <C-l> <C-\><C-N><C-w>l
+--  inoremap <C-h> <C-\><C-N><C-w>h
+--  inoremap <C-j> <C-\><C-N><C-w>j
+--  inoremap <C-k> <C-\><C-N><C-w>k
+--  inoremap <C-l> <C-\><C-N><C-w>l
+--  tnoremap <Esc> <C-\><C-n>
+--]])
 
 -- TODO fix this
 -- resize with arrows
