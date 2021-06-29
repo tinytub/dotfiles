@@ -1,45 +1,21 @@
 require('globals')
-vim.cmd('luafile '..CONFIG_PATH..'/settings.lua')
+vim.cmd('luafile ' .. CONFIG_PATH .. '/settings.lua')
 require('options')
 require('plugins')
+
 require('utils')
 require('n-autocommands')
 require('keymappings')
-require("n-themes")
-require('n-nvimtree') -- This plugin must be required somewhere before colorscheme.  Placing it after will break navigation keymappings
-require('colorscheme') -- This plugin must be required somewhere after nvimtree. Placing it before will break navigation keymappings
+--require('colorscheme') -- This plugin must be required somewhere after nvimtree. Placing it before will break navigation keymappings
 require('n-galaxyline')
---require('nvim-comment')
-require('n-autopairs')
-require('n-nvim-compe')
-require('n-barbar')
-require('n-dashboard')
 require('n-telescope')
-require('n-gitsigns')
 require('n-treesitter')
-require('n-matchup')
-require('n-rnvimr')
 require('folke-which-key')
-require('n-lsprooter')
-require('n-lspsaga-nvim')
-require('n-floaterm')
-require('n-vim-go')
--- extras
-require('n-numb-nvim')
---    require('dial')
-require('n-hop')
-require('n-colorizer')
---    require('n-symbols-outline')
+require('n-autopairs')
 
-
-
--- TODO is there a way to do this without vimscript
---vim.cmd('source '..CONFIG_PATH..'/vimscript/functions.vim')
 -- LSP
 require('lsp')
 require('lsp.bash-ls')
---require('lsp.efm-general-ls')
---require('lsp.elm-ls')
 require('lsp.go-ls')
 require('lsp.json-ls')
 require('lsp.lua-ls')

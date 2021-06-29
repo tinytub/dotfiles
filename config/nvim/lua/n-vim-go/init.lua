@@ -1,5 +1,7 @@
+local M = {}
 
-vim.g.go_def_mapping_enabled = 0
+M.config = function()
+  vim.g.go_def_mapping_enabled = 0
   vim.g.go_code_completion_enabled = 0
   vim.g.go_code_completion_icase = 0
   vim.g.go_doc_keywordprg_enabled = 0
@@ -31,4 +33,5 @@ vim.g.go_def_mapping_enabled = 0
   vim.g.go_updatetime = 500
   vim.g.go_doc_popup_window = 1
   vim.g.go_debug_mapping = {{}}
-
+end
+return M
