@@ -6,7 +6,6 @@ require('plugins')
 require('utils')
 require('n-autocommands')
 require('keymappings')
---require('colorscheme') -- This plugin must be required somewhere after nvimtree. Placing it before will break navigation keymappings
 require('n-galaxyline')
 require('n-telescope')
 require('n-treesitter')

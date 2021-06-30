@@ -3,7 +3,8 @@ local gls = gl.section
 local condition = require("galaxyline.condition")
 local fn = vim.fn
 
-gl.short_line_list = {" "}
+--gl.short_line_list = {" "}
+gl.short_line_list = {"LuaTree", "vista", "dbui",'NvimTree', 'vista', 'dbui', 'packer', 'telescope'}
 
 --local colors = require "themes/onedark"
 local colors = {
@@ -159,7 +160,7 @@ gls.right[2] = {
         provider = function()
             return " "
         end,
-        condition = require("galaxyline.provider_vcs").check_git_workspace,
+        condition = require("galaxyline.condition").check_git_workspace,
         highlight = {colors.grey_fg2, colors.lightbg},
         separator = "",
         separator_highlight = {colors.lightbg, colors.statusline_bg}
@@ -169,7 +170,7 @@ gls.right[2] = {
 gls.right[3] = {
     GitBranch = {
         provider = "GitBranch",
-        condition = require("galaxyline.provider_vcs").check_git_workspace,
+        condition = require("galaxyline.condition").check_git_workspace,
         highlight = {colors.grey_fg2, colors.lightbg}
     }
 }
