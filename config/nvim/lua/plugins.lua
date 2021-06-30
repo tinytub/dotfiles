@@ -18,9 +18,9 @@ return require("packer").startup(function(use)
     use {"neovim/nvim-lspconfig"}
     use {
         "glepnir/lspsaga.nvim",
-        config = function ()
-           require("n-lspsaga-nvim").config()
-        end,
+        --config = function ()
+        --   require("n-lspsaga-nvim").config()
+        --end,
         event = "BufRead"
     }
 
