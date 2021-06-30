@@ -162,10 +162,10 @@
     "key": "ctrl+f",
     "command": "-vscode-neovim.ctrl-f",
     "when": "editorTextFocus && neovim.ctrlKeysNormal && neovim.init && neovim.mode != 'insert'"
+  },
+  {
+    "key": "space",
+    "command": "whichkey.show",
+    "when": "neovim.mode != 'insert' && !inputFocus"
   }
-  //{
-  //  "key": "space",
-  //  "command": "whichkey.show",
-  //  "when": "neovim.mode != 'insert' && !inputFocus"
-  //}
 ]
