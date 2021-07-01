@@ -25,3 +25,11 @@ require'lspconfig'.sumneko_lua.setup {
         }
     }
 }
+require('n-utils').define_augroups({
+    _lua_autoformat = {
+        {
+            'BufWritePre', '*.lua',
+            'lua vim.lsp.buf.formatting_sync(nil, 1000)'
+        }
+    }
+})

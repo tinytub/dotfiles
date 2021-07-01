@@ -39,3 +39,16 @@ require'lspconfig'.gopls.setup{
         allowModfileModifications=true
       }
 }
+
+require('n-utils').define_augroups({
+    _go_format = {
+        {'BufWritePre', '*.go', 'lua vim.lsp.buf.formatting_sync(nil,1000)'}
+    },
+    _go = {
+        -- Go generally requires Tabs instead of spaces.
+        {'FileType', 'go', 'setlocal tabstop=4'},
+        {'FileType', 'go', 'setlocal shiftwidth=4'},
+        {'FileType', 'go', 'setlocal softtabstop=4'},
+        {'FileType', 'go', 'setlocal noexpandtab'}
+    }
+})
