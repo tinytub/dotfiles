@@ -123,6 +123,7 @@
 
   "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim",
   "vscode-neovim.neovimExecutablePaths.linux": "/usr/local/bin/nvim",
+  "vscode-neovim.neovimExecutablePaths.win32": "C:\\tools\\neovim\\Neovim\\bin\\nvim.exe",
   "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.config/nvim/vimscript/vscode/init.vim",
   "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.config/nvim/vimscript/vscode/init.vim",
 
@@ -1065,7 +1066,6 @@
     }
   ],
 
-  "vscode-neovim.neovimExecutablePaths.win32": "C:\\tools\\neovim\\Neovim\\bin\\nvim.exe",
   "workbench.editorAssociations": {
     "*.ipynb": "jupyter.notebook.ipynb"
   },
@@ -1076,4 +1076,5 @@
   "vs-kubernetes": {
     "vscode-kubernetes.minikube-path.mac": "/Users/zhaopeng18/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
   },
+  "vscode-neovim.neovimInitVimPaths.win32": " D:\\tools\\dotfiles\\config\\nvim\\vimscript\\vscode\\init-win32.vim",
 }
