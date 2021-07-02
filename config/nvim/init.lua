@@ -9,7 +9,6 @@ require('n-galaxyline')
 require('n-telescope')
 require('n-treesitter')
 require('folke-which-key')
-require('n-autopairs')
 
 -- LSP
 require('lsp')

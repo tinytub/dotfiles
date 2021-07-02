@@ -56,7 +56,6 @@ return require("packer").startup(function(use)
     -- Autocomplete
     use {
         "hrsh7th/nvim-compe",
-        event = "InsertEnter",
         config = function()
             require("n-nvim-compe").config()
         end
@@ -88,7 +87,10 @@ return require("packer").startup(function(use)
     use {"folke/which-key.nvim"}
 
     -- autopairs
-    use {"windwp/nvim-autopairs"}
+    use {
+        "windwp/nvim-autopairs",
+        config = function() require'n-autopairs' end
+    }
 
     -- Color
     use {"christianchiarulli/nvcode-color-schemes.vim", opt = true}
@@ -248,14 +250,22 @@ return require("packer").startup(function(use)
         run = 'npm install --prefix server',
         disable = true
     }
+
     -- Language
-    use {'fatih/vim-go',
-        opt = true,
+    use {
+        'ray-x/go.nvim',
         ft = {'go','golang'},
         config = function()
-            require('n-vim-go').config()
+            require('go').setup()
         end
     }
+    --use {'fatih/vim-go',
+    --    opt = true,
+    --    ft = {'go','golang'},
+    --    config = function()
+    --        require('n-vim-go').config()
+    --    end
+    --}
 
     use {"psliwka/vim-smoothie"}
     use {

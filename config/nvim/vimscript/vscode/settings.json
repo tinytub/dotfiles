@@ -7,7 +7,6 @@
   "editor.cursorBlinking": "solid",
 
   "files.trimTrailingWhitespace": true,
-  "window.zoomLevel": -1,
 
   "workbench.editor.enablePreview": false,
   "workbench.sideBar.location": "left",
@@ -81,7 +80,8 @@
   "leetcode.hint.commentDescription": false,
   "window.menuBarVisibility":"toggle",
 
-  "terminal.integrated.shell.linux": "/bin/zsh",
+ // "terminal.integrated.shell.linux": "/bin/zsh",
+  "terminal.integrated.automationShell.linux": "/bin/zsh",
   "terminal.external.linuxExec": "/usr/bin/alacritty",
   "terminal.integrated.fontSize": 14,
   "terminal.external.osxExec": "iTerm.app",

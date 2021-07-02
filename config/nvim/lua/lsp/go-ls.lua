@@ -22,6 +22,9 @@ require'lspconfig'.gopls.setup{
     --init_options = {usePlaceholders = true, completeUnimported = true},
     --on_attach = enhance_attach,
     on_attach = require'lsp'.common_on_attach,
+    flags = {
+      debounce_text_changes = 500,
+    },
     root_dir = function(fname)
         return lspconfig.util.root_pattern("go.mod", ".git")(fname) or
           lspconfig.util.path.dirname(fname)
@@ -42,7 +45,8 @@ require'lspconfig'.gopls.setup{
 
 require('n-utils').define_augroups({
     _go_format = {
-        {'BufWritePre', '*.go', 'lua vim.lsp.buf.formatting_sync(nil,1000)'}
+--        {'BufWritePre', '*.go', 'lua vim.lsp.buf.formatting_sync(nil,1000)'}
+        {'BufWritePre', '*.go',"lua require('lsp.format').go_organize_imports_sync(1000)"}
     },
     _go = {
         -- Go generally requires Tabs instead of spaces.
