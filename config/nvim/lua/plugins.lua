@@ -15,6 +15,7 @@ end
 
 packer.init {
   -- compile_path = vim.fn.stdpath('data')..'/site/pack/loader/start/packer.nvim/plugin/packer_compiled.vim',
+  compile_path = require("packer.util").join_paths(vim.fn.stdpath "config", "plugin", "packer_compiled.vim"),
   git = {
     clone_timeout = 300
   },
@@ -33,6 +34,8 @@ return require("packer").startup(function(use)
 
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
     use {"neovim/nvim-lspconfig"}
+    use { "kabouzeid/nvim-lspinstall", cmd = "LspInstall" }
+
     use {
         "glepnir/lspsaga.nvim",
         --config = function ()
@@ -41,15 +44,12 @@ return require("packer").startup(function(use)
         event = "BufRead"
     }
 
-    --TODO: not config
-    use {"kabouzeid/nvim-lspinstall", event = "BufRead"}
-
     -- Telescope
     use {"nvim-lua/popup.nvim"}
     use {"nvim-lua/plenary.nvim"}
     use {
-        "nvim-telescope/telescope.nvim", 
-        config = [[require('n-telescope')]],    
+        "nvim-telescope/telescope.nvim",
+        config = [[require('n-telescope')]],
         --cmd = "Telescope"
     }
 
