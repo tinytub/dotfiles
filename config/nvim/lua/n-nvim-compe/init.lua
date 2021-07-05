@@ -14,6 +14,7 @@ M.config = function()
         vsnip = {kind = "﬌"}; --replace to what sign you prefer
         nvim_lsp = true;
         nvim_lua = true;
+        tabnine = { kind = " ", priority = 200, max_reslts = 6 };
         --path = true;
         --calc = true;
         --ultisnips = true;
