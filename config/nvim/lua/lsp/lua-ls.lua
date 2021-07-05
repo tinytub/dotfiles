@@ -20,6 +20,7 @@ require'lspconfig'.sumneko_lua.setup {
             workspace = {
                 -- Make the server aware of Neovim runtime files
                 library = {[vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true},
+                preloadFileSize = 1000,
                 maxPreload = 10000
             }
         }
@@ -33,3 +34,31 @@ require('n-utils').define_augroups({
         }
     }
 })
+
+local lua_arguments = {}
+
+local luaFormat = {
+  formatCommand = "lua-format -i --no-keep-simple-function-one-line --column-limit=80",
+  formatStdin = true,
+}
+
+local lua_fmt = {
+  formatCommand = "luafmt --indent-count 2 --line-width 120 --stdin",
+  formatStdin = true,
+}
+
+table.insert(lua_arguments, luaFormat)
+table.insert(lua_arguments, lua_fmt)
+
+require("lspconfig").efm.setup {
+  -- init_options = {initializationOptions},
+  cmd = { DATA_PATH .. "/lspinstall/efm/efm-langserver" },
+  init_options = { documentFormatting = true, codeAction = false },
+  filetypes = { "lua" },
+  settings = {
+    rootMarkers = { ".git/" },
+    languages = {
+      lua = lua_arguments,
+    },
+  },
+}

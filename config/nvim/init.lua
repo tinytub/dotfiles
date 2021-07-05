@@ -1,10 +1,10 @@
 require('globals')
+require('keymappings')
 vim.cmd('luafile ' .. CONFIG_PATH .. '/settings.lua')
 require('options')
 require('plugins')
 
 require('n-utils')
-require('keymappings')
 require('n-galaxyline')
 require('n-telescope')
 require('n-treesitter')
