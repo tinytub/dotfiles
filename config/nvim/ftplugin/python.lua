@@ -20,6 +20,7 @@ require'lspconfig'.pyright.setup {
       }
     }
 }
+
 require('n-utils').define_augroups({
     _python_autoformat = {
         {

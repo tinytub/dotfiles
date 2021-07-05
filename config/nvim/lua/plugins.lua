@@ -50,12 +50,25 @@ return require("packer").startup(function(use)
     use {
         "nvim-telescope/telescope.nvim",
         config = [[require('n-telescope')]],
-        --cmd = "Telescope"
+        cmd = "Telescope"
+    }
+    -- Use fzy for telescope
+    use {
+        "nvim-telescope/telescope-fzy-native.nvim",
+        event = "BufRead",
+    }
+    -- Use project for telescope
+    use {
+        "nvim-telescope/telescope-project.nvim",
+        after = "telescope.nvim",
+        event = "BufRead",
+        disable = false
     }
 
     -- Autocomplete
     use {
         "hrsh7th/nvim-compe",
+        event = "InsertEnter",
         config = function()
             require("n-nvim-compe").config()
         end
@@ -77,19 +90,28 @@ return require("packer").startup(function(use)
     }
 
     use {"lewis6991/gitsigns.nvim",
-        event = "BufRead",
         config = function()
             require("n-gitsigns").config()
         end,
+        event = "BufRead",
     }
 
     -- whichkey
     use {"folke/which-key.nvim"}
 
-    -- autopairs
+    ---- autopairs
+    --use {
+    --    "windwp/nvim-autopairs",
+    --    config = function() require'n-autopairs' end
+    --}
+    -- Autopairs
     use {
-        "windwp/nvim-autopairs",
-        config = function() require'n-autopairs' end
+      "windwp/nvim-autopairs",
+      event = "InsertEnter",
+      after = { "telescope.nvim", "nvim-compe" },
+      config = function()
+        require "n-autopairs"
+      end,
     }
 
     -- Color
@@ -100,19 +122,26 @@ return require("packer").startup(function(use)
 
     -- Status Line and Bufferline
     use {"glepnir/galaxyline.nvim"}
-
     use {
-        "romgrk/barbar.nvim",
-        config = function()
-            vim.api.nvim_set_keymap('n', '<TAB>', ':BufferNext<CR>',
-                                    {noremap = true, silent = true})
-            vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>',
-                                    {noremap = true, silent = true})
-            vim.api.nvim_set_keymap('n', '<S-x>', ':BufferClose<CR>',
-                                    {noremap = true, silent = true})
-        end,
-        event = "BufRead"
+      "akinsho/nvim-bufferline.lua",
+      config = function()
+        require("n-bufferline").config()
+      end,
+      event = "BufRead",
     }
+    --use {
+    --    "romgrk/barbar.nvim",
+    --    config = function()
+    --        vim.api.nvim_set_keymap('n', '<TAB>', ':BufferNext<CR>',
+    --                                {noremap = true, silent = true})
+    --        vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>',
+    --                                {noremap = true, silent = true})
+    --        vim.api.nvim_set_keymap('n', '<S-x>', ':BufferClose<CR>',
+    --                                {noremap = true, silent = true})
+    --    end,
+    --    event = "BufRead"
+    --}
+
     use {
         'phaazon/hop.nvim',
         event = 'BufRead',
@@ -124,15 +153,24 @@ return require("packer").startup(function(use)
     }
 
     -- Dashboard
+    --use {
+    --    "ChristianChiarulli/dashboard-nvim",
+    --    event = 'BufWinEnter',
+    --    cmd = {"Dashboard", "DashboardNewFile", "DashboardJumpMarks"},
+    --    config = function()
+    --        require('n-dashboard').config()
+    --    end,
+    --    disable = false,
+    --    opt = true
+    --}
+    -- Ranger
     use {
-        "ChristianChiarulli/dashboard-nvim",
-        event = 'BufWinEnter',
-        cmd = {"Dashboard", "DashboardNewFile", "DashboardJumpMarks"},
-        config = function()
-            require('n-dashboard').config()
-        end,
-        disable = false,
-        opt = true
+      "kevinhwang91/rnvimr",
+      cmd = "Rnvimr",
+      config = function()
+        require("n-rnvimr").config()
+      end,
+      disable = false
     }
 
     -- matchup
@@ -183,9 +221,14 @@ return require("packer").startup(function(use)
     }
 
     -- Debugging
-    use {"mfussenegger/nvim-dap",
-        opt = true,
-        event = "BufRead",
+    use {
+      "mfussenegger/nvim-dap",
+      config = function()
+          require('dap')
+          vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
+          require('dap').defaults.fallback.terminal_win_cmd = '50vsplit new'
+      end,
+      disable = false,
     }
 
     -- Better quickfix
@@ -230,25 +273,39 @@ return require("packer").startup(function(use)
         'metakirby5/codi.vim',
         cmd = 'Codi',
     }
-    -- Use fzy for telescope
+
+    ---- HTML preview
+    --use {
+    --    'turbio/bracey.vim',
+    --    event = "BufRead",
+    --    run = 'npm install --prefix server',
+    --    disable = true
+    --}
+    -- LSP Colors
     use {
-        "nvim-telescope/telescope-fzy-native.nvim",
-        event = "BufRead",
+      "folke/lsp-colors.nvim",
+      event = "BufRead",
+      disable = false,
     }
-    -- Use project for telescope
+    -- Lazygit
     use {
-        "nvim-telescope/telescope-project.nvim",
-        after = "telescope.nvim",
-        event = "BufRead",
-        disable = false
+      "kdheepak/lazygit.nvim",
+      cmd = "LazyGit",
+      disable = false,
+    }
+    -- Octo
+    use {
+      "pwntester/octo.nvim",
+      event = "BufRead",
+      disable = false,
     }
 
-    -- HTML preview
+    -- Tabnine
     use {
-        'turbio/bracey.vim',
-        event = "BufRead",
-        run = 'npm install --prefix server',
-        disable = true
+      "tzachar/compe-tabnine",
+      run = "./install.sh",
+      requires = "hrsh7th/nvim-compe",
+      disable = false,
     }
 
     -- Language
