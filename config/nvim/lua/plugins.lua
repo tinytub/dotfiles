@@ -294,11 +294,11 @@ return require("packer").startup(function(use)
       disable = false,
     }
     -- Octo
-    use {
-      "pwntester/octo.nvim",
-      event = "BufRead",
-      disable = false,
-    }
+    --use {
+    --  "pwntester/octo.nvim",
+    --  event = "BufRead",
+    --  disable = false,
+    --}
 
     -- Tabnine
     use {
