@@ -31,8 +31,8 @@ vim.api.nvim_set_keymap('n', 'gr', ':Telescope lsp_references<CR>', {noremap = t
 
 vim.api.nvim_set_keymap('n', 'K', ':lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
 
-vim.api.nvim_set_keymap('n', '[e', ':lua vim.lsp.diagnostic.goto_prev({popup_opts = {border = "single"}})<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', ']e', ':lua vim.lsp.diagnostic.goto_next({popup_opts = {border = "single"}})<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '[e', ':lua vim.lsp.diagnostic.goto_prev()<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', ']e', ':lua vim.lsp.diagnostic.goto_next()<CR>', {noremap = true, silent = true})
 
 --vim.api.nvim_set_keymap('n', '[e', ':Lspsaga diagnostic_jump_next<CR>', {noremap = true, silent = true})
 --vim.api.nvim_set_keymap('n', ']e', ':Lspsaga diagnostic_jump_prev<CR>', {noremap = true, silent = true})
@@ -132,9 +132,9 @@ end
 local lsp_config = {}
 
 --if O.document_highlight then
-    function lsp_config.common_on_attach(client, bufnr)
-        documentHighlight(client, bufnr)
-    end
+function lsp_config.common_on_attach(client, bufnr)
+    documentHighlight(client, bufnr)
+end
 --end
 
 function lsp_config.tsserver_on_attach(client, bufnr)
