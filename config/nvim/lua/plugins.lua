@@ -50,7 +50,6 @@ return require("packer").startup(function(use)
     use {
         "nvim-telescope/telescope.nvim",
         config = [[require('n-telescope')]],
-        event = "BufEnter",
     }
     -- Use fzy for telescope
     use {
@@ -69,7 +68,7 @@ return require("packer").startup(function(use)
     -- Autocomplete
     use {
         "hrsh7th/nvim-compe",
-        event = "InsertEnter",
+        --event = "InsertEnter",
         config = function()
             require("n-nvim-compe").config()
         end
@@ -137,7 +136,7 @@ return require("packer").startup(function(use)
     use {
       "windwp/nvim-autopairs",
       event = "InsertEnter",
-      after = { "telescope.nvim"},
+      after = { "telescope.nvim", "nvim-compe"},
       config = function()
         require "n-autopairs"
       end,
@@ -283,14 +282,13 @@ return require("packer").startup(function(use)
     }
 
     -- lsp root with this nvim-tree will follow you
-    use {
-        "ahmedkhalf/lsp-rooter.nvim",
-        event = "BufRead",
-        config = function()
-            require("lsp-rooter").setup()
-        end,
-        disable = false,
-    }
+    --use {
+    --    "ahmedkhalf/lsp-rooter.nvim",
+    --    config = function()
+    --        require("lsp-rooter").setup()
+    --    end,
+    --    disable = false,
+    --}
 
     -- Markdown preview
     use {
