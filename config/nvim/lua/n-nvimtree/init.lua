@@ -67,7 +67,10 @@
 --return _M
 
 local M = {}
-
+local status_ok, nvim_tree_config = pcall(require, "nvim-tree.config")
+if not status_ok then
+  return
+end
 M.config = function()
     local g = vim.g
     vim.o.termguicolors = true
@@ -118,7 +121,7 @@ M.config = function()
         }
     }
 
-    local tree_cb = require"nvim-tree.config".nvim_tree_callback
+    local tree_cb = nvim_tree_config.nvim_tree_callback
     vim.g.nvim_tree_bindings = {
         {key = {"l", "<CR>", "o"}, cb = tree_cb("edit")},
         {key = "h", cb = tree_cb("close_node")},

@@ -21,11 +21,11 @@ require'lspconfig'.pyright.setup {
     }
 }
 
-require('n-utils').define_augroups({
-    _python_autoformat = {
-        {
-            'BufWritePre', '*.py',
-            'lua vim.lsp.buf.formatting_sync(nil, 1000)'
-        }
-    }
-})
+--require('n-utils').define_augroups({
+--    _python_autoformat = {
+--        {
+--            'BufWritePre', '*.py',
+--            'lua vim.lsp.buf.formatting_sync(nil, 1000)'
+--        }
+--    }
+--})

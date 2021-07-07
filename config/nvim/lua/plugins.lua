@@ -34,15 +34,15 @@ return require("packer").startup(function(use)
 
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
     use {"neovim/nvim-lspconfig"}
-    use { "kabouzeid/nvim-lspinstall", cmd = "LspInstall" }
+    use { "kabouzeid/nvim-lspinstall", event = "BufRead"}
 
-    use {
-        "glepnir/lspsaga.nvim",
-        --config = function ()
-        --   require("n-lspsaga-nvim").config()
-        --end,
-        event = "BufRead"
-    }
+--    use {
+--        "glepnir/lspsaga.nvim",
+--        --config = function ()
+--        --   require("n-lspsaga-nvim").config()
+--        --end,
+--        event = "BufRead"
+--    }
 
     -- Telescope
     use {"nvim-lua/popup.nvim"}
@@ -50,7 +50,7 @@ return require("packer").startup(function(use)
     use {
         "nvim-telescope/telescope.nvim",
         config = [[require('n-telescope')]],
-        cmd = "Telescope"
+        event = "BufEnter",
     }
     -- Use fzy for telescope
     use {
@@ -61,6 +61,7 @@ return require("packer").startup(function(use)
     use {
         "nvim-telescope/telescope-project.nvim",
         after = "telescope.nvim",
+        setup = function () vim.cmd[[packadd telescope.nvim]] end,
         event = "BufRead",
         disable = false
     }
@@ -81,6 +82,34 @@ return require("packer").startup(function(use)
 
     -- Treesitter
     use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
+    -- Treesitter playground
+    use {
+        'nvim-treesitter/playground',
+        event = "BufRead",
+        disable = false,
+    }
+    -- Custom semantic text objects
+    use {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      disable = false
+    }
+    -- Smart text objects
+    use {
+      "RRethy/nvim-treesitter-textsubjects",
+      disable = false
+    }
+    -- Text objects using hint labels
+    use {
+      "mfussenegger/nvim-ts-hint-textobject",
+      event = "BufRead",
+      disable = false
+    }
+
+
+
+
+    -- Neoformat
+    use { "sbdchd/neoformat" }
 
     use {"kyazdani42/nvim-tree.lua",
         -- cmd = "NvimTreeToggle",
@@ -108,7 +137,7 @@ return require("packer").startup(function(use)
     use {
       "windwp/nvim-autopairs",
       event = "InsertEnter",
-      after = { "telescope.nvim", "nvim-compe" },
+      after = { "telescope.nvim"},
       config = function()
         require "n-autopairs"
       end,
@@ -122,35 +151,34 @@ return require("packer").startup(function(use)
 
     -- Status Line and Bufferline
     use {"glepnir/galaxyline.nvim"}
-    use {
-      "akinsho/nvim-bufferline.lua",
-      config = function()
-        require("n-bufferline").config()
-      end,
-      event = "BufRead",
-    }
     --use {
-    --    "romgrk/barbar.nvim",
-    --    config = function()
-    --        vim.api.nvim_set_keymap('n', '<TAB>', ':BufferNext<CR>',
-    --                                {noremap = true, silent = true})
-    --        vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>',
-    --                                {noremap = true, silent = true})
-    --        vim.api.nvim_set_keymap('n', '<S-x>', ':BufferClose<CR>',
-    --                                {noremap = true, silent = true})
-    --    end,
-    --    event = "BufRead"
+    --  "akinsho/nvim-bufferline.lua",
+    --  config = function()
+    --    require("n-bufferline").config()
+    --  end,
+    --  event = "BufRead",
     --}
-
     use {
-        'phaazon/hop.nvim',
-        event = 'BufRead',
+        "romgrk/barbar.nvim",
         config = function()
-            require('n-hop').config()
+            vim.api.nvim_set_keymap('n', '<TAB>', ':BufferNext<CR>',
+                                    {noremap = true, silent = true})
+            vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>',
+                                    {noremap = true, silent = true})
+            vim.api.nvim_set_keymap('n', '<S-x>', ':BufferClose<CR>',
+                                    {noremap = true, silent = true})
         end,
-        disable = false,
-        opt = true
     }
+
+    --use {
+    --    'phaazon/hop.nvim',
+    --    event = 'BufRead',
+    --    config = function()
+    --        require('n-hop').config()
+    --    end,
+    --    disable = false,
+    --    opt = true
+    --}
 
     -- Dashboard
     --use {
@@ -206,13 +234,6 @@ return require("packer").startup(function(use)
         disable = false,
     }
 
-    -- Treesitter playground
-    use {
-        'nvim-treesitter/playground',
-        event = "BufRead",
-        disable = false,
-    }
-
 
     -- diagnostics
     use {"folke/trouble.nvim",
@@ -224,9 +245,18 @@ return require("packer").startup(function(use)
     use {
       "mfussenegger/nvim-dap",
       config = function()
-          require('dap')
-          vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='', linehl='', numhl=''})
-          require('dap').defaults.fallback.terminal_win_cmd = '50vsplit new'
+        local status_ok, dap = pcall(require, "dap")
+        if not status_ok then
+          return
+        end
+        -- require "dap"
+        vim.fn.sign_define("DapBreakpoint", {
+          text = "",
+          texthl = "LspDiagnosticsSignError",
+          linehl = "",
+          numhl = "",
+        })
+        dap.defaults.fallback.terminal_win_cmd = "50vsplit new"
       end,
       disable = false,
     }
@@ -300,13 +330,13 @@ return require("packer").startup(function(use)
     --  disable = false,
     --}
 
-    -- Tabnine
-    use {
-      "tzachar/compe-tabnine",
-      run = "./install.sh",
-      requires = "hrsh7th/nvim-compe",
-      disable = false,
-    }
+    ---- Tabnine
+    --use {
+    --  "tzachar/compe-tabnine",
+    --  run = "./install.sh",
+    --  requires = "hrsh7th/nvim-compe",
+    --  disable = false,
+    --}
 
     -- Language
     use {

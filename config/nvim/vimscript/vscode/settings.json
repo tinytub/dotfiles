@@ -103,22 +103,6 @@
 
   "material-icon-theme.showWelcomeMessage": false,
 
-// "vscode-neovim.highlightGroups.highlights": {
-//     "Directory": "vim",
-//     "IncSearch": {
-//         "backgroundColor": "theme.editor.findMatchBackground",
-//         "borderColor": "theme.editor.findMatchBorder"
-//     },
-//     "Search": {
-//         "backgroundColor": "theme.editor.findMatchHighlightBackground",
-//         "borderColor": "theme.editor.findMatchHighlightBorder"
-//     },
-//     "Visual": {
-//         "backgroundColor": "theme.editor.selectionBackground"
-//     },
-//     "Conceal": "vim",
-//     "Substitute": "vim"
-// },
 //------------------------------------------------------------------------------------//
 
   "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim",
@@ -1077,22 +1061,6 @@
     "vscode-kubernetes.minikube-path.mac": "/Users/zhaopeng18/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
   },
   "vscode-neovim.neovimInitVimPaths.win32": " D:\\tools\\dotfiles\\config\\nvim\\vimscript\\vscode\\init-win32.vim",
-  "vscode-neovim.mouseSelectionStartVisualMode": true,
-  "vscode-neovim.highlightGroups.highlights": {
-
-    "Directory": "vim",
-    "IncSearch": {
-      "backgroundColor": "theme.editor.findMatchBackground",
-      "borderColor": "theme.editor.findMatchBorder"
-    },
-    "Search": {
-      "backgroundColor": "theme.editor.findMatchHighlightBackground",
-      "borderColor": "theme.editor.findMatchHighlightBorder"
-    },
-    "Visual": {
-      "backgroundColor": "theme.editor.selectionBackground"
-    },
-    "Conceal": "vim",
-    "Substitute": "vim"
-  },
+  "vscode-neovim.logOutputToConsole": true,
+  "vscode-neovim.logPath": "/Users/zhaopeng18/.dotfiles/config/nvim/vscode-neovim.log",
 }

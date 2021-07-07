@@ -23,16 +23,19 @@ vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnost
 
 
 vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'ga', ':Lspsaga code_action<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', 'ga', ':Lspsaga range_code_action<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'gD', ':Lspsaga preview_definition<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'gs', ':Lspsaga signature_help<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', 'ga', ':Lspsaga code_action<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('v', 'ga', ':Lspsaga range_code_action<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', 'gD', ':Lspsaga preview_definition<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', 'gs', ':Lspsaga signature_help<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'gr', ':Telescope lsp_references<CR>', {noremap = true, silent = true})
 
-vim.api.nvim_set_keymap('n', 'K', ':Lspsaga hover_doc<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', 'K', ':lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
 
-vim.api.nvim_set_keymap('n', '[e', ':Lspsaga diagnostic_jump_next<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', ']e', ':Lspsaga diagnostic_jump_prev<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '[e', ':lua vim.lsp.diagnostic.goto_prev({popup_opts = {border = "single"}})<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', ']e', ':lua vim.lsp.diagnostic.goto_next({popup_opts = {border = "single"}})<CR>', {noremap = true, silent = true})
+
+--vim.api.nvim_set_keymap('n', '[e', ':Lspsaga diagnostic_jump_next<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', ']e', ':Lspsaga diagnostic_jump_prev<CR>', {noremap = true, silent = true})
 -- scroll down hover doc or scroll in definition preview
 --vim.cmd("nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>")
 -- scroll up hover doc
@@ -56,6 +59,18 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     },
     underline = false,
     update_in_insert = false,
+  }
+)
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+  vim.lsp.handlers.hover, {
+    border = "single",
+  }
+)
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+  vim.lsp.handlers.signature_help, {
+    border = "single",
   }
 )
 
