@@ -1,7 +1,11 @@
 local M = {}
 
 M.config = function()
-    require'compe'.setup {
+    local status_ok, compe = pcall(require, "compe")
+    if not status_ok then
+      return
+    end
+    compe.setup {
       enabled = true;
       autocomplete = true;
       throttle_time = 80;
@@ -14,7 +18,7 @@ M.config = function()
         vsnip = {kind = "﬌"}; --replace to what sign you prefer
         nvim_lsp = true;
         nvim_lua = true;
-        tabnine = { kind = " ", priority = 200, max_reslts = 6 };
+        --tabnine = { kind = " ", priority = 200, max_reslts = 6 };
         --path = true;
         --calc = true;
         --ultisnips = true;

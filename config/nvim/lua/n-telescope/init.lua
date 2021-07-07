@@ -1,9 +1,14 @@
+local status_ok, telescope = pcall(require, "telescope")
+if not status_ok then
+  return
+end
+
 local actions = require('telescope.actions')
 --local trouble = require("trouble.providers.telescope")
 -- Global remapping
 ------------------------------
 -- '--color=never',
-require('telescope').setup {
+telescope.setup {
     defaults = {
         find_command = {'rg', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case'},
         -- prompt_prefix = " ",

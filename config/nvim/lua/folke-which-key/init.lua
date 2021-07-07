@@ -1,4 +1,9 @@
-require("which-key").setup {
+local status_ok, which_key = pcall(require, "which-key")
+if not status_ok then
+  return
+end
+
+which_key.setup {
     plugins = {
         marks = true, -- shows a list of your marks on ' and `
         registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
@@ -118,18 +123,21 @@ local mappings = {
     },
     l = {
         name = "+LSP",
-        a = {"<cmd>Lspsaga code_action<cr>", "Code Action"},
-        A = {"<cmd>Lspsaga range_code_action<cr>", "Selected Action"},
+        --a = {"<cmd>Lspsaga code_action<cr>", "Code Action"},
+        --A = {"<cmd>Lspsaga range_code_action<cr>", "Selected Action"},
 --        d = {"<cmd>Telescope lsp_document_diagnostics<cr>", "Document Diagnostics"},
 --        D = {"<cmd>Telescope lsp_workspace_diagnostics<cr>", "Workspace Diagnostics"},
 --        f = {"<cmd>LspFormatting<cr>", "Format"},
-       i = {"<cmd>LspInfo<cr>", "Info"},
-        f = {"<cmd>lua vim.lsp.buf.formatting()<cr>", "Format"},
-        h = {"<cmd>Lspsaga hover_doc<cr>", "Hover Doc"},
-        l = {"<cmd>Lspsaga lsp_finder<cr>", "LSP Finder"},
-        L = {"<cmd>Lspsaga show_line_diagnostics<cr>", "Line Diagnostics"},
-        p = {"<cmd>Lspsaga preview_definition<cr>", "Preview Definition"},
-        r = {"<cmd>Lspsaga rename<cr>", "Rename"},
+        i = {"<cmd>LspInfo<cr>", "Info"},
+        f = {"<cmd>Neoformat<cr>", "Format"},
+        j = { "<cmd>lua vim.lsp.diagnostic.goto_next({popup_opts = {border = 'single'}})<cr>", "Next Diagnostic" },
+        k = { "<cmd>lua vim.lsp.diagnostic.goto_prev({popup_opts = {border = 'single'}})<cr>", "Prev Diagnostic" },
+        r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
+        --h = {"<cmd>Lspsaga hover_doc<cr>", "Hover Doc"},
+        --l = {"<cmd>Lspsaga lsp_finder<cr>", "LSP Finder"},
+        --L = {"<cmd>Lspsaga show_line_diagnostics<cr>", "Line Diagnostics"},
+        --p = {"<cmd>Lspsaga preview_definition<cr>", "Preview Definition"},
+        --r = {"<cmd>Lspsaga rename<cr>", "Rename"},
 --        t = {"<cmd>LspTypeDefinition<cr>", "Type Definition"},
         x = {"<cmd>cclose<cr>", "Close Quickfix"},
     },

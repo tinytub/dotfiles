@@ -1,12 +1,15 @@
 local M = {}
 
 M.config = function()
+    local status_ok, gitsigns = pcall(require, "gitsigns ")
+    if not status_ok then
+      return
+    end
     -- colors from gruvbox8
     vim.cmd('autocmd ColorScheme * hi GitSignsAdd guifg=#b8bb26 guibg=NONE')
     vim.cmd('autocmd ColorScheme * hi GitSignsChange guifg=#8ec07c guibg=NONE')
     vim.cmd('autocmd ColorScheme * hi GitSignsDelete guifg=#fb4934 guibg=NONE')
-    
-    require('gitsigns').setup {
+    gitsigns.setup {
       numhl = false,
       linehl = false,
       watch_index = {
