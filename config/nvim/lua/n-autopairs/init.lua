@@ -38,6 +38,7 @@ npairs.setup {
     javascript = { "template_string" },
     java = false, -- don't check treesitter on java
   },
+  disable_filetype = { "TelescopePrompt" , "vim" },
 }
 
 require("nvim-treesitter.configs").setup { autopairs = { enable = true } }
