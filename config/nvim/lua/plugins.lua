@@ -35,6 +35,13 @@ return require("packer").startup(function(use)
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
     use {"neovim/nvim-lspconfig"}
     use { "kabouzeid/nvim-lspinstall", event = "BufRead"}
+    use {
+        "onsails/lspkind-nvim",
+        event = "BufRead",
+        config = function()
+            require("lspkind").init()
+        end
+    }
 
 --    use {
 --        "glepnir/lspsaga.nvim",
@@ -66,17 +73,18 @@ return require("packer").startup(function(use)
     }
 
     -- Autocomplete
-    use {
-        "hrsh7th/nvim-compe",
-        --event = "InsertEnter",
-        config = function()
-            require("n-nvim-compe").config()
-        end
-    }
-
-
     use {"hrsh7th/vim-vsnip", event = "InsertEnter"}
     use {"rafamadriz/friendly-snippets", event = "InsertEnter"}
+    use {
+        "hrsh7th/nvim-compe",
+        event = "InsertEnter",
+        config = function()
+            require("n-nvim-compe").config()
+        end,
+        requires = {
+            "rafamadriz/friendly-snippets"
+        }
+    }
 
 
     -- Treesitter
@@ -161,18 +169,18 @@ return require("packer").startup(function(use)
             require("n-galaxyline")
         end
     }
-    --use {
-    --  "akinsho/nvim-bufferline.lua",
-    --  config = function()
-    --    require("n-bufferline").config()
-    --  end,
-    --  event = "BufRead",
-    --}
     use {
-        "romgrk/barbar.nvim",
-        config = function()
-        end,
+      "akinsho/nvim-bufferline.lua",
+      config = function()
+        require("n-bufferline").config()
+      end,
+      --event = "BufRead",
     }
+    --use {
+    --    "romgrk/barbar.nvim",
+    --    config = function()
+    --    end,
+    --}
 
     --use {
     --    'phaazon/hop.nvim',
