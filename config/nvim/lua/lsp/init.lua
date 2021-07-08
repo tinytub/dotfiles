@@ -129,10 +129,31 @@ local function documentHighlight(client, bufnr)
     end
 end
 
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+-- Code actions
+capabilities.textDocument.codeAction = {
+    dynamicRegistration = true,
+    codeActionLiteralSupport = {
+        codeActionKind = {
+            valueSet = (function()
+                local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
+                table.sort(res)
+                return res
+            end)()
+        }
+    }
+}
+
+capabilities.textDocument.completion.completionItem.snippetSupport = true;
+
 local lsp_config = {}
 
 --if O.document_highlight then
 function lsp_config.common_on_attach(client, bufnr)
+    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
     documentHighlight(client, bufnr)
 end
 --end
