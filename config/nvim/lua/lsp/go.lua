@@ -17,32 +17,36 @@ local lspconfig = require 'lspconfig'
 
 require'lspconfig'.gopls.setup{
     cmd = {DATA_PATH .. "/lspinstall/go/gopls"},
-    --settings = {gopls = {analyses = {unusedparams = true}, staticcheck = true}},
     --root_dir = require'lspconfig'.util.root_pattern(".git","go.mod","."),
     --init_options = {usePlaceholders = true, completeUnimported = true},
     --on_attach = enhance_attach,
+    --flags = {
+    --  debounce_text_changes = 500,
+    --},
     on_attach = require'lsp'.common_on_attach,
-    flags = {
-      debounce_text_changes = 500,
-    },
     capabilities = require'lsp'.capabilities,
     root_dir = function(fname)
         return lspconfig.util.root_pattern("go.mod", ".git")(fname) or
           lspconfig.util.path.dirname(fname)
       end,
     settings = {
-      analyses = {
-        fillstruct = false, -- 关闭自动填充 struct. 默认打开
-        unusedparams = true,
-      },
-      usePlaceholders=true, -- 填充补全后的 functions param. 默认打开
-      completeUnimported=true,
-      --gofumpt = false,
---      hoverKind = "SingleLine",
-      --hoverKind = "Structured",
-      staticcheck = false,
-      deepCompletion=false,
-      allowModfileModifications=true
+        gopls = {
+            analyses = {
+                fillstruct = false, -- 关闭自动填充 struct. 默认打开
+                unusedparams = true
+            },
+            staticcheck = true
+        }
+    },
+    init_options = {
+        usePlaceholders = true, -- 填充补全后的 functions param. 默认打开
+        completeUnimported = true,
+        --gofumpt = false,
+--        hoverKind = "SingleLine",
+        --hoverKind = "Structured",
+        staticcheck = false,
+        deepCompletion = false,
+        --allowModfileModifications=true
     }
 }
 
