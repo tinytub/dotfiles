@@ -26,7 +26,7 @@ packer.init {
   },
 }
 
-vim.cmd "autocmd BufWritePost plugins.lua PackerCompile" -- Auto compile when there are changes in plugins.lua
+--vim.cmd "autocmd BufWritePost plugins.lua PackerCompile" -- Auto compile when there are changes in plugins.lua
 
 return require("packer").startup(function(use)
     -- Packer can manage itself as an optional plugin
@@ -108,7 +108,13 @@ return require("packer").startup(function(use)
 
 
     -- Neoformat
-    use { "sbdchd/neoformat" }
+    use {
+        "sbdchd/neoformat",
+        config = function()
+          require "n-neoformat"
+        end,
+        event = "BufRead",
+    }
 
     use {"kyazdani42/nvim-tree.lua",
         -- cmd = "NvimTreeToggle",
@@ -149,7 +155,12 @@ return require("packer").startup(function(use)
     use {"kyazdani42/nvim-web-devicons"}
 
     -- Status Line and Bufferline
-    use {"glepnir/galaxyline.nvim"}
+    use {
+        "glepnir/galaxyline.nvim",
+        config = function ()
+            require("n-galaxyline")
+        end
+    }
     --use {
     --  "akinsho/nvim-bufferline.lua",
     --  config = function()
@@ -160,12 +171,6 @@ return require("packer").startup(function(use)
     use {
         "romgrk/barbar.nvim",
         config = function()
-            vim.api.nvim_set_keymap('n', '<TAB>', ':BufferNext<CR>',
-                                    {noremap = true, silent = true})
-            vim.api.nvim_set_keymap('n', '<S-TAB>', ':BufferPrevious<CR>',
-                                    {noremap = true, silent = true})
-            vim.api.nvim_set_keymap('n', '<S-x>', ':BufferClose<CR>',
-                                    {noremap = true, silent = true})
         end,
     }
 
@@ -212,7 +217,7 @@ return require("packer").startup(function(use)
 
     use {
         "norcalli/nvim-colorizer.lua",
-        event = "BufRead",
+        event = "BufWinEnter",
         config = function()
             require("colorizer").setup()
             vim.cmd("ColorizerReloadAllBuffers")

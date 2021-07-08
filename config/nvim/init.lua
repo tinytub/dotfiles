@@ -4,10 +4,8 @@ require('options')
 require('plugins')
 
 require('n-utils')
-require('n-galaxyline')
 require('n-treesitter')
 require('folke-which-key')
-require('n-neoformat')
 
 -- LSP
 require('lsp')
