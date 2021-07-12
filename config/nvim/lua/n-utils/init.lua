@@ -60,6 +60,10 @@ n_utils.define_augroups {
     -- will cause split windows to be resized evenly if main window is resized
     {'VimResized ', '*', 'wincmd ='},
   },
+  _packer_compile = {
+    -- will cause split windows to be resized evenly if main window is resized
+    { "BufWritePost", "plugins.lua", "PackerCompile" },
+  },
 }
 
 vim.cmd([[

@@ -11,7 +11,7 @@ local actions = require('telescope.actions')
 telescope.setup {
     defaults = {
         find_command = {'rg', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case'},
-        -- prompt_prefix = " ",
+        ---- prompt_prefix = " ",
         prompt_prefix = " ",
         selection_caret = " ",
         entry_prefix = "  ",
@@ -23,7 +23,7 @@ telescope.setup {
         file_sorter = require'telescope.sorters'.get_fzy_sorter,
         file_ignore_patterns = {},
         generic_sorter = require'telescope.sorters'.get_generic_fuzzy_sorter,
-        shorten_path = true,
+        --path_display = "shorten",
         winblend = 0,
         border = {},
         borderchars = {'─', '│', '─', '│', '╭', '╮', '╯', '╰'},
@@ -36,13 +36,12 @@ telescope.setup {
 
         layout_config = {
             width = 0.75,
-            prompt_position = "bottom",
             preview_cutoff = 120,
             horizontal = {mirror = false},
             vertical = {mirror = false}
         },
 
-        -- Developer configurations: Not meant for general override
+        ---- Developer configurations: Not meant for general override
         buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker,
         mappings = {
             i = {
