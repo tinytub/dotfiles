@@ -33,8 +33,20 @@ return require("packer").startup(function(use)
     use "wbthomason/packer.nvim"
 
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
-    use {"neovim/nvim-lspconfig"}
-    use { "kabouzeid/nvim-lspinstall", event = "BufRead"}
+    use {"kabouzeid/nvim-lspinstall", event = "BufRead"}
+    use {"neovim/nvim-lspconfig",
+        after = "nvim-lspinstall",
+        config = function ()
+            require('lsp')
+            require('lsp.bash')
+            require('lsp.go')
+            require('lsp.json')
+            require('lsp.lua')
+            require('lsp.python')
+            require('lsp.vim')
+            require('lsp.yaml')
+        end
+    }
     use {
         "onsails/lspkind-nvim",
         event = "BufRead",
@@ -61,23 +73,18 @@ return require("packer").startup(function(use)
     -- Use fzy for telescope
     use {
         "nvim-telescope/telescope-fzy-native.nvim",
-        event = "BufRead",
-    }
-    -- Use project for telescope
-    use {
-        "nvim-telescope/telescope-project.nvim",
-        after = "telescope.nvim",
-        setup = function () vim.cmd[[packadd telescope.nvim]] end,
-        event = "BufRead",
-        disable = false
+        run = "make",
+        cmd = "Telescope"
     }
 
     -- Autocomplete
     use {"hrsh7th/vim-vsnip", event = "InsertEnter"}
-    use {"rafamadriz/friendly-snippets", event = "InsertEnter"}
+    use {
+        "rafamadriz/friendly-snippets",
+        event = "InsertCharPre"
+    }
     use {
         "hrsh7th/nvim-compe",
-        event = "InsertEnter",
         config = function()
             require("n-nvim-compe").config()
         end,
@@ -88,7 +95,8 @@ return require("packer").startup(function(use)
 
 
     -- Treesitter
-    use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
+    use {"nvim-treesitter/nvim-treesitter"}
+
     -- Treesitter playground
     use {
         'nvim-treesitter/playground',
@@ -139,7 +147,12 @@ return require("packer").startup(function(use)
     }
 
     -- whichkey
-    use {"folke/which-key.nvim"}
+    use {
+        "folke/which-key.nvim",
+        config = function()
+            require "folke-which-key"
+        end,
+    }
 
     ---- autopairs
     --use {
@@ -149,7 +162,6 @@ return require("packer").startup(function(use)
     -- Autopairs
     use {
       "windwp/nvim-autopairs",
-      event = "InsertEnter",
       after = { "telescope.nvim", "nvim-compe"},
       config = function()
         require "n-autopairs"
@@ -157,7 +169,7 @@ return require("packer").startup(function(use)
     }
 
     -- Color
-    use {"christianchiarulli/nvcode-color-schemes.vim", opt = true}
+    --use {"christianchiarulli/nvcode-color-schemes.vim", opt = true}
 
     -- Icons
     use {"kyazdani42/nvim-web-devicons"}
@@ -174,7 +186,7 @@ return require("packer").startup(function(use)
       config = function()
         require("n-bufferline").config()
       end,
-      --event = "BufRead",
+      event = "BufWinEnter",
     }
     --use {
     --    "romgrk/barbar.nvim",
@@ -249,7 +261,6 @@ return require("packer").startup(function(use)
 
     -- diagnostics
     use {"folke/trouble.nvim",
-        opt = true,
         cmd = 'TroubleToggle',
     }
 
@@ -270,7 +281,7 @@ return require("packer").startup(function(use)
         })
         dap.defaults.fallback.terminal_win_cmd = "50vsplit new"
       end,
-      disable = false,
+      disable = true,
     }
 
     -- Better quickfix
@@ -282,7 +293,6 @@ return require("packer").startup(function(use)
 
 
     use {"voldikss/vim-floaterm",
-        opt = true,
         cmd = {'FloatermNew','FloatermPrev','FloatermNext','FloatermFirst','FloatermLast','FloatermUpdate','FloatermToggle','FloatermShow','FloatermHide','FloatermKill','FloatermSend'},
         config = function()
             vim.g.floaterm_gitcommit='floaterm'
@@ -292,6 +302,7 @@ return require("packer").startup(function(use)
             vim.g.floaterm_wintitle=0
             vim.g.floaterm_autoclose=1
         end,
+        event = "BufRead",
     }
 
     -- lsp root with this nvim-tree will follow you
@@ -308,11 +319,13 @@ return require("packer").startup(function(use)
         'iamcco/markdown-preview.nvim',
         run = 'cd app && npm install',
         ft = 'markdown',
+        event = "BufRead",
     }
     -- Interactive scratchpad
     use {
         'metakirby5/codi.vim',
         cmd = 'Codi',
+        event = "BufRead",
     }
 
     ---- HTML preview
@@ -395,6 +408,24 @@ return require("packer").startup(function(use)
 
     -- Git
     use {'tpope/vim-fugitive'}
+
+    use {
+        'vim-test/vim-test',
+        config = function ()
+            vim.g["test#strategy"] = "floaterm"
+            --vim.g["test#strategy"] = "neovim"
+            --vim.g["test#strategy"] = {
+            --  nearest = "neovim",
+            --  file = "neovim",
+            --  suite = "neovim"
+            --}
+            vim.g["test#neovim#term_position"] = "vert"
+            vim.g['test#preserve_screen'] = 1
+            vim.g["test#go#runner"] = "gotest"
+            vim.g["test#go#gotest#options"] = "-v --count=1"
+            vim.g["test#echo_command"] = 1
+    end
+    }
 
 
 end)
