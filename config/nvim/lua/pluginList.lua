@@ -68,7 +68,7 @@ return require("packer").startup(function(use)
     use {"nvim-lua/plenary.nvim"}
     use {
         "nvim-telescope/telescope.nvim",
-        config = [[require('n-telescope')]],
+        config = [[require('plugins.telescope')]],
     }
     -- Use fzy for telescope
     use {
@@ -86,7 +86,7 @@ return require("packer").startup(function(use)
     use {
         "hrsh7th/nvim-compe",
         config = function()
-            require("n-nvim-compe").config()
+            require("plugins.compe").config()
         end,
         requires = {
             "rafamadriz/friendly-snippets"
@@ -127,7 +127,7 @@ return require("packer").startup(function(use)
     use {
         "sbdchd/neoformat",
         config = function()
-          require "n-neoformat"
+          require "plugins.neoformat"
         end,
         event = "BufRead",
     }
@@ -135,13 +135,13 @@ return require("packer").startup(function(use)
     use {"kyazdani42/nvim-tree.lua",
         -- cmd = "NvimTreeToggle",
         config = function()
-            require("n-nvimtree").config()
+            require("plugins.nvimtree").config()
         end
     }
 
     use {"lewis6991/gitsigns.nvim",
         config = function()
-            require("n-gitsigns").config()
+            require("plugins.gitsigns").config()
         end,
         event = "BufRead",
     }
@@ -150,7 +150,7 @@ return require("packer").startup(function(use)
     use {
         "folke/which-key.nvim",
         config = function()
-            require "folke-which-key"
+            require "plugins.whichkey"
         end,
     }
 
@@ -164,7 +164,7 @@ return require("packer").startup(function(use)
       "windwp/nvim-autopairs",
       after = { "telescope.nvim", "nvim-compe"},
       config = function()
-        require "n-autopairs"
+        require "plugins.autopairs"
       end,
     }
 
@@ -178,13 +178,13 @@ return require("packer").startup(function(use)
     use {
         "glepnir/galaxyline.nvim",
         config = function ()
-            require("n-galaxyline")
+            require("plugins.galaxyline")
         end
     }
     use {
       "akinsho/nvim-bufferline.lua",
       config = function()
-        require("n-bufferline").config()
+        require("plugins.bufferline").config()
       end,
       event = "BufWinEnter",
     }
@@ -220,7 +220,7 @@ return require("packer").startup(function(use)
       "kevinhwang91/rnvimr",
       cmd = "Rnvimr",
       config = function()
-        require("n-rnvimr").config()
+        require("plugins.rnvimr").config()
       end,
       disable = false
     }
@@ -230,7 +230,7 @@ return require("packer").startup(function(use)
         'andymass/vim-matchup',
         event = "CursorMoved",
         config = function()
-            require('n-matchup').config()
+            require('plugins.matchup').config()
         end,
         disable = false
     }
@@ -402,7 +402,7 @@ return require("packer").startup(function(use)
     use {
         "liuchengxu/vista.vim",
         config = function ()
-           require('n-vista').config()
+           require('plugins.vista').config()
         end
     }
 

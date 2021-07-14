@@ -50,7 +50,7 @@ require'lspconfig'.gopls.setup{
     }
 }
 
-require('n-utils').define_augroups({
+require('plugins.utils').define_augroups({
     --_go_format = {
     --    {'BufWritePre', '*.go', 'lua vim.lsp.buf.formatting_sync(nil,1000)'}
     --    --{'BufWritePre', '*.go',"lua require('lsp.format').go_organize_imports_sync(1000)"}

@@ -10,7 +10,7 @@ local fn = vim.fn
 
 --gl.short_line_list = {" "}
 gl.short_line_list = {"LuaTree", "vista", "dbui",'NvimTree', 'vista', 'dbui', 'packer', 'telescope'}
-local colors = require("n-galaxyline/themes/" .. "tomorrow-night")
+local colors = require("themes/" .. "tomorrow-night")
 
 gls.left[1] = {
   FirstElement = {

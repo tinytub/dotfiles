@@ -1,3 +1,4 @@
+
 --vim.g.nvim_tree_disable_netrw = 1 -- moved to lv-globals
 --vim.g.nvim_tree_hijack_netrw = 1 --"1 by default, prevents netrw from automatically opening when opening directories (but lets you keep its other utilities)
 --vim.g.nvim_tree_hide_dotfiles = 1 -- 0 by default, this option hides files and folders starting with a dot `.`
