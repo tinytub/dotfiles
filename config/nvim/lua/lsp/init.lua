@@ -163,7 +163,7 @@ function lsp_config.tsserver_on_attach(client, bufnr)
     client.resolved_capabilities.document_formatting = false
 end
 
-require('n-utils').define_augroups({
+require('plugins.utils').define_augroups({
     _general_lsp = {
         {'FileType', 'lspinfo', 'nnoremap <silent> <buffer> q :q<CR>'},
     }

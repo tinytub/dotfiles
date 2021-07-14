@@ -1,9 +1,9 @@
 require('globals')
 require('keymappings')
 require('options')
-require('plugins')
+require('pluginList')
 
-require('n-utils')
-require('n-treesitter')
-require('folke-which-key')
+require('plugins.utils')
+require('plugins.treesitter')
+require('plugins.whichkey')
 

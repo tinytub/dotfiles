@@ -1,6 +1,6 @@
 -- autoformat
 --if O.format_on_save then
-  require("n-utils").define_augroups {
+  require("plugins.utils").define_augroups {
     autoformat = {
       {
         "BufWritePre",
