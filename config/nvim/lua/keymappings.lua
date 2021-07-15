@@ -116,11 +116,11 @@ vim.cmd('vnoremap P "0P')
 -- Toggle the QuickFix window
 vim.api.nvim_set_keymap('', '<C-q>', ':call QuickFixToggle()<CR>', {noremap = true, silent = true})
 
-vim.g.smoothie_no_default_mappings = true
-vim.api.nvim_set_keymap('n', '<C-f>', ':<C-U>call smoothie#forwards()<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<C-b>', ':<C-U>call smoothie#backwards()<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<C-d>', ':<C-U>call smoothie#downwards()<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<C-u>', ':<C-U>call smoothie#upwards()<CR>', {noremap = true, silent = true})
+--vim.g.smoothie_no_default_mappings = true
+--vim.api.nvim_set_keymap('n', '<C-f>', ':<C-U>call smoothie#forwards()<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', '<C-b>', ':<C-U>call smoothie#backwards()<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', '<C-d>', ':<C-U>call smoothie#downwards()<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', '<C-u>', ':<C-U>call smoothie#upwards()<CR>', {noremap = true, silent = true})
 
 vim.api.nvim_set_keymap('n', '<C-x>', ':bdelete<CR>', {noremap = true, silent = true})
 

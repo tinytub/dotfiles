@@ -184,9 +184,9 @@ return require("packer").startup(function(use)
     use {
       "akinsho/nvim-bufferline.lua",
       config = function()
-        require("plugins.bufferline").config()
+        require("plugins.bufferline")
       end,
-      event = "BufWinEnter",
+      --event = "BufWinEnter",
     }
     --use {
     --    "romgrk/barbar.nvim",
@@ -205,16 +205,20 @@ return require("packer").startup(function(use)
     --}
 
     -- Dashboard
-    --use {
-    --    "ChristianChiarulli/dashboard-nvim",
-    --    event = 'BufWinEnter',
-    --    cmd = {"Dashboard", "DashboardNewFile", "DashboardJumpMarks"},
-    --    config = function()
-    --        require('n-dashboard').config()
-    --    end,
-    --    disable = false,
-    --    opt = true
-    --}
+    use {
+        "glepnir/dashboard-nvim",
+        cmd = {
+            "Dashboard",
+            "DashboardNewFile",
+            "DashboardJumpMarks",
+            "SessionLoad",
+            "SessionSave"
+        },
+        setup = function()
+            require("plugins.dashboard").config()
+        end
+    }
+
     -- Ranger
     use {
       "kevinhwang91/rnvimr",
@@ -378,7 +382,15 @@ return require("packer").startup(function(use)
     --    end
     --}
 
+    -- smooth scroll
     use {"psliwka/vim-smoothie"}
+    use {
+        "karb94/neoscroll.nvim",
+        event = "WinScrolled",
+        config = function()
+            require("neoscroll").setup()
+        end
+    }
     use {
         "sainnhe/gruvbox-material",
         config = function ()
@@ -425,6 +437,21 @@ return require("packer").startup(function(use)
             vim.g["test#go#gotest#options"] = "-v --count=1"
             vim.g["test#echo_command"] = 1
     end
+    }
+
+    use {
+        "lukas-reineke/indent-blankline.nvim",
+        event = "BufRead",
+        setup = function()
+            vim.g.indentLine_enabled = 1
+            vim.g.indent_blankline_char = "▏"
+
+            vim.g.indent_blankline_filetype_exclude = {"help", "terminal", "dashboard"}
+            vim.g.indent_blankline_buftype_exclude = {"terminal"}
+
+            vim.g.indent_blankline_show_trailing_blankline_indent = false
+            vim.g.indent_blankline_show_first_indent_level = false
+        end
     }
 
 
