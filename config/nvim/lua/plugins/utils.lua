@@ -35,10 +35,12 @@ n_utils.define_augroups {
         {
             'BufRead', '*',
             'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
-        }, {
+        },
+        {
             'BufNewFile', '*',
             'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
-        }, {'VimLeavePre', '*', 'set title set titleold='},
+        },
+        --{'VimLeavePre', '*', 'set title set titleold='},
         {'FileType', 'qf', 'set nobuflisted'}
     },
     -- _solidity = {
