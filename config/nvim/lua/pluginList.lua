@@ -1,36 +1,47 @@
-local execute = vim.api.nvim_command
-local fn = vim.fn
+--local execute = vim.api.nvim_command
+--local fn = vim.fn
+--local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+--
+--if fn.empty(fn.glob(install_path)) > 0 then
+--    execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
+--    execute "packadd packer.nvim"
+--end
+--
+--local packer_ok, packer = pcall(require, "packer")
+--if not packer_ok then
+--  return
+--end
+--
+--packer.init {
+--  -- compile_path = vim.fn.stdpath('data')..'/site/pack/loader/start/packer.nvim/plugin/packer_compiled.vim',
+--  compile_path = require("packer.util").join_paths(vim.fn.stdpath "config", "plugin", "packer_compiled.vim"),
+--  git = {
+--    clone_timeout = 300
+--  },
+--  display = {
+--    open_fn = function()
+--      return require("packer.util").float { border = "single" }
+--    end,
+--  },
+--}
+--
+--return require("packer").startup(function(use)
 
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
-if fn.empty(fn.glob(install_path)) > 0 then
-    execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
-    execute "packadd packer.nvim"
+local present, _ = pcall(require, "packerInit")
+local packer
+
+if present then
+    packer = require "packer"
+else
+    return false
 end
 
-local packer_ok, packer = pcall(require, "packer")
-if not packer_ok then
-  return
-end
+local use = packer.use
 
-packer.init {
-  -- compile_path = vim.fn.stdpath('data')..'/site/pack/loader/start/packer.nvim/plugin/packer_compiled.vim',
-  compile_path = require("packer.util").join_paths(vim.fn.stdpath "config", "plugin", "packer_compiled.vim"),
-  git = {
-    clone_timeout = 300
-  },
-  display = {
-    open_fn = function()
-      return require("packer.util").float { border = "single" }
-    end,
-  },
-}
-
---vim.cmd "autocmd BufWritePost plugins.lua PackerCompile" -- Auto compile when there are changes in plugins.lua
-
-return require("packer").startup(function(use)
-    -- Packer can manage itself as an optional plugin
-    use "wbthomason/packer.nvim"
+return packer.startup(
+    function()
+    use {"wbthomason/packer.nvim"}
 
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
     use {"kabouzeid/nvim-lspinstall", event = "BufRead"}
@@ -64,10 +75,11 @@ return require("packer").startup(function(use)
 --    }
 
     -- Telescope
-    use {"nvim-lua/popup.nvim"}
-    use {"nvim-lua/plenary.nvim"}
+    use {"nvim-lua/plenary.nvim", event = "BufRead"}
+    use {"nvim-lua/popup.nvim", after = "plenary.nvim"}
     use {
         "nvim-telescope/telescope.nvim",
+        cmd = "Telescope",
         config = [[require('plugins.telescope')]],
     }
     -- Use fzy for telescope
@@ -93,6 +105,19 @@ return require("packer").startup(function(use)
         }
     }
 
+    use {
+        "sainnhe/gruvbox-material",
+        config = function ()
+            vim.cmd([[
+                let g:nvcode_termcolors=256
+                colorscheme gruvbox-material
+                syntax on
+                filetype on
+                filetype plugin indent on
+            ]])
+            --require "highlights"
+        end
+    }
 
     -- Treesitter
     use {"nvim-treesitter/nvim-treesitter"}
@@ -140,10 +165,10 @@ return require("packer").startup(function(use)
     }
 
     use {"lewis6991/gitsigns.nvim",
+        after = "plenary.nvim",
         config = function()
             require("plugins.gitsigns").config()
         end,
-        event = "BufRead",
     }
 
     -- whichkey
@@ -162,7 +187,7 @@ return require("packer").startup(function(use)
     -- Autopairs
     use {
       "windwp/nvim-autopairs",
-      after = { "telescope.nvim", "nvim-compe"},
+      after = {"nvim-compe"},
       config = function()
         require "plugins.autopairs"
       end,
@@ -179,14 +204,15 @@ return require("packer").startup(function(use)
         "glepnir/galaxyline.nvim",
         config = function ()
             require("plugins.galaxyline")
-        end
+        end,
+        event = "VimEnter",
     }
     use {
       "akinsho/nvim-bufferline.lua",
       config = function()
         require("plugins.bufferline")
       end,
-      --event = "BufWinEnter",
+      event = "VimEnter"
     }
     --use {
     --    "romgrk/barbar.nvim",
@@ -391,11 +417,16 @@ return require("packer").startup(function(use)
             require("neoscroll").setup()
         end
     }
+
     use {
-        "sainnhe/gruvbox-material",
-        config = function ()
-            vim.cmd('let g:nvcode_termcolors=256')
-            vim.cmd('colorscheme gruvbox-material')
+        "Pocco81/TrueZen.nvim",
+        cmd = {
+            "TZAtaraxis",
+            "TZMinimalist",
+            "TZFocus"
+        },
+        config = function()
+            require "plugins.zenmode"
         end
     }
 

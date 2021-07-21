@@ -45,6 +45,9 @@ vim.cmd('let &titleold="'..TERMINAL..'"')
 -- vim.o.guifont = "SauceCodePro Nerd Font:h17"
 --vim.o.guifont = "FiraCode Nerd Font:h17"
 
+-- disable tilde on end of buffer: https://github.com/  neovim/neovim/pull/8546#issuecomment-643643758
+vim.cmd [[let &fcs='eob: ']]
+
 local function bind_option(options)
   for k, v in pairs(options) do
     if v == true or v == false then
