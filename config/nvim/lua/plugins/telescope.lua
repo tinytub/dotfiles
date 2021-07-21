@@ -73,5 +73,18 @@ telescope.setup {
     },
     extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
 }
-
+--if
+--    not pcall(
+--        function()
+--            telescope.load_extension("fzf")
+--            telescope.load_extension("media_files")
+--        end
+--    )
+-- then
+--    -- This should only trigger when in need of PackerSync, so better do it
+--    print("After completion of PackerSync, restart neovim.")
+--    -- Trigger packer compile on PackerComplete, so it properly waits for PackerSync
+--    vim.cmd 'autocmd User PackerComplete ++once lua require("packer").compile()'
+--    require("packer").sync("telescope-fzf-native.nvim", "telescope-media-files.nvim")
+--end
 --require'telescope'.load_extension('project')

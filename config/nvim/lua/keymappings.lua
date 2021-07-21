@@ -18,6 +18,11 @@ vim.api.nvim_set_keymap('c', '<C-j>', '<Down>', {silent = true, noremap = true})
 vim.api.nvim_set_keymap('c', '<C-k>', '<Up>', {silent = true, noremap = true})
 vim.api.nvim_set_keymap('c', '<C-t>', '[[<C-R>=expand("%:p:h") . "/" <CR>]]', {silent = true, noremap = true})
 
+-- use ESC to turn off search highlighting
+vim.api.nvim_set_keymap("n", "<Esc>", ":noh<CR>", {silent = true, noremap = true})
+
+-- get out of terminal with jk
+--map("t", "jk", "<C-\\><C-n>", opt)
 
 --  -- Insert
 --    ["i|<C-w>"]      = map_cmd('<C-[>diwa'):with_noremap(),

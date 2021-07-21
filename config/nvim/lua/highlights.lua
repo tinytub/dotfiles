@@ -3,7 +3,8 @@ local cmd = vim.cmd
 --local global_theme = "themes/" .. vim.g.nvchad_theme
 --local colors = require(global_theme)
 
-local colors = require("themes/" .. "tomorrow-night")
+local colors = require("themes/" .. "gruvbox")
+
 
 local white = colors.white
 local darker_black = colors.darker_black
