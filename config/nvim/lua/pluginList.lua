@@ -120,29 +120,39 @@ return packer.startup(
     }
 
     -- Treesitter
-    use {"nvim-treesitter/nvim-treesitter"}
+    use {
+        "nvim-treesitter/nvim-treesitter",
+        event = "BufRead",
+        config = function ()
+           require "plugins.treesitter"
+        end
+    }
 
     -- Treesitter playground
     use {
         'nvim-treesitter/playground',
         event = "BufRead",
+        after = "nvim-treesitter",
         disable = false,
     }
     -- Custom semantic text objects
     use {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      disable = false
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        after = "nvim-treesitter",
+        disable = false
     }
     -- Smart text objects
     use {
-      "RRethy/nvim-treesitter-textsubjects",
-      disable = false
+        "RRethy/nvim-treesitter-textsubjects",
+        after = "nvim-treesitter",
+        disable = false
     }
     -- Text objects using hint labels
     use {
-      "mfussenegger/nvim-ts-hint-textobject",
-      event = "BufRead",
-      disable = false
+        "mfussenegger/nvim-ts-hint-textobject",
+        event = "BufRead",
+        after = "nvim-treesitter",
+        disable = false
     }
 
 
@@ -187,7 +197,7 @@ return packer.startup(
     -- Autopairs
     use {
       "windwp/nvim-autopairs",
-      after = {"nvim-compe"},
+      after = {"nvim-compe", "nvim-treesitter"},
       config = function()
         require "plugins.autopairs"
       end,
