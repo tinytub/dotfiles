@@ -460,7 +460,12 @@ return packer.startup(
     }
 
     -- Git
-    use {'tpope/vim-fugitive'}
+    use {
+        'tpope/vim-fugitive',
+        cmd = {
+            "Git"
+        }
+    }
 
     use {
         'vim-test/vim-test',
