@@ -41,10 +41,20 @@ local use = packer.use
 
 return packer.startup(
     function()
-    use {"wbthomason/packer.nvim"}
+    use {"wbthomason/packer.nvim", event = "VimEnter"}
 
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
-    use {"kabouzeid/nvim-lspinstall", event = "BufRead"}
+    use {
+        "kabouzeid/nvim-lspinstall",
+        event = "BufRead"
+    }
+    use {
+        "ray-x/lsp_signature.nvim",
+        after = "nvim-lspconfig",
+        config = function ()
+            require("plugins.lspsign").config()
+        end
+    }
     use {"neovim/nvim-lspconfig",
         after = "nvim-lspinstall",
         config = function ()
@@ -60,7 +70,7 @@ return packer.startup(
     }
     use {
         "onsails/lspkind-nvim",
-        event = "BufRead",
+        event = "BufEnter",
         config = function()
             require("lspkind").init()
         end
@@ -77,6 +87,7 @@ return packer.startup(
     -- Telescope
     use {"nvim-lua/plenary.nvim", event = "BufRead"}
     use {"nvim-lua/popup.nvim", after = "plenary.nvim"}
+
     use {
         "nvim-telescope/telescope.nvim",
         cmd = "Telescope",
@@ -492,7 +503,7 @@ return packer.startup(
             vim.g.indentLine_enabled = 1
             vim.g.indent_blankline_char = "▏"
 
-            vim.g.indent_blankline_filetype_exclude = {"help", "terminal", "dashboard"}
+            vim.g.indent_blankline_filetype_exclude = {"help", "terminal", "dashboard", "packer"}
             vim.g.indent_blankline_buftype_exclude = {"terminal"}
 
             vim.g.indent_blankline_show_trailing_blankline_indent = false
