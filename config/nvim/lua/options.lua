@@ -48,6 +48,10 @@ vim.cmd('let &titleold="'..TERMINAL..'"')
 -- disable tilde on end of buffer: https://github.com/  neovim/neovim/pull/8546#issuecomment-643643758
 vim.cmd [[let &fcs='eob: ']]
 
+
+vim.cmd [[ au TermOpen term://* setlocal nonumber norelativenumber ]]
+--vim.cmd [[let hidden_statusline = luaeval('require("chadrc").ui.hidden_statusline') | autocmd BufEnter,BufWinEnter,WinEnter,CmdwinEnter,TermEnter * nested if index(hidden_statusline, &ft) >= 0 | set laststatus=0 | else | set laststatus=2 | endif]]
+
 local function bind_option(options)
   for k, v in pairs(options) do
     if v == true or v == false then

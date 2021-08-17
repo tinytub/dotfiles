@@ -84,21 +84,62 @@ return packer.startup(
 --        event = "BufRead"
 --    }
 
+    -- Icons
+    use {"kyazdani42/nvim-web-devicons"}
+
+    -- Status Line and Bufferline
+    use {
+        "glepnir/galaxyline.nvim",
+        after = "nvim-web-devicons",
+        config = function ()
+            require("plugins.galaxyline")
+        end,
+    }
+    use {
+      "akinsho/nvim-bufferline.lua",
+      after = "galaxyline.nvim",
+      config = function()
+        require("plugins.bufferline")
+      end,
+    }
+
     -- Telescope
-    use {"nvim-lua/plenary.nvim", event = "BufRead"}
+    use {
+        "nvim-lua/plenary.nvim",
+         after = "nvim-bufferline.lua",
+    }
     use {"nvim-lua/popup.nvim", after = "plenary.nvim"}
 
     use {
         "nvim-telescope/telescope.nvim",
-        cmd = "Telescope",
+        --cmd = "Telescope",
+        after = "plenary.nvim",
+        requires = {
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                run = "make"
+            },
+            {
+                "nvim-telescope/telescope-media-files.nvim",
+                disable = true
+            },
+            {
+               "sudormrfbin/cheatsheet.nvim",
+               disable = false,
+               after = "telescope.nvim",
+               config = function()
+                  require "plugins.s-cheatsheets"
+               end
+            }
+        },
         config = [[require('plugins.telescope')]],
     }
     -- Use fzy for telescope
-    use {
-        "nvim-telescope/telescope-fzy-native.nvim",
-        run = "make",
-        cmd = "Telescope"
-    }
+    --use {
+    --    "nvim-telescope/telescope-fzy-native.nvim",
+    --    run = "make",
+    --    cmd = "Telescope"
+    --}
 
     -- Autocomplete
     use {"hrsh7th/vim-vsnip", event = "InsertEnter"}
@@ -217,24 +258,7 @@ return packer.startup(
     -- Color
     --use {"christianchiarulli/nvcode-color-schemes.vim", opt = true}
 
-    -- Icons
-    use {"kyazdani42/nvim-web-devicons"}
 
-    -- Status Line and Bufferline
-    use {
-        "glepnir/galaxyline.nvim",
-        config = function ()
-            require("plugins.galaxyline")
-        end,
-        event = "VimEnter",
-    }
-    use {
-      "akinsho/nvim-bufferline.lua",
-      config = function()
-        require("plugins.bufferline")
-      end,
-      event = "VimEnter"
-    }
     --use {
     --    "romgrk/barbar.nvim",
     --    config = function()
@@ -354,6 +378,14 @@ return packer.startup(
             vim.g.floaterm_autoclose=1
         end,
         event = "BufRead",
+    }
+
+    use {
+        "akinsho/nvim-toggleterm.lua",
+        event = "BufWinEnter",
+        config = function()
+            require "plugins.toggleterm"
+        end,
     }
 
     -- lsp root with this nvim-tree will follow you
