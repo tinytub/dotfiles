@@ -108,7 +108,6 @@ return packer.startup(
         "nvim-lua/plenary.nvim",
          after = "nvim-bufferline.lua",
     }
-    use {"nvim-lua/popup.nvim", after = "plenary.nvim"}
 
     use {
         "nvim-telescope/telescope.nvim",
@@ -378,14 +377,6 @@ return packer.startup(
             vim.g.floaterm_autoclose=1
         end,
         event = "BufRead",
-    }
-
-    use {
-        "akinsho/nvim-toggleterm.lua",
-        event = "BufWinEnter",
-        config = function()
-            require "plugins.toggleterm"
-        end,
     }
 
     -- lsp root with this nvim-tree will follow you

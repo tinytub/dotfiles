@@ -1,151 +1,108 @@
--- better window movement
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h', {silent = true})
-vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j', {silent = true})
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k', {silent = true})
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l', {silent = true})
+local cmd = vim.cmd
 
--- Insert Mode 移动光标
-vim.api.nvim_set_keymap('i', '<C-h>', '<Left>', {silent = true, noremap = true})
-vim.api.nvim_set_keymap('i', '<C-l>', '<Right>', {silent = true, noremap = true})
-vim.api.nvim_set_keymap('i', '<C-j>', '<Down>', {silent = true, noremap = true})
-vim.api.nvim_set_keymap('i', '<C-k>', '<Up>', {silent = true, noremap = true})
-vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:w<CR>', {silent = true, noremap = true})
+local function map(mode, lhs, rhs, opts)
+   local options = { noremap = true, silent = true }
+   if opts then
+      options = vim.tbl_extend("force", options, opts)
+   end
+   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+end
 
--- command line Mode 移动光标
-vim.api.nvim_set_keymap('c', '<C-h>', '<Left>', {silent = true, noremap = true})
-vim.api.nvim_set_keymap('c', '<C-l>', '<Right>', {silent = true, noremap = true})
-vim.api.nvim_set_keymap('c', '<C-j>', '<Down>', {silent = true, noremap = true})
-vim.api.nvim_set_keymap('c', '<C-k>', '<Up>', {silent = true, noremap = true})
-vim.api.nvim_set_keymap('c', '<C-t>', '[[<C-R>=expand("%:p:h") . "/" <CR>]]', {silent = true, noremap = true})
+local M = {}
+local opt = {}
 
--- use ESC to turn off search highlighting
-vim.api.nvim_set_keymap("n", "<Esc>", ":noh<CR>", {silent = true, noremap = true})
+M.misc = function()
+    map('n', '<C-h>', '<C-w>h', opt)
+    map('n', '<C-j>', '<C-w>j', opt)
+    map('n', '<C-k>', '<C-w>k', opt)
+    map('n', '<C-l>', '<C-w>l', opt)
+    
+    -- Insert Mode 移动光标
+    map('i', '<C-h>', '<Left>', opt)
+    map('i', '<C-l>', '<Right>', opt)
+    map('i', '<C-j>', '<Down>', opt)
+    map('i', '<C-k>', '<Up>', opt)
+    map('i', '<C-s>', '<Esc>:w<CR>', opt)
+    
+    -- command line Mode 移动光标
+    map('c', '<C-h>', '<Left>', opt)
+    map('c', '<C-l>', '<Right>', opt)
+    map('c', '<C-j>', '<Down>', opt)
+    map('c', '<C-k>', '<Up>', opt)
+    map('c', '<C-t>', '[[<C-R>=expand("%:p:h") . "/" <CR>]]', opt)
+    
+    -- use ESC to turn off search highlighting
+    map("n", "<Esc>", ":noh<CR>", opt)
 
--- get out of terminal with jk
---map("t", "jk", "<C-\\><C-n>", opt)
+    -- TODO fix this
+    -- resize with arrows
+    map('n', '<C-Up>', ':resize -2<CR>', {silent = true})
+    map('n', '<C-Down>', ':resize +2<CR>', {silent = true})
+    map('n', '<M-[>', ':vertical resize -2<CR>', {silent = true})
+    map('n', '<M-]>', ':vertical resize +2<CR>', {silent = true})
+    
+    -- better indenting
+    map('v', '<', '<gv', {noremap = true, silent = true})
+    map('v', '>', '>gv', {noremap = true, silent = true})
+    
+    -- I hate escape
+    map('i', 'jk', '<ESC>', {noremap = true, silent = true})
+    map('i', 'kj', '<ESC>', {noremap = true, silent = true})
+    map('i', 'jj', '<ESC>', {noremap = true, silent = true})
+    
+    -- Tab switch buffer
+    map('n', '<TAB>', ':bnext<CR>', {noremap = true, silent = true})
+    map('n', '<S-TAB>', ':bprevious<CR>', {noremap = true, silent = true})
+    
+    -- Move selected line / block of text in visual mode
+    map('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silent = true})
+    map('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
+    
+    -- Better nav for omnicomplete
+    vim.cmd('inoremap <expr> <c-j> (\"\\<C-n>\")')
+    vim.cmd('inoremap <expr> <c-k> (\"\\<C-p>\")')
+    
+    -- fix to get netrw's gx command to work correctly
+    --vim.api.nvim_set_keymap('n', 'gx', ":call netrw#BrowseX(expand((exists('g:netrw_gx')? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())<cr>", {noremap = true, silent = true})
 
---  -- Insert
---    ["i|<C-w>"]      = map_cmd('<C-[>diwa'):with_noremap(),
-----    ["i|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
---    ["i|<C-d>"]      = map_cmd('<Del>'):with_noremap(),
---    ["i|<C-u>"]      = map_cmd('<C-G>u<C-U>'):with_noremap(),
---    ["i|<C-b>"]      = map_cmd('<Left>'):with_noremap(),
---    ["i|<C-f>"]      = map_cmd('<Right>'):with_noremap(),
---    ["i|<C-a>"]      = map_cmd('<ESC>^i'):with_noremap(),
---    --["i|<C-j>"]      = map_cmd('<Esc>o'):with_noremap(),
---    --["i|<C-k>"]      = map_cmd('<Esc>O'):with_noremap(),
---    -- Insert Mode 移动光标
---    ["i|<C-j>"]      = map_cmd('<Down>'):with_noremap(),
---    ["i|<C-k>"]      = map_cmd('<Up>'):with_noremap(),
---    ["i|<C-h>"]      = map_cmd('<Left>'):with_noremap(),
---    ["i|<C-l>"]      = map_cmd('<Right>'):with_noremap(),
---    ["i|<C-s>"]      = map_cmd('<Esc>:w<CR>'),
---    ["i|<C-q>"]      = map_cmd('<Esc>:wq<CR>'),
---    ["i|<C-e>"]      = map_cmd([[pumvisible() ? "\<C-e>" : "\<End>"]]):with_noremap():with_expr(),
---  -- command line
---    ["c|<C-b>"]      = map_cmd('<Left>'):with_noremap(),
---    ["c|<C-f>"]      = map_cmd('<Right>'):with_noremap(),
---    ["c|<C-a>"]      = map_cmd('<Home>'):with_noremap(),
---    ["c|<C-e>"]      = map_cmd('<End>'):with_noremap(),
---    ["c|<C-d>"]      = map_cmd('<Del>'):with_noremap(),
---    --["c|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
---    -- command line Mode 移动光标
---    ["c|<C-j>"]      = map_cmd('<Down>'):with_noremap(),
---    ["c|<C-k>"]      = map_cmd('<Up>'):with_noremap(),
---    ["c|<C-h>"]      = map_cmd('<Left>'):with_noremap(),
---    ["c|<C-l>"]      = map_cmd('<Right>'):with_noremap(),
---    ["c|<C-t>"]      = map_cmd([[<C-R>=expand("%:p:h") . "/" <CR>]]):with_noremap(),
+    vim.cmd('vnoremap p "0p')
+    vim.cmd('vnoremap P "0P')
 
--- TODO fix this
--- Terminal window navigation
---vim.cmd([[
---  tnoremap <C-h> <C-\><C-N><C-w>h
---  tnoremap <C-j> <C-\><C-N><C-w>j
---  tnoremap <C-k> <C-\><C-N><C-w>k
---  tnoremap <C-l> <C-\><C-N><C-w>l
---  inoremap <C-h> <C-\><C-N><C-w>h
---  inoremap <C-j> <C-\><C-N><C-w>j
---  inoremap <C-k> <C-\><C-N><C-w>k
---  inoremap <C-l> <C-\><C-N><C-w>l
---  tnoremap <Esc> <C-\><C-n>
---]])
+    -- Toggle the QuickFix window
+    map('', '<C-q>', ':call QuickFixToggle()<CR>', {noremap = true, silent = true})
+    
+    map('n', '<C-x>', ':bdelete<CR>', {noremap = true, silent = true})
+    
+    map("i", "<Tab>", "v:lua.tab_complete()", { expr = true })
+    map("s", "<Tab>", "v:lua.tab_complete()", { expr = true })
+    map("i", "<S-Tab>", "v:lua.s_tab_complete()", { expr = true })
+    map("s", "<S-Tab>", "v:lua.s_tab_complete()", { expr = true })
+    
+    map("i", "<C-Space>", "compe#complete()", { noremap = true, silent = true, expr = true })
+    --vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')", { noremap = true, silent = true, expr = true })
+    map("i", "<C-e>", "compe#close('<C-e>')", { noremap = true, silent = true, expr = true })
+    map("i", "<C-f>", "compe#scroll({ 'delta': +4 })", { noremap = true, silent = true, expr = true })
+    map("i", "<C-d>", "compe#scroll({ 'delta': -4 })", { noremap = true, silent = true, expr = true })
 
--- TODO fix this
--- resize with arrows
-vim.api.nvim_set_keymap('n', '<C-Up>', ':resize -2<CR>', {silent = true})
-vim.api.nvim_set_keymap('n', '<C-Down>', ':resize +2<CR>', {silent = true})
-vim.api.nvim_set_keymap('n', '<M-[>', ':vertical resize -2<CR>', {silent = true})
-vim.api.nvim_set_keymap('n', '<M-]>', ':vertical resize +2<CR>', {silent = true})
+end
 
--- better indenting
-vim.api.nvim_set_keymap('v', '<', '<gv', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('v', '>', '>gv', {noremap = true, silent = true})
+-- terminals
+--local function terms()
+M.terms = function()
+   -- get out of terminal mode
+   map("t", "jk", "<C-\\><C-n>", opt)
+   -- hide a term from within terminal mode
+   map("t", "JK", "<C-\\><C-n> :lua require('utils').close_buffer() <CR>", opt)
+  -- pick a hidden term 
+   map("n", "<leader>W", ":Telescope terms <CR>", opt)
 
--- I hate escape
-vim.api.nvim_set_keymap('i', 'jk', '<ESC>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('i', 'kj', '<ESC>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('i', 'jj', '<ESC>', {noremap = true, silent = true})
+   -- Open terminals
+   -- TODO this opens on top of an existing vert/hori term, fixme
+   map("n", "<leader>w", ":execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>", opt)
+   map("n", "<leader>v", ":execute 'vnew +terminal' | let b:term_type = 'vert' | startinsert <CR>", opt)
+   map("n", "<leader>h", ":execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>", opt)
+end
 
--- Tab switch buffer
-vim.api.nvim_set_keymap('n', '<TAB>', ':bnext<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<S-TAB>', ':bprevious<CR>', {noremap = true, silent = true})
-
--- Move selected line / block of text in visual mode
-vim.api.nvim_set_keymap('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
-
--- Better nav for omnicomplete
-vim.cmd('inoremap <expr> <c-j> (\"\\<C-n>\")')
-vim.cmd('inoremap <expr> <c-k> (\"\\<C-p>\")')
-
--- fix to get netrw's gx command to work correctly
---vim.api.nvim_set_keymap('n', 'gx', ":call netrw#BrowseX(expand((exists('g:netrw_gx')? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())<cr>", {noremap = true, silent = true})
-
-vim.cmd('vnoremap p "0p')
-vim.cmd('vnoremap P "0P')
--- vim.api.nvim_set_keymap('v', 'p', '"0p', {silent = true})
--- vim.api.nvim_set_keymap('v', 'P', '"0P', {silent = true})
-
--- vim.cmd('inoremap <expr> <TAB> (\"\\<C-n>\")')
--- vim.cmd('inoremap <expr> <S-TAB> (\"\\<C-p>\")')
-
--- vim.api.nvim_set_keymap('i', '<C-TAB>', 'compe#complete()', {noremap = true, silent = true, expr = true})
-
--- vim.cmd([[
--- map p <Plug>(miniyank-autoput)
--- map P <Plug>(miniyank-autoPut)
--- map <leader>n <Plug>(miniyank-cycle)
--- map <leader>N <Plug>(miniyank-cycleback)
--- ]])
-
--- Toggle the QuickFix window
-vim.api.nvim_set_keymap('', '<C-q>', ':call QuickFixToggle()<CR>', {noremap = true, silent = true})
-
---vim.g.smoothie_no_default_mappings = true
---vim.api.nvim_set_keymap('n', '<C-f>', ':<C-U>call smoothie#forwards()<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', '<C-b>', ':<C-U>call smoothie#backwards()<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', '<C-d>', ':<C-U>call smoothie#downwards()<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', '<C-u>', ':<C-U>call smoothie#upwards()<CR>', {noremap = true, silent = true})
-
-vim.api.nvim_set_keymap('n', '<C-x>', ':bdelete<CR>', {noremap = true, silent = true})
-
-
---vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
---vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
---vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
---vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
---vim.api.nvim_set_keymap("i", "<CR>", "v:lua.MUtils.completion_confirm()", {expr = true})
---vim.api.nvim_set_keymap('i' , '<CR>','v:lua.MUtils.completion_confirm()', {expr = true , noremap = true})
---vim.api.nvim_set_keymap("i", "<CR>", "v:lua.completions()", {expr = true})
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", { expr = true })
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", { expr = true })
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", { expr = true })
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", { expr = true })
-
-vim.api.nvim_set_keymap("i", "<C-Space>", "compe#complete()", { noremap = true, silent = true, expr = true })
---vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')", { noremap = true, silent = true, expr = true })
-vim.api.nvim_set_keymap("i", "<C-e>", "compe#close('<C-e>')", { noremap = true, silent = true, expr = true })
-vim.api.nvim_set_keymap("i", "<C-f>", "compe#scroll({ 'delta': +4 })", { noremap = true, silent = true, expr = true })
-vim.api.nvim_set_keymap("i", "<C-d>", "compe#scroll({ 'delta': -4 })", { noremap = true, silent = true, expr = true })
-
+M.misc()
+M.terms()
+return M

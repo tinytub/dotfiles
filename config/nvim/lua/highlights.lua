@@ -78,7 +78,7 @@ fg("NvimTreeVertSplit", darker_black)
 bg("NvimTreeVertSplit", darker_black)
 fg("NvimTreeEndOfBuffer", darker_black)
 
-vim.cmd("hi NvimTreeRootFolder gui=underline guifg="..purple)
+vim.cmd("hi NvimTreeRootFolder gui=underline guifg=" .. red)
 bg("NvimTreeNormal", darker_black)
 fg_bg("NvimTreeStatuslineNc", darker_black, darker_black)
 fg_bg("NvimTreeWindowPicker", red, black2)
@@ -114,7 +114,7 @@ fg("DashboardFooter", grey_fg)
 
 -- packer's floating window
 
-bg("NormalFloat", None)
+bg("NormalFloat", one_bg)
 fg("FloatBorder", blue)
 
 -- set bg color for nvim ( so nvim wont use terminal bg)
