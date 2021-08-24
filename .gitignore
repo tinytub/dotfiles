@@ -19,3 +19,5 @@ tags
 
 ./coc-settings.json
 ./*.json
+
+.DS_Store

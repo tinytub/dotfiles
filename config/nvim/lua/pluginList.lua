@@ -209,14 +209,14 @@ return packer.startup(
 
 
 
-    -- Neoformat
-    use {
-        "sbdchd/neoformat",
-        config = function()
-          require "plugins.neoformat"
-        end,
-        event = "BufRead",
-    }
+    ---- Neoformat
+    --use {
+    --    "sbdchd/neoformat",
+    --    config = function()
+    --      require "plugins.neoformat"
+    --    end,
+    --    event = "BufRead",
+    --}
 
     use {"kyazdani42/nvim-tree.lua",
         -- cmd = "NvimTreeToggle",

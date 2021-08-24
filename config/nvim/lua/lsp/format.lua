@@ -54,6 +54,8 @@ function format.go_organize_imports_sync(timeout_ms)
   end
 end
 
+-- newer imports from 
+-- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-866632451
 function format.OrgImports(wait_ms)
   local params = vim.lsp.util.make_range_params()
   params.context = {only = {"source.organizeImports"}}

@@ -71,7 +71,8 @@ M.misc = function()
     -- Toggle the QuickFix window
     map('', '<C-q>', ':call QuickFixToggle()<CR>', {noremap = true, silent = true})
     
-    map('n', '<C-x>', ':bdelete<CR>', {noremap = true, silent = true})
+    --map('n', '<C-x>', ':bdelete<CR>', {noremap = true, silent = true})
+    map('n', '<C-x>', ':lua require(\'core.utils\').close_buffer() <CR>', {noremap = true, silent = true})
     
     map("i", "<Tab>", "v:lua.tab_complete()", { expr = true })
     map("s", "<Tab>", "v:lua.tab_complete()", { expr = true })
@@ -103,6 +104,6 @@ M.terms = function()
    map("n", "<leader>h", ":execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>", opt)
 end
 
-M.misc()
-M.terms()
+--M.misc()
+--M.terms()
 return M
