@@ -18,3 +18,5 @@ eclipse.jdt.ls/
 spell/
 nv-settings.lua
 settings.lua
+
+.DS_Store

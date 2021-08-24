@@ -1,10 +1,12 @@
-require "options"
+require "core"
+
+--require "options"
 
 
-require "keymappings"
+--require "keymappings"
 require "pluginList"
 
-require "plugins.utils"
+--require "plugins.utils"
 --require "plugins.treesitter"
 --require "plugins.whichkey"
 
