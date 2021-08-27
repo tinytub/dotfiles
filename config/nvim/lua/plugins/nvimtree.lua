@@ -20,6 +20,7 @@ M.config = function()
     g.nvim_tree_root_folder_modifier = table.concat {":t:gs?$?/..", string.rep(" ", 1000), "?:gs?^??"}
     g.nvim_tree_tab_open = 0
     g.nvim_tree_allow_resize = 1
+    g.nvim_tree_lsp_diagnostics = 0
 --    g.nvim_tree_lsp_diagnostics = 1
 
     g.nvim_tree_disable_netrw = 1
