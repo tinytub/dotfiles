@@ -1,17 +1,26 @@
+--local status_ok, autopairs = pcall(require, "nvim-autopairs")
+--if not status_ok then
+--  return
+--end
+--if package.loaded["compe"] then
+--  require("nvim-autopairs.completion.compe").setup {
+--    map_cr = true, --  map <CR> on insert mode
+--    map_complete = true, -- it will auto insert `(` after select function or method item
+--  }
+--end
 
--- if not package.loaded['nvim-autopairs'] then
---   return
--- end
-local status_ok, autopairs = pcall(require, "nvim-autopairs")
-if not status_ok then
-  return
+local present1, autopairs = pcall(require, "nvim-autopairs")
+local present2, autopairs_completion = pcall(require, "nvim-autopairs.completion.cmp")
+
+if not (present1 or present2) then
+   return
 end
-if package.loaded["compe"] then
-  require("nvim-autopairs.completion.compe").setup {
-    map_cr = true, --  map <CR> on insert mode
-    map_complete = true, -- it will auto insert `(` after select function or method item
-  }
-end
+
+autopairs.setup()
+autopairs_completion.setup {
+   map_complete = true, -- insert () func completion
+   map_cr = true,
+}
 
 --print(vim.inspect(cond))
 

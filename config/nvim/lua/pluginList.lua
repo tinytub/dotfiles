@@ -71,13 +71,13 @@ return packer.startup(
             require('lsp.yaml')
         end
     }
-    use {
-        "onsails/lspkind-nvim",
-        event = "InsertEnter",
-        config = function()
-            require("lspkind").init()
-        end
-    }
+--    use {
+--        "onsails/lspkind-nvim",
+--        event = "InsertEnter",
+--        config = function()
+--            require("lspkind").init()
+--        end
+--    }
 
 --    use {
 --        "glepnir/lspsaga.nvim",
@@ -162,7 +162,6 @@ return packer.startup(
       config = function()
          require "plugins.cmp"
       end,
-      after = "lspkind-nvim",
    }
 
    use {
@@ -170,7 +169,7 @@ return packer.startup(
       wants = "friendly-snippets",
       after = "nvim-cmp",
       config = function()
-         require "plugins.luasnip"
+         require "plugins.luasnips"
       end,
    }
 
