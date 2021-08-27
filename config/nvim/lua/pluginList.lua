@@ -46,7 +46,10 @@ return packer.startup(
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
     use {
         "kabouzeid/nvim-lspinstall",
-        event = "BufRead"
+        opt = true,
+        setup = function()
+            require("core.utils").packer_lazy_load "nvim-lspinstall"
+        end,
     }
     use {
         "ray-x/lsp_signature.nvim",
@@ -70,7 +73,7 @@ return packer.startup(
     }
     use {
         "onsails/lspkind-nvim",
-        event = "BufEnter",
+        event = "InsertEnter",
         config = function()
             require("lspkind").init()
         end
@@ -106,7 +109,6 @@ return packer.startup(
     -- Telescope
     use {
         "nvim-lua/plenary.nvim",
-         after = "nvim-bufferline.lua",
     }
 
     use {
@@ -141,20 +143,61 @@ return packer.startup(
     --}
 
     -- Autocomplete
-    use {"hrsh7th/vim-vsnip", event = "InsertEnter"}
-    use {
-        "rafamadriz/friendly-snippets",
-        event = "InsertCharPre"
-    }
-    use {
-        "hrsh7th/nvim-compe",
-        config = function()
-            require("plugins.compe").config()
-        end,
-        requires = {
-            "rafamadriz/friendly-snippets"
-        }
-    }
+--    use {"hrsh7th/vim-vsnip", event = "InsertEnter"}
+--    use {
+--        "hrsh7th/nvim-compe",
+--        config = function()
+--            require("plugins.compe").config()
+--        end,
+--        requires = {
+--            "rafamadriz/friendly-snippets"
+--        }
+--    }
+
+   -- load luasnips + cmp related in insert mode only
+
+   use {
+      "hrsh7th/nvim-cmp",
+      event = "InsertEnter",
+      config = function()
+         require "plugins.cmp"
+      end,
+      after = "lspkind-nvim",
+   }
+
+   use {
+      "L3MON4D3/LuaSnip",
+      wants = "friendly-snippets",
+      after = "nvim-cmp",
+      config = function()
+         require "plugins.luasnip"
+      end,
+   }
+
+   use {
+      "saadparwaiz1/cmp_luasnip",
+      after = "LuaSnip",
+   }
+
+   use {
+      "hrsh7th/cmp-nvim-lua",
+      after = "cmp_luasnip",
+   }
+
+   use {
+      "hrsh7th/cmp-nvim-lsp",
+      after = "cmp-nvim-lua",
+   }
+
+   use {
+      "hrsh7th/cmp-buffer",
+      after = "cmp-nvim-lsp",
+   }
+
+   use {
+      "rafamadriz/friendly-snippets",
+      after = "cmp-buffer",
+   }
 
     use {
         "sainnhe/gruvbox-material",
@@ -226,9 +269,15 @@ return packer.startup(
     }
 
     use {"lewis6991/gitsigns.nvim",
-        after = "plenary.nvim",
+        opt = true,
+        cond = function()
+           return vim.fn.isdirectory ".git" == 1
+        end,
         config = function()
             require("plugins.gitsigns").config()
+        end,
+        setup = function()
+           require("core.utils").packer_lazy_load "gitsigns.nvim"
         end,
     }
 
@@ -248,7 +297,8 @@ return packer.startup(
     -- Autopairs
     use {
       "windwp/nvim-autopairs",
-      after = {"nvim-compe", "nvim-treesitter"},
+     -- after = {"nvim-compe", "nvim-treesitter"},
+      after = "nvim-cmp",
       config = function()
         require "plugins.autopairs"
       end,
@@ -302,9 +352,13 @@ return packer.startup(
     -- matchup
     use {
         'andymass/vim-matchup',
-        event = "CursorMoved",
+        --event = "CursorMoved",
+        opt = true,
         config = function()
             require('plugins.matchup').config()
+        end,
+        setup = function()
+           require("core.utils").packer_lazy_load "vim-matchup"
         end,
         disable = false
     }
@@ -456,10 +510,14 @@ return packer.startup(
     use {"psliwka/vim-smoothie"}
     use {
         "karb94/neoscroll.nvim",
-        event = "WinScrolled",
+        opt = true,
+--        event = "WinScrolled",
         config = function()
             require("neoscroll").setup()
-        end
+        end,
+        setup = function()
+           require("core.utils").packer_lazy_load "neoscroll.nvim"
+        end,
     }
 
     use {
@@ -497,7 +555,12 @@ return packer.startup(
     use {
         'tpope/vim-fugitive',
         cmd = {
-            "Git"
+            "Git",
+            "Gdiff",
+            "Gdiffsplit",
+            "Gvdiffsplit",
+            "Gwrite",
+            "Gw",
         }
     }
 
