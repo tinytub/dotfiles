@@ -22,7 +22,7 @@ M.term_picker = function(opts)
 
    local filter = vim.tbl_filter
 
-   local local_utils = require "utils"
+   local local_utils = require "core.utils"
 
    -- buffer number and name
    local bufnr = vim.api.nvim_get_current_buf()

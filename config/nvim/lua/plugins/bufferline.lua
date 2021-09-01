@@ -8,18 +8,13 @@ if not present then
     return
 end
 
-vim.cmd [[
- function Quitvim(a,b,c,d)
-   q!
- endfunction
-]]
 
 bufferline.setup {
     options = {
         offsets = {{filetype = "NvimTree", text = "", padding = 1}},
         buffer_close_icon = "",
         modified_icon = "",
-        close_icon = "%@Quitvim@%X",
+        close_icon = "",
         show_close_icon = true,
         left_trunc_marker = "",
         right_trunc_marker = "",
@@ -114,8 +109,17 @@ bufferline.setup {
             guifg = colors.green,
             guibg = colors.black
         },
-        -- close buttons
+        -- for diagnostics = "nvim_lsp"
+        error = {
+           guifg = colors.light_grey,
+           guibg = colors.black2,
+        },
+        error_diagnostic = {
+           guifg = colors.light_grey,
+           guibg = colors.black2
+        },
 
+        -- close buttons
         close_button = {
             guifg = colors.light_grey,
             guibg = colors.black2
