@@ -27,8 +27,6 @@
 
 local init_modules = {
    "core",
---   "packerInit",
---   "pluginList"
 }
 
 for _, module in ipairs(init_modules) do

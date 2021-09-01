@@ -103,29 +103,6 @@ M.misc = function()
         cmd "silent! command PackerStatus lua require 'pluginList' require('packer').status()"
         cmd "silent! command PackerSync lua require 'pluginList' require('packer').sync()"
         cmd "silent! command PackerUpdate lua require 'pluginList' require('packer').update()"
-
-        -- get out of terminal mode
-        map("t", 'jk', "<C-\\><C-n>")
-        -- hide a term from within terminal mode
-        map("t", 'JK', "<C-\\><C-n> :lua require('core.utils').close_buffer() <CR>")
-        -- pick a hidden term
-        map("n", '<leader>W', ":Telescope terms <CR>")
-        -- Open terminals
-        -- TODO this opens on top of an existing vert/hori term, fixme
-        map("n", '<leader>h', ":execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>")
-        map("n", '<leader>v', ":execute 'vnew +terminal' | let b:term_type = 'vert' | startinsert <CR>")
-        map("n", '<leader>w', ":execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
-
-      --esc_termmode = { "jk" }, -- multiple mappings allowed
-      ---- get out of terminal mode and hide it
-      ---- it does not close it, see pick_term mapping to see hidden terminals
-      --esc_hide_termmode = { "JK" }, -- multiple mappings allowed
-      ---- show hidden terminal buffers in a telescope picker
-      --pick_term = "",
-      ---- below three are for spawning terminals
-      --new_horizontal = "<leader>h",
-      --new_vertical = "<leader>v",
-      --new_window = "<leader>w",
     end
 
     non_config_mappings()

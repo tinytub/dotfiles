@@ -23,7 +23,6 @@ if [ "$(uname)" == "Linux" ]; then
 fi
 
 source install/venv.sh
-source install/init_coc.sh
 #
 #echo "creating vim directories"
 #mkdir -p ~/.vim-tmp
@@ -36,6 +35,7 @@ elif ! [[ $SHELL =~ .*zsh.* ]]; then
     chsh -s "$(command -v zsh)"
 fi
 
-echo "run: nvim -u init.vim -c 'call dein#recache_runtimepath()|q' to finish install vim plugins"
+#echo "run: nvim -u init.vim -c 'call dein#recache_runtimepath()|q' to finish install vim plugins"
+echo "run: nvim +PackerSync"
 
 echo "Done. Reload your terminal."

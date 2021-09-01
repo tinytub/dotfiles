@@ -6,15 +6,6 @@ TERMINAL = vim.fn.expand('$TERMINAL')
 vim.cmd('let &titleold="'..TERMINAL..'"')
 vim.cmd [[let &fcs='eob: ']]
 
--- uncomment this if you want to open nvim with a dir
---vim.cmd [[ autocmd BufEnter * if &buftype != "terminal" | lcd %:p:h | endif ]]
-
--- Don't show any numbers inside terminals
-vim.cmd [[ au TermOpen term://* setlocal nonumber norelativenumber | setfiletype terminal ]]
--- Don't show status line on certain windows
-vim.cmd [[ au TermOpen term://* setfiletype terminal ]]
---vim.cmd [[ let hidden_statusline = luaeval('require("chadrc").ui.hidden_statusline') | autocmd BufEnter,BufWinEnter,WinEnter,CmdwinEnter,TermEnter * nested if index(hidden_statusline, &ft) >= 0 | set laststatus=0 | else | set laststatus=2 | endif ]]
-
 local function bind_option(options)
   for k, v in pairs(options) do
     if v == true or v == false then
