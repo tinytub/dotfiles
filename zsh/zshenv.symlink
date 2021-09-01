@@ -14,7 +14,7 @@ export LANG=zh_CN.UTF-8
 # GVM
 [[ -s "/Users/zhaopeng18/.gvm/scripts/gvm" ]] && source "/Users/zhaopeng18/.gvm/scripts/gvm"
 export GOPATH="/Users/zhaopeng18/Documents/local_projects/goworks"
-#export GO111MODULE="off"
+export GO111MODULE="on"
 #export GOROOT="/usr/local/go"
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home"
 export CLASSPATH="${CLASSPATH}:/Users/zhaopeng18/Documents/local_projects/algs4/algs4.jar"

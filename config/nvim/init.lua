@@ -1,10 +1,8 @@
-require "core"
-
 --require "options"
 
 
 --require "keymappings"
-require "pluginList"
+--pcall(require "pluginList")
 
 --require "plugins.utils"
 --require "plugins.treesitter"
@@ -26,3 +24,16 @@ require "pluginList"
 --    pcall(require, chad_modules[i])
 --end
 --
+
+local init_modules = {
+   "core",
+--   "packerInit",
+--   "pluginList"
+}
+
+for _, module in ipairs(init_modules) do
+   local ok, err = pcall(require, module)
+   if not ok then
+      error("Error loading " .. module .. "\n\n" .. err)
+   end
+end
