@@ -20,4 +20,24 @@ M.colorizer = function()
    end
 end
 
+M.blankline = function()
+    require("indent_blankline").setup {
+        indentLine_enabled = 1,
+        char = "▏",
+        filetype_exclude = {
+            "help",
+            "terminal",
+            "dashboard",
+            "packer",
+            "lspinfo",
+            "TelescopePrompt",
+            "TelescopeResults",
+        },
+        buftype_exclude = { "terminal" },
+        show_trailing_blankline_indent = false,
+        show_first_indent_level = true,
+        use_treesitter = true,
+    }
+end
+
 return M

@@ -175,9 +175,6 @@ return packer.startup(
             vim.cmd([[
                 let g:nvcode_termcolors=256
                 colorscheme gruvbox-material
-                syntax on
-                filetype on
-                filetype plugin indent on
             ]])
             --require "highlights"
         end
@@ -550,20 +547,13 @@ return packer.startup(
             vim.g["test#echo_command"] = 1
     end
     }
-
     use {
         "lukas-reineke/indent-blankline.nvim",
+        disable = false,
         event = "BufRead",
-        setup = function()
-            vim.g.indentLine_enabled = 1
-            vim.g.indent_blankline_char = "▏"
-
-            vim.g.indent_blankline_filetype_exclude = {"help", "terminal", "dashboard", "packer"}
-            vim.g.indent_blankline_buftype_exclude = {"terminal"}
-
-            vim.g.indent_blankline_show_trailing_blankline_indent = false
-            vim.g.indent_blankline_show_first_indent_level = false
-        end
+        config = function()
+            require("plugins.others").blankline()
+        end,
     }
 
 
