@@ -36,6 +36,9 @@ vim.cmd [[ au TermOpen term://* setlocal nonumber norelativenumber | setfiletype
 ---- Don't show status line on certain windows
 vim.cmd [[ autocmd BufEnter,BufWinEnter,FileType,WinEnter * lua require("core.utils").hide_statusline() ]]
 
+--auto close file exploer when quiting incase a single buffer is left
+vim.cmd([[ autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'nvimtree') | q | endif ]])
+
 vim.cmd([[
   function! QuickFixToggle()
     if empty(filter(getwininfo(), 'v:val.quickfix'))
