@@ -6,14 +6,6 @@ end
 
 vim.opt.completeopt = "menuone,noselect"
 
---local present, luasnip = pcall(require, "luasnip")
---if not present then
---    return
---end
-
-
---local luasnip = require('luasnip')
-
 -- nvim-cmp setup
 cmp.setup {
    snippet = {
@@ -33,7 +25,6 @@ cmp.setup {
          vim_item.menu = ({
             nvim_lsp = "[LSP]",
             nvim_lua = "[Lua]",
-            luasnip = "[LuaSnip]",
             buffer = "[BUF]",
          })[entry.source.name]
 

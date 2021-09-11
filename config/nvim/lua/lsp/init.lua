@@ -1,40 +1,15 @@
--- TODO figure out why this don't work
---vim.fn.sign_define(
---    "LspDiagnosticsSignError",
---    {texthl = "LspDiagnosticsSignError", text = "", numhl = "LspDiagnosticsSignError"}
---)
---vim.fn.sign_define(
---    "LspDiagnosticsSignWarning",
---    {texthl = "LspDiagnosticsSignWarning", text = "", numhl = "LspDiagnosticsSignWarning"}
---)
---vim.fn.sign_define(
---    "LspDiagnosticsSignHint",
---    {texthl = "LspDiagnosticsSignHint", text = "", numhl = "LspDiagnosticsSignHint"}
---)
---vim.fn.sign_define(
---    "LspDiagnosticsSignInformation",
---    {texthl = "LspDiagnosticsSignInformation", text = "", numhl = "LspDiagnosticsSignInformation"}
---)
+local present1, nvim_lsp = pcall(require, "lspconfig")
 
---vim.fn.sign_define("LspDiagnosticsSignError", {text = "", numhl = "LspDiagnosticsDefaultError"})
---vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "", numhl = "LspDiagnosticsDefaultWarning"})
---vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "", numhl = "LspDiagnosticsDefaultInformation"})
---vim.fn.sign_define("LspDiagnosticsSignHint", {text = "", numhl = "LspDiagnosticsDefaultHint"})
-
--- replace the default lsp diagnostic symbols
-function lspSymbol(name, icon)
-    vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon, numhl = "LspDiagnosticsDefaul" .. name})
+if not present1 then
+   return
 end
-lspSymbol("Error", "")
-lspSymbol("Warning", "")
-lspSymbol("Information", "")
-lspSymbol("Hint", "")
+
 
 vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
 --vim.api.nvim_set_keymap('n', 'ga', ':Lspsaga code_action<CR>', {noremap = true, silent = true})
 --vim.api.nvim_set_keymap('v', 'ga', ':Lspsaga range_code_action<CR>', {noremap = true, silent = true})
 --vim.api.nvim_set_keymap('n', 'gD', ':Lspsaga preview_definition<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', 'gs', ':Lspsaga signature_help<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', 'gs', ':lua vim.lsp.buf signature_help<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', 'gr', ':Telescope lsp_references<CR>', {noremap = true, silent = true})
 
 vim.api.nvim_set_keymap('n', 'K', ':lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
@@ -60,11 +35,12 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     --  spacing = 0,
     --},
     virtual_text = false,
+    --signs = {
+    --  enable = true,
+    --  priority = 20
+    --},
 
-    signs = {
-      enable = true,
-      priority = 20
-    },
+    signs = true,
     underline = false,
     update_in_insert = false,
   }
@@ -73,13 +49,14 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 	border = "single",
 })
+
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
 	border = "single",
 })
 
 -- suppress error messages from lang servers
 vim.notify = function(msg, log_level, _opts)
-    if msg:match("exit code") then
+    if msg:match "exit code" then
         return
     end
     if log_level == vim.log.levels.ERROR then
@@ -89,46 +66,34 @@ vim.notify = function(msg, log_level, _opts)
     end
 end
 
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-  vim.lsp.handlers.hover, {
-    border = "single",
-  }
-)
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-  vim.lsp.handlers.signature_help, {
-    border = "single",
-  }
-)
-
--- symbols for autocomplete
-vim.lsp.protocol.CompletionItemKind = {
-    "   (Text) ",
-    "   (Method)",
-    "   (Function)",
-    "   (Constructor)",
-    " ﴲ  (Field)",
-    "[] (Variable)",
-    "   (Class)",
-    " ﰮ  (Interface)",
-    "   (Module)",
-    " 襁 (Property)",
-    "   (Unit)",
-    "   (Value)",
-    " 練 (Enum)",
-    "   (Keyword)",
-    "   (Snippet)",
-    "   (Color)",
-    "   (File)",
-    "   (Reference)",
-    "   (Folder)",
-    "   (EnumMember)",
-    " ﲀ  (Constant)",
-    " ﳤ  (Struct)",
-    "   (Event)",
-    "   (Operator)",
-    "   (TypeParameter)"
-}
+---- symbols for autocomplete
+--vim.lsp.protocol.CompletionItemKind = {
+--    "   (Text) ",
+--    "   (Method)",
+--    "   (Function)",
+--    "   (Constructor)",
+--    " ﴲ  (Field)",
+--    "[] (Variable)",
+--    "   (Class)",
+--    " ﰮ  (Interface)",
+--    "   (Module)",
+--    " 襁 (Property)",
+--    "   (Unit)",
+--    "   (Value)",
+--    " 練 (Enum)",
+--    "   (Keyword)",
+--    "   (Snippet)",
+--    "   (Color)",
+--    "   (File)",
+--    "   (Reference)",
+--    "   (Folder)",
+--    "   (EnumMember)",
+--    " ﲀ  (Constant)",
+--    " ﳤ  (Struct)",
+--    "   (Event)",
+--    "   (Operator)",
+--    "   (TypeParameter)"
+--}
 
 --[[ " autoformat
 autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
@@ -174,6 +139,31 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
    },
 }
 
+local servers = {}
+
+for _, lsp in ipairs(servers) do
+   nvim_lsp[lsp].setup {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      -- root_dir = vim.loop.cwd,
+      flags = {
+         debounce_text_changes = 150,
+      },
+   }
+end
+
+-- replace the default lsp diagnostic symbols
+local function lspSymbol(name, icon)
+    vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon, numhl = "LspDiagnosticsDefault" .. name})
+end
+
+lspSymbol("Error", "")
+lspSymbol("Warning", "")
+lspSymbol("Information", "")
+lspSymbol("Hint", "")
+
+
+
 -- Code actions
 capabilities.textDocument.codeAction = {
     dynamicRegistration = true,
@@ -205,8 +195,4 @@ function lsp_config.tsserver_on_attach(client, bufnr)
     client.resolved_capabilities.document_formatting = false
 end
 
--- Use a loop to conveniently both setup defined servers
--- and map buffer local keybindings when the language server attaches
--- local servers = {"pyright", "tsserver"}
--- for _, lsp in ipairs(servers) do nvim_lsp[lsp].setup {on_attach = on_attach} end
 return lsp_config

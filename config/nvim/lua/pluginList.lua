@@ -59,19 +59,25 @@ return packer.startup(
 --    }
 
     -- Icons
-    use {"kyazdani42/nvim-web-devicons"}
-
-    -- Status Line and Bufferline
     use {
-        "glepnir/galaxyline.nvim",
-        after = "nvim-web-devicons",
-        config = function ()
-            require("plugins.galaxyline")
+       "kyazdani42/nvim-web-devicons",
+        after = "packer.nvim",
+        config = function()
+          require "plugins.icons"
         end,
+    }
+
+    use {
+       "famiu/feline.nvim",
+       disable = false,
+       after = "nvim-web-devicons",
+       config = function()
+          require "plugins.statusline"
+       end,
     }
     use {
       "akinsho/nvim-bufferline.lua",
-      after = "galaxyline.nvim",
+      after = "nvim-web-devicons",
       config = function()
         require("plugins.bufferline")
       end,
@@ -126,10 +132,15 @@ return packer.startup(
 --    }
 
    -- load luasnips + cmp related in insert mode only
+   use {
+      "rafamadriz/friendly-snippets",
+      event = "InsertEnter",
+   }
 
    use {
       "hrsh7th/nvim-cmp",
-      event = "InsertEnter",
+--      event = "InsertEnter",
+      after = "friendly-snippets",
       config = function()
          require "plugins.cmp"
       end,
@@ -164,10 +175,6 @@ return packer.startup(
       after = "cmp-nvim-lsp",
    }
 
-   use {
-      "rafamadriz/friendly-snippets",
-      after = "cmp-buffer",
-   }
 
     use {
         "sainnhe/gruvbox-material",
@@ -183,6 +190,7 @@ return packer.startup(
     -- Treesitter
     use {
         "nvim-treesitter/nvim-treesitter",
+        branch = "0.5-compat",
         event = "BufRead",
         config = function ()
            require "plugins.treesitter"
@@ -231,7 +239,8 @@ return packer.startup(
     use {"kyazdani42/nvim-tree.lua",
         -- cmd = "NvimTreeToggle",
         config = function()
-            require("plugins.nvimtree").config()
+            --require("plugins.nvimtree").config()
+            require("plugins.nvimtree")
         end
     }
 
