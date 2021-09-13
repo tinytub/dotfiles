@@ -45,7 +45,7 @@ local icon_styles = {
 
 --local user_statusline_style = require("core.utils").load_config().ui.plugin.statusline.style
 --local statusline_style = icon_styles[user_statusline_style]
-local statusline_style = icon_styles["default"]
+local statusline_style = icon_styles["round"]
 
 -- Initialize the components table
 local components = {
@@ -69,14 +69,14 @@ components.active[1][1] = {
       bg = colors.nord_blue,
    },
 
-   right_sep = { str = statusline_style.right, hl = {
+   right_sep = { str = statusline_style.right .. " ", hl = {
       fg = colors.nord_blue,
       bg = colors.one_bg2,
    } },
 }
 
 components.active[1][2] = {
-   provider = statusline_style.right,
+   provider = statusline_style.right .. " ",
 
    hl = {
       fg = colors.one_bg2,
@@ -100,7 +100,7 @@ components.active[1][3] = {
       bg = colors.lightbg,
    },
 
-   right_sep = { str = statusline_style.right, hl = { fg = colors.lightbg, bg = colors.lightbg2 } },
+   right_sep = { str = statusline_style.right .. " ", hl = { fg = colors.lightbg, bg = colors.lightbg2 } },
 }
 
 components.active[1][4] = {
@@ -113,7 +113,7 @@ components.active[1][4] = {
       fg = colors.grey_fg2,
       bg = colors.lightbg2,
    },
-   right_sep = { str = statusline_style.right, hi = {
+   right_sep = { str = statusline_style.right .. " ", hl = {
       fg = colors.lightbg2,
       bg = colors.statusline_bg,
    } },
@@ -123,7 +123,7 @@ components.active[1][5] = {
    provider = "git_diff_added",
    hl = {
       fg = colors.grey_fg2,
-      bg = colors.statusline_bg,
+--      bg = colors.statusline_bg,
    },
    icon = " ",
 }
@@ -132,7 +132,7 @@ components.active[1][6] = {
    provider = "git_diff_changed",
    hl = {
       fg = colors.grey_fg2,
-      bg = colors.statusline_bg,
+--      bg = colors.statusline_bg,
    },
    icon = "   ",
 }
@@ -141,7 +141,7 @@ components.active[1][7] = {
    provider = "git_diff_removed",
    hl = {
       fg = colors.grey_fg2,
-      bg = colors.statusline_bg,
+--      bg = colors.statusline_bg,
    },
    icon = "  ",
 }
@@ -213,6 +213,7 @@ components.active[2][1] = {
       return ""
    end,
    hl = { fg = colors.green },
+--   hl = { fg = colors.green, bg = colors.statusline_bg },      
 }
 
 components.active[3][1] = {

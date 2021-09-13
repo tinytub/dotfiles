@@ -66,6 +66,12 @@ return packer.startup(
           require "plugins.icons"
         end,
     }
+    use {
+        "NvChad/nvim-base16.lua",
+        config = function ()
+           require("colors").init("tomorrow-night")
+        end
+    }
 
     use {
        "famiu/feline.nvim",

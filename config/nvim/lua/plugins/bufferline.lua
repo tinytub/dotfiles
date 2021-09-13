@@ -1,7 +1,5 @@
---local global_theme = "themes/" .. vim.g.nvchad_theme
---local colors = require(global_theme)
-
-local colors = require("themes/" .. "tomorrow-night")
+local colors = require("colors").get()
+--local colors = require("themes/" .. "tomorrow-night")
 
 local present, bufferline = pcall(require, "bufferline")
 if not present then
