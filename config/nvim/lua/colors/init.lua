@@ -3,7 +3,7 @@ local M = {}
 -- if theme given, load given theme if given, otherwise nvchad_theme
 M.init = function(theme)
    if not theme then
-      theme = "gruvbox"
+      theme = "tomorrow-night"
    end
 
    -- set the global theme, used at various places like theme switcher, highlights
@@ -25,11 +25,11 @@ end
 -- returns a table of colors for givem or current theme
 M.get = function(theme)
    if not theme then
-      theme = "gruvbox"
+      theme = "tomorrow-night"
    end
 
-   --return require("hl_themes." .. theme)
-   return require("colors.themes." .. theme)
+   return require("hl_themes." .. theme)
+   --return require("colors.themes." .. theme)
 end
 
 return M
