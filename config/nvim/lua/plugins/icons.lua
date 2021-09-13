@@ -4,7 +4,7 @@ if not present then
 end
 
 --local colors = require("colors").get()
-local colors = require("themes/" .. "tomorrow-night")
+local colors = require("colors/themes/" .. "tomorrow-night")
 
 icons.setup {
    override = {
