@@ -45,7 +45,7 @@ local icon_styles = {
 
 --local user_statusline_style = require("core.utils").load_config().ui.plugin.statusline.style
 --local statusline_style = icon_styles[user_statusline_style]
-local statusline_style = icon_styles["default"]
+local statusline_style = icon_styles["round"]
 
 -- Initialize the components table
 local components = {
@@ -151,7 +151,7 @@ components.active[1][8] = {
    enabled = function()
       return lsp.diagnostics_exist "Error"
    end,
-   hl = { fg = colors.red },
+   hl = { fg = colors.red, bg = colors.statusline_bg },
    icon = "  ",
 }
 
@@ -160,7 +160,7 @@ components.active[1][9] = {
    enabled = function()
       return lsp.diagnostics_exist "Warning"
    end,
-   hl = { fg = colors.yellow },
+   hl = { fg = colors.yellow, bg = colors.statusline_bg },
    icon = "  ",
 }
 
@@ -169,7 +169,7 @@ components.active[1][10] = {
    enabled = function()
       return lsp.diagnostics_exist "Hint"
    end,
-   hl = { fg = colors.grey_fg2 },
+   hl = { fg = colors.grey_fg2, bg = colors.statusline_bg},
    icon = "  ",
 }
 
@@ -178,10 +178,11 @@ components.active[1][11] = {
    enabled = function()
       return lsp.diagnostics_exist "Information"
    end,
-   hl = { fg = colors.green },
+   hl = { fg = colors.green, bg = colors.statusline_bg },
    icon = "  ",
 }
 
+-- 是不是可以干掉，会有底色遗留...
 components.active[2][1] = {
    provider = function()
       local Lsp = vim.lsp.util.get_progress_messages()[1]
@@ -212,8 +213,8 @@ components.active[2][1] = {
       end
       return ""
    end,
-   hl = { fg = colors.green },
---   hl = { fg = colors.green, bg = colors.statusline_bg },
+   --hl = { fg = colors.green },
+   hl = { fg = colors.green, bg = colors.statusline_bg },
 }
 
 components.active[3][1] = {
