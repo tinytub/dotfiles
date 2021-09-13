@@ -66,12 +66,27 @@ return packer.startup(
           require "plugins.icons"
         end,
     }
+
     use {
-        "NvChad/nvim-base16.lua",
+        "sainnhe/gruvbox-material",
         config = function ()
-           require("colors").init("tomorrow-night")
+            vim.cmd([[
+                let g:nvcode_termcolors=256
+                colorscheme gruvbox-material
+            ]])
+            --require "highlights"
+
+           require("colors").init()
         end
     }
+
+    --use {
+    --    "NvChad/nvim-base16.lua",
+    --    disable = true,
+    --    config = function ()
+    --       require("colors").init("tomorrow-night")
+    --    end
+    --}
 
     use {
        "famiu/feline.nvim",
@@ -182,18 +197,7 @@ return packer.startup(
    }
 
 
-    use {
-        "sainnhe/gruvbox-material",
-        config = function ()
-            vim.cmd([[
-                let g:nvcode_termcolors=256
-                colorscheme gruvbox-material
-            ]])
-            --require "highlights"
-        end
-    }
-
-    -- Treesitter
+   -- Treesitter
     use {
         "nvim-treesitter/nvim-treesitter",
         branch = "0.5-compat",

@@ -1,5 +1,5 @@
 --local colors = require("colors").get()
-local colors = require("themes/" .. "tomorrow-night")
+local colors = require("colors/themes/" .. "tomorrow-night")
 local lsp = require "feline.providers.lsp"
 
 local icon_styles = {
@@ -45,7 +45,7 @@ local icon_styles = {
 
 --local user_statusline_style = require("core.utils").load_config().ui.plugin.statusline.style
 --local statusline_style = icon_styles[user_statusline_style]
-local statusline_style = icon_styles["round"]
+local statusline_style = icon_styles["default"]
 
 -- Initialize the components table
 local components = {
@@ -123,7 +123,7 @@ components.active[1][5] = {
    provider = "git_diff_added",
    hl = {
       fg = colors.grey_fg2,
---      bg = colors.statusline_bg,
+      bg = colors.statusline_bg,
    },
    icon = " ",
 }
@@ -132,7 +132,7 @@ components.active[1][6] = {
    provider = "git_diff_changed",
    hl = {
       fg = colors.grey_fg2,
---      bg = colors.statusline_bg,
+      bg = colors.statusline_bg,
    },
    icon = "   ",
 }
@@ -141,7 +141,7 @@ components.active[1][7] = {
    provider = "git_diff_removed",
    hl = {
       fg = colors.grey_fg2,
---      bg = colors.statusline_bg,
+      bg = colors.statusline_bg,
    },
    icon = "  ",
 }
@@ -213,7 +213,7 @@ components.active[2][1] = {
       return ""
    end,
    hl = { fg = colors.green },
---   hl = { fg = colors.green, bg = colors.statusline_bg },      
+--   hl = { fg = colors.green, bg = colors.statusline_bg },
 }
 
 components.active[3][1] = {
