@@ -45,7 +45,8 @@ local icon_styles = {
 
 --local user_statusline_style = require("core.utils").load_config().ui.plugin.statusline.style
 --local statusline_style = icon_styles[user_statusline_style]
-local statusline_style = icon_styles["round"]
+--local statusline_style = icon_styles["round"]
+local statusline_style = icon_styles["default"]
 
 -- Initialize the components table
 local components = {
@@ -71,29 +72,20 @@ components.active[1][1] = {
 
    right_sep = { str = statusline_style.right .. " ", hl = {
       fg = colors.nord_blue,
-      bg = colors.one_bg2,
+      bg = colors.lightbg,
    } },
 }
 
 components.active[1][2] = {
-   provider = statusline_style.right .. " ",
-
-   hl = {
-      fg = colors.one_bg2,
-      bg = colors.lightbg,
-   },
-}
-
-components.active[1][3] = {
    provider = function()
       local filename = vim.fn.expand "%:t"
       local extension = vim.fn.expand "%:e"
       local icon = require("nvim-web-devicons").get_icon(filename, extension)
       if icon == nil then
-         icon = ""
+         icon = " "
          return icon
       end
-      return icon .. " " .. filename .. " "
+      return " " .. icon .. " " .. filename .. " "
    end,
    hl = {
       fg = colors.white,
@@ -103,7 +95,7 @@ components.active[1][3] = {
    right_sep = { str = statusline_style.right .. " ", hl = { fg = colors.lightbg, bg = colors.lightbg2 } },
 }
 
-components.active[1][4] = {
+components.active[1][3] = {
    provider = function()
       local dir_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
       return "  " .. dir_name .. " "
@@ -119,7 +111,7 @@ components.active[1][4] = {
    } },
 }
 
-components.active[1][5] = {
+components.active[1][4] = {
    provider = "git_diff_added",
    hl = {
       fg = colors.grey_fg2,
@@ -128,7 +120,7 @@ components.active[1][5] = {
    icon = " ",
 }
 -- diffModfified
-components.active[1][6] = {
+components.active[1][5] = {
    provider = "git_diff_changed",
    hl = {
       fg = colors.grey_fg2,
@@ -137,7 +129,7 @@ components.active[1][6] = {
    icon = "   ",
 }
 -- diffRemove
-components.active[1][7] = {
+components.active[1][6] = {
    provider = "git_diff_removed",
    hl = {
       fg = colors.grey_fg2,
@@ -146,7 +138,7 @@ components.active[1][7] = {
    icon = "  ",
 }
 
-components.active[1][8] = {
+components.active[1][7] = {
    provider = "diagnostic_errors",
    enabled = function()
       return lsp.diagnostics_exist "Error"
@@ -155,7 +147,7 @@ components.active[1][8] = {
    icon = "  ",
 }
 
-components.active[1][9] = {
+components.active[1][8] = {
    provider = "diagnostic_warnings",
    enabled = function()
       return lsp.diagnostics_exist "Warning"
@@ -164,7 +156,7 @@ components.active[1][9] = {
    icon = "  ",
 }
 
-components.active[1][10] = {
+components.active[1][9] = {
    provider = "diagnostic_hints",
    enabled = function()
       return lsp.diagnostics_exist "Hint"
@@ -173,7 +165,7 @@ components.active[1][10] = {
    icon = "  ",
 }
 
-components.active[1][11] = {
+components.active[1][10] = {
    provider = "diagnostic_info",
    enabled = function()
       return lsp.diagnostics_exist "Information"

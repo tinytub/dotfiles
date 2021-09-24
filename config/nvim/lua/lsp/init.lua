@@ -30,18 +30,13 @@ vim.cmd('command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").
 -- Note: You can set a prefix per lsp server in the lv-globals.lua file
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
-    --virtual_text = {
-    --  prefix = "",
-    --  spacing = 0,
-    --},
-    virtual_text = false,
-    --signs = {
-    --  enable = true,
-    --  priority = 20
-    --},
-
+   virtual_text = false,
+   --virtual_text = {
+   --   prefix = "",
+   --   spacing = 0,
+   --},
     signs = true,
-    underline = false,
+    underline = true,
     update_in_insert = false,
   }
 )
@@ -155,6 +150,7 @@ end
 -- replace the default lsp diagnostic symbols
 local function lspSymbol(name, icon)
     vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon, numhl = "LspDiagnosticsDefault" .. name})
+    --vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon })
 end
 
 lspSymbol("Error", "")

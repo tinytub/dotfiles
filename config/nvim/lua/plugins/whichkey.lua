@@ -59,6 +59,7 @@ local mappings = {
     ["h"] = {"<cmd>let @/ = \"\"<cr>"                                    , "no highlight" },
     ["T"] = {"<cmd>TSHighlightCapturesUnderCursor<cr>"                 , "treesitter highlight" },
     ["v"] = {"<C-W>v"                                          , "split right"},
+    ["w"] = {"<cmd>execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>", "open terminal"},
 
     a = {
       name= '+actions' ,
@@ -129,7 +130,7 @@ local mappings = {
 --        D = {"<cmd>Telescope lsp_workspace_diagnostics<cr>", "Workspace Diagnostics"},
 --        f = {"<cmd>LspFormatting<cr>", "Format"},
         i = {"<cmd>LspInfo<cr>", "Info"},
-        f = {"<cmd>Neoformat<cr>", "Format"},
+--        f = {"<cmd>Neoformat<cr>", "Format"},
         j = { "<cmd>lua vim.lsp.diagnostic.goto_next({popup_opts = {border = 'single'}})<cr>", "Next Diagnostic" },
         k = { "<cmd>lua vim.lsp.diagnostic.goto_prev({popup_opts = {border = 'single'}})<cr>", "Prev Diagnostic" },
         r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },

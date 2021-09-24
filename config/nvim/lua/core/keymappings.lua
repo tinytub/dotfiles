@@ -115,7 +115,7 @@ M.terms = function()
    -- get out of terminal mode
    map("t", "jk", "<C-\\><C-n>", opt)
    -- hide a term from within terminal mode
-   map("t", "JK", "<C-\\><C-n> :lua require('utils').close_buffer() <CR>", opt)
+   map("t", "JK", "<C-\\><C-n> :lua require('core.utils').close_buffer() <CR>", opt)
   -- pick a hidden term 
    map("n", "<leader>W", ":Telescope terms <CR>", opt)
 
