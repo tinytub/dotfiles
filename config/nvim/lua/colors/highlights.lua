@@ -149,8 +149,8 @@ if transparency then
 end
 
 -- Telescope
-fg("TelescopeBorder", one_bg2)
+fg("TelescopeBorder", purple)
 fg("TelescopePreviewBorder", grey)
-fg("TelescopePromptBorder", one_bg2)
-fg("TelescopeResultsBorder", one_bg2)
+fg("TelescopePromptBorder", purple)
+fg("TelescopeResultsBorder", purple)
 
