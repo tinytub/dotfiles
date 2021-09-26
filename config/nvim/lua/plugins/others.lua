@@ -40,4 +40,11 @@ M.blankline = function()
     }
 end
 
+M.better_escape = function()
+   require("better_escape").setup {
+      mapping = { "jk" },
+      timeout =  300,
+   }
+end
+
 return M

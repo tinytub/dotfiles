@@ -112,8 +112,7 @@ return packer.startup(
 
     use {
         "nvim-telescope/telescope.nvim",
-        --cmd = "Telescope",
-        after = "plenary.nvim",
+        cmd = "Telescope",
         requires = {
             {
                 "nvim-telescope/telescope-fzf-native.nvim",
@@ -122,17 +121,11 @@ return packer.startup(
             {
                 "nvim-telescope/telescope-media-files.nvim",
                 disable = true
-            },
-            {
-               "sudormrfbin/cheatsheet.nvim",
-               disable = false,
-               after = "telescope.nvim",
-               config = function()
-                  require "plugins.s-cheatsheets"
-               end
             }
         },
-        config = [[require('plugins.telescope')]],
+        config = function ()
+          require('plugins.telescope')
+        end
     }
     -- Use fzy for telescope
     --use {
@@ -153,6 +146,13 @@ return packer.startup(
 --        }
 --    }
 
+   use {
+      "max397574/better-escape.nvim",
+      event = "InsertEnter",
+      config = function()
+         require("plugins.others").better_escape()
+      end,
+   }
    -- load luasnips + cmp related in insert mode only
    use {
       "rafamadriz/friendly-snippets",
