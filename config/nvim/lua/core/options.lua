@@ -6,7 +6,7 @@ local opt = vim.opt
 local g = vim.g
 
 -- export user config as a global varibale
-
+opt.title = true
 opt.clipboard = "unnamedplus"
 opt.cmdheight = 1
 opt.cul = true -- cursor line

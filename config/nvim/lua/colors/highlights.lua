@@ -76,9 +76,7 @@ fg("LineNr", grey)
 fg("NvimInternalError", red)
 
 -- inactive statuslines as thin splitlines
-fg("StatusLineNC", one_bg2 .. " gui=underline")
 fg("VertSplit", one_bg2)
--- fg_bg("Visual",light_grey, colors.lightbg)
 
 --if ui.transparency then
 if transparency then
