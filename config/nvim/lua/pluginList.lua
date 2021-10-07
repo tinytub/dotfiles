@@ -18,7 +18,7 @@ return packer.startup(
             require("core.utils").packer_lazy_load "nvim-lspinstall"
             -- reload the current file so lsp actually starts for it
             vim.defer_fn(function()
-               vim.cmd "silent! e %"
+                vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
             end, 0)
         end,
     }
@@ -112,6 +112,7 @@ return packer.startup(
 
     use {
         "nvim-telescope/telescope.nvim",
+        module = "telescope",
         cmd = "Telescope",
         requires = {
             {
@@ -127,24 +128,6 @@ return packer.startup(
           require('plugins.telescope')
         end
     }
-    -- Use fzy for telescope
-    --use {
-    --    "nvim-telescope/telescope-fzy-native.nvim",
-    --    run = "make",
-    --    cmd = "Telescope"
-    --}
-
-    -- Autocomplete
---    use {"hrsh7th/vim-vsnip", event = "InsertEnter"}
---    use {
---        "hrsh7th/nvim-compe",
---        config = function()
---            require("plugins.compe").config()
---        end,
---        requires = {
---            "rafamadriz/friendly-snippets"
---        }
---    }
 
    use {
       "max397574/better-escape.nvim",
@@ -161,6 +144,7 @@ return packer.startup(
 
    use {
       "hrsh7th/nvim-cmp",
+      module = "cmp",
 --      event = "InsertEnter",
       after = "friendly-snippets",
       config = function()
@@ -189,12 +173,18 @@ return packer.startup(
 
    use {
       "hrsh7th/cmp-nvim-lsp",
-      after = "cmp-nvim-lua",
+      module = "cmp_nvim_lsp",
+      after = "nvim-lspconfig",
    }
 
    use {
       "hrsh7th/cmp-buffer",
       after = "cmp-nvim-lsp",
+   }
+
+   use {
+      "hrsh7th/cmp-path",
+      after = "cmp-buffer",
    }
 
 
@@ -235,18 +225,6 @@ return packer.startup(
         disable = false
     }
 
-
-
-
-    ---- Neoformat
-    --use {
-    --    "sbdchd/neoformat",
-    --    config = function()
-    --      require "plugins.neoformat"
-    --    end,
-    --    event = "BufRead",
-    --}
-
     use {"kyazdani42/nvim-tree.lua",
         -- cmd = "NvimTreeToggle",
         config = function()
@@ -277,11 +255,6 @@ return packer.startup(
     }
 
     ---- autopairs
-    --use {
-    --    "windwp/nvim-autopairs",
-    --    config = function() require'n-autopairs' end
-    --}
-    -- Autopairs
     use {
       "windwp/nvim-autopairs",
      -- after = {"nvim-compe", "nvim-treesitter"},
@@ -326,16 +299,6 @@ return packer.startup(
         end
     }
 
-    -- Ranger
-    use {
-      "kevinhwang91/rnvimr",
-      cmd = "Rnvimr",
-      config = function()
-        require("plugins.rnvimr").config()
-      end,
-      disable = false
-    }
-
     -- matchup
     use {
         'andymass/vim-matchup',
@@ -350,14 +313,14 @@ return packer.startup(
         disable = false
     }
 
-    use {
-        "norcalli/nvim-colorizer.lua",
-        event = "BufWinEnter",
-        config = function()
-            require("plugins.others").colorizer()
-        end,
-        disable = false,
-    }
+--    use {
+--        "norcalli/nvim-colorizer.lua",
+--        event = "BufWinEnter",
+--        config = function()
+--            require("plugins.others").colorizer()
+--        end,
+--        disable = false,
+--    }
 
 
     use {
@@ -370,12 +333,6 @@ return packer.startup(
             }
         end,
         disable = false,
-    }
-
-
-    -- diagnostics
-    use {"folke/trouble.nvim",
-        cmd = 'TroubleToggle',
     }
 
     -- Debugging
@@ -398,13 +355,13 @@ return packer.startup(
       disable = true,
     }
 
-    -- Better quickfix
-    use {
-        "kevinhwang91/nvim-bqf",
-        event = "BufRead",
-        disable = false
-    }
-
+--    -- Better quickfix
+--    use {
+--        "kevinhwang91/nvim-bqf",
+--        event = "BufRead",
+--        disable = false
+--    }
+--
 
     use {"voldikss/vim-floaterm",
         cmd = {'FloatermNew','FloatermPrev','FloatermNext','FloatermFirst','FloatermLast','FloatermUpdate','FloatermToggle','FloatermShow','FloatermHide','FloatermKill','FloatermSend'},
@@ -504,18 +461,6 @@ return packer.startup(
         setup = function()
            require("core.utils").packer_lazy_load "neoscroll.nvim"
         end,
-    }
-
-    use {
-        "Pocco81/TrueZen.nvim",
-        cmd = {
-            "TZAtaraxis",
-            "TZMinimalist",
-            "TZFocus"
-        },
-        config = function()
-            require "plugins.zenmode"
-        end
     }
 
     use {

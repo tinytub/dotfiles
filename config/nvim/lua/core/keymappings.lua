@@ -17,6 +17,17 @@ M.misc = function()
     local function non_config_mappings()
       -- Don't copy the replaced text after pasting in visual mode
         map("v", "p", '"_dP')
+        -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
+        -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
+        -- empty mode is same as using :map
+        -- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
+        map("", "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+        map("", "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+        map("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+        map("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+
+        -- use ESC to turn off search highlighting
+        map("n", "<Esc>", ":noh<CR>", opt)
 
         map('n', '<C-h>', '<C-w>h', opt)
         map('n', '<C-j>', '<C-w>j', opt)
@@ -37,8 +48,6 @@ M.misc = function()
         map('c', '<C-k>', '<Up>', opt)
         map('c', '<C-t>', '[[<C-R>=expand("%:p:h") . "/" <CR>]]', opt)
         
-        -- use ESC to turn off search highlighting
-        map("n", "<Esc>", ":noh<CR>", opt)
 
         -- TODO fix this
         -- resize with arrows
@@ -63,15 +72,6 @@ M.misc = function()
         -- Better nav for omnicomplete
         vim.cmd('inoremap <expr> <c-j> (\"\\<C-n>\")')
         vim.cmd('inoremap <expr> <c-k> (\"\\<C-p>\")')
-
-        -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
-        -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
-        -- empty mode is same as using :map
-        -- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
-        map("", "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-        map("", "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
-        map("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-        map("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
 
         -- use ESC to turn off search highlighting
         map("n", "<Esc>", ":noh <CR>")

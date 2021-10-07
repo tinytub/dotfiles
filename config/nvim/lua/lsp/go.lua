@@ -3,7 +3,7 @@ local lspconfig = require 'lspconfig'
 
 require'lspconfig'.gopls.setup{
     cmd = {DATA_PATH .. "/lspinstall/go/gopls"},
-    on_attach = require'lsp'.common_on_attach,
+    on_attach = require'lsp'.on_attach,
     capabilities = require'lsp'.capabilities,
     root_dir = function(fname)
         return lspconfig.util.root_pattern("go.mod", ".git")(fname) or
