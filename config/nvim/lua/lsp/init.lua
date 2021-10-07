@@ -4,18 +4,77 @@ if not present1 then
    return
 end
 
+local lsp_config = {}
 
-vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', 'ga', ':Lspsaga code_action<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('v', 'ga', ':Lspsaga range_code_action<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', 'gD', ':Lspsaga preview_definition<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'gs', ':lua vim.lsp.buf signature_help<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', 'gr', ':Telescope lsp_references<CR>', {noremap = true, silent = true})
+local function document_highlight(client, bufnr)
+    -- Set autocommands conditional on server_capabilities
+    if client.resolved_capabilities.document_highlight then
+        vim.api.nvim_exec(
+            [[
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]],
+            false
+        )
+    end
+end
 
-vim.api.nvim_set_keymap('n', 'K', ':lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
 
-vim.api.nvim_set_keymap('n', '[e', ':lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', ']e', ':lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', {noremap = true, silent = true})
+
+function lsp_config.on_attach(client, bufnr)
+   local function buf_set_keymap(...)
+      vim.api.nvim_buf_set_keymap(bufnr, ...)
+   end
+
+   local function buf_set_option(...)
+      vim.api.nvim_buf_set_option(bufnr, ...)
+   end
+
+   -- Enable completion triggered by <c-x><c-o>
+   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+
+   -- Mappings.
+   local opts = { noremap = true, silent = true }
+
+   -- See `:help vim.lsp.*` for documentation on any of the below functions
+   buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+   buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+   buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+   buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+   buf_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+   buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+   buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+   buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+   buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+   buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+   buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+   --buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+   buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+   buf_set_keymap("n", "ge", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
+   buf_set_keymap("n", "[e", '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
+   buf_set_keymap("n", "]e", '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
+   buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
+   buf_set_keymap("n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+   buf_set_keymap("v", "<space>ca", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
+   document_highlight(client, bufnr)
+end
+
+--vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
+----vim.api.nvim_set_keymap('n', 'ga', ':Lspsaga code_action<CR>', {noremap = true, silent = true})
+----vim.api.nvim_set_keymap('v', 'ga', ':Lspsaga range_code_action<CR>', {noremap = true, silent = true})
+----vim.api.nvim_set_keymap('n', 'gD', ':Lspsaga preview_definition<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', 'gs', ':lua vim.lsp.buf signature_help<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', 'ge', ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', {noremap = true, silent = true})
+----vim.api.nvim_set_keymap('n', 'gr', ':Telescope lsp_references<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', 'gr', ':lua vim.lsp.buf.references()<CR>', {noremap = true, silent = true})
+
+--vim.api.nvim_set_keymap('n', 'K', ':lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
+
+--vim.api.nvim_set_keymap('n', '[e', ':lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('n', ']e', ':lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', {noremap = true, silent = true})
 
 --vim.api.nvim_set_keymap('n', '[e', ':Lspsaga diagnostic_jump_next<CR>', {noremap = true, silent = true})
 --vim.api.nvim_set_keymap('n', ']e', ':Lspsaga diagnostic_jump_prev<CR>', {noremap = true, silent = true})
@@ -24,7 +83,7 @@ vim.api.nvim_set_keymap('n', ']e', ':lua vim.lsp.diagnostic.goto_next({ popup_op
 -- scroll up hover doc
 --vim.cmd("nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>")
 
-vim.cmd('command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").toggle()')
+--vim.cmd('command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").toggle()')
 
 -- Set Default Prefix.
 -- Note: You can set a prefix per lsp server in the lv-globals.lua file
@@ -50,16 +109,16 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 })
 
 -- suppress error messages from lang servers
-vim.notify = function(msg, log_level, _opts)
-    if msg:match "exit code" then
-        return
-    end
-    if log_level == vim.log.levels.ERROR then
-        vim.api.nvim_err_writeln(msg)
-    else
-        vim.api.nvim_echo({{msg}}, true, {})
-    end
-end
+--vim.notify = function(msg, log_level, _opts)
+--    if msg:match "exit code" then
+--        return
+--    end
+--    if log_level == vim.log.levels.ERROR then
+--        vim.api.nvim_err_writeln(msg)
+--    else
+--        vim.api.nvim_echo({{msg}}, true, {})
+--    end
+--end
 
 ---- symbols for autocomplete
 --vim.lsp.protocol.CompletionItemKind = {
@@ -97,49 +156,32 @@ autocmd BufWritePre *.lua lua vim.lsp.buf.formatting_sync(nil, 100) ]]
 -- Java
 -- autocmd FileType java nnoremap ca <Cmd>lua require('jdtls').code_action()<CR>
 
-local function documentHighlight(client, bufnr)
-    -- Set autocommands conditional on server_capabilities
-    if client.resolved_capabilities.document_highlight then
-        vim.api.nvim_exec(
-            [[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=#464646
-      hi LspReferenceText cterm=bold ctermbg=red guibg=#464646
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=#464646
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]],
-            false
-        )
-    end
-end
-
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-   properties = {
-      "documentation",
-      "detail",
-      "additionalTextEdits",
-   },
-}
+capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+lsp_config.capabilities = capabilities
+--capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
+--capabilities.textDocument.completion.completionItem.snippetSupport = true
+--capabilities.textDocument.completion.completionItem.preselectSupport = true
+--capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+--capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+--capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+--capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+--capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+--capabilities.textDocument.completion.completionItem.resolveSupport = {
+--   properties = {
+--      "documentation",
+--      "detail",
+--      "additionalTextEdits",
+--   },
+--}
 
 local servers = {}
 
 for _, lsp in ipairs(servers) do
    nvim_lsp[lsp].setup {
-      on_attach = on_attach,
-      capabilities = capabilities,
+      on_attach = lsp_config.on_attach,
+      capabilities = lsp_config.capabilities,
       -- root_dir = vim.loop.cwd,
       flags = {
          debounce_text_changes = 150,
@@ -176,18 +218,18 @@ capabilities.textDocument.codeAction = {
 
 capabilities.textDocument.completion.completionItem.snippetSupport = true;
 
-local lsp_config = {}
 
 --if O.document_highlight then
-function lsp_config.common_on_attach(client, bufnr)
-    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-    documentHighlight(client, bufnr)
-end
+--function lsp_config.common_on_attach(client, bufnr)
+--    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+--    on_attach()
+--
+--    documentHighlight(client, bufnr)
+--end
 --end
 
 function lsp_config.tsserver_on_attach(client, bufnr)
-    lsp_config.common_on_attach(client, bufnr)
+    lsp_config.on_attach(client, bufnr)
     client.resolved_capabilities.document_formatting = false
 end
 

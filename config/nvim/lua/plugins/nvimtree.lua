@@ -9,7 +9,7 @@ vim.o.termguicolors = true
 
 g.nvim_tree_add_trailing = 0 -- append a trailing slash to folder names
 g.nvim_tree_git_hl = 1
-g.nvim_tree_gitignore = 1
+g.nvim_tree_gitignore = 0
 g.nvim_tree_hide_dotfiles = 0
 g.nvim_tree_highlight_opened_files = 0
 g.nvim_tree_indent_markers = 1
@@ -82,7 +82,8 @@ local list = {
         { key = "-", cb = tree_cb "dir_up" },
         { key = "q", cb = tree_cb "close" },
         { key = "g?", cb = tree_cb "toggle_help" },
-      }
+}
+
 nvimtree.setup {
    lsp_diagnostics = false,
    disable_netrw = true,
@@ -94,7 +95,7 @@ nvimtree.setup {
    update_cwd = true,
    update_focused_file = {
       enable = true,
-      update_cwd = true,
+      update_cwd = false,
    },
    view = {
     allow_resize = true,
