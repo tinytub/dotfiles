@@ -144,7 +144,6 @@ return packer.startup(
 
    use {
       "hrsh7th/nvim-cmp",
-      module = "cmp",
 --      event = "InsertEnter",
       after = "friendly-snippets",
       config = function()
@@ -173,8 +172,7 @@ return packer.startup(
 
    use {
       "hrsh7th/cmp-nvim-lsp",
-      module = "cmp_nvim_lsp",
-      after = "nvim-lspconfig",
+      after = "cmp-nvim-lua",
    }
 
    use {
