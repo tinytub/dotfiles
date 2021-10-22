@@ -19,7 +19,7 @@ require'lspconfig'.gopls.setup{
         }
     },
     init_options = {
-        usePlaceholders = true, -- 填充补全后的 functions param. 默认打开
+        usePlaceholders = false, -- 填充补全后的 functions param. 默认打开
         completeUnimported = true,
         --gofumpt = false,
         --hoverKind = "SingleLine",
@@ -29,5 +29,4 @@ require'lspconfig'.gopls.setup{
         --allowModfileModifications=true
     }
 }
-
 

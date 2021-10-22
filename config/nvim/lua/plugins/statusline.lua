@@ -361,20 +361,6 @@ components.active[3][10] = {
    },
 }
 
-local InactiveStatusHL = {
-   fg = colors.one_bg2,
-   bg = "NONE",
-   style = "underline",
-}
-
-components.inactive = {
-   {
-      {
-         provider = " ",
-         hl = InactiveStatusHL,
-      },
-   },
-}
 
 require("feline").setup {
    bg = colors.statusline_bg,
