@@ -200,8 +200,6 @@ lspSymbol("Warning", "")
 lspSymbol("Information", "")
 lspSymbol("Hint", "")
 
-
-
 -- Code actions
 capabilities.textDocument.codeAction = {
     dynamicRegistration = true,

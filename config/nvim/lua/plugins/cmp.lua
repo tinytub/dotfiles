@@ -31,6 +31,10 @@ cmp.setup {
          return vim_item
       end,
    },
+   documentation = {
+      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+      winhighlight = 'NormalFloat:NormalFloat,FloatBorder:TelescopePreviewBorder',
+   },
    mapping = {
       ["<C-p>"] = cmp.mapping.select_prev_item(),
       ["<C-n>"] = cmp.mapping.select_next_item(),

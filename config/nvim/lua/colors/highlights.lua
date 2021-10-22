@@ -52,8 +52,6 @@ end
 --   fg("Comment", grey_fg)
 --end
 
-fg_bg("MatchParen", black, red)
-
 -- Disable cusror line
 cmd "hi clear CursorLine"
 -- Line number
@@ -78,6 +76,10 @@ fg("CmpItemKind", white)
 fg("CmpItemMenu", white)
 
 -- misc
+
+-- inactive statuslines as thin lines
+fg("StatusLineNC", one_bg2 .. " gui=underline")
+
 fg("LineNr", grey)
 
 fg("NvimInternalError", red)

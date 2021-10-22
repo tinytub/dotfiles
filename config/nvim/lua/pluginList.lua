@@ -26,7 +26,7 @@ return packer.startup(
         "ray-x/lsp_signature.nvim",
         after = "nvim-lspconfig",
         config = function ()
-            require("plugins.lspsign").config()
+            require("plugins.others").config()
         end
     }
     use {"neovim/nvim-lspconfig",
@@ -145,6 +145,7 @@ return packer.startup(
    use {
       "hrsh7th/nvim-cmp",
 --      event = "InsertEnter",
+--      commit = "30ed4e43a6fcb65b5816c578c78e3df3d87e6b1f",
       after = "friendly-snippets",
       config = function()
          require "plugins.cmp"
@@ -475,6 +476,7 @@ return packer.startup(
     }
     use {
         "liuchengxu/vista.vim",
+        event = "BufRead",
         config = function ()
            require('plugins.vista').config()
         end
@@ -483,6 +485,7 @@ return packer.startup(
     -- Git
     use {
         'tpope/vim-fugitive',
+        event = "BufRead",
         cmd = {
             "Git",
             "Gdiff",
@@ -495,6 +498,7 @@ return packer.startup(
 
     use {
         'vim-test/vim-test',
+        event = "BufRead",
         config = function ()
             vim.g["test#strategy"] = "floaterm"
             --vim.g["test#strategy"] = "neovim"
