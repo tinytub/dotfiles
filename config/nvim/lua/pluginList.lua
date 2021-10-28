@@ -26,7 +26,7 @@ return packer.startup(
         "ray-x/lsp_signature.nvim",
         after = "nvim-lspconfig",
         config = function ()
-            require("plugins.others").config()
+            require("plugins.others").signature()
         end
     }
     use {"neovim/nvim-lspconfig",
