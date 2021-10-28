@@ -47,7 +47,20 @@ M.better_escape = function()
    }
 end
 
-M.config = function()
+M.luasnip = function()
+   local present, luasnip = pcall(require, "luasnip")
+   if not present then
+      return
+   end
+   luasnip.config.set_config {
+      history = true,
+      updateevents = "TextChanged,TextChangedI",
+   }
+
+   require("luasnip/loaders/from_vscode").load()
+end
+
+M.signature = function()
     local present, lspsignature = pcall(require, "lsp_signature")
     if present then
         lspsignature.setup(
@@ -65,11 +78,12 @@ M.config = function()
                 handler_opts = {
                     border = "single" -- double, single, shadow, none
                 },
-                zindex = 50, -- by default it will be on top of all floating windows, set to 50 send it to bottom
+                zindex = 200, -- by default it will be on top of all floating windows, set to 50 send it to bottom
                 padding = "" -- character to pad on left and right of signature can be ' ', or '|'  etc
             }
         )
     end
 end
+
 
 return M
