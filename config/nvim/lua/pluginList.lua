@@ -68,16 +68,49 @@ return packer.startup(
     }
 
 
-    use {
-        "sainnhe/gruvbox-material",
-        config = function ()
-            vim.cmd([[
-                let g:nvcode_termcolors=256
-                colorscheme gruvbox-material
-            ]])
-            --require "highlights"
+    --use {
+    --    "sainnhe/gruvbox-material",
+    --    config = function ()
+    --        vim.cmd([[
+    --            let g:nvcode_termcolors=256
+    --            colorscheme gruvbox-material
+    --        ]])
+    --        --require "highlights"
 
-           require("colors").init()
+    --       require("colors").init()
+    --    end
+    --}
+
+
+    --use {
+    --    "ellisonleao/gruvbox.nvim",
+    --    requires = {"rktjmp/lush.nvim"},
+    --    config = function ()
+    --        vim.o.background = "dark" -- or "light" for light mode
+    --        vim.cmd([[colorscheme gruvbox]])
+    --    end
+    --}
+    --use({
+    --    'rose-pine/neovim',
+    --    as = 'rose-pine',
+    --    config = function()
+    --        -- Options (see available options below)
+    --        vim.g.rose_pine_variant = 'base'
+    --
+    --        -- Load colorscheme after options
+    --        vim.cmd('colorscheme rose-pine')
+    --    end
+    --})
+    
+    use {
+        'folke/tokyonight.nvim',
+        config = function ()
+            vim.g.tokyonight_style = "night"
+            vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
+
+            vim.cmd([[
+                colorscheme tokyonight
+            ]])
         end
     }
 
