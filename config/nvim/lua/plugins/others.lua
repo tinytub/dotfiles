@@ -1,5 +1,37 @@
 local M = {}
 
+M.autopairs = function()
+    local present1, autopairs = pcall(require, "nvim-autopairs")
+    local present2, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
+
+    if not (present1 or present2) then
+       return
+    end
+
+    -- autopairs.setup()
+
+    local cmp = require "cmp"
+    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+
+    autopairs.setup {
+      check_ts = true,
+      ts_config = {
+        lua = { "string" }, -- it will not add pair on that treesitter node
+        javascript = { "template_string" },
+        java = false, -- don't check treesitter on java
+      },
+      disable_filetype = { "TelescopePrompt" , "vim" },
+    }
+
+    local ts_conds = require "nvim-autopairs.ts-conds"
+    local Rule = require "nvim-autopairs.rule"
+    autopairs.add_rules {
+      Rule("%", "%", "lua"):with_pair(ts_conds.is_ts_node { "string", "comment" }),
+      Rule("$", "$", "lua"):with_pair(ts_conds.is_not_ts_node { "function" }),
+    }
+end
+
+
 M.colorizer = function()
    local present, colorizer = pcall(require, "colorizer")
    if present then

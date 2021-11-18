@@ -47,6 +47,9 @@ opt.undofile = true
 opt.scrolloff      = 2
 opt.sidescrolloff  = 5
 
+
+opt.confirm        = true
+
 -- interval for writing swap file to disk, also used by gitsigns
 opt.updatetime = 250
 

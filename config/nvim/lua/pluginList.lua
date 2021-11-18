@@ -259,7 +259,7 @@ return packer.startup(
      -- after = {"nvim-compe", "nvim-treesitter"},
       after = "nvim-cmp",
       config = function()
-        require "plugins.autopairs"
+        require "plugins.others".autopairs()
       end,
     }
 
@@ -474,13 +474,13 @@ return packer.startup(
             vim.api.nvim_command('augroup END')
         end
     }
-    use {
-        "liuchengxu/vista.vim",
-        event = "BufRead",
-        config = function ()
-           require('plugins.vista').config()
-        end
-    }
+    --use {
+    --    "liuchengxu/vista.vim",
+    --    event = "BufRead",
+    --    config = function ()
+    --       require('plugins.vista').config()
+    --    end
+    --}
 
     -- Git
     use {
