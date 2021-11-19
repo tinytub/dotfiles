@@ -5,8 +5,6 @@ end
 
 local g = vim.g
 
-vim.o.termguicolors = true
-
 g.nvim_tree_add_trailing = 0 -- append a trailing slash to folder names
 g.nvim_tree_git_hl = 1
 g.nvim_tree_gitignore = 0
@@ -88,15 +86,6 @@ local list = {
 }
 
 nvimtree.setup {
-   diagnostics = {
-      enable = false,
-      icons = {
-         hint = "",
-         info = "",
-         warning = "",
-         error = "",
-      },
-   },
    filters = {
       dotfiles = false,
       custom = { 'node_modules', '.cache', 'build', 'var', 'vendor' },
