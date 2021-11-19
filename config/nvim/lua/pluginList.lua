@@ -68,18 +68,18 @@ return packer.startup(
     }
 
 
-    --use {
-    --    "sainnhe/gruvbox-material",
-    --    config = function ()
-    --        vim.cmd([[
-    --            let g:nvcode_termcolors=256
-    --            colorscheme gruvbox-material
-    --        ]])
-    --        --require "highlights"
+    use {
+        "sainnhe/gruvbox-material",
+        config = function ()
+            vim.cmd([[
+                let g:gruvbox_material_statusline_style = 'original'
+                colorscheme gruvbox-material
+            ]])
+            --require "highlights"
 
-    --       require("colors").init()
-    --    end
-    --}
+           require("colors").init()
+        end
+    }
 
 
     --use {
@@ -88,8 +88,10 @@ return packer.startup(
     --    config = function ()
     --        vim.o.background = "dark" -- or "light" for light mode
     --        vim.cmd([[colorscheme gruvbox]])
+    --        require("colors").init()
     --    end
     --}
+
     --use({
     --    'rose-pine/neovim',
     --    as = 'rose-pine',
@@ -102,17 +104,17 @@ return packer.startup(
     --    end
     --})
     
-    use {
-        'folke/tokyonight.nvim',
-        config = function ()
-            vim.g.tokyonight_style = "night"
-            vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
+    --use {
+    --    'folke/tokyonight.nvim',
+    --    config = function ()
+    --        vim.g.tokyonight_style = "night"
+    --        vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
 
-            vim.cmd([[
-                colorscheme tokyonight
-            ]])
-        end
-    }
+    --        vim.cmd([[
+    --            colorscheme tokyonight
+    --        ]])
+    --    end
+    --}
 
     --use {
     --    "NvChad/nvim-base16.lua",
@@ -130,6 +132,7 @@ return packer.startup(
           require "plugins.statusline"
        end,
     }
+
     use {
       "akinsho/nvim-bufferline.lua",
       after = "nvim-web-devicons",
@@ -223,7 +226,6 @@ return packer.startup(
    -- Treesitter
     use {
         "nvim-treesitter/nvim-treesitter",
-        branch = "0.5-compat",
         event = "BufRead",
         config = function ()
            require "plugins.treesitter"
