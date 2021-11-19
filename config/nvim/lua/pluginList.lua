@@ -10,18 +10,6 @@ return packer.startup(
     function()
     use {"wbthomason/packer.nvim", event = "VimEnter"}
 
-    -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
-    use {
-        "kabouzeid/nvim-lspinstall",
-        opt = true,
-        setup = function()
-            require("core.utils").packer_lazy_load "nvim-lspinstall"
-            -- reload the current file so lsp actually starts for it
-            vim.defer_fn(function()
-                vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
-            end, 0)
-        end,
-    }
     use {
         "ray-x/lsp_signature.nvim",
         after = "nvim-lspconfig",
@@ -29,18 +17,23 @@ return packer.startup(
             require("plugins.others").signature()
         end
     }
-    use {"neovim/nvim-lspconfig",
-        after = "nvim-lspinstall",
+    use {"neovim/nvim-lspconfig"}
+
+    -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
+    use {
+        'williamboman/nvim-lsp-installer',
+
         config = function ()
             require('lsp')
-            require('lsp.bash')
-            require('lsp.go')
-            require('lsp.json')
-            require('lsp.lua')
-            require('lsp.python')
-            require('lsp.vim')
-            require('lsp.yaml')
+            --require('lsp.lspservers').setup_lsp()
         end
+    }
+    use {
+        "jose-elias-alvarez/null-ls.nvim",
+        after = "nvim-lspconfig",
+        config = function()
+           require("plugins.null-ls").setup()
+        end,
     }
 --    use {
 --        "onsails/lspkind-nvim",
@@ -397,6 +390,7 @@ return packer.startup(
 --    }
 --
 
+-- use toggleterm ?
     use {"voldikss/vim-floaterm",
         cmd = {'FloatermNew','FloatermPrev','FloatermNext','FloatermFirst','FloatermLast','FloatermUpdate','FloatermToggle','FloatermShow','FloatermHide','FloatermKill','FloatermSend'},
         config = function()

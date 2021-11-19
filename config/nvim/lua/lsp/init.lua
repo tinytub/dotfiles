@@ -176,18 +176,6 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 }
 lsp_config.capabilities = capabilities
 
-local servers = {}
-
-for _, lsp in ipairs(servers) do
-   nvim_lsp[lsp].setup {
-      on_attach = lsp_config.on_attach,
-      capabilities = lsp_config.capabilities,
-      -- root_dir = vim.loop.cwd,
-      flags = {
-         debounce_text_changes = 150,
-      },
-   }
-end
 
 -- replace the default lsp diagnostic symbols
 local function lspSymbol(name, icon)
@@ -226,9 +214,38 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true;
 --end
 --end
 
-function lsp_config.tsserver_on_attach(client, bufnr)
-    lsp_config.on_attach(client, bufnr)
-    client.resolved_capabilities.document_formatting = false
+--function lsp_config.tsserver_on_attach(client, bufnr)
+--    lsp_config.on_attach(client, bufnr)
+--    client.resolved_capabilities.document_formatting = false
+--end
+
+-- suppress error messages from lang servers
+vim.notify = function(msg, log_level, _opts)
+   if msg:match "exit code" then
+      return
+   end
+   if log_level == vim.log.levels.ERROR then
+      vim.api.nvim_err_writeln(msg)
+   else
+      vim.api.nvim_echo({ { msg } }, true, {})
+   end
 end
+
+--local servers = {}
+--
+--for _, lsp in ipairs(servers) do
+--   nvim_lsp[lsp].setup {
+--      on_attach = lsp_config.on_attach,
+--      capabilities = lsp_config.capabilities,
+--      -- root_dir = vim.loop.cwd,
+--      flags = {
+--         debounce_text_changes = 150,
+--      },
+--   }
+--end
+
+
+require('lsp.lspservers').setup_lsp(lsp_config.on_attach,lsp_config.capabilities)
+
 
 return lsp_config
