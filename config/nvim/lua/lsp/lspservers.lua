@@ -59,25 +59,26 @@ M.setup_lsp = function(attach, capabilities)
             }
         }
       end
-      if server.name == 'efm' then
-          opts.settings = {
-              Lua = {
-              rootMarkers = { ".git/" },
-              languages = {
-                lua = {
-                   {
-                    formatCommand = "lua-format -i --no-keep-simple-function-one-line --column-limit=80",
-                    formatStdin = true,
-                  },
-                  {
-                    formatCommand = "luafmt --indent-count 2 --line-width 120 --stdin",
-                    formatStdin = true,
-                  }
-                }
-              },
-          }
-        }
-      end
+      --if server.name == 'efm' then
+      --    opts.filetypes = { "lua" }
+      --    opts.settings = {
+      --        Lua = {
+      --        rootMarkers = { ".git/" },
+      --        languages = {
+      --          lua = {
+      --             {
+      --              formatCommand = "lua-format -i --no-keep-simple-function-one-line --column-limit=80",
+      --              formatStdin = true,
+      --            },
+      --            {
+      --              formatCommand = "luafmt --indent-count 2 --line-width 120 --stdin",
+      --              formatStdin = true,
+      --            }
+      --          }
+      --        },
+      --    }
+      --  }
+      --end
       if server.name == 'jsonls' then
         opts.commands = {
             Format = {
