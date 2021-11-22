@@ -40,6 +40,9 @@ local sources = {
    -- Shell
    b.formatting.shfmt,
    b.diagnostics.shellcheck.with { diagnostics_format = "#{m} [#{c}]" },
+   b.formatting.formatting.shfmt.with {
+    	filetypes = { "sh", "bash" },
+   }
 }
 
 local M = {}
