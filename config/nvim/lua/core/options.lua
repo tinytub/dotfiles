@@ -47,6 +47,8 @@ opt.undofile = true
 opt.scrolloff      = 2
 opt.sidescrolloff  = 5
 
+opt.showcmd = true
+
 
 opt.confirm        = true
 
