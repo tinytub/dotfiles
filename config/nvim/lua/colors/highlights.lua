@@ -91,6 +91,7 @@ fg("VertSplit", one_bg2)
 --if ui.transparency then
 if transparency then
    bg("Normal", "NONE")
+   bg("NvimTreeNormalNC", "NONE")
    bg("Folded", "NONE")
    fg("Folded", "NONE")
    fg("Comment", grey)
