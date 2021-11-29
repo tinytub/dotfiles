@@ -60,8 +60,11 @@ bufferline.setup {
             guibg = colors.black2
         },
         buffer_selected = {
-            guifg = colors.white,
-            guibg = colors.black,
+            --guifg = colors.white,
+            --guibg = colors.black,
+            guifg = "#ffffff",
+            guibg = colors.darker_black,
+            --gui = "bold,italic"
             gui = "bold"
         },
         -- tabs
@@ -132,3 +135,16 @@ bufferline.setup {
         }
     }
 }
+--let fg_target = 'red'
+--
+--let fg_current  = s:fg(['Normal'], '#efefef')
+--let fg_visible  = s:fg(['TabLineSel'], '#efefef')
+--let fg_inactive = s:fg(['TabLineFill'], '#888888')
+--
+--let fg_modified  = s:fg(['WarningMsg'], '#E5AB0E')
+--let fg_special  = s:fg(['Special'], '#599eff')
+--let fg_subtle  = s:fg(['NonText', 'Comment'], '#555555')
+--
+--let bg_current  = s:bg(['Normal'], '#000000')
+--let bg_visible  = s:bg(['TabLineSel', 'Normal'], '#000000')
+--let bg_inactive = s:bg(['TabLineFill', 'StatusLine'], '#000000')
