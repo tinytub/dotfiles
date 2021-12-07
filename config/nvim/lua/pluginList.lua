@@ -488,14 +488,6 @@ return packer.startup(
     --  disable = false,
     --}
 
-    ---- Tabnine
-    --use {
-    --  "tzachar/compe-tabnine",
-    --  run = "./install.sh",
-    --  requires = "hrsh7th/nvim-compe",
-    --  disable = false,
-    --}
-
     -- Language
     use {
         'ray-x/go.nvim',
