@@ -17,41 +17,41 @@ local sources = {
    },
 
    -- Golang
-   b.formatting.golines.with {
-       filetypes = { "go" },
-       command = "golines",
-       args = {}
-   },
-   b.formatting.goimports.with {
-    filetypes = { "go" },
-    command = "goimports",
-    args = {}
-   },
-   b.formatting.gofmt.with {
-    filetypes = { "go" },
-    command = "gofmt",
-    args = {}
-   },
+   --b.formatting.golines.with {
+   --    filetypes = { "go" },
+   --    command = "golines",
+   --    args = {}
+   --},
+   --b.formatting.goimports.with {
+   -- filetypes = { "go" },
+   -- command = "goimports",
+   -- args = {}
+   --},
+   --b.formatting.gofmt.with {
+   -- filetypes = { "go" },
+   -- command = "gofmt",
+   -- args = {}
+   --},
 
    -- Lua
    b.formatting.stylua,
-   b.diagnostics.luacheck.with { extra_args = { "--global vim" } },
+   --b.diagnostics.luacheck.with { extra_args = { "--global vim" } },
 
    -- Shell
    b.formatting.shfmt,
    b.diagnostics.shellcheck.with { diagnostics_format = "#{m} [#{c}]" },
-   b.formatting.formatting.shfmt.with {
+   b.formatting.shfmt.with {
     	filetypes = { "sh", "bash" },
    }
 }
 
 local M = {}
 
-M.setup = function(on_attach)
-   null_ls.config {
+M.setup = function()
+   null_ls.config({
       sources = sources,
-   }
-   require("lspconfig")["null-ls"].setup { on_attach = on_attach }
+   })
+   require("lspconfig")["null-ls"].setup({ on_attach = require("lsp.init").on_attach })
 end
 
 return M

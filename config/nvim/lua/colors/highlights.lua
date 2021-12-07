@@ -19,6 +19,7 @@ local purple = colors.purple
 local red = colors.red
 local white = colors.white
 local yellow = colors.yellow
+local orange = colors.orange
 local one_bg3 = colors.one_bg3
 
 --local ui = require("core.utils").load_config().ui
@@ -63,7 +64,7 @@ fg("EndOfBuffer", black)
 
 -- For floating windows
 fg("FloatBorder", blue)
-bg("NormalFloat", one_bg)
+bg("NormalFloat", darker_black)
 
 -- Pmenu
 bg("Pmenu", one_bg)
@@ -113,25 +114,12 @@ fg_bg("DiffModified", nord_blue, "none")
 -- Indent blankline plugin
 fg("IndentBlanklineChar", line)
 
--- ]]
+-- Lsp diagnostics
 
--- [[ LspDiagnostics
-
--- Errors
-fg("LspDiagnosticsSignError", red)
-fg("LspDiagnosticsSignWarning", yellow)
-fg("LspDiagnosticsVirtualTextError", red)
-fg("LspDiagnosticsVirtualTextWarning", yellow)
-
--- Info
-fg("LspDiagnosticsSignInformation", green)
-fg("LspDiagnosticsVirtualTextInformation", green)
-
--- Hints
-fg("LspDiagnosticsSignHint", purple)
-fg("LspDiagnosticsVirtualTextHint", purple)
-
--- ]]
+fg("DiagnosticHint", purple)
+fg("DiagnosticError", red)
+fg("DiagnosticWarn", yellow)
+fg("DiagnosticInformation", green)
 
 -- NvimTree
 fg("NvimTreeEmptyFolderName", blue)
@@ -159,11 +147,37 @@ if transparency then
 end
 
 -- Telescope
---fg("TelescopeBorder", purple)
---fg("TelescopePreviewBorder", grey)
---fg("TelescopePromptBorder", purple)
---fg("TelescopeResultsBorder", purple)
-fg("TelescopeBorder", purple)
-fg_bg("TelescopePreviewTitle", green, one_bg)
-fg_bg("TelescopePromptTitle", blue, one_bg)
-fg_bg("TelescopeResultsTitle", red, one_bg)
+--fg_bg("TelescopeBorder", darker_black, darker_black)
+fg_bg("TelescopeBorder", purple, darker_black)
+fg_bg("TelescopePromptBorder", purple, black2)
+
+fg_bg("TelescopePromptNormal", white, black2)
+fg_bg("TelescopePromptPrefix", red, black2)
+
+bg("TelescopeNormal", darker_black)
+
+fg_bg("TelescopePreviewTitle", black, green)
+fg_bg("TelescopePromptTitle", black, red)
+fg_bg("TelescopeResultsTitle", darker_black, blue)
+
+bg("TelescopeSelection", black2)
+
+-- keybinds cheatsheet
+
+fg_bg("CheatsheetBorder", black, black)
+bg("CheatsheetSectionContent", black)
+fg("CheatsheetHeading", white)
+
+local section_title_colors = {
+   white,
+   blue,
+   red,
+   green,
+   yellow,
+   purple,
+   orange,
+}
+
+for i, color in ipairs(section_title_colors) do
+   vim.cmd("highlight CheatsheetTitle" .. i .. " guibg = " .. color .. " guifg=" .. black)
+end
