@@ -105,7 +105,7 @@ return packer.startup(
     --        vim.cmd('colorscheme rose-pine')
     --    end
     --})
-    
+
     --use {
     --    'folke/tokyonight.nvim',
     --    config = function ()
@@ -453,12 +453,14 @@ return packer.startup(
         ft = 'markdown',
         event = "BufRead",
     }
-    -- Interactive scratchpad
-    use {
-        'metakirby5/codi.vim',
-        cmd = 'Codi',
-        event = "BufRead",
-    }
+
+    ---- Interactive scratchpad
+    --use {
+    --    'metakirby5/codi.vim',
+    --    cmd = 'Codi',
+    --    ft = 'python',
+    --    event = "BufRead",
+    --}
 
     ---- HTML preview
     --use {
@@ -594,5 +596,14 @@ return packer.startup(
         end,
     }
 
-
-end)
+    -- todo highlights
+    use {
+      'folke/todo-comments.nvim',
+      requires = 'nvim-lua/plenary.nvim',
+      config = function()
+        require('plugins.todo-comments')
+      end,
+      event = 'BufWinEnter',
+    }
+    end
+)

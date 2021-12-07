@@ -245,7 +245,7 @@ end
 --end
 
 
-require('lsp.lspservers').setup_lsp(lsp_config.on_attach,lsp_config.capabilities)
+require('lsp.lspservers').setup_lsp(lsp_config.on_attach, lsp_config.capabilities)
 
 
 return lsp_config

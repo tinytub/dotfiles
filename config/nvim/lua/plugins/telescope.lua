@@ -24,10 +24,11 @@ telescope.setup {
         file_ignore_patterns = { "node_modules" },
         generic_sorter = require'telescope.sorters'.get_generic_fuzzy_sorter,
         --path_display = "shorten",
-        path_display = function(opts, path)
-          local tail = require("telescope.utils").path_tail(path)
-          return string.format("%s (%s)", tail, path)
-        end,
+        --path_display = function(opts, path)
+        --  local tail = require("telescope.utils").path_tail(path)
+        --  return string.format("%s (%s)", tail, path)
+        --end,
+        path_display = { "truncate" },
         winblend = 0,
         border = {},
         borderchars = {'─', '│', '─', '│', '╭', '╮', '╯', '╰'},

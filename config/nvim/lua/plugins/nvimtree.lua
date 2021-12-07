@@ -102,7 +102,7 @@ nvimtree.setup {
       update_cwd = false,
    },
    git = {
-       ignore = 0
+       ignore = false,
    },
    view = {
     allow_resize = true,
