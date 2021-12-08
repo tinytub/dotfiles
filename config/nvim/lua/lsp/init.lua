@@ -85,77 +85,6 @@ end
 
 --vim.cmd('command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").toggle()')
 
--- Set Default Prefix.
--- Note: You can set a prefix per lsp server in the lv-globals.lua file
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-   virtual_text = false,
-   --virtual_text = {
-   --   prefix = "",
-   --   spacing = 0,
-   --},
-    signs = true,
-    underline = true,
-    update_in_insert = false,
-  }
-)
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-	border = "single",
-})
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-	border = "single",
-})
-
--- suppress error messages from lang servers
---vim.notify = function(msg, log_level, _opts)
---    if msg:match "exit code" then
---        return
---    end
---    if log_level == vim.log.levels.ERROR then
---        vim.api.nvim_err_writeln(msg)
---    else
---        vim.api.nvim_echo({{msg}}, true, {})
---    end
---end
-
----- symbols for autocomplete
---vim.lsp.protocol.CompletionItemKind = {
---    "   (Text) ",
---    "   (Method)",
---    "   (Function)",
---    "   (Constructor)",
---    " ﴲ  (Field)",
---    "[] (Variable)",
---    "   (Class)",
---    " ﰮ  (Interface)",
---    "   (Module)",
---    " 襁 (Property)",
---    "   (Unit)",
---    "   (Value)",
---    " 練 (Enum)",
---    "   (Keyword)",
---    "   (Snippet)",
---    "   (Color)",
---    "   (File)",
---    "   (Reference)",
---    "   (Folder)",
---    "   (EnumMember)",
---    " ﲀ  (Constant)",
---    " ﳤ  (Struct)",
---    "   (Event)",
---    "   (Operator)",
---    "   (TypeParameter)"
---}
-
---[[ " autoformat
-autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.lua lua vim.lsp.buf.formatting_sync(nil, 100) ]]
--- Java
--- autocmd FileType java nnoremap ca <Cmd>lua require('jdtls').code_action()<CR>
-
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 --capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
@@ -175,19 +104,6 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
    },
 }
 lsp_config.capabilities = capabilities
-
-
--- replace the default lsp diagnostic symbols
-local function lspSymbol(name, icon)
-    --vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon, numhl = "LspDiagnosticsDefault" .. name})
-    vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon })
-end
-
-lspSymbol("Error", "")
-lspSymbol("Warning", "")
-lspSymbol("Information", "")
-lspSymbol("Hint", "")
-
 -- Code actions
 capabilities.textDocument.codeAction = {
     dynamicRegistration = true,
@@ -201,51 +117,55 @@ capabilities.textDocument.codeAction = {
         }
     }
 }
-
 capabilities.textDocument.completion.completionItem.snippetSupport = true;
 
 
---if O.document_highlight then
---function lsp_config.common_on_attach(client, bufnr)
---    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
---    on_attach()
---
---    documentHighlight(client, bufnr)
---end
---end
-
---function lsp_config.tsserver_on_attach(client, bufnr)
---    lsp_config.on_attach(client, bufnr)
---    client.resolved_capabilities.document_formatting = false
---end
-
--- suppress error messages from lang servers
-vim.notify = function(msg, log_level, _opts)
-   if msg:match "exit code" then
-      return
+local lsp_handlers = function()
+   local function lspSymbol(name, icon)
+    --vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon })
+      local hl = "DiagnosticSign" .. name
+      vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
    end
-   if log_level == vim.log.levels.ERROR then
-      vim.api.nvim_err_writeln(msg)
-   else
-      vim.api.nvim_echo({ { msg } }, true, {})
+
+   lspSymbol("Error", "")
+   lspSymbol("Info", "")
+   lspSymbol("Hint", "")
+   lspSymbol("Warn", "")
+
+   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+      --virtual_text = {
+      --   prefix = "",
+      --   spacing = 0,
+      --},
+      virtual_text = false,
+      signs = true,
+      underline = true,
+      update_in_insert = false, -- update diagnostics insert mode
+   })
+   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+      border = "single",
+   })
+   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+      border = "single",
+   })
+
+   -- suppress error messages from lang servers
+   vim.notify = function(msg, log_level, _opts)
+      if msg:match "exit code" then
+         return
+      end
+      if log_level == vim.log.levels.ERROR then
+         vim.api.nvim_err_writeln(msg)
+      else
+         vim.api.nvim_echo({ { msg } }, true, {})
+      end
    end
 end
 
---local servers = {}
---
---for _, lsp in ipairs(servers) do
---   nvim_lsp[lsp].setup {
---      on_attach = lsp_config.on_attach,
---      capabilities = lsp_config.capabilities,
---      -- root_dir = vim.loop.cwd,
---      flags = {
---         debounce_text_changes = 150,
---      },
---   }
---end
-
+lsp_handlers()
 
 require('lsp.lspservers').setup_lsp(lsp_config.on_attach, lsp_config.capabilities)
+
 
 
 return lsp_config
