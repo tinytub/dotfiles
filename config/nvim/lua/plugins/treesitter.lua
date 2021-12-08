@@ -12,6 +12,7 @@ ts_config.setup {
     },
     highlight = {
       enable = true,
+      use_languagetree = true,
     },
     --context_commentstring = {
     --    enable = true,
