@@ -35,22 +35,8 @@ return packer.startup(
            require("plugins.null-ls").setup()
         end,
     }
---    use {
---        "onsails/lspkind-nvim",
---        event = "InsertEnter",
---        config = function()
---            require("lspkind").init()
---        end
---    }
 
---    use {
---        "glepnir/lspsaga.nvim",
---        --config = function ()
---        --   require("n-lspsaga-nvim").config()
---        --end,
---        event = "BufRead"
---    }
-
+    -- use {"dstein64/vim-startuptime"}
     -- Icons
     use {
        "kyazdani42/nvim-web-devicons",
