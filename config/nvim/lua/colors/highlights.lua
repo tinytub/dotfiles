@@ -158,7 +158,7 @@ bg("TelescopeNormal", darker_black)
 
 fg_bg("TelescopePreviewTitle", black, green)
 fg_bg("TelescopePromptTitle", black, red)
-fg_bg("TelescopeResultsTitle", darker_black, blue)
+fg_bg("TelescopeResultsTitle", black, blue)
 
 bg("TelescopeSelection", black2)
 
