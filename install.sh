@@ -27,6 +27,7 @@ source install/venv.sh
 #echo "creating vim directories"
 #mkdir -p ~/.vim-tmp
 #
+sh -c "$(curl -fsSL https://git.io/zinit-install)"
 if ! command_exists zsh; then
     echo "zsh not found. Please install and then re-run installation scripts"
     exit 1
