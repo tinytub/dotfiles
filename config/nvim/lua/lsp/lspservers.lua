@@ -32,7 +32,7 @@ M.setup_lsp = function(attach, capabilities)
             --hoverKind = "SingleLine",
             --hoverKind = "Structured",
             staticcheck = false,
-            deepCompletion = false,
+            deepCompletion = true,
             --allowModfileModifications=true
         }
       end
