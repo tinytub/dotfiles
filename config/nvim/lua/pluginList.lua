@@ -575,13 +575,25 @@ return packer.startup(
     }
 
     -- todo highlights
+--    use {
+--      'folke/todo-comments.nvim',
+--      requires = 'nvim-lua/plenary.nvim',
+--      config = function()
+--        require('plugins.todo-comments')
+--      end,
+--      event = 'BufWinEnter',
+--    }
     use {
-      'folke/todo-comments.nvim',
-      requires = 'nvim-lua/plenary.nvim',
-      config = function()
-        require('plugins.todo-comments')
-      end,
-      event = 'BufWinEnter',
+       "numToStr/Comment.nvim",
+       module = "Comment",
+       --config = override_req("nvim_comment", "(plugins.configs.others).comment()"),
+       config = function ()
+          require("plugins.others").comment()
+       end,
+       setup = function()
+          require("core.utils").packer_lazy_load "Comment.nvim"
+          require("core.keymappings").comment()
+       end,
     }
     end
 )

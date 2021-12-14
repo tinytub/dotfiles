@@ -126,6 +126,11 @@ M.terms = function()
    map("n", "<leader>w", ":execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>", opt)
 end
 
+M.comment = function()
+   map("n", "<leader>/", ":lua require('Comment.api').toggle()<CR>")
+   map("v", "<leader>/", ":lua require('Comment.api').gc(vim.fn.visualmode())<CR>")
+end
+
 --M.misc()
 --M.terms()
 return M

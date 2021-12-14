@@ -111,6 +111,7 @@ nvimtree.setup {
     mappings = {
         list = list,
     },
+    hide_root_folder = true,
   },
 }
 

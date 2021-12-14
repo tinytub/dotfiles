@@ -116,4 +116,11 @@ M.signature = function()
     end
 end
 
+M.comment = function()
+   local present, nvim_comment = pcall(require, "Comment")
+   if present then
+      nvim_comment.setup()
+   end
+end
+
 return M
