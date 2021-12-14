@@ -48,10 +48,11 @@ local sources = {
 local M = {}
 
 M.setup = function()
-   null_ls.config({
+   null_ls.setup({
       sources = sources,
+      on_attach = require("lsp.init").on_attach 
    })
-   require("lspconfig")["null-ls"].setup({ on_attach = require("lsp.init").on_attach })
+   --require("lspconfig")["null-ls"].setup({ on_attach = require("lsp.init").on_attach })
 end
 
 return M
