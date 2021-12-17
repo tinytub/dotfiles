@@ -127,8 +127,8 @@ M.terms = function()
 end
 
 M.comment = function()
-   map("n", "<leader>/", ":lua require('Comment.api').toggle()<CR>")
-   map("v", "<leader>/", ":lua require('Comment.api').gc(vim.fn.visualmode())<CR>")
+   map("n", "m", ":lua require('Comment.api').toggle_current_linewise()<CR>")
+   map("v", "m", ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
 end
 
 --M.misc()
