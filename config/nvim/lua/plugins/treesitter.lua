@@ -49,10 +49,10 @@ local treesitter = function()
       --  },
       autopairs = { enable = true },
       autotag = {enable = true},
-      rainbow = {enable = true},
+      --rainbow = {enable = true},
       incremental_selection = {
-      enable = enable,
-      -- disable = {"elm"},
+        enable = enable,
+        -- disable = {"elm"},
       }
     }
 end

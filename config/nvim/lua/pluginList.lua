@@ -591,6 +591,14 @@ return packer.startup(
         end,
     }
 
+    use {
+      'folke/trouble.nvim',
+      cmd = {'Trouble', 'TroubleToggle'},
+      config = function()
+        require("trouble").setup {}
+      end
+    }
+
     -- todo highlights
     use {
       'folke/todo-comments.nvim',
