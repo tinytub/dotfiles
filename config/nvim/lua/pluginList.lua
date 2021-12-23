@@ -113,7 +113,7 @@ return packer.startup(
     --}
 
     use {
-       "famiu/feline.nvim",
+       "feline-nvim/feline.nvim",
        disable = false,
        after = "nvim-web-devicons",
        config = function()
@@ -230,8 +230,11 @@ return packer.startup(
         "nvim-treesitter/nvim-treesitter",
         event = "BufRead",
         config = function ()
-           require "plugins.treesitter"
+          require("plugins.treesitter").treesitter()
         end
+        --config = function ()
+        --   require "plugins.treesitter"
+        --end
     }
 
     -- Treesitter playground
@@ -245,12 +248,26 @@ return packer.startup(
     use {
         "nvim-treesitter/nvim-treesitter-textobjects",
         after = "nvim-treesitter",
+        --config = function ()
+        --  require("plugins.treesitter").treesitter_obj()
+        --end,
         disable = false
     }
+    --use {
+    --    "nvim-treesitter/nvim-treesitter-refactor",
+    --    after = "nvim-treesitter-textobjects",
+    --    config = function ()
+    --      require("plugins.treesitter").treesitter_ref()
+    --    end,
+    --    disable = false
+    --}
     -- Smart text objects
     use {
         "RRethy/nvim-treesitter-textsubjects",
         after = "nvim-treesitter",
+        config = function ()
+          require("plugins.treesitter").textsubjects()
+        end,
         disable = false
     }
     -- Text objects using hint labels
@@ -575,14 +592,15 @@ return packer.startup(
     }
 
     -- todo highlights
---    use {
---      'folke/todo-comments.nvim',
---      requires = 'nvim-lua/plenary.nvim',
---      config = function()
---        require('plugins.todo-comments')
---      end,
---      event = 'BufWinEnter',
---    }
+    use {
+      'folke/todo-comments.nvim',
+      requires = 'nvim-lua/plenary.nvim',
+      config = function()
+        require('plugins.todo-comments')
+      end,
+      event = 'BufWinEnter',
+      disable = true,
+    }
     use {
        "numToStr/Comment.nvim",
        module = "Comment",
