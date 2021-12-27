@@ -34,6 +34,7 @@ return packer.startup(
         config = function()
            require("plugins.null-ls").setup()
         end,
+        disable = true
     }
 
     -- use {"dstein64/vim-startuptime"}
