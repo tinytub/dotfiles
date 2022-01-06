@@ -137,13 +137,8 @@ return packer.startup(
 
     use {
         "nvim-telescope/telescope.nvim",
-        module = "telescope",
         cmd = "Telescope",
         requires = {
-            {
-                "nvim-telescope/telescope-fzf-native.nvim",
-                run = "make"
-            },
             {
                 "nvim-telescope/telescope-media-files.nvim",
                 disable = true
@@ -393,20 +388,26 @@ return packer.startup(
     use {
       "mfussenegger/nvim-dap",
       config = function()
-        local status_ok, dap = pcall(require, "dap")
-        if not status_ok then
-          return
-        end
         -- require "dap"
-        vim.fn.sign_define("DapBreakpoint", {
-          text = "",
-          texthl = "LspDiagnosticsSignError",
-          linehl = "",
-          numhl = "",
-        })
-        dap.defaults.fallback.terminal_win_cmd = "50vsplit new"
+
+        require("plugins.dap_init")
+        require("core.keymappings").dap()
       end,
-      disable = true,
+      disable = false,
+    }
+
+    use {
+        "rcarriga/nvim-dap-ui",
+        requires = {
+            "mfussenegger/nvim-dap",
+            "leoluz/nvim-dap-go",
+            "nvim-treesitter/nvim-treesitter"
+        },
+        config = function ()
+            require('dapui').setup()
+            require('dap-go').setup()
+            --require('dap.ext.vscode').load_launchjs()
+        end
     }
 
 --    -- Better quickfix
@@ -507,6 +508,7 @@ return packer.startup(
     --        require('n-vim-go').config()
     --    end
     --}
+
 
     -- smooth scroll
     use {"psliwka/vim-smoothie"}

@@ -131,6 +131,14 @@ M.comment = function()
    map("v", "m", ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
 end
 
+M.dap = function ()
+    map("n", "<F5>", ":lua require'dap'.continue()<CR>", { silent = true})
+    map("n", "<F10>", ":lua require'dap'.step_over()<CR>", { silent = true})
+    map("n", "<F11>", ":lua require'dap'.step_into()<CR>", { silent = true})
+    map("n", "<F12>", ":lua require'dap'.step_out()<CR>", { silent = true})
+end
+
+
 --M.misc()
 --M.terms()
 return M

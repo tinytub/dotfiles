@@ -76,7 +76,7 @@ telescope.setup {
             }
         }
     },
-    extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
+    --extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
 }
 -- load the term_picker extension
 require("telescope").load_extension "terms"

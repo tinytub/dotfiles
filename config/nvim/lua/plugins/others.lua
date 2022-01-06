@@ -11,7 +11,8 @@ M.autopairs = function()
     -- autopairs.setup()
 
     local cmp = require "cmp"
-    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+    --cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+    cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({map_char = {tex = ''}}))
 
     autopairs.setup {
       check_ts = true,
@@ -21,6 +22,9 @@ M.autopairs = function()
         java = false, -- don't check treesitter on java
       },
       disable_filetype = { "TelescopePrompt" , "vim" },
+      autopairs = {enable = true},
+      enable_check_bracket_line = false,
+      html_break_line_filetype = {'html', 'vue', 'typescriptreact', 'svelte', 'javascriptreact'},
     }
 
     local ts_conds = require "nvim-autopairs.ts-conds"
@@ -28,6 +32,19 @@ M.autopairs = function()
     autopairs.add_rules {
       Rule("%", "%", "lua"):with_pair(ts_conds.is_ts_node { "string", "comment" }),
       Rule("$", "$", "lua"):with_pair(ts_conds.is_not_ts_node { "function" }),
+      Rule(" ", " "):with_pair(function(opts)
+        local pair = opts.line:sub(opts.col - 1, opts.col)
+        return vim.tbl_contains({"()", "[]", "{}"}, pair)
+      end),
+      Rule("(", ")"):with_pair(function(opts)
+        return opts.prev_char:match ".%)" ~= nil
+      end):use_key ")",
+      Rule("{", "}"):with_pair(function(opts)
+        return opts.prev_char:match ".%}" ~= nil
+        end):use_key "}",
+      Rule("[", "]"):with_pair(function(opts)
+        return opts.prev_char:match ".%]" ~= nil
+        end):use_key "]",
     }
 end
 

@@ -151,6 +151,15 @@ local mappings = {
         ["c"]  = {"<cmd>PackerCompile<cr>"     ,  'packer compile'},
         ["s"]  = {"<cmd>PackerSync<cr>"        ,  'packer sync'},
     },
+    d = {
+        name = 'Dap' ,
+        ['d'] = {"<cmd>lua require'dapui'.toggle()<CR>", "toggle dap UI"},
+        ['f'] = {"<cmd>lua require'dapui'.eval()<CR>"},
+        ['b'] = {"<cmd>lua require'dap'.toggle_breakpoint()<CR>", "toggle breakpoint"},
+        ['c'] = {"<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", "set breakpoint"},
+        ['l'] = {":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", "Log point message"},
+
+    },
     S = {name = "+Session", s = {"<cmd>SessionSave<cr>", "Save Session"}, l = {"<cmd>SessionLoad<cr>", "Load Session"}}
 }
 

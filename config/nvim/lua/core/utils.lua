@@ -21,6 +21,7 @@ M.close_buffer = function(bufexpr, force)
    local function switch_buffer(windows, buf)
       local cur_win = vim.fn.winnr()
       for _, winid in ipairs(windows) do
+         winid = tonumber(winid) or 0
          vim.cmd(string.format("%d wincmd w", vim.fn.win_id2win(winid)))
          vim.cmd(string.format("buffer %d", buf))
       end
@@ -125,7 +126,7 @@ M.hide_statusline = function()
       }
    local shown = {}
    local api = vim.api
-   local buftype = api.nvim_buf_get_option("%", "ft")
+   local buftype = api.nvim_buf_get_option("0", "ft")
 
    -- shown table from config has the highest priority
    if vim.tbl_contains(shown, buftype) then

@@ -86,7 +86,7 @@ components.active[1][2] = {
       return " " .. icon .. " " .. filename .. " "
    end,
    enabled = function(winid)
-      return vim.api.nvim_win_get_width(winid) > 70
+      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 70
    end,
    hl = {
       fg = colors.white,
@@ -102,7 +102,7 @@ components.active[1][3] = {
       return "  " .. dir_name .. " "
    end,
    enabled = function(winid)
-      return vim.api.nvim_win_get_width(winid) > 80
+      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 80
    end,
    hl = {
       fg = colors.grey_fg2,
@@ -208,7 +208,7 @@ components.active[2][1] = {
       return ""
    end,
    enabled = function(winid)
-      return vim.api.nvim_win_get_width(winid) > 80
+      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 80
    end,
    --hl = { fg = colors.green },
    hl = { fg = colors.green, bg = colors.statusline_bg },
@@ -223,7 +223,7 @@ components.active[3][1] = {
       end
    end,
    enabled = function(winid)
-      return vim.api.nvim_win_get_width(winid) > 70
+      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 70
    end,
    hl = { fg = colors.grey_fg2, bg = colors.statusline_bg },
 }
@@ -231,7 +231,7 @@ components.active[3][1] = {
 components.active[3][2] = {
    provider = "git_branch",
    enabled = function(winid)
-      return vim.api.nvim_win_get_width(winid) > 70
+      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 70
    end,
    hl = {
       fg = colors.grey_fg2,
@@ -308,7 +308,7 @@ components.active[3][6] = {
 components.active[3][7] = {
    provider = statusline_style.left,
    enabled = function(winid)
-      return vim.api.nvim_win_get_width(winid) > 90
+      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 90
    end,
    hl = {
       fg = colors.grey,
@@ -319,7 +319,7 @@ components.active[3][7] = {
 components.active[3][8] = {
    provider = statusline_style.left,
    enabled = function(winid)
-      return vim.api.nvim_win_get_width(winid) > 90
+      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 90
    end,
    hl = {
       fg = colors.green,
@@ -330,7 +330,7 @@ components.active[3][8] = {
 components.active[3][9] = {
    provider = statusline_style.position_icon,
    enabled = function(winid)
-      return vim.api.nvim_win_get_width(winid) > 90
+      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 90
    end,
    hl = {
       fg = colors.black,
@@ -352,7 +352,7 @@ components.active[3][10] = {
       return " " .. result .. "%% "
    end,
    enabled = function(winid)
-      return vim.api.nvim_win_get_width(winid) > 90
+      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 90
    end,
 
    hl = {
