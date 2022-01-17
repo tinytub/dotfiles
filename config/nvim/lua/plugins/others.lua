@@ -15,6 +15,7 @@ M.autopairs = function()
     cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({map_char = {tex = ''}}))
 
     autopairs.setup {
+      fast_wrap = {},
       check_ts = true,
       ts_config = {
         lua = { "string" }, -- it will not add pair on that treesitter node

@@ -389,25 +389,26 @@ return packer.startup(
       "mfussenegger/nvim-dap",
       config = function()
         -- require "dap"
+         require("plugins.dap_init")
+         require("core.keymappings").dap()
 
-        require("plugins.dap_init")
-        require("core.keymappings").dap()
+         require('dap-go').setup()
       end,
+
+      requires = {
+        "leoluz/nvim-dap-go",
+      },
+
       disable = false,
     }
 
     use {
+        after = "nvim-dap",
         "rcarriga/nvim-dap-ui",
-        requires = {
-            "mfussenegger/nvim-dap",
-            "leoluz/nvim-dap-go",
-            "nvim-treesitter/nvim-treesitter"
-        },
         config = function ()
             require('dapui').setup()
-            require('dap-go').setup()
             --require('dap.ext.vscode').load_launchjs()
-        end
+        end,
     }
 
 --    -- Better quickfix
@@ -620,7 +621,6 @@ return packer.startup(
           require("plugins.others").comment()
        end,
        setup = function()
-          require("core.utils").packer_lazy_load "Comment.nvim"
           require("core.keymappings").comment()
        end,
     }
