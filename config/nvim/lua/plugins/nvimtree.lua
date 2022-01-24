@@ -102,6 +102,7 @@ nvimtree.setup {
       update_cwd = false,
    },
    git = {
+       enable = false,
        ignore = false,
    },
    view = {

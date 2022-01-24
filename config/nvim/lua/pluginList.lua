@@ -17,7 +17,10 @@ return packer.startup(
             require("plugins.others").signature()
         end
     }
-    use {"neovim/nvim-lspconfig"}
+    use {
+        "neovim/nvim-lspconfig",
+        module = "lspconfig",
+    }
 
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
     use {
@@ -137,6 +140,7 @@ return packer.startup(
 
     use {
         "nvim-telescope/telescope.nvim",
+        module = "telescope",
         cmd = "Telescope",
         requires = {
             {
