@@ -163,6 +163,7 @@ return packer.startup(
    -- load luasnips + cmp related in insert mode only
    use {
       "rafamadriz/friendly-snippets",
+      module = 'cmp_nvim_lsp',
       event = "InsertEnter",
    }
 

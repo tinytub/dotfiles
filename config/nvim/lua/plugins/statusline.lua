@@ -156,7 +156,7 @@ local git_branch = {
 }
 
 local diagnostic = {
-   errors = {
+   error = {
       provider = "diagnostic_errors",
       enabled = function()
          return lsp.diagnostics_exist(lsp_severity.ERROR)
