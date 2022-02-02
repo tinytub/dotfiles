@@ -289,9 +289,9 @@ return packer.startup(
 
     use {"lewis6991/gitsigns.nvim",
         opt = true,
-        cond = function()
-           return vim.fn.isdirectory ".git" == 1
-        end,
+        --cond = function()
+        --   return vim.fn.isdirectory ".git" == 1
+        --end,
         config = function()
             require("plugins.gitsigns").config()
         end,

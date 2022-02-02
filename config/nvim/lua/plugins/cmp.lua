@@ -6,6 +6,8 @@ end
 
 vim.opt.completeopt = "menu,menuone,noselect"
 
+local snippets_status = false
+
 --local has_words_before = function()
 --  if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
 --    return false
@@ -21,13 +23,14 @@ cmp.setup {
 --         require("luasnip").lsp_expand(args.body)
 --      end,
 --   },
-   snippet = {
+   snippet = (snippets_status and {
       expand = function(args)
          require("luasnip").lsp_expand(args.body)
       end,
-   } or {
+   }) or {
       expand = function(args) end,
    },
+
    formatting = {
       format = function(entry, vim_item)
          -- load lspkind icons
@@ -64,8 +67,7 @@ cmp.setup {
       ["<Tab>"] = cmp.mapping(function(fallback)
          if cmp.visible() then
             cmp.select_next_item()
-            --vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, true, true), "n")
-         elseif require("luasnip").expand_or_jumpable() then
+         elseif snippets_status and require("luasnip").expand_or_jumpable() then
             require("luasnip").expand_or_jump()
          else
             fallback()
