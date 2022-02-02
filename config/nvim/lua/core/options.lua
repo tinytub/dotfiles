@@ -5,6 +5,13 @@ CACHE_PATH = vim.fn.stdpath('cache')
 local opt = vim.opt
 local g = vim.g
 
+--Defer loading shada until after startup_
+vim.opt.shadafile = "NONE"
+vim.schedule(function()
+   vim.opt.shadafile = vim.fn.expand("$HOME") .. "/.local/share/nvim/shada/main.shada"
+   vim.cmd [[ rsh ]]
+end)
+
 -- export user config as a global varibale
 opt.title = true
 opt.clipboard = "unnamedplus"

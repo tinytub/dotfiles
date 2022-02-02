@@ -9,6 +9,10 @@ local use = packer.use
 return packer.startup(
     function()
     use {"wbthomason/packer.nvim", event = "VimEnter"}
+    use "lewis6991/impatient.nvim"
+    use "nathom/filetype.nvim"
+    use "nvim-lua/plenary.nvim"
+
 
     use {
         "ray-x/lsp_signature.nvim",
@@ -135,10 +139,6 @@ return packer.startup(
 
     -- Telescope
     use {
-        "nvim-lua/plenary.nvim",
-    }
-
-    use {
         "nvim-telescope/telescope.nvim",
         module = "telescope",
         cmd = "Telescope",
@@ -163,13 +163,13 @@ return packer.startup(
    -- load luasnips + cmp related in insert mode only
    use {
       "rafamadriz/friendly-snippets",
-      module = 'cmp_nvim_lsp',
+      module = "cmp_nvim_lsp",
       event = "InsertEnter",
    }
 
    use {
       "hrsh7th/nvim-cmp",
---      event = "InsertEnter",
+      event = "InsertEnter",
 --      commit = "30ed4e43a6fcb65b5816c578c78e3df3d87e6b1f",
       after = "friendly-snippets",
       config = function()
