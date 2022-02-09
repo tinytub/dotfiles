@@ -4,7 +4,7 @@ if not present then
    return
 end
 
-vim.opt.completeopt = "menu,menuone,noselect"
+--vim.opt.completeopt = "menu,menuone,noselect"
 
 local snippets_status = true
 
@@ -16,13 +16,26 @@ local snippets_status = true
 --  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line-1, line, true)[1]:sub(col, col):match('%s') == nil
 --end
 
+
 -- nvim-cmp setup
 cmp.setup {
+   completion = {
+      completeopt = "menuone,noselect",
+   },
 --   snippet = {
 --      expand = function(args)
 --         require("luasnip").lsp_expand(args.body)
 --      end,
 --   },
+
+   --https://github.com/hrsh7th/nvim-cmp/issues/21#issuecomment-906178234
+   --completion = {
+   --  get_trigger_characters = function(trigger_characters)
+   --    return vim.tbl_filter(function(char)
+   --      return char ~= ' '
+   --    end, trigger_characters)
+   --  end
+   --},
    snippet = (snippets_status and {
       expand = function(args)
          require("luasnip").lsp_expand(args.body)
@@ -99,3 +112,4 @@ cmp.setup {
       { name = "path" },
    },
 }
+
