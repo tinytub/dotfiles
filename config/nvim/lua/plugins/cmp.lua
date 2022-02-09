@@ -6,7 +6,7 @@ end
 
 vim.opt.completeopt = "menu,menuone,noselect"
 
-local snippets_status = false
+local snippets_status = true
 
 --local has_words_before = function()
 --  if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
@@ -28,7 +28,7 @@ cmp.setup {
          require("luasnip").lsp_expand(args.body)
       end,
    }) or {
-      expand = function(args) end,
+      expand = function(_) end,
    },
 
    formatting = {
@@ -46,6 +46,13 @@ cmp.setup {
             buffer = "[BUF]",
             path = "[Path]",
          })[entry.source.name]
+
+         -- 去重
+         vim_item.dup = ({
+            buffer = 1,
+            path = 1,
+            nvim_lsp = 0,
+         })[entry.source.name] or 0
 
          return vim_item
       end,
