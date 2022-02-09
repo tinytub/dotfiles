@@ -9,7 +9,7 @@ local g = vim.g
 vim.opt.shadafile = "NONE"
 vim.schedule(function()
    vim.opt.shadafile = vim.fn.expand("$HOME") .. "/.local/share/nvim/shada/main.shada"
-   vim.cmd [[ rsh ]]
+   vim.cmd [[ silent! rsh ]]
 end)
 
 -- export user config as a global varibale

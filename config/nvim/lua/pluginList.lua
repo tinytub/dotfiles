@@ -621,6 +621,7 @@ return packer.startup(
     use {
        "numToStr/Comment.nvim",
        module = "Comment",
+       keys = { "gcc" },
        --config = override_req("nvim_comment", "(plugins.configs.others).comment()"),
        config = function ()
           require("plugins.others").comment()

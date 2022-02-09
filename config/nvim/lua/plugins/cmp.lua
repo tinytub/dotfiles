@@ -44,6 +44,7 @@ cmp.setup {
             nvim_lsp = "[LSP]",
             nvim_lua = "[Lua]",
             buffer = "[BUF]",
+            path = "[Path]",
          })[entry.source.name]
 
          return vim_item
