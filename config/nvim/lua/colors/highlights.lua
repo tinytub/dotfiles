@@ -83,10 +83,7 @@ fg("CmpItemMenu", white)
 fg("StatusLineNC", one_bg3 .. " gui=underline")
 
 fg("LineNr", grey)
-
 fg("NvimInternalError", red)
-
--- inactive statuslines as thin splitlines
 fg("VertSplit", one_bg2)
 
 --if ui.transparency then
@@ -107,9 +104,15 @@ fg("DashboardHeader", grey_fg)
 fg("DashboardShortcut", grey_fg)
 
 -- Git signs
-fg_bg("DiffAdd", nord_blue, "none")
-fg_bg("DiffChange", grey_fg, "none")
-fg_bg("DiffModified", nord_blue, "none")
+--cmd("hi clear SignColumn")
+--fg_bg("DiffAdd", blue, "NONE")
+--fg_bg("DiffChange", grey_fg, "NONE")
+bg("SignColumn", "NONE")
+fg_bg("DiffAdd", green, "NONE")
+fg_bg("DiffChange", blue, "NONE")
+fg_bg("DiffChangeDelete", red, "NONE")
+fg_bg("DiffModified", red, "NONE")
+fg_bg("DiffDelete", red, "NONE")
 
 -- Indent blankline plugin
 fg("IndentBlanklineChar", line)
@@ -162,8 +165,10 @@ end
 
 
 -- Telescope
-fg_bg("TelescopeBorder", darker_black, darker_black)
-fg_bg("TelescopePromptBorder", black2, black2)
+fg_bg("TelescopeBorder", purple, darker_black)
+fg_bg("TelescopePromptBorder", purple, black2)
+--fg_bg("TelescopeBorder", darker_black, darker_black)
+--fg_bg("TelescopePromptBorder", black2, black2)
 
 fg_bg("TelescopePromptNormal", white, black2)
 fg_bg("TelescopePromptPrefix", red, black2)

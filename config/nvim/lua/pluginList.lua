@@ -367,14 +367,14 @@ return packer.startup(
         disable = false
     }
 
---    use {
---        "norcalli/nvim-colorizer.lua",
---        event = "BufWinEnter",
---        config = function()
---            require("plugins.others").colorizer()
---        end,
---        disable = false,
---    }
+    use {
+        "norcalli/nvim-colorizer.lua",
+        event = "BufWinEnter",
+        config = function()
+            require("plugins.others").colorizer()
+        end,
+        disable = false,
+    }
 
 
     use {
