@@ -71,30 +71,26 @@ acmd.define_augroups({
     }
 })
 
--- Open a file from its last left off position
--- vim.cmd [[ au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif ]]
--- File extension specific tabbing
--- vim.cmd [[ autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 ]]
-
 acmd.define_augroups {
     _general_settings = {
         {
             'TextYankPost', '*',
             'lua require(\'vim.highlight\').on_yank({higroup = \'Search\', timeout = 200})'
-        }, {
-            'BufWinEnter', '*',
-            'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
         },
-        {
-            'BufRead', '*',
-            'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
-        },
-        {
-            'BufNewFile', '*',
-            'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
-        },
-        --{'VimLeavePre', '*', 'set title set titleold='},
-        {'FileType', 'qf', 'set nobuflisted'}
+        --{
+        --    'BufWinEnter', '*',
+        --    'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
+        --},
+        --{
+        --    'BufRead', '*',
+        --    'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
+        --},
+        --{
+        --    'BufNewFile', '*',
+        --    'setlocal formatoptions-=c formatoptions-=r formatoptions-=o'
+        --},
+        ----{'VimLeavePre', '*', 'set title set titleold='},
+        --{'FileType', 'qf', 'set nobuflisted'}
     },
     _git = {
       { "FileType", "gitcommit", "setlocal wrap" },

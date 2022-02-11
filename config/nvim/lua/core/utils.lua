@@ -121,7 +121,7 @@ M.hide_statusline = function()
    local hidden = {
          "help",
          "dashboard",
-         "NvimTree",
+         --"NvimTree",
          "terminal",
       }
    local shown = {}

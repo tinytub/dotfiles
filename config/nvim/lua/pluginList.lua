@@ -281,6 +281,8 @@ return packer.startup(
 
     use {"kyazdani42/nvim-tree.lua",
         -- cmd = "NvimTreeToggle",
+        after = "nvim-web-devicons",
+        cmd = { "NvimTreeToggle", "NvimTreeFocus" },
         config = function()
             --require("plugins.nvimtree").config()
             require("plugins.nvimtree")

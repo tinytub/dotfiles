@@ -2,6 +2,7 @@
 local colors = require("colors/themes/" .. "tomorrow-night")
 local lsp = require "feline.providers.lsp"
 local lsp_severity = vim.diagnostic.severity
+local shortline = true
 
 local icon_styles = {
    default = {
