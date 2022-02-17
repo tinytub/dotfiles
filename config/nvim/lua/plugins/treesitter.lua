@@ -3,11 +3,31 @@ if not present then
     return
 end
 
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+
 local enable = true
 local lines = vim.fn.line('$')
 local langtree = true
 
 local treesitter = function()
+
+  parser_config.sql = { --{{{
+    install_info = {
+      url = "https://github.com/DerekStride/tree-sitter-sql",
+      files = { "src/parser.c" },
+      branch = "main",
+    },
+  } --}}}
+  
+  parser_config.gotmpl = { --{{{
+    install_info = {
+      url = "https://github.com/ngalaiko/tree-sitter-go-template",
+      files = { "src/parser.c" },
+    },
+    filetype = "gotmpl",
+    used_by = { "gohtmltmpl", "gotexttmpl", "gotmpl", "yaml" },
+  } --}}}
+
   --lprint("loading treesitter")
   if lines > 30000 then -- skip some settings for large file
     -- vim.cmd[[syntax on]]
