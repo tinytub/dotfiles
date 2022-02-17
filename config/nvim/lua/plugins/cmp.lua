@@ -4,9 +4,8 @@ if not present then
    return
 end
 
---vim.opt.completeopt = "menu,menuone,noselect"
+vim.opt.completeopt = "menuone,noselect"
 
-local snippets_status = true
 
 --local has_words_before = function()
 --  if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
@@ -19,29 +18,10 @@ local snippets_status = true
 
 -- nvim-cmp setup
 cmp.setup {
-   completion = {
-      completeopt = "menuone,noselect",
-   },
---   snippet = {
---      expand = function(args)
---         require("luasnip").lsp_expand(args.body)
---      end,
---   },
-
-   --https://github.com/hrsh7th/nvim-cmp/issues/21#issuecomment-906178234
-   --completion = {
-   --  get_trigger_characters = function(trigger_characters)
-   --    return vim.tbl_filter(function(char)
-   --      return char ~= ' '
-   --    end, trigger_characters)
-   --  end
-   --},
-   snippet = (snippets_status and {
+   snippet = {
       expand = function(args)
          require("luasnip").lsp_expand(args.body)
-      end,
-   }) or {
-      expand = function(_) end,
+     end,
    },
 
    formatting = {
@@ -57,7 +37,6 @@ cmp.setup {
             nvim_lsp = "[LSP]",
             nvim_lua = "[Lua]",
             buffer = "[BUF]",
-            path = "[Path]",
          })[entry.source.name]
 
          -- 去重
@@ -85,24 +64,24 @@ cmp.setup {
          behavior = cmp.ConfirmBehavior.Replace,
          select = true,
       },
-      ["<Tab>"] = cmp.mapping(function(fallback)
+      ["<Tab>"] = function(fallback)
          if cmp.visible() then
             cmp.select_next_item()
-         elseif snippets_status and require("luasnip").expand_or_jumpable() then
-            require("luasnip").expand_or_jump()
+         elseif require("luasnip").expand_or_jumpable() then
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
          else
             fallback()
          end
-      end, { "i", "s" }),
-      ["<S-Tab>"] = cmp.mapping(function(fallback)
+      end,
+      ["<S-Tab>"] = function(fallback)
          if cmp.visible() then
             cmp.select_prev_item()
          elseif require("luasnip").jumpable(-1) then
-            require("luasnip").jump(-1)
+            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
          else
             fallback()
          end
-      end, { "i", "s" }),
+      end,
    },
    sources = {
       { name = "nvim_lsp" },

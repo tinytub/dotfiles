@@ -155,7 +155,7 @@ return packer.startup(
 
    use {
       "max397574/better-escape.nvim",
-      event = "InsertEnter",
+      event = "InsertCharPre",
       config = function()
          require("plugins.others").better_escape()
       end,
@@ -164,7 +164,7 @@ return packer.startup(
    use {
       "rafamadriz/friendly-snippets",
       module = "cmp_nvim_lsp",
-      event = "InsertEnter",
+      event = "InsertCharPre",
    }
 
    use {
@@ -197,6 +197,7 @@ return packer.startup(
       after = "nvim-cmp",
       config = function()
          require "plugins.others".luasnip()
+         --require "plugins.luasnips"
       end,
    }
 
@@ -229,7 +230,7 @@ return packer.startup(
    -- Treesitter
     use {
         "nvim-treesitter/nvim-treesitter",
-        event = "BufRead",
+        --event = "BufRead",
         config = function ()
           require("plugins.treesitter").treesitter()
         end
@@ -282,7 +283,7 @@ return packer.startup(
     use {"kyazdani42/nvim-tree.lua",
         -- cmd = "NvimTreeToggle",
         after = "nvim-web-devicons",
-        cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+        --cmd = { "NvimTreeToggle", "NvimTreeFocus" },
         config = function()
             --require("plugins.nvimtree").config()
             require("plugins.nvimtree")
