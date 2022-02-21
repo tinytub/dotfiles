@@ -1,43 +1,86 @@
-local M = {}
+local present, alpha = pcall(require, "alpha")
 
-M.config = function()
-    local g = vim.g
-
-
-    g.dashboard_disable_at_vimenter = 0 -- dashboard is disabled by default
-    g.dashboard_disable_statusline = 1
-    g.dashboard_default_executive = "telescope"
-    g.dashboard_custom_header = {
-        "                                   ",
-        "                                   ",
-        "                                   ",
-        "   ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆         ",
-        "    ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦       ",
-        "          ⠈⢿⣿⣟⠦ ⣾⣿⣿⣷    ⠻⠿⢿⣿⣧⣄     ",
-        "           ⣸⣿⣿⢧ ⢻⠻⣿⣿⣷⣄⣀⠄⠢⣀⡀⠈⠙⠿⠄    ",
-        "          ⢠⣿⣿⣿⠈    ⣻⣿⣿⣿⣿⣿⣿⣿⣛⣳⣤⣀⣀   ",
-        "   ⢠⣧⣶⣥⡤⢄ ⣸⣿⣿⠘  ⢀⣴⣿⣿⡿⠛⣿⣿⣧⠈⢿⠿⠟⠛⠻⠿⠄  ",
-        "  ⣰⣿⣿⠛⠻⣿⣿⡦⢹⣿⣷   ⢊⣿⣿⡏  ⢸⣿⣿⡇ ⢀⣠⣄⣾⠄   ",
-        " ⣠⣿⠿⠛ ⢀⣿⣿⣷⠘⢿⣿⣦⡀ ⢸⢿⣿⣿⣄ ⣸⣿⣿⡇⣪⣿⡿⠿⣿⣷⡄  ",
-        " ⠙⠃   ⣼⣿⡟  ⠈⠻⣿⣿⣦⣌⡇⠻⣿⣿⣷⣿⣿⣿ ⣿⣿⡇ ⠛⠻⢷⣄ ",
-        "    ⢻⣿⣿⣄   ⠈⠻⣿⣿⣿⣷⣿⣿⣿⣿⣿⡟ ⠫⢿⣿⡆       ",
-        "       ⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃     ",
-        "                                   "
-    }
-
-    g.dashboard_custom_section = {
-        a = {description = {"  Find File                 SPC f f"}, command = "Telescope find_files"},
-        b = {description = {"  Recents                   SPC f o"}, command = "Telescope oldfiles"},
-        c = {description = {"  Find Word                 SPC f w"}, command = "Telescope live_grep"},
-        d = {description = {"洛 New File                  SPC f n"}, command = "DashboardNewFile"},
-        e = {description = {"  Bookmarks                 SPC b m"}, command = "Telescope marks"},
-        f = {description = {"  Load Last Session         SPC s l"}, command = "SessionLoad"}
-    }
-
-    g.dashboard_custom_footer = {
-        "   ",
-    }
+if not present then
+   return
 end
 
-return M
+local ascii = {
+   "   ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆          ",
+   "    ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦       ",
+   "          ⠈⢿⣿⣟⠦ ⣾⣿⣿⣷    ⠻⠿⢿⣿⣧⣄     ",
+   "           ⣸⣿⣿⢧ ⢻⠻⣿⣿⣷⣄⣀⠄⠢⣀⡀⠈⠙⠿⠄    ",
+   "          ⢠⣿⣿⣿⠈    ⣻⣿⣿⣿⣿⣿⣿⣿⣛⣳⣤⣀⣀   ",
+   "   ⢠⣧⣶⣥⡤⢄ ⣸⣿⣿⠘  ⢀⣴⣿⣿⡿⠛⣿⣿⣧⠈⢿⠿⠟⠛⠻⠿⠄  ",
+   "  ⣰⣿⣿⠛⠻⣿⣿⡦⢹⣿⣷   ⢊⣿⣿⡏  ⢸⣿⣿⡇ ⢀⣠⣄⣾⠄   ",
+   " ⣠⣿⠿⠛ ⢀⣿⣿⣷⠘⢿⣿⣦⡀ ⢸⢿⣿⣿⣄ ⣸⣿⣿⡇⣪⣿⡿⠿⣿⣷⡄  ",
+   " ⠙⠃   ⣼⣿⡟  ⠈⠻⣿⣿⣦⣌⡇⠻⣿⣿⣷⣿⣿⣿ ⣿⣿⡇ ⠛⠻⢷⣄ ",
+   "      ⢻⣿⣿⣄   ⠈⠻⣿⣿⣿⣷⣿⣿⣿⣿⣿⡟ ⠫⢿⣿⡆     ",
+   "       ⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃     ",
+}
 
+local header = {
+   type = "text",
+   val = ascii,
+   opts = {
+      position = "center",
+      hl = "AlphaHeader",
+   },
+}
+
+local function button(sc, txt, keybind)
+   local sc_ = sc:gsub("%s", ""):gsub("SPC", "<leader>")
+
+   local opts = {
+      position = "center",
+      text = txt,
+      shortcut = sc,
+      cursor = 5,
+      width = 36,
+      align_shortcut = "right",
+      hl = "AlphaButtons",
+   }
+
+   if keybind then
+      opts.keymap = { "n", sc_, keybind, { noremap = true, silent = true } }
+   end
+
+   return {
+      type = "button",
+      val = txt,
+      on_press = function()
+         local key = vim.api.nvim_replace_termcodes(sc_, true, false, true)
+         vim.api.nvim_feedkeys(key, "normal", false)
+      end,
+      opts = opts,
+   }
+end
+
+local buttons = {
+   type = "group",
+   val = {
+      button("SPC f f", "  Find File  ", ":Telescope find_files<CR>"),
+      button("SPC f o", "  Recent File  ", ":Telescope oldfiles<CR>"),
+      button("SPC f w", "  Find Word  ", ":Telescope live_grep<CR>"),
+      button("SPC b m", "  Bookmarks  ", ":Telescope marks<CR>"),
+      button("SPC t h", "  Themes  ", ":Telescope themes<CR>"),
+      button("SPC e s", "  Settings", ":e $MYVIMRC | :cd %:p:h <CR>"),
+   },
+   opts = {
+      spacing = 1,
+   },
+}
+
+local section = {
+   header = header,
+   buttons = buttons,
+}
+
+alpha.setup {
+   layout = {
+      { type = "padding", val = 5 },
+      section.header,
+      { type = "padding", val = 2 },
+      section.buttons,
+   },
+   opts = {},
+}

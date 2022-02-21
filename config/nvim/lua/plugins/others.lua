@@ -83,7 +83,7 @@ M.blankline = function()
       filetype_exclude = {
          "help",
          "terminal",
-         "dashboard",
+         "alpha",
          "packer",
          "lspinfo",
          "TelescopePrompt",
@@ -107,23 +107,23 @@ end
 M.luasnip = function()
     -- configs from https://github.com/arsham/shark/blob/master/lua/settings/luasnip/init.lua
    local present, luasnip = pcall(require, "luasnip")
-   local types = require("luasnip.util.types")
+ --  local types = require("luasnip.util.types")
    if present then
        luasnip.config.set_config {
           history = true,
           updateevents = "TextChanged,TextChangedI",
-          ext_opts = {
-            [types.choiceNode] = {
-              active = {
-                virt_text = { { " ", "TSTextReference" } },
-              },
-            },
-            [types.insertNode] = {
-              active = {
-                virt_text = { { " ", "TSEmphasis" } },
-              },
-            },
-          },
+ --         ext_opts = {
+ --           [types.choiceNode] = {
+ --             active = {
+ --               virt_text = { { " ", "TSTextReference" } },
+ --             },
+ --           },
+ --           [types.insertNode] = {
+ --             active = {
+ --               virt_text = { { " ", "TSEmphasis" } },
+ --             },
+ --           },
+ --         },
         }
        luasnip.snippets = {
          all = require("plugins.luasnips.all"),

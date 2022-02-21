@@ -10,6 +10,7 @@ local folder_bg = colors.folder_bg
 local green = colors.green
 local grey = colors.grey
 local grey_fg = colors.grey_fg
+local light_grey = colors.light_grey
 local line = colors.line
 local nord_blue = colors.nord_blue
 local one_bg = colors.one_bg
@@ -98,10 +99,8 @@ end
 -- [[ Plugin Highlights
 
 -- Dashboard
-fg("DashboardCenter", grey_fg)
-fg("DashboardFooter", grey_fg)
-fg("DashboardHeader", grey_fg)
-fg("DashboardShortcut", grey_fg)
+fg("AlphaHeader", grey_fg)
+fg("AlphaButtons", light_grey)
 
 -- Git signs
 --cmd("hi clear SignColumn")

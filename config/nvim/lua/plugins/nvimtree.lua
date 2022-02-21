@@ -91,6 +91,7 @@ nvimtree.setup {
    },
    disable_netrw = true,
    hijack_netrw = true,
+   hijack_unnamed_buffer_when_opening = false,
    ignore_ft_on_setup = { "dashboard" },
 --   ignore = { ".git", "node_modules", ".cache" },
    auto_close = false,
