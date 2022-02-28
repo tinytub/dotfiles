@@ -35,6 +35,15 @@ return packer.startup(
             --require('lsp.lspservers').setup_lsp()
         end
     }
+
+    use {
+        -- lspserver 状态插件, 停用了 statuslines 中的状态。
+      "j-hui/fidget.nvim",
+      after = { "nvim-lspconfig" },
+      config = function() require("plugins.fidget-nvim") end,
+      event = { "BufRead", "BufNewFile", "InsertEnter" },
+    }
+
     use {
         "jose-elias-alvarez/null-ls.nvim",
         after = "nvim-lspconfig",
@@ -233,7 +242,8 @@ return packer.startup(
         --event = "BufRead",
         config = function ()
           require("plugins.treesitter").treesitter()
-        end
+        end,
+        run = ":TSUpdate",
         --config = function ()
         --   require "plugins.treesitter"
         --end

@@ -64,31 +64,67 @@ cmp.setup {
          behavior = cmp.ConfirmBehavior.Replace,
          select = true,
       },
-      ["<Tab>"] = function(fallback)
-         if cmp.visible() then
-            cmp.select_next_item()
-         elseif require("luasnip").expand_or_jumpable() then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-         else
-            fallback()
-         end
-      end,
-      ["<S-Tab>"] = function(fallback)
-         if cmp.visible() then
-            cmp.select_prev_item()
-         elseif require("luasnip").jumpable(-1) then
-            vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-         else
-            fallback()
-         end
-      end,
+      --["<Tab>"] = function(fallback)
+      --   if cmp.visible() then
+      --      cmp.select_next_item()
+      --   elseif require("luasnip").expand_or_jumpable() then
+      --      vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+      --   else
+      --      fallback()
+      --   end
+      --end,
+      --["<S-Tab>"] = function(fallback)
+      --   if cmp.visible() then
+      --      cmp.select_prev_item()
+      --   elseif require("luasnip").jumpable(-1) then
+      --      vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+      --   else
+      --      fallback()
+      --   end
+      --end,
+
+      ["<Tab>"] =  cmp.mapping(function(fallback)
+            if cmp.visible() then
+               cmp.select_next_item()
+            elseif require("luasnip").expand_or_jumpable() then
+               vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+            else
+               fallback()
+            end
+         end, { "i", "s" }),
+
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+               cmp.select_prev_item()
+            elseif require("luasnip").jumpable(-1) then
+               vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+            else
+               fallback()
+            end
+        end, { "i", "s" }),
+
    },
    sources = {
-      { name = "nvim_lsp" },
-      { name = "luasnip" },
-      { name = "buffer" },
-      { name = "nvim_lua" },
-      { name = "path" },
+      { name = "nvim_lsp", priority = 80 },
+      { name = "nvim_lua" , priority = 80},
+      { name = "path", priority = 40, max_item_count = 4 },
+      { name = "luasnip" , priority = 10},
+      { name = "calc" },
+      { name = "nvim_lsp_signature_help" },
+
+      {
+        name = "buffer",
+        priority = 5,
+        keyword_length = 3,
+        max_item_count = 5,
+        option = {
+          get_bufnrs = function()
+            return vim.api.nvim_list_bufs()
+          end,
+        },
+      },
+      { name = "rg", keyword_length = 3, max_item_count = 10, priority = 1 },
+
    },
 }
 
