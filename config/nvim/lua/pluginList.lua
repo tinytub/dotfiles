@@ -173,7 +173,7 @@ return packer.startup(
    use {
       "rafamadriz/friendly-snippets",
       module = "cmp_nvim_lsp",
-      event = "InsertCharPre",
+      event = "InsertEnter",
    }
 
    use {
@@ -203,7 +203,7 @@ return packer.startup(
    use {
       "L3MON4D3/LuaSnip",
       wants = "friendly-snippets",
-      after = "nvim-cmp",
+      after = {"nvim-cmp", "nvim-treesitter"},
       config = function()
          require "plugins.others".luasnip()
          --require "plugins.luasnips"
@@ -239,7 +239,7 @@ return packer.startup(
    -- Treesitter
     use {
         "nvim-treesitter/nvim-treesitter",
-        --event = "BufRead",
+        event = {"BufRead", "BufNewFile"},
         config = function ()
           require("plugins.treesitter").treesitter()
         end,
@@ -511,7 +511,7 @@ return packer.startup(
         'ray-x/go.nvim',
         ft = {'go','golang'},
         config = function()
-            require('go').setup()
+            require("plugins.go-nvim")
         end
     }
     --use {'fatih/vim-go',
