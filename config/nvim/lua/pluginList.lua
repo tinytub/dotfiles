@@ -86,6 +86,16 @@ return packer.startup(
         end
     }
 
+    --use {
+    --    use "RRethy/nvim-base16",
+    --    config = function ()
+    --        vim.cmd([[
+    --            colorscheme base16-gruvbox-dark-medium
+    --        ]])
+    --    end
+
+    --}
+
 
     --use {
     --    "ellisonleao/gruvbox.nvim",
@@ -112,7 +122,7 @@ return packer.startup(
     --use {
     --    'folke/tokyonight.nvim',
     --    config = function ()
-    --        vim.g.tokyonight_style = "night"
+    --        vim.g.tokyonight_style = "storm"
     --        vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
 
     --        vim.cmd([[
@@ -129,6 +139,7 @@ return packer.startup(
     --    end
     --}
 
+    -- try https://github.com/nvim-lualine/lualine.nvim ?
     use {
        "feline-nvim/feline.nvim",
        disable = false,
@@ -494,11 +505,11 @@ return packer.startup(
       disable = false,
     }
     -- Lazygit
-    use {
-      "kdheepak/lazygit.nvim",
-      cmd = "LazyGit",
-      disable = false,
-    }
+    --use {
+    --  "kdheepak/lazygit.nvim",
+    --  cmd = "LazyGit",
+    --  disable = false,
+    --}
     -- Octo
     --use {
     --  "pwntester/octo.nvim",
