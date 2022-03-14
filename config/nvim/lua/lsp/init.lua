@@ -1,4 +1,3 @@
-local M = {}
 local present1, nvim_lsp = pcall(require, "lspconfig")
 
 if not present1 then
@@ -25,7 +24,7 @@ end
 
 
 
-function M.on_attach(client, bufnr)
+function lsp_config.on_attach(client, bufnr)
    local function buf_set_keymap(...)
       vim.api.nvim_buf_set_keymap(bufnr, ...)
    end

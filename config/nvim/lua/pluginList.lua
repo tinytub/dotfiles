@@ -505,11 +505,11 @@ return packer.startup(
       disable = false,
     }
     -- Lazygit
-    --use {
-    --  "kdheepak/lazygit.nvim",
-    --  cmd = "LazyGit",
-    --  disable = false,
-    --}
+    use {
+      "kdheepak/lazygit.nvim",
+      cmd = "LazyGit",
+      disable = false,
+    }
     -- Octo
     --use {
     --  "pwntester/octo.nvim",
