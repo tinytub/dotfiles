@@ -53,7 +53,7 @@ local mappings = {
     ["c"] = "Close Buffer",
     ["e"] = {"<cmd>NvimTreeToggle<cr>"                                 ,"Explorer"},
     ["F"] = {"<cmd>NvimTreeFindFile<cr>"                               ,"Find Current File"},
-    ["V"] = {"<cmd>Vista<cr>"                                          ,"Vista"},
+    --["V"] = {"<cmd>Vista<cr>"                                          ,"Vista"},
     [";"] = {"<cmd>Dashboard<cr>"                                        , "home screen"},
     ["M"] = {"<cmd>MarkdownPreviewToggle<cr>"                          , "markdown preview"},
     ["h"] = {"<cmd>let @/ = \"\"<cr>"                                    , "no highlight" },
@@ -94,6 +94,7 @@ local mappings = {
         s = {"<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
         S = {"<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols"},
         q = {"<cmd>Telescope quickfix<cr>", "Quickfix"},
+        t = {"<cmd>TodoTelescope<cr>", "Find TODO"},
       },
 
     b = {

@@ -106,6 +106,11 @@ nvimtree.setup {
        enable = false,
        ignore = false,
    },
+   actions = {
+      open_file = {
+         resize_window = true,
+      },
+   },
    view = {
     allow_resize = true,
     side = "left",

@@ -67,7 +67,7 @@ acmd.define_augroups({
 
         --{'BufWritePre', '*.go', 'lua vim.lsp.buf.formatting()'},
         --{'FileType', '*.go', ':autocmd! autoformat'},
-        {'BufWritePre', '*.go', 'lua require(\'lsp.format\').OrgImports(3000)'},
+        {'BufWritePre', '*.go', 'lua require(\'lsp.format\').OrgImports(1000)'},
     }
 })
 

@@ -4,6 +4,30 @@ if not status_ok then
 end
 
 local actions = require('telescope.actions')
+
+-- https://github.com/nvim-telescope/telescope.nvim/issues/223#issuecomment-810091610    don't show binaryfile
+local previewers = require('telescope.previewers')
+local Job = require('plenary.job')
+local new_maker = function(filepath, bufnr, opts)
+  filepath = vim.fn.expand(filepath)
+  Job:new({
+    command = 'file',
+    args = { '--mime-type', '-b', filepath },
+    on_exit = function(j)
+      local mime_type = vim.split(j:result()[1], '/')[1]
+      if mime_type == "text" then
+        previewers.buffer_previewer_maker(filepath, bufnr, opts)
+      else
+        -- maybe we want to write something to the buffer here
+        vim.schedule(function()
+          vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { 'BINARY' })
+        end)
+      end
+    end
+  }):sync()
+end
+
+
 --local trouble = require("trouble.providers.telescope")
 -- Global remapping
 ------------------------------
@@ -59,7 +83,8 @@ telescope.setup {
         },
 
         ---- Developer configurations: Not meant for general override
-        buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker,
+        -- buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker,
+        buffer_previewer_maker = new_maker,
         mappings = {
             i = {
                 ["<C-c>"] = actions.close,
@@ -86,12 +111,20 @@ telescope.setup {
                 ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist
                 -- ["<C-i>"] = my_cool_custom_action,
             }
+        },
+        preview = {
+            filesize_hook = function(filepath, bufnr, opts)
+                local max_bytes = 10000
+                local cmd = {"head", "-c", max_bytes, filepath}
+                require('telescope.previewers.utils').job_maker(cmd, bufnr, opts)
+            end
         }
     },
     --extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
 }
 -- load the term_picker extension
 require("telescope").load_extension "terms"
+
 --if
 --    not pcall(
 --        function()

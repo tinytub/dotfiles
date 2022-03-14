@@ -634,7 +634,7 @@ return packer.startup(
         require('plugins.todo-comments')
       end,
       event = 'BufWinEnter',
-      disable = true,
+      disable = false,
     }
     use {
        "numToStr/Comment.nvim",
