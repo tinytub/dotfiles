@@ -58,6 +58,11 @@ zinit light-mode for \
 #zinit ice depth"1" # git clone depth
 #zinit light romkatv/powerlevel10k
 
+zinit ice as"command" from"gh-r" \
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+          atpull"%atclone" src"init.zsh" # pull behavior same as clone, source init.zsh
+zinit light starship/starship
+
 zinit ice wait lucid atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
@@ -103,6 +108,8 @@ zinit wait lucid for \
   OMZP::git \
   OMZL::git.zsh \
   OMZP::docker-compose
+
+eval "$(starship init zsh)"
 
 # ==== 某些插件需要的环境变量 ====
 
@@ -195,4 +202,3 @@ ftpane() {
   fi
 }
 
-eval "$(starship init zsh)"

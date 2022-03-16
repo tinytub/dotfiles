@@ -53,7 +53,8 @@ M.misc = function()
         -- resize with arrows
         map('n', '<C-Up>', ':resize -2<CR>', {silent = true})
         map('n', '<C-Down>', ':resize +2<CR>', {silent = true})
-        map('n', '<M-[>', ':vertical resize -2<CR>', {silent = true})
+        -- M-key means ALT-xxxx
+        map('n', '<M-[>', ':vertical resize -2<CR>', {silent = true}) 
         map('n', '<M-]>', ':vertical resize +2<CR>', {silent = true})
         
         -- better indenting
