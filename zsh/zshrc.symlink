@@ -87,7 +87,9 @@ zinit ice wait lucid
 zinit light andrewferrier/fzf-z
 
 zinit ice wait lucid blockf atpull'zinit creinstall -q .'
-zinit light zsh-users/zsh-completions
+zinit ice blockf; zinit light zsh-users/zsh-completions
+#zinit ice lucid wait='3'
+#zinit light zsh-users/zsh-completions
 
 zinit ice wait lucid atload"zicompinit; zicdreplay; FAST_HIGHLIGHT[chroma-man]="
 zinit light zdharma-continuum/fast-syntax-highlighting
@@ -109,8 +111,6 @@ zinit wait lucid for \
   OMZL::git.zsh \
   OMZP::docker-compose
 
-eval "$(starship init zsh)"
-
 # ==== 某些插件需要的环境变量 ====
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
@@ -124,23 +124,7 @@ DISABLE_MAGIC_FUNCTIONS=true
 
 # ==== 加载自定义插件 ====
 
-CUSTOM=~/.dotfiles/zsh
-
-
-#source $CUSTOM/snippets/alias.zsh
-#source $CUSTOM/snippets/alias-tips.zsh
-#source $CUSTOM/snippets/completion.zsh # 先玩着,不好使再说, 来自 Aloxaf/dotfiles
-#source $CUSTOM/snippets/history.zsh
-##source $CUSTOM/snippets/key-bindings.zsh
-#source $CUSTOM/snippets/misc.zsh
-
-## To customize prompt, run `p10k configure` or edit ~/.dotfiles/zsh/p10k.zsh.symlink.
-#[[ ! -f ~/.dotfiles/zsh/p10k.zsh.symlink ]] || source ~/.dotfiles/zsh/p10k.zsh.symlink
-
-
-#zprof
-
-#source "$HOME/.dotfiles/zsh/alias"
+#CUSTOM=~/.dotfiles/zsh
 
 # make terminal command navigation sane again
 bindkey '^[^[[D' backward-word
@@ -202,3 +186,5 @@ ftpane() {
   fi
 }
 
+
+eval "$(starship init zsh)"

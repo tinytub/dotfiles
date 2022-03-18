@@ -18,7 +18,7 @@ symbol = " "
 description = "The current tab in the tab terminal multiplexer"
 command = "tab --starship"
 when = "tab --starship"
-shell = ["sh"]
+shell = ["zsh"]
 format = "[$output]($style) "
 style = "bold blue"
 
@@ -53,7 +53,7 @@ symbol = " "
 symbol = " "
 
 [line_break]
-disabled = true
+disabled = false
 
 [memory_usage]
 symbol = " "
