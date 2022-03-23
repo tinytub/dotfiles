@@ -19,7 +19,7 @@ M.setup_lsp = function(attach, capabilities)
         opts.settings = {
              gopls = {
                  analyses = {
-                     fillstruct = false, -- 关闭自动填充 struct. 默认打开
+                     fillstruct = true, -- 关闭自动填充 struct. 默认打开
                      unusedparams = true
                  },
                  staticcheck = true

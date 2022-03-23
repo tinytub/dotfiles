@@ -19,4 +19,3 @@ end
 -- set all the non plugin mappings
 require("core.keymappings").misc()
 require("core.keymappings").terms()
-

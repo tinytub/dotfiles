@@ -366,7 +366,7 @@ return packer.startup(
     use {
        "goolord/alpha-nvim",
         config = function()
-            require("plugins.dashboard")
+            require("plugins.dashboard").setup()
         end
     }
 

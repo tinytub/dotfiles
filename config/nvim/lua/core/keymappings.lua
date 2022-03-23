@@ -1,11 +1,20 @@
 local cmd = vim.cmd
+local utils = require "core.utils"
+local map_wrapper = utils.map
 
-local function map(mode, lhs, rhs, opts)
-   local options = { noremap = true, silent = true }
-   if opts then
-      options = vim.tbl_extend("force", options, opts)
+--local function map(mode, lhs, rhs, opts)
+--   local options = { noremap = true, silent = true }
+--   if opts then
+--      options = vim.tbl_extend("force", options, opts)
+--   end
+--   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+--end
+local map = function(...)
+   local keys = select(2, ...)
+   if not keys or keys == "" then
+      return
    end
-   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+   map_wrapper(...)
 end
 
 local M = {}
@@ -16,18 +25,18 @@ M.misc = function()
 
     local function non_config_mappings()
       -- Don't copy the replaced text after pasting in visual mode
-        map("v", "p", 'p:let @+=@0<CR>')
+        map_wrapper("v", "p", 'p:let @+=@0<CR>')
         -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
         -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
         -- empty mode is same as using :map
         -- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
-        map("", "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-        map("", "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
-        map("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-        map("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+        map_wrapper({"n", "x", "o"}, "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+        map_wrapper({"n", "x", "o"}, "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+        map_wrapper("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+        map_wrapper("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
 
         -- use ESC to turn off search highlighting
-        map("n", "<Esc>", ":noh<CR>", opt)
+        map_wrapper("n", "<Esc>", ":noh<CR>", opt)
 
         map('n', '<C-h>', '<C-w>h', opt)
         map('n', '<C-j>', '<C-w>j', opt)
