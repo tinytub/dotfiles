@@ -46,31 +46,42 @@ cmp.setup {
             buffer = "[BUF]",
          })[entry.source.name]
 
-         -- 去重
-         vim_item.dup = ({
-            buffer = 1,
-            path = 1,
-            nvim_lsp = 0,
-         })[entry.source.name] or 0
-
          return vim_item
       end,
+   },
+
+   -- 去重
+   duplicates = {
+     nvim_lsp = 1,
+     luasnip = 1,
+     cmp_tabnine = 1,
+     buffer = 1,
+     path = 1,
+   },
+   confirm_opts = {
+     behavior = cmp.ConfirmBehavior.Replace,
+     select = false,
    },
    documentation = {
       border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
       winhighlight = 'NormalFloat:NormalFloat,FloatBorder:TelescopePreviewBorder',
    },
    mapping = {
-      ["<C-p>"] = cmp.mapping.select_prev_item(),
-      ["<C-n>"] = cmp.mapping.select_next_item(),
-      ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-      ["<C-f>"] = cmp.mapping.scroll_docs(4),
-      ["<C-Space>"] = cmp.mapping.complete(),
-      ["<C-e>"] = cmp.mapping.close(),
-      ["<CR>"] = cmp.mapping.confirm {
-         behavior = cmp.ConfirmBehavior.Replace,
-         select = true,
+      ["<C-k>"] = cmp.mapping.select_prev_item(),
+      ["<C-j>"] = cmp.mapping.select_next_item(),
+      ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
+      ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
+      ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+      ["<C-y>"] = cmp.config.disable,
+      ["<C-e>"] = cmp.mapping {
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
       },
+      ["<CR>"] = cmp.mapping.confirm { select = true },
+      --["<CR>"] = cmp.mapping.confirm {
+      --   behavior = cmp.ConfirmBehavior.Replace,
+      --   select = true,
+      --},
       --["<Tab>"] = function(fallback)
       --   if cmp.visible() then
       --      cmp.select_next_item()

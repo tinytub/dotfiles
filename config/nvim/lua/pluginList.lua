@@ -62,6 +62,13 @@ return packer.startup(
           require "plugins.icons"
         end,
     }
+    use {
+     "stevearc/dressing.nvim",
+     event = "BufWinEnter",
+     config = function()
+       require("plugins.dressing").config()
+     end,
+    }
 
     --use {
     --    'sainnhe/everforest',
