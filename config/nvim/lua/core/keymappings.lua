@@ -30,8 +30,8 @@ M.misc = function()
         -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
         -- empty mode is same as using :map
         -- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
-        map_wrapper({"n", "x", "o"}, "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-        map_wrapper({"n", "x", "o"}, "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+        map_wrapper({ "n", "x", "o" }, "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+        map_wrapper({ "n", "x", "o" }, "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
         map_wrapper("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
         map_wrapper("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
 
@@ -105,6 +105,7 @@ M.misc = function()
         map("i", "<C-d>", "compe#scroll({ 'delta': -4 })", { noremap = true, silent = true, expr = true })
     end
 
+
     local function required_mappings()
         -- Add Packer commands because we are not loading it at startup
         cmd "silent! command PackerClean lua require 'pluginList' require('packer').clean()"
@@ -134,6 +135,15 @@ M.terms = function()
    --map("n", "<leader>w", ":execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>", opt)
    --map("n", "<leader>v", ":execute 'vnew +terminal' | let b:term_type = 'vert' | startinsert <CR>", opt)
    map("n", "<leader>w", ":execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>", opt)
+
+   map(
+      "n",
+      "<leader>H",
+      ":execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>"
+   )
+   map("n", "<leader>V", ":execute 'vnew +terminal' | let b:term_type = 'vert' | startinsert <CR>")
+   --  map("n", "<leader>w", ":execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
+
 end
 
 M.comment = function()
