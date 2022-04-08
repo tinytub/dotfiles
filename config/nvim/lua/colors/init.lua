@@ -23,6 +23,13 @@ local M = {}
 --end
 
 M.init = function()
+      vim.cmd([[
+          set background=dark
+          let g:everforest_background = 'hard'
+          let g:everforest_better_performance = 1
+          colorscheme everforest
+      ]])
+
       package.loaded["colors.highlights" or false] = nil
       -- then load the highlights
       require "colors.highlights"

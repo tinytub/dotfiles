@@ -70,28 +70,25 @@ return packer.startup(
      end,
     }
 
-    --use {
-    --    'sainnhe/everforest',
-    --    config = function ()
-    --        vim.cmd([[
-    --            let g:everforest_background = 'hard'
-    --            colorscheme everforest
-    --        ]])
-    --    end
-    --}
-
     use {
-        "sainnhe/gruvbox-material",
+        'sainnhe/everforest',
         config = function ()
-            vim.cmd([[
-                let g:gruvbox_material_statusline_style = 'original'
-                colorscheme gruvbox-material
-            ]])
-            --require "highlights"
-
            require("colors").init()
         end
     }
+
+    --use {
+    --    "sainnhe/gruvbox-material",
+    --    config = function ()
+    --        vim.cmd([[
+    --            let g:gruvbox_material_statusline_style = 'original'
+    --            colorscheme gruvbox-material
+    --        ]])
+    --        --require "highlights"
+
+    --       require("colors").init()
+    --    end
+    --}
 
     --use {
     --    use "RRethy/nvim-base16",
@@ -201,20 +198,6 @@ return packer.startup(
       after = "friendly-snippets",
       config = function()
          require "plugins.cmp"
-         vim.cmd [[highlight! link CmpItemAbbrMatchFuzzy Aqua]]
-         vim.cmd [[highlight! link CmpItemKindText Fg]]
-         vim.cmd [[highlight! link CmpItemKindMethod Purple]]
-         vim.cmd [[highlight! link CmpItemKindFunction Purple]]
-         vim.cmd [[highlight! link CmpItemKindConstructor Green]]
-         vim.cmd [[highlight! link CmpItemKindField Aqua]]
-         vim.cmd [[highlight! link CmpItemKindVariable Blue]]
-         vim.cmd [[highlight! link CmpItemKindClass Green]]
-         vim.cmd [[highlight! link CmpItemKindInterface Green]]
-         vim.cmd [[highlight! link CmpItemKindValue Orange]]
-         vim.cmd [[highlight! link CmpItemKindKeyword Keyword]]
-         vim.cmd [[highlight! link CmpItemKindSnippet Red]]
-         vim.cmd [[highlight! link CmpItemKindFile Orange]]
-         vim.cmd [[highlight! link CmpItemKindFolder Orange]]
       end,
    }
 

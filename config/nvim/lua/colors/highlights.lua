@@ -74,9 +74,26 @@ bg("PmenuSel", pmenu_bg)
 bg("PmenuThumb", nord_blue)
 
 fg("CmpItemAbbr", white)
-fg("CmpItemAbbrMatch", white)
+fg("CmpItemAbbrMatch", blue)
 fg("CmpItemKind", white)
 fg("CmpItemMenu", white)
+
+-- cmp highlight
+-- gruvbox
+vim.cmd [[highlight! link CmpItemAbbrMatchFuzzy Aqua]]
+vim.cmd [[highlight! link CmpItemKindText Fg]]
+vim.cmd [[highlight! link CmpItemKindMethod Purple]]
+vim.cmd [[highlight! link CmpItemKindFunction Purple]]
+vim.cmd [[highlight! link CmpItemKindConstructor Green]]
+vim.cmd [[highlight! link CmpItemKindField Aqua]]
+vim.cmd [[highlight! link CmpItemKindVariable Blue]]
+vim.cmd [[highlight! link CmpItemKindClass Green]]
+vim.cmd [[highlight! link CmpItemKindInterface Green]]
+vim.cmd [[highlight! link CmpItemKindValue Orange]]
+vim.cmd [[highlight! link CmpItemKindKeyword Keyword]]
+vim.cmd [[highlight! link CmpItemKindSnippet Red]]
+vim.cmd [[highlight! link CmpItemKindFile Orange]]
+vim.cmd [[highlight! link CmpItemKindFolder Orange]]
 
 -- misc
 
@@ -165,10 +182,11 @@ end
 
 
 -- Telescope
-fg_bg("TelescopeBorder", purple, darker_black)
-fg_bg("TelescopePromptBorder", purple, black2)
---fg_bg("TelescopeBorder", darker_black, darker_black)
---fg_bg("TelescopePromptBorder", black2, black2)
+-- 边框颜色
+--fg_bg("TelescopeBorder", purple, darker_black)
+--fg_bg("TelescopePromptBorder", purple, black2)
+fg_bg("TelescopeBorder", darker_black, darker_black)
+fg_bg("TelescopePromptBorder", black2, black2)
 
 fg_bg("TelescopePromptNormal", white, black2)
 fg_bg("TelescopePromptPrefix", red, black2)
@@ -200,3 +218,20 @@ local section_title_colors = {
 for i, color in ipairs(section_title_colors) do
    vim.cmd("highlight CheatsheetTitle" .. i .. " guibg = " .. color .. " guifg=" .. black)
 end
+
+---- gray
+--vim.cmd [[highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080]]
+---- blue
+--vim.cmd [[highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6]]
+--vim.cmd [[highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#569CD6]]
+---- light blue
+--vim.cmd [[highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE]]
+--vim.cmd [[highlight! CmpItemKindInterface guibg=NONE guifg=#9CDCFE]]
+--vim.cmd [[highlight! CmpItemKindText guibg=NONE guifg=#9CDCFE]]
+---- pink
+--vim.cmd [[highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0]]
+--vim.cmd [[highlight! CmpItemKindMethod guibg=NONE guifg=#C586C0]]
+---- front
+--vim.cmd [[highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4]]
+--vim.cmd [[highlight! CmpItemKindProperty guibg=NONE guifg=#D4D4D4]]
+--vim.cmd [[highlight! CmpItemKindUnit guibg=NONE guifg=#D4D4D4]]
