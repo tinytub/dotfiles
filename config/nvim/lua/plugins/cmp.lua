@@ -78,36 +78,13 @@ cmp.setup {
         c = cmp.mapping.close(),
       },
       ["<CR>"] = cmp.mapping.confirm { select = true },
-      --["<CR>"] = cmp.mapping.confirm {
-      --   behavior = cmp.ConfirmBehavior.Replace,
-      --   select = true,
-      --},
-      --["<Tab>"] = function(fallback)
-      --   if cmp.visible() then
-      --      cmp.select_next_item()
-      --   elseif require("luasnip").expand_or_jumpable() then
-      --      vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-      --   else
-      --      fallback()
-      --   end
-      --end,
-      --["<S-Tab>"] = function(fallback)
-      --   if cmp.visible() then
-      --      cmp.select_prev_item()
-      --   elseif require("luasnip").jumpable(-1) then
-      --      vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-      --   else
-      --      fallback()
-      --   end
-      --end,
-
       ["<Tab>"] =  cmp.mapping(function(fallback)
             if cmp.visible() then
                cmp.select_next_item()
             --elseif require("luasnip").expand_or_jumpable() then
             --   vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
+            --elseif luasnip.expand_or_jumpable() then
+            --  luasnip.expand_or_jump()
             elseif has_words_before() then
                cmp.complete()
             else
@@ -120,8 +97,8 @@ cmp.setup {
                cmp.select_prev_item()
             --elseif require("luasnip").jumpable(-1) then
             --   vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-            elseif luasnip.jumpable(-1) then
-               luasnip.jump(-1)
+            --elseif luasnip.jumpable(-1) then
+            --   luasnip.jump(-1)
             else
                fallback()
             end
@@ -148,7 +125,6 @@ cmp.setup {
         },
       },
       { name = "rg", keyword_length = 3, max_item_count = 10, priority = 1 },
-
    },
 }
 

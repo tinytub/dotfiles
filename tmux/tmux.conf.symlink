@@ -58,7 +58,7 @@ set -g visual-activity off
 set -g history-limit 102400    #  scrollback buffer n lines
 
 set -g repeat-time 400
-setw -g aggressive-resize on
+#setw -g aggressive-resize off
 
 setw -g mouse on
 
