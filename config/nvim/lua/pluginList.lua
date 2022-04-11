@@ -155,6 +155,7 @@ return packer.startup(
 
     use {
       "akinsho/nvim-bufferline.lua",
+      branch = "main",
       after = "nvim-web-devicons",
       config = function()
         require("plugins.bufferline")
