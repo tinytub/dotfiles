@@ -1,7 +1,7 @@
 " packadd quickscope
 " #execute 'luafile ' . stdpath('config') . '/lua/settings.lua'
 "execute 'luafile ' . stdpath('config') . '/lua/globals.lua'
-execute 'luafile ' . stdpath('config') . '/lua/core/options.lua'
+" execute 'luafile ' . stdpath('config') . '/lua/core/options.lua'
 
 function! s:manageEditorSize(...)
     let count = a:1
@@ -70,8 +70,8 @@ nnoremap <expr> <C-/> <SID>vscodeCommentary() . '_'
 
 nnoremap <silent> <C-w>_ :<C-u>call VSCodeNotify('workbench.action.toggleEditorWidths')<CR>
 
-"nnoremap <silent> <Space> :call VSCodeNotify('whichkey.show')<CR>
-"xnoremap <silent> <Space> :<C-u>call <SID>openWhichKeyInVisualMode()<CR>
+nnoremap <silent> <Space> :call VSCodeNotify('whichkey.show')<CR>
+xnoremap <silent> <Space> :<C-u>call <SID>openWhichKeyInVisualMode()<CR>
 
 xnoremap <silent> <C-P> :<C-u>call <SID>openVSCodeCommandsInVisualMode()<CR>
 
