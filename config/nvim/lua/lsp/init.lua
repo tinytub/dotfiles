@@ -12,7 +12,7 @@ local function document_highlight(client, bufnr)
         vim.api.nvim_exec(
             [[
       augroup lsp_document_highlight
-        autocmd! * <buffer>
+        "autocmd! * <buffer>
         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
       augroup END
@@ -64,7 +64,9 @@ function lsp_config.on_attach(client, bufnr)
    buf_set_keymap("n", "<space>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
    buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
    buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
-   document_highlight(client, bufnr)
+
+   -- neovim master not support
+   --document_highlight(client, bufnr)
 end
 
 --vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})

@@ -1,3 +1,8 @@
+if vim.g.vscode then
+    return
+end
+
+
 local present, impatient = pcall(require, "impatient")
 
 if present then
@@ -6,7 +11,8 @@ end
 
 local core_modules = {
    "core.options",
-   "core.autocmds"
+   "core.autocmds",
+   "core.global"
 }
 
 for _, module in ipairs(core_modules) do
@@ -19,3 +25,4 @@ end
 -- set all the non plugin mappings
 require("core.keymappings").misc()
 require("core.keymappings").terms()
+

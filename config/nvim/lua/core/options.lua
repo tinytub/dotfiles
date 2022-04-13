@@ -12,7 +12,8 @@ vim.schedule(function()
    vim.cmd [[ silent! rsh ]]
 end)
 
--- export user config as a global varibale
+--opt.guifont = "JetBrainsMono Nerd Font Mono"
+
 opt.title = true
 opt.clipboard = "unnamedplus"
 opt.cmdheight = 1
@@ -55,6 +56,7 @@ opt.scrolloff      = 2
 opt.sidescrolloff  = 5
 
 opt.showcmd = true
+--opt.laststatus = 3
 
 
 opt.confirm        = true
