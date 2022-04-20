@@ -46,11 +46,12 @@ return packer.startup(
 
     use {
         "jose-elias-alvarez/null-ls.nvim",
+        ft = {'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css', 'javascript', 'javascriptreact', 'python'},
         after = "nvim-lspconfig",
         config = function()
            require("plugins.null-ls").setup()
         end,
-        disable = true
+        disable = false
     }
 
     -- use {"dstein64/vim-startuptime"}
@@ -78,24 +79,19 @@ return packer.startup(
     }
 
     use {
-'rebelot/kanagawa.nvim',
+        'rebelot/kanagawa.nvim',
         config = function ()
            require("colors").init()
         end
     }
 
-    --use {
-    --    "sainnhe/gruvbox-material",
-    --    config = function ()
-    --        vim.cmd([[
-    --            let g:gruvbox_material_statusline_style = 'original'
-    --            colorscheme gruvbox-material
-    --        ]])
-    --        --require "highlights"
-
-    --       require("colors").init()
-    --    end
-    --}
+    use {
+        "sainnhe/gruvbox-material",
+        config = function ()
+                --require "highlights"
+           require("colors").init()
+        end
+    }
 
     --use {
     --    use "RRethy/nvim-base16",

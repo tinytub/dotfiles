@@ -27,12 +27,8 @@ local M = {}
 --end
 
 M.init = function()
-      vim.cmd([[
-          set background=dark
-          "let g:everforest_background = 'hard'
-          "colorscheme everforest
-          colorscheme kanagawa
-      ]])
+      vim.opt.background = "dark"
+      M.kanagawa()
 
       package.loaded["colors.highlights" or false] = nil
       -- then load the highlights
@@ -56,7 +52,15 @@ function M.get_color(hlgroup, attr)
   -- return vim.api.nvim_get_hl_by_name(hlgroup, true)[attr]
 end
 
-vim.opt.background = "dark"
+
+function M.kanagawa()
+    vim.cmd([[
+        set background=dark
+        "let g:everforest_background = 'hard'
+        "colorscheme everforest
+        colorscheme kanagawa
+    ]])
+end
 
 function M.gruvbox()
     g.gruvbox_material_background = 'medium'
@@ -65,7 +69,10 @@ function M.gruvbox()
     g.gruvbox_material_enable_italic = 1
     g.gruvbox_material_sign_column_background = 'none'
     g.gruvbox_material_diagnostic_virtual_text = 'colored'
-    vim.cmd('colorscheme gruvbox-material') -- this has to be specified last
+    vim.cmd([[
+        let g:gruvbox_material_statusline_style = 'original'
+        colorscheme gruvbox-material
+    ]])
 end
 
 function M.tokyonight()
@@ -135,16 +142,11 @@ end
 
 -- tokyonight()
 -- gruvbox()
-function M.overrides()
-
-    vim.fn.sign_define('DiagnosticSignError', { text = "" , texthl= 'DiagnosticSignError'})
-    vim.fn.sign_define('DiagnosticSignWarn', { text = "", texthl= 'DiagnosticSignWarn'})
-    vim.fn.sign_define('DiagnosticSignInfo', { text = "", texthl= 'DiagnosticSignInfo'})
-    vim.fn.sign_define('DiagnosticSignHint', { text = "" , texthl= 'DiagnosticSignHint'})
-
-end
-
-return M
-
+--function M.overrides()
+--    vim.fn.sign_define('DiagnosticSignError', { text = "" , texthl= 'DiagnosticSignError'})
+--    vim.fn.sign_define('DiagnosticSignWarn', { text = "", texthl= 'DiagnosticSignWarn'})
+--    vim.fn.sign_define('DiagnosticSignInfo', { text = "", texthl= 'DiagnosticSignInfo'})
+--    vim.fn.sign_define('DiagnosticSignHint', { text = "" , texthl= 'DiagnosticSignHint'})
+--end
 
 return M
