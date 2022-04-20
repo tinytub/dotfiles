@@ -56,7 +56,7 @@ opt.scrolloff      = 2
 opt.sidescrolloff  = 5
 
 opt.showcmd = true
---opt.laststatus = 3
+opt.laststatus = 3
 
 
 opt.confirm        = true

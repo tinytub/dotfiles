@@ -98,7 +98,8 @@ vim.cmd [[highlight! link CmpItemKindFolder Orange]]
 -- misc
 
 -- inactive statuslines as thin lines
-fg("StatusLineNC", one_bg2 .. " gui=underline")
+--fg("StatusLineNC", one_bg2 .. " gui=underline")
+fg("StatusLineNC", blue .. " gui=underline")
 
 fg("LineNr", grey)
 fg("NvimInternalError", red)

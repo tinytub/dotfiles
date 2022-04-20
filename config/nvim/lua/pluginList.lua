@@ -77,6 +77,13 @@ return packer.startup(
         end
     }
 
+    use {
+'rebelot/kanagawa.nvim',
+        config = function ()
+           require("colors").init()
+        end
+    }
+
     --use {
     --    "sainnhe/gruvbox-material",
     --    config = function ()
@@ -599,7 +606,9 @@ return packer.startup(
       'folke/trouble.nvim',
       cmd = {'Trouble', 'TroubleToggle'},
       config = function()
-        require("trouble").setup {}
+        require("trouble").setup {
+            use_diagnostic_signs = true
+        }
       end
     }
 

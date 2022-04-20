@@ -4,7 +4,9 @@ local format = {}
 -- newer imports from 
 -- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-866632451
 function format.OrgImports(wait_ms)
-  local params = vim.lsp.util.make_range_params()
+  -- neovim 0.7 need an param in make_range_params
+  --local params = vim.lsp.util.make_range_params()
+  local params = vim.lsp.util.make_range_params(0)
   params.context = {only = {"source.organizeImports"}}
   local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
   for _, res in pairs(result or {}) do
