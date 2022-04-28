@@ -30,12 +30,8 @@ end
 -- vim.cmd[[ au InsertEnter * set norelativenumber ]]
 -- vim.cmd[[ au InsertLeave * set relativenumber ]]
 
--- Don't show any numbers inside terminals
-vim.cmd [[ au TermOpen term://* setlocal nonumber norelativenumber | setfiletype terminal ]]
 
 
----- Don't show status line on certain windows
--- vim.cmd [[ autocmd BufEnter,BufRead,BufWinEnter,FileType,WinEnter * lua require("core.utils").hide_statusline() ]]
 
 --auto close file exploer when quiting incase a single buffer is left
 vim.cmd([[ autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'nvimtree') | q | endif ]])
@@ -53,7 +49,8 @@ endfunction
 
 acmd.define_augroups({
     autoformat = {
-        {'BufWritePre', '*', ':silent lua vim.lsp.buf.formatting_sync()'},
+        {'BufWritePre', '*', ':silent lua vim.lsp.buf.formatting_seq_sync()'},
+    --    {'BufWritePre', '*', ':silent lua vim.lsp.buf.formatting_sync()'},
     }
 })
 
@@ -96,24 +93,6 @@ acmd.define_augroups {
       { "FileType", "gitcommit", "setlocal wrap" },
       { "FileType", "gitcommit", "setlocal spell" },
     },
-    --_markdown = {
-    --    {'FileType', 'markdown', 'setlocal wrap'},
-    --    {'FileType', 'markdown', 'setlocal spell'}
-    --},
-    --_buffer_bindings = {
-    --    {'FileType', 'floaterm', 'nnoremap <silent> <buffer> q :q<CR>'}
-    --},
-    --_auto_resize = {
-    ---- will cause split windows to be resized evenly if main window is resized
-    --{'VimResized ', '*', 'wincmd ='},
-    --},
-    --_packer_compile = {
-    ---- will cause split windows to be resized evenly if main window is resized
-    --{ "BufWritePost", "plugins.lua", "PackerCompile" },
-    --},
-    --_general_lsp = {
-    --{ "FileType", "lspinfo", "nnoremap <silent> <buffer> q :q<CR>" },
-    --},
 }
 
 return acmd

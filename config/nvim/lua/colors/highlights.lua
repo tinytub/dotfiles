@@ -111,8 +111,8 @@ if transparency then
    bg("NvimTreeNormalNC", "NONE")
    bg("Folded", "NONE")
    fg("Folded", "NONE")
-   fg("Comment", grey)
 end
+fg("Comment", grey_fg)
 
 -- [[ Plugin Highlights
 
@@ -165,29 +165,13 @@ if transparency then
    fg_bg("NvimTreeVertSplit", grey, "NONE")
 end
 
--- Telescope
-----fg_bg("TelescopeBorder", darker_black, darker_black)
---fg_bg("TelescopeBorder", purple, darker_black)
---fg_bg("TelescopePromptBorder", purple, black2)
---
---fg_bg("TelescopePromptNormal", white, black2)
---fg_bg("TelescopePromptPrefix", red, black2)
---
---bg("TelescopeNormal", darker_black)
---
---fg_bg("TelescopePreviewTitle", black, green)
---fg_bg("TelescopePromptTitle", black, red)
---fg_bg("TelescopeResultsTitle", black, blue)
---
---bg("TelescopeSelection", black2)
-
 
 -- Telescope
 -- 边框颜色
---fg_bg("TelescopeBorder", purple, darker_black)
---fg_bg("TelescopePromptBorder", purple, black2)
-fg_bg("TelescopeBorder", darker_black, darker_black)
-fg_bg("TelescopePromptBorder", black2, black2)
+fg_bg("TelescopeBorder", purple, darker_black)
+fg_bg("TelescopePromptBorder", purple, black2)
+--fg_bg("TelescopeBorder", darker_black, darker_black)
+--fg_bg("TelescopePromptBorder", black2, black2)
 
 fg_bg("TelescopePromptNormal", white, black2)
 fg_bg("TelescopePromptPrefix", red, black2)
@@ -199,26 +183,6 @@ fg_bg("TelescopePromptTitle", black, red)
 fg_bg("TelescopeResultsTitle", darker_black, darker_black)
 
 bg("TelescopeSelection", black2)
-
--- keybinds cheatsheet
-
-fg_bg("CheatsheetBorder", black, black)
-bg("CheatsheetSectionContent", black)
-fg("CheatsheetHeading", white)
-
-local section_title_colors = {
-   white,
-   blue,
-   red,
-   green,
-   yellow,
-   purple,
-   orange,
-}
-
-for i, color in ipairs(section_title_colors) do
-   vim.cmd("highlight CheatsheetTitle" .. i .. " guibg = " .. color .. " guifg=" .. black)
-end
 
 ---- gray
 --vim.cmd [[highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080]]

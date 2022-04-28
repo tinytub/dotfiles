@@ -25,18 +25,12 @@ local sources = {
      args = { "--text=$TEXT", "--parse" },
      command = "write-good",
    }),
-   b.diagnostics.proselint.with({
-     filetypes = { "markdown", "tex" },
-     extra_filetypes = { "txt", "text" },
-     command = "proselint",
-     args = { "--json" },
-   }),
 
    b.diagnostics.vint,
 
    -- JS html css stuff
    b.formatting.prettierd.with {
-      filetypes = { "html", "json", "markdown", "css", "javascript", "javascriptreact" },
+      filetypes = { "html", "markdown", "json", "css", "javascript", "javascriptreact" },
    },
    b.diagnostics.eslint.with {
       command = "eslint_d",
@@ -70,7 +64,7 @@ local sources = {
 
    b.formatting.autopep8,
    b.formatting.rustfmt,
-   b.diagnostics.yamllint,
+   --b.diagnostics.yamllint,
    --b.code_actions.gitsigns,
    --b.code_actions.proselint,
    --b.code_actions.refactoring,

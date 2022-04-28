@@ -4,6 +4,8 @@ if not status_ok then
 end
 
 local actions = require('telescope.actions')
+local action_state = require("telescope.actions.state")
+local transform_mod = require('telescope.actions.mt').transform_mod
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/223#issuecomment-810091610    don't show binaryfile
 local previewers = require('telescope.previewers')
@@ -26,8 +28,25 @@ local new_maker = function(filepath, bufnr, opts)
     end
   }):sync()
 end
-
-
+local function multiopen(prompt_bufnr, open_cmd)
+    local picker = action_state.get_current_picker(prompt_bufnr)
+    local num_selections = #picker:get_multi_selection()
+    if num_selections > 1 then
+        for _, entry in ipairs(picker:get_multi_selection()) do
+            vim.cmd(string.format("%s %s", open_cmd, entry.value))
+        end
+    else
+        vim.cmd(string.format("%s %s", open_cmd, action_state.get_selected_entry().value))
+    end
+    vim.cmd("stopinsert")
+    vim.o.winhighlight = ''
+end
+local custom_actions = transform_mod({
+    multi_selection_open_vsplit = function(prompt_bufnr) multiopen(prompt_bufnr, ":vsplit") end,
+    multi_selection_open_split = function(prompt_bufnr) multiopen(prompt_bufnr, ":split") end,
+    multi_selection_open_tab =  function(prompt_bufnr) multiopen(prompt_bufnr, ":tabe") end,
+    multi_selection_open = function(prompt_bufnr) multiopen(prompt_bufnr, ":edit") end,
+})
 --local trouble = require("trouble.providers.telescope")
 -- Global remapping
 ------------------------------
@@ -51,7 +70,9 @@ telescope.setup {
         --  local tail = require("telescope.utils").path_tail(path)
         --  return string.format("%s (%s)", tail, path)
         --end,
-        path_display = { "truncate" },
+        path_display = {
+            truncate = 1,
+        },
         winblend = 0,
         border = {},
         borderchars = {'─', '│', '─', '│', '╭', '╮', '╯', '╰'},
@@ -90,6 +111,8 @@ telescope.setup {
                 ["<C-c>"] = actions.close,
                 ["<C-j>"] = actions.move_selection_next,
                 ["<C-k>"] = actions.move_selection_previous,
+                ["<Tab>"] = actions.move_selection_previous,
+                ["<S-Tab>"] = actions.move_selection_next,
                 ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
                 -- To disable a keymap, put [map] = false
                 -- So, to not map "<C-n>", just put
@@ -112,6 +135,7 @@ telescope.setup {
                 -- ["<C-i>"] = my_cool_custom_action,
             }
         },
+
         preview = {
             filesize_hook = function(filepath, bufnr, opts)
                 local max_bytes = 10000
@@ -120,8 +144,57 @@ telescope.setup {
             end
         }
     },
+    pickers = {
+        oldfiles = {
+            mappings = {
+                i = {
+                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
+                    ["<C-s>"] = custom_actions.multi_selection_open_split,
+                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
+                },
+                n = {
+                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
+                    ["<C-s>"] = custom_actions.multi_selection_open_split,
+                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
+                },
+            },
+        },
+        find_files = {
+            follow = true,
+            mappings = {
+                i = {
+                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
+                    ["<C-s>"] = custom_actions.multi_selection_open_split,
+                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
+                },
+                n = {
+                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
+                    ["<C-s>"] = custom_actions.multi_selection_open_split,
+                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
+                },
+            },
+        },
+        buffers = {
+            sort_mru = true,
+            mappings = {
+                i = {
+                    ["<C-r>"] = actions.delete_buffer,
+                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
+                    ["<C-s>"] = custom_actions.multi_selection_open_split,
+                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
+                },
+                n = {
+                    ["<C-r>"] = actions.delete_buffer,
+                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
+                    ["<C-s>"] = custom_actions.multi_selection_open_split,
+                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
+                },
+            },
+        },
+    },
     --extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
 }
+
 -- load the term_picker extension
 require("telescope").load_extension "terms"
 

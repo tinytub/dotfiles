@@ -33,9 +33,9 @@ local function button(sc, txt, keybind)
 end
 
 
-local default = {}
+local options = {}
 
-default.ascii = {
+local ascii = {
    "   ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆          ",
    "    ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦       ",
    "          ⠈⢿⣿⣟⠦ ⣾⣿⣿⣷    ⠻⠿⢿⣿⣧⣄     ",
@@ -49,16 +49,16 @@ default.ascii = {
    "       ⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃     ",
 }
 
-default.header = {
+options.header = {
    type = "text",
-   val = default.ascii,
+   val = ascii,
    opts = {
       position = "center",
       hl = "AlphaHeader",
    },
 }
 
-default.buttons = {
+options.buttons = {
    type = "group",
    val = {
       button("SPC f f", "  Find File  ", ":Telescope find_files<CR>"),
@@ -76,16 +76,13 @@ default.buttons = {
 
 local M = {}
 
-M.setup = function(override_flag)
-   if override_flag then
-      default = require("core.utils").tbl_override_req("alpha", default)
-   end
+M.setup = function()
    alpha.setup {
       layout = {
          { type = "padding", val = 9 },
-         default.header,
+         options.header,
          { type = "padding", val = 2 },
-         default.buttons,
+         options.buttons,
       },
       opts = {},
    }

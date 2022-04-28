@@ -1,21 +1,7 @@
 local cmd = vim.cmd
 local utils = require "core.utils"
-local map_wrapper = utils.map
-
---local function map(mode, lhs, rhs, opts)
---   local options = { noremap = true, silent = true }
---   if opts then
---      options = vim.tbl_extend("force", options, opts)
---   end
---   vim.api.nvim_set_keymap(mode, lhs, rhs, options)
---end
-local map = function(...)
-   local keys = select(2, ...)
-   if not keys or keys == "" then
-      return
-   end
-   map_wrapper(...)
-end
+local map = utils.map
+local user_cmd = vim.api.nvim_create_user_command
 
 local M = {}
 local opt = {}
@@ -25,30 +11,38 @@ M.misc = function()
 
     local function non_config_mappings()
       -- Don't copy the replaced text after pasting in visual mode
-        map_wrapper("v", "p", 'p:let @+=@0<CR>')
+        map("v", "p", 'p:let @+=@0<CR>')
         -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
         -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
         -- empty mode is same as using :map
         -- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
-        map_wrapper({ "n", "x", "o" }, "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-        map_wrapper({ "n", "x", "o" }, "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
-        map_wrapper("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-        map_wrapper("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+        map({ "n", "x", "o" }, "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+        map({ "n", "x", "o" }, "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+        map("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+        map("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
 
         -- use ESC to turn off search highlighting
-        map_wrapper("n", "<Esc>", ":noh<CR>", opt)
+        map("n", "<Esc>", ":noh<CR>", opt)
 
-        map('n', '<C-h>', '<C-w>h', opt)
-        map('n', '<C-j>', '<C-w>j', opt)
-        map('n', '<C-k>', '<C-w>k', opt)
-        map('n', '<C-l>', '<C-w>l', opt)
+        -- navigation between windows
+        map('n', '<C-h>', '<C-w>h')
+        map('n', '<C-j>', '<C-w>j')
+        map('n', '<C-k>', '<C-w>k')
+        map('n', '<C-l>', '<C-w>l')
         
-        -- Insert Mode 移动光标
-        map('i', '<C-h>', '<Left>', opt)
-        map('i', '<C-l>', '<Right>', opt)
-        map('i', '<C-j>', '<Down>', opt)
-        map('i', '<C-k>', '<Up>', opt)
-        map('i', '<C-s>', '<Esc>:w<CR>', opt)
+        ---- Insert Mode 移动光标
+        --map('i', '<C-h>', '<Left>', opt)
+        --map('i', '<C-l>', '<Right>', opt)
+        --map('i', '<C-j>', '<Down>', opt)
+        --map('i', '<C-k>', '<Up>', opt)
+        --map('i', '<C-s>', '<Esc>:w<CR>', opt)
+        -- move cursor within insert mode
+        map("i", "<C-h>", "<Left>")
+        map("i", "<C-l>", "<Right>")
+        map("i", "<C-j>", "<Down>")
+        map("i", "<C-k>", "<Up>")
+        map("i", "<C-a>", "<ESC>^i")
+        map("i", "<C-e>", "<End>")
         
         -- command line Mode 移动光标
         map('c', '<C-h>', '<Left>', opt)
@@ -70,19 +64,10 @@ M.misc = function()
         map('v', '<', '<gv', {noremap = true, silent = true})
         map('v', '>', '>gv', {noremap = true, silent = true})
         
-        -- I hate escape
-        map('i', 'jk', '<ESC>', {noremap = true, silent = true})
-        map('i', 'kj', '<ESC>', {noremap = true, silent = true})
-        map('i', 'jj', '<ESC>', {noremap = true, silent = true})
-        
         -- Move selected line / block of text in visual mode
         map('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silent = true})
         map('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
         
-        -- Better nav for omnicomplete
-        vim.cmd('inoremap <expr> <c-j> (\"\\<C-n>\")')
-        vim.cmd('inoremap <expr> <c-k> (\"\\<C-p>\")')
-
         -- use ESC to turn off search highlighting
         map("n", "<Esc>", ":noh <CR>")
         
@@ -105,9 +90,7 @@ M.misc = function()
         map("i", "<C-d>", "compe#scroll({ 'delta': -4 })", { noremap = true, silent = true, expr = true })
     end
 
-
     local function required_mappings()
-        -- Add Packer commands because we are not loading it at startup
         cmd "silent! command PackerClean lua require 'pluginList' require('packer').clean()"
         cmd "silent! command PackerCompile lua require 'pluginList' require('packer').compile()"
         cmd "silent! command PackerInstall lua require 'pluginList' require('packer').install()"
@@ -119,6 +102,7 @@ M.misc = function()
     non_config_mappings()
     required_mappings()
 end
+
 
 -- terminals
 --local function terms()
@@ -146,9 +130,16 @@ M.terms = function()
 
 end
 
+M.bufferline = function ()
+   map("n", "<TAB>", "<cmd> :BufferLineCycleNext <CR>")
+   map("n", "<S-Tab>", "<cmd> :BufferLineCyclePrev <CR>")
+end
+
 M.comment = function()
-   map("n", "m", ":lua require('Comment.api').toggle_current_linewise()<CR>")
-   map("v", "m", ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
+   --map("n", "m", ":lua require('Comment.api').toggle_current_linewise()<CR>")
+   --map("v", "m", ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
+   map("n", "<leader>/", "<cmd> :lua require('Comment.api').toggle_current_linewise()<CR>")
+   map("v", "<leader>/", "<cmd> :lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
 end
 
 M.dap = function ()

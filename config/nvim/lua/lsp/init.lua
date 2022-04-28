@@ -8,16 +8,26 @@ local lsp_config = {}
 
 local function document_highlight(client, bufnr)
     -- Set autocommands conditional on server_capabilities
+    --if client.resolved_capabilities.document_highlight then
+    --    vim.api.nvim_exec(
+    --        [[
+    --  augroup lsp_document_highlight
+    --    "autocmd! * <buffer>
+    --    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+    --    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    --  augroup END
+    --]],
+    --        false
+    --    )
     if client.resolved_capabilities.document_highlight then
-        vim.api.nvim_exec(
-            [[
-      augroup lsp_document_highlight
-        "autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]],
-            false
+        local lsp_references_au_id = vim.api.nvim_create_augroup("LSP_references", { clear = true })
+        vim.api.nvim_create_autocmd(
+            "CursorHold",
+            { callback = vim.lsp.buf.document_highlight, buffer = bufnr, group = lsp_references_au_id }
+        )
+        vim.api.nvim_create_autocmd(
+            "CursorMoved",
+            { callback = vim.lsp.buf.clear_references, buffer = bufnr, group = lsp_references_au_id }
         )
     end
 end
@@ -67,6 +77,34 @@ function lsp_config.on_attach(client, bufnr)
 
    -- neovim master not support
    --document_highlight(client, bufnr)
+   -- if client.resolved_capabilities.document_highlight then
+   --     local lsp_references_au_id = vim.api.nvim_create_augroup("LSP_references", { clear = true })
+   --     vim.api.nvim_create_autocmd(
+   --         "CursorHold",
+   --         { callback = vim.lsp.buf.document_highlight, buffer = bufnr, group = lsp_references_au_id }
+   --     )
+   --     vim.api.nvim_create_autocmd(
+   --         "CursorMoved",
+   --         { callback = vim.lsp.buf.clear_references, buffer = bufnr, group = lsp_references_au_id }
+   --     )
+   -- end
+   --
+   if client.resolved_capabilities.document_formatting then
+       vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_seq_sync, opts)
+       vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", vim.lsp.buf.formatting_seq_sync, {})
+   end
+
+   if client.resolved_capabilities.document_range_formatting then
+        vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, opts)
+        vim.api.nvim_buf_create_user_command(bufnr, "LspRangeFormat", vim.lsp.buf.formatting_seq_sync, { range = true })
+   end
+
+   local lsp_diag_au_id = vim.api.nvim_create_augroup("LSP_diagnostics", { clear = true })
+   vim.api.nvim_create_autocmd(
+       "CursorHold",
+       { callback = require("lsp.utilities").echo_cursor_diagnostic, group = lsp_diag_au_id, buffer = bufnr }
+   )
+   vim.api.nvim_create_autocmd("CursorMoved", { command = 'echo ""', group = lsp_diag_au_id, buffer = bufnr })
 end
 
 --vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
@@ -110,6 +148,9 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
       "additionalTextEdits",
    },
 }
+capabilities.textDocument.completion.completionItem.workDoneProgress = true
+capabilities.textDocument.codeAction.dynamicRegistration = true
+
 lsp_config.capabilities = capabilities
 -- Code actions
 capabilities.textDocument.codeAction = {

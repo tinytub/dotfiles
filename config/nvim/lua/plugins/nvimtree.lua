@@ -4,7 +4,7 @@ local g = vim.g
 
 g.nvim_tree_add_trailing = 0 -- append a trailing slash to folder names
 g.nvim_tree_git_hl = 1
-g.nvim_tree_highlight_opened_files = 0
+g.nvim_tree_highlight_opened_files = 1
 --g.nvim_tree_quit_on_open = 0 -- closes tree when file's opened
 g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/..", string.rep(" ", 1000), "?:gs?^??" }
 
@@ -15,7 +15,7 @@ g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/..", string.rep(" ",
 
 g.nvim_tree_show_icons = {
    folders = 1,
-   -- folder_arrows= 1
+   folder_arrows = 1,
    files = 1,
    git = 1,
 }
@@ -43,6 +43,12 @@ g.nvim_tree_icons = {
       symlink = "",
       symlink_open = "",
    },
+	lsp = {
+		hint = "",
+		info = "",
+		warning = "",
+		error = "",
+	},
 }
 
 local present, nvimtree = pcall(require, "nvim-tree")
@@ -95,7 +101,7 @@ nvimtree.setup {
    hijack_unnamed_buffer_when_opening = false,
    ignore_ft_on_setup = { "dashboard" },
 --   ignore = { ".git", "node_modules", ".cache" },
-   auto_close = false,
+   --auto_close = false,
    open_on_tab = false,
    hijack_cursor = true,
    update_cwd = true,
@@ -118,13 +124,18 @@ nvimtree.setup {
       }
    },
    view = {
-    allow_resize = true,
+    --allow_resize = true,
     side = "left",
     width = 25,
     mappings = {
         list = list,
     },
     hide_root_folder = true,
+    --update_focused_file = {
+    --    enable = true,
+    --    update_cwd = false,
+    --    ignore_list = {},
+    --}
   },
   --actions = {
   --  open_file = {
