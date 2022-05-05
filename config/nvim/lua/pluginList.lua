@@ -42,6 +42,7 @@ return packer.startup(
         "neovim/nvim-lspconfig",
         after = "nvim-lsp-installer",
         module = "lspconfig",
+
 --        config = function()
 --           require "lsp"
 --        end,

@@ -60,7 +60,7 @@ M.packer_lazy_load = function(plugin, timer)
 end
 
 M.map = function(mode, keys, command, opt)
-   local options = { silent = true }
+   local options = { noremap = true, silent = true }
    if opt then
       options = vim.tbl_extend("force", options, opt)
    end
