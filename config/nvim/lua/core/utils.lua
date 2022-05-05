@@ -1,11 +1,25 @@
 local M = {}
 local cmd = vim.cmd
 M.close_buffer = function(force)
-   if force or not vim.bo.buflisted then
-      cmd ":bd!"
-   else
-      cmd "bd"
+   if vim.bo.buftype == "terminal" then
+      vim.api.nvim_win_hide(0)
+      return
    end
+
+   local fileExists = vim.fn.filereadable(vim.fn.expand "%p")
+   local modified = vim.api.nvim_buf_get_option(vim.fn.bufnr(), "modified")
+
+   -- if file doesnt exist & its modified
+   if fileExists == 0 and modified then
+      print "no file name? add it now!"
+      return
+   end
+
+   force = force or not vim.bo.buflisted or vim.bo.buftype == "nofile"
+
+   -- if not force, change to prev buf and then close current
+   local close_cmd = force and ":bd!" or ":bp | bd" .. vim.fn.bufnr()
+   vim.cmd(close_cmd)
 end
 -- hide statusline
 -- tables fetched from load_config function
@@ -46,7 +60,7 @@ M.packer_lazy_load = function(plugin, timer)
 end
 
 M.map = function(mode, keys, command, opt)
-   local options = { noremap = true, silent = true }
+   local options = { silent = true }
    if opt then
       options = vim.tbl_extend("force", options, opt)
    end

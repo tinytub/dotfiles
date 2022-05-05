@@ -103,38 +103,38 @@ M.luasnip = function()
     -- configs from https://github.com/arsham/shark/blob/master/lua/settings/luasnip/init.lua
    local present, luasnip = pcall(require, "luasnip")
  --  local types = require("luasnip.util.types")
-   if present then
-       luasnip.config.set_config {
-          history = true,
-          updateevents = "TextChanged,TextChangedI",
- --         ext_opts = {
- --           [types.choiceNode] = {
- --             active = {
- --               virt_text = { { " ", "TSTextReference" } },
- --             },
- --           },
- --           [types.insertNode] = {
- --             active = {
- --               virt_text = { { " ", "TSEmphasis" } },
- --             },
- --           },
- --         },
-        }
-       luasnip.snippets = {
-         all = require("plugins.luasnips.all"),
-         go = require("plugins.luasnips.golang"),
-         lua = require("plugins.luasnips.lua"),
-         gitcommit = require("plugins.luasnips.gitcommit"),
-         markdown = require("plugins.luasnips.markdown"),
-       }
-
-
-       -- require("luasnip/loaders/from_vscode").load()
-       --require("luasnip.loaders.from_vscode").lazy_load()
-       -- add snippet path here!
-       require("luasnip/loaders/from_vscode").load { paths = {} }
-       require("luasnip/loaders/from_vscode").load()
+   if not present then
+       return
    end
+   luasnip.config.set_config {
+      history = true,
+      updateevents = "TextChanged,TextChangedI",
+ --     ext_opts = {
+ --       [types.choiceNode] = {
+ --         active = {
+ --           virt_text = { { " ", "TSTextReference" } },
+ --         },
+ --       },
+ --       [types.insertNode] = {
+ --         active = {
+ --           virt_text = { { " ", "TSEmphasis" } },
+ --         },
+ --       },
+ --     },
+    }
+   luasnip.snippets = {
+     all = require("plugins.luasnips.all"),
+     go = require("plugins.luasnips.golang"),
+     lua = require("plugins.luasnips.lua"),
+     gitcommit = require("plugins.luasnips.gitcommit"),
+     markdown = require("plugins.luasnips.markdown"),
+   }
+
+
+   -- require("luasnip/loaders/from_vscode").load()
+   --require("luasnip.loaders.from_vscode").lazy_load()
+   -- add snippet path here!
+   require("luasnip.loaders.from_vscode").lazy_load()
 end
 
 M.signature = function()

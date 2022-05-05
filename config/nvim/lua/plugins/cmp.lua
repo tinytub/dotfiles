@@ -8,6 +8,24 @@ local luasnip = require("luasnip")
 
 vim.opt.completeopt = "menuone,noselect"
 
+local function border(hl_name)
+   return {
+      { "╭", hl_name },
+      { "─", hl_name },
+      { "╮", hl_name },
+      { "│", hl_name },
+      { "╯", hl_name },
+      { "─", hl_name },
+      { "╰", hl_name },
+      { "│", hl_name },
+   }
+end
+
+local cmp_window = require "cmp.utils.window"
+
+function cmp_window:has_scrollbar()
+   return false
+end
 
 --local has_words_before = function()
 --  if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
@@ -32,7 +50,7 @@ cmp.setup {
    },
 
    formatting = {
-      format = function(entry, vim_item)
+      format = function(_, vim_item)
          -- load lspkind icons
          vim_item.kind = string.format(
             "%s %s",
@@ -40,11 +58,11 @@ cmp.setup {
             vim_item.kind
          )
 
-         vim_item.menu = ({
-            nvim_lsp = "[LSP]",
-            nvim_lua = "[Lua]",
-            buffer = "[BUF]",
-         })[entry.source.name]
+         --vim_item.menu = ({
+         --   nvim_lsp = "[LSP]",
+         --   nvim_lua = "[Lua]",
+         --   buffer = "[BUF]",
+         --})[entry.source.name]
 
          return vim_item
       end,
@@ -66,9 +84,17 @@ cmp.setup {
    --   border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
    --   winhighlight = 'NormalFloat:NormalFloat,FloatBorder:TelescopePreviewBorder',
    --},
+--   window = {
+--      completion = cmp.config.window.bordered(),
+--      documentation = cmp.config.window.bordered(),
+--   },
    window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
+      completion = {
+         border = border "CmpBorder",
+      },
+      documentation = {
+         border = border "CmpDocBorder",
+      },
    },
    mapping = {
       ["<C-k>"] = cmp.mapping.select_prev_item(),

@@ -6,9 +6,8 @@ local opt = vim.opt
 local g = vim.g
 
 --Defer loading shada until after startup_
-vim.opt.shadafile = "NONE"
 vim.schedule(function()
-   vim.opt.shadafile = vim.fn.expand("$HOME") .. "/.local/share/nvim/shada/main.shada"
+   vim.opt.shadafile = vim.fn.expand "$HOME" .. "/.local/share/nvim/shada/main.shada"
    vim.cmd [[ silent! rsh ]]
 end)
 

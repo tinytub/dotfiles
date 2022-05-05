@@ -29,7 +29,7 @@ M.misc = function()
         map('n', '<C-j>', '<C-w>j')
         map('n', '<C-k>', '<C-w>k')
         map('n', '<C-l>', '<C-w>l')
-        
+
         ---- Insert Mode 移动光标
         --map('i', '<C-h>', '<Left>', opt)
         --map('i', '<C-l>', '<Right>', opt)
@@ -43,34 +43,33 @@ M.misc = function()
         map("i", "<C-k>", "<Up>")
         map("i", "<C-a>", "<ESC>^i")
         map("i", "<C-e>", "<End>")
-        
+
         -- command line Mode 移动光标
         map('c', '<C-h>', '<Left>', opt)
         map('c', '<C-l>', '<Right>', opt)
         map('c', '<C-j>', '<Down>', opt)
         map('c', '<C-k>', '<Up>', opt)
         map('c', '<C-t>', '[[<C-R>=expand("%:p:h") . "/" <CR>]]', opt)
-        
 
         -- TODO fix this
         -- resize with arrows
         map('n', '<C-Up>', ':resize -2<CR>', {silent = true})
         map('n', '<C-Down>', ':resize +2<CR>', {silent = true})
         -- M-key means ALT-xxxx
-        map('n', '<M-[>', ':vertical resize -2<CR>', {silent = true}) 
+        map('n', '<M-[>', ':vertical resize -2<CR>', {silent = true})
         map('n', '<M-]>', ':vertical resize +2<CR>', {silent = true})
-        
+
         -- better indenting
         map('v', '<', '<gv', {noremap = true, silent = true})
         map('v', '>', '>gv', {noremap = true, silent = true})
-        
+
         -- Move selected line / block of text in visual mode
         map('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silent = true})
         map('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
-        
+
         -- use ESC to turn off search highlighting
         map("n", "<Esc>", ":noh <CR>")
-        
+
         -- fix to get netrw's gx command to work correctly
         --vim.api.nvim_set_keymap('n', 'gx', ":call netrw#BrowseX(expand((exists('g:netrw_gx')? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())<cr>", {noremap = true, silent = true})
 
@@ -79,10 +78,10 @@ M.misc = function()
 
         -- Toggle the QuickFix window
         map('', '<C-q>', ':call QuickFixToggle()<CR>', {noremap = true, silent = true})
-        
+
         --map('n', '<C-x>', ':bdelete<CR>', {noremap = true, silent = true})
         map('n', '<C-x>', ':lua require(\'core.utils\').close_buffer() <CR>', {noremap = true, silent = true})
-        
+
         map("i", "<C-Space>", "compe#complete()", { noremap = true, silent = true, expr = true })
         --vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')", { noremap = true, silent = true, expr = true })
         map("i", "<C-e>", "compe#close('<C-e>')", { noremap = true, silent = true, expr = true })
@@ -91,12 +90,40 @@ M.misc = function()
     end
 
     local function required_mappings()
-        cmd "silent! command PackerClean lua require 'pluginList' require('packer').clean()"
-        cmd "silent! command PackerCompile lua require 'pluginList' require('packer').compile()"
-        cmd "silent! command PackerInstall lua require 'pluginList' require('packer').install()"
-        cmd "silent! command PackerStatus lua require 'pluginList' require('packer').status()"
-        cmd "silent! command PackerSync lua require 'pluginList' require('packer').sync()"
-        cmd "silent! command PackerUpdate lua require 'pluginList' require('packer').update()"
+        --cmd "silent! command PackerClean lua require 'pluginList' require('packer').clean()"
+        --cmd "silent! command PackerCompile lua require 'pluginList' require('packer').compile()"
+        --cmd "silent! command PackerInstall lua require 'pluginList' require('packer').install()"
+        --cmd "silent! command PackerStatus lua require 'pluginList' require('packer').status()"
+        --cmd "silent! command PackerSync lua require 'pluginList' require('packer').sync()"
+        --cmd "silent! command PackerUpdate lua require 'pluginList' require('packer').update()"
+        -- snapshot stuff
+        local packer_cmd = function(callback)
+           return function()
+              require "pluginList"
+              require("packer")[callback]()
+           end
+        end
+        user_cmd("PackerSnapshot", function(info)
+           require "pluginList"
+           require("packer").snapshot(info.args)
+        end, { nargs = "+" })
+
+        user_cmd("PackerSnapshotDelete", function(info)
+           require "pluginList"
+           require("packer.snapshot").delete(info.args)
+        end, { nargs = "+" })
+
+        user_cmd("PackerSnapshotRollback", function(info)
+           require "pluginList"
+           require("packer").rollback(info.args)
+        end, { nargs = "+" })
+
+        user_cmd("PackerClean", packer_cmd "clean", {})
+        user_cmd("PackerCompile", packer_cmd "compile", {})
+        user_cmd("PackerInstall", packer_cmd "install", {})
+        user_cmd("PackerStatus", packer_cmd "status", {})
+        user_cmd("PackerSync", packer_cmd "sync", {})
+        user_cmd("PackerUpdate", packer_cmd "update", {})
     end
 
     non_config_mappings()
@@ -111,7 +138,7 @@ M.terms = function()
    map("t", "jk", "<C-\\><C-n>", opt)
    -- hide a term from within terminal mode
    map("t", "JK", "<C-\\><C-n> :lua require('core.utils').close_buffer() <CR>", opt)
-  -- pick a hidden term 
+  -- pick a hidden term
    map("n", "<leader>W", ":Telescope terms <CR>", opt)
 
    -- Open terminals
@@ -139,7 +166,7 @@ M.comment = function()
    --map("n", "m", ":lua require('Comment.api').toggle_current_linewise()<CR>")
    --map("v", "m", ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
    map("n", "<leader>/", "<cmd> :lua require('Comment.api').toggle_current_linewise()<CR>")
-   map("v", "<leader>/", "<cmd> :lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
+   map("v", "<leader>/", "<esc><cmd> :lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
 end
 
 M.dap = function ()

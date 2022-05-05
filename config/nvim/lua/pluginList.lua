@@ -21,19 +21,30 @@ return packer.startup(
             require("plugins.others").signature()
         end
     }
-    use {
-        "neovim/nvim-lspconfig",
-        module = "lspconfig",
-    }
 
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
     use {
         'williamboman/nvim-lsp-installer',
-
+--        opt = true,
+        setup = function()
+          -- reload the current file so lsp actually starts for it
+          vim.defer_fn(function()
+             vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
+          end, 0)
+        end,
         config = function ()
             require('lsp')
             --require('lsp.lspservers').setup_lsp()
         end
+    }
+
+    use {
+        "neovim/nvim-lspconfig",
+        after = "nvim-lsp-installer",
+        module = "lspconfig",
+--        config = function()
+--           require "lsp"
+--        end,
     }
 
     use {
@@ -63,6 +74,15 @@ return packer.startup(
           require "plugins.icons"
         end,
     }
+
+    use({
+      'rcarriga/nvim-notify',
+      config = function()
+        require('plugins.nvim-notify').config()
+      end,
+    })
+
+
     use {
      "stevearc/dressing.nvim",
      event = "BufWinEnter",
@@ -168,7 +188,6 @@ return packer.startup(
     -- Telescope
     use {
         "nvim-telescope/telescope.nvim",
-        module = "telescope",
         cmd = "Telescope",
         requires = {
             {
@@ -621,7 +640,7 @@ return packer.startup(
     use {
        "numToStr/Comment.nvim",
        module = "Comment",
-       keys = { "gcc" },
+       keys = { "gc", "gb" },
        --config = override_req("nvim_comment", "(plugins.configs.others).comment()"),
        config = function ()
           require("plugins.others").comment()
