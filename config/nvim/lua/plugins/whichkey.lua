@@ -95,6 +95,7 @@ local mappings = {
         S = {"<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols"},
         q = {"<cmd>Telescope quickfix<cr>", "Quickfix"},
         t = {"<cmd>TodoTelescope<cr>", "Find TODO"},
+        k = {"<cmd>Telescope keymaps<CR>", "Find keymaps"},
       },
 
     b = {

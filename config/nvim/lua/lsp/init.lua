@@ -6,31 +6,31 @@ end
 
 local lsp_config = {}
 
-local function document_highlight(client, bufnr)
-    -- Set autocommands conditional on server_capabilities
-    --if client.resolved_capabilities.document_highlight then
-    --    vim.api.nvim_exec(
-    --        [[
-    --  augroup lsp_document_highlight
-    --    "autocmd! * <buffer>
-    --    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-    --    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    --  augroup END
-    --]],
-    --        false
-    --    )
-    if client.resolved_capabilities.document_highlight then
-        local lsp_references_au_id = vim.api.nvim_create_augroup("LSP_references", { clear = true })
-        vim.api.nvim_create_autocmd(
-            "CursorHold",
-            { callback = vim.lsp.buf.document_highlight, buffer = bufnr, group = lsp_references_au_id }
-        )
-        vim.api.nvim_create_autocmd(
-            "CursorMoved",
-            { callback = vim.lsp.buf.clear_references, buffer = bufnr, group = lsp_references_au_id }
-        )
-    end
-end
+--local function document_highlight(client, bufnr)
+--    -- Set autocommands conditional on server_capabilities
+--    --if client.resolved_capabilities.document_highlight then
+--    --    vim.api.nvim_exec(
+--    --        [[
+--    --  augroup lsp_document_highlight
+--    --    "autocmd! * <buffer>
+--    --    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+--    --    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+--    --  augroup END
+--    --]],
+--    --        false
+--    --    )
+--    if client.resolved_capabilities.document_highlight then
+--        local lsp_references_au_id = vim.api.nvim_create_augroup("LSP_references", { clear = true })
+--        vim.api.nvim_create_autocmd(
+--            "CursorHold",
+--            { callback = vim.lsp.buf.document_highlight, buffer = bufnr, group = lsp_references_au_id }
+--        )
+--        vim.api.nvim_create_autocmd(
+--            "CursorMoved",
+--            { callback = vim.lsp.buf.clear_references, buffer = bufnr, group = lsp_references_au_id }
+--        )
+--    end
+--end
 
 
 
@@ -98,6 +98,9 @@ function lsp_config.on_attach(client, bufnr)
        { callback = require("lsp.utilities").echo_cursor_diagnostic, group = lsp_diag_au_id, buffer = bufnr }
    )
    vim.api.nvim_create_autocmd("CursorMoved", { command = 'echo ""', group = lsp_diag_au_id, buffer = bufnr })
+
+   -- Enable completion triggered by <c-x><c-o>
+   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
 --vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})

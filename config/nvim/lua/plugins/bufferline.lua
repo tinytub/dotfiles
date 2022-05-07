@@ -26,6 +26,7 @@ bufferline.setup {
         separator_style = "thin",
         always_show_bufferline = true,
         diagnostics = false, -- "or nvim_lsp"
+        themable = true,
         custom_filter = function(buf_number)
           -- Func to filter out our managed/persistent split terms
           local present_type, type = pcall(function()
@@ -45,106 +46,5 @@ bufferline.setup {
           end
         end,
     },
-    highlights = {
-        fill = {
-            guifg = colors.grey_fg,
-            guibg = colors.black2
-        },
-        background = {
-            guifg = colors.grey_fg,
-            guibg = colors.black2
-        },
-        -- buffers
-        buffer_visible = {
-            guifg = colors.light_grey,
-            guibg = colors.black2
-        },
-        buffer_selected = {
-            --guifg = colors.white,
-            --guibg = colors.black,
-            guifg = "#ffffff",
-            guibg = colors.darker_black,
-            --gui = "bold,italic"
-            gui = "bold"
-        },
-        -- tabs
-        tab = {
-            guifg = colors.light_grey,
-            guibg = colors.one_bg3
-        },
-        tab_selected = {
-            guifg = colors.black2,
-            guibg = colors.nord_blue
-        },
-        tab_close = {
-            guifg = colors.red,
-            guibg = colors.black
-        },
-        indicator_selected = {
-            guifg = colors.black,
-            guibg = colors.black
-        },
-        -- separators
-        separator = {
-            guifg = colors.black2,
-            guibg = colors.black2
-        },
-        separator_visible = {
-            guifg = colors.black2,
-            guibg = colors.black2
-        },
-        separator_selected = {
-            guifg = colors.black2,
-            guibg = colors.black2
-        },
-        -- modified
-        modified = {
-            guifg = colors.red,
-            guibg = colors.black2
-        },
-        modified_visible = {
-            guifg = colors.red,
-            guibg = colors.black2
-        },
-        modified_selected = {
-            guifg = colors.green,
-            guibg = colors.black
-        },
-        -- for diagnostics = "nvim_lsp"
-        error = {
-           guifg = colors.light_grey,
-           guibg = colors.black2,
-        },
-        error_diagnostic = {
-           guifg = colors.light_grey,
-           guibg = colors.black2
-        },
-
-        -- close buttons
-        close_button = {
-            guifg = colors.light_grey,
-            guibg = colors.black2
-        },
-        close_button_visible = {
-            guifg = colors.light_grey,
-            guibg = colors.black2
-        },
-        close_button_selected = {
-            guifg = colors.red,
-            guibg = colors.black
-        }
-    }
 }
---let fg_target = 'red'
---
---let fg_current  = s:fg(['Normal'], '#efefef')
---let fg_visible  = s:fg(['TabLineSel'], '#efefef')
---let fg_inactive = s:fg(['TabLineFill'], '#888888')
---
---let fg_modified  = s:fg(['WarningMsg'], '#E5AB0E')
---let fg_special  = s:fg(['Special'], '#599eff')
---let fg_subtle  = s:fg(['NonText', 'Comment'], '#555555')
---
---let bg_current  = s:bg(['Normal'], '#000000')
---let bg_visible  = s:bg(['TabLineSel', 'Normal'], '#000000')
---let bg_inactive = s:bg(['TabLineFill', 'StatusLine'], '#000000')
+

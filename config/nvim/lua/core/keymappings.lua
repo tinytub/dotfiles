@@ -21,9 +21,6 @@ M.misc = function()
         map("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
         map("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
 
-        -- use ESC to turn off search highlighting
-        map("n", "<Esc>", ":noh<CR>", opt)
-
         -- navigation between windows
         map('n', '<C-h>', '<C-w>h')
         map('n', '<C-j>', '<C-w>j')
@@ -68,7 +65,7 @@ M.misc = function()
         map('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
 
         -- use ESC to turn off search highlighting
-        map("n", "<Esc>", ":noh <CR>")
+        map("n", "<Esc>", "<cmd> :noh <CR>")
 
         -- fix to get netrw's gx command to work correctly
         --vim.api.nvim_set_keymap('n', 'gx', ":call netrw#BrowseX(expand((exists('g:netrw_gx')? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())<cr>", {noremap = true, silent = true})
