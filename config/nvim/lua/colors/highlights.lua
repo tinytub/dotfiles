@@ -2,7 +2,8 @@
 -- https://github.com/NvChad/NvChad/commit/02d545cd42ccb4d8bcb6120c18f8d8d27958a1e0
 local cmd = vim.cmd
 
-local colors = require("colors").get()
+--local colors = require("colors").get()
+local colors = require('base46').get_colors('base_30')
 
 local black = colors.black
 local black2 = colors.black2

@@ -73,13 +73,16 @@ options.buttons = {
    },
 }
 
+local fn = vim.fn
+local marginTopPercent = 0.3
+local headerPadding = fn.max { 2, fn.floor(fn.winheight(0) * marginTopPercent) }
 
 local M = {}
 
 M.setup = function()
    alpha.setup {
       layout = {
-         { type = "padding", val = 9 },
+         { type = "padding", val = headerPadding },
          options.header,
          { type = "padding", val = 2 },
          options.buttons,

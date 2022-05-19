@@ -15,16 +15,16 @@ local sources = {
    b.formatting.black,
    b.diagnostics.chktex,
 
-   b.diagnostics.misspell.with({
-     filetypes = { "markdown", "text", "txt" },
-     args = { "$FILENAME" },
-   }),
-   b.diagnostics.write_good.with({
-     filetypes = { "markdown", "tex", "" },
-     extra_filetypes = { "txt", "text" },
-     args = { "--text=$TEXT", "--parse" },
-     command = "write-good",
-   }),
+--   b.diagnostics.misspell.with({
+--     filetypes = { "markdown", "text", "txt" },
+--     args = { "$FILENAME" },
+--   }),
+--   b.diagnostics.write_good.with({
+--     filetypes = { "markdown", "tex", "" },
+--     extra_filetypes = { "txt", "text" },
+--     args = { "--text=$TEXT", "--parse" },
+--     command = "write-good",
+--   }),
 
    b.diagnostics.vint,
 

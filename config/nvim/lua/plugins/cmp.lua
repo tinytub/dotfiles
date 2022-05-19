@@ -77,7 +77,7 @@ cmp.setup {
      path = 1,
    },
    confirm_opts = {
-     behavior = cmp.ConfirmBehavior.Replace,
+     behavior = cmp.ConfirmBehavior.Insert,
      select = false,
    },
    --documentation = {

@@ -1,6 +1,16 @@
 local M = {}
 
 local lspconfig = require 'lspconfig'
+-- Borders for LspInfo winodw
+local win = require "lspconfig.ui.windows"
+local _default_opts = win.default_opts
+
+win.default_opts = function(options)
+   local opts = _default_opts(options)
+   opts.border = "single"
+   return opts
+end
+
 M.setup_lsp = function(attach, capabilities)
    local lsp_installer = require "nvim-lsp-installer"
 

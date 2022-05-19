@@ -131,7 +131,8 @@ telescope.setup {
             n = {
                 ["<C-j>"] = actions.move_selection_next,
                 ["<C-k>"] = actions.move_selection_previous,
-                ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist
+                ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+                ["q"] = require("telescope.actions").close,
                 -- ["<C-i>"] = my_cool_custom_action,
             }
         },

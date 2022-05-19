@@ -1,6 +1,3 @@
-local colors = require("colors").get()
---local colors = require("themes/" .. "tomorrow-night")
-
 local present, bufferline = pcall(require, "bufferline")
 if not present then
     return
@@ -10,7 +7,7 @@ end
 bufferline.setup {
     options = {
         offsets = {{filetype = "NvimTree", text = "", padding = 1}},
-        buffer_close_icon = "",
+--        buffer_close_icon = "",
         modified_icon = "",
         close_icon = "",
         show_close_icon = true,
@@ -23,7 +20,8 @@ bufferline.setup {
         enforce_regular_tabs = false,
         view = "multiwindow",
         show_buffer_close_icons = false,
-        separator_style = "thin",
+        --separator_style = "thick",
+        separator_style = {"|", "|"},
         always_show_bufferline = true,
         diagnostics = false, -- "or nvim_lsp"
         themable = true,
@@ -46,5 +44,11 @@ bufferline.setup {
           end
         end,
     },
+    highlights = {
+      buffer_selected = {
+        gui = "bold"
+      },
+    },
+
 }
 

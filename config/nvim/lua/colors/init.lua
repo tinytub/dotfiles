@@ -27,7 +27,6 @@ local M = {}
 --end
 
 M.init = function()
-      vim.opt.background = "dark"
       M.kanagawa()
 
       package.loaded["colors.highlights" or false] = nil

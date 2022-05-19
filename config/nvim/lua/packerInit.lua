@@ -39,6 +39,7 @@ packer.init {
    },
    auto_clean = true,
    compile_on_sync = true,
+   snapshot = nil,
    --    auto_reload_compiled = true
 }
 

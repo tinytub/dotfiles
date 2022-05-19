@@ -93,17 +93,31 @@ return packer.startup(
     }
 
     use {
+      'CanKolay3499/base46',
+      config = function()
+        local base46 = require('base46')
+        base46.setup({ theme = 'everforest' })
+        -- then load the highlights
+        package.loaded["colors.highlights" or false] = nil
+        require "colors.highlights"
+      end,
+    }
+
+
+    use {
         'sainnhe/everforest',
         config = function ()
            require("colors").init()
-        end
+        end,
+        disable = true,
     }
 
     use {
         'rebelot/kanagawa.nvim',
         config = function ()
            require("colors").init()
-        end
+        end,
+        disable = true,
     }
 
     use {
@@ -111,7 +125,8 @@ return packer.startup(
         config = function ()
                 --require "highlights"
            require("colors").init()
-        end
+        end,
+        disable = true,
     }
 
     --use {
@@ -184,7 +199,16 @@ return packer.startup(
       config = function()
         require("plugins.bufferline")
       end,
+      disable = false,
     }
+
+    use {
+        "romgrk/barbar.nvim",
+        config = function()
+        end,
+        disable = true,
+    }
+
 
     -- Telescope
     use {
@@ -360,11 +384,6 @@ return packer.startup(
     --use {"christianchiarulli/nvcode-color-schemes.vim", opt = true}
 
 
-    --use {
-    --    "romgrk/barbar.nvim",
-    --    config = function()
-    --    end,
-    --}
 
     --use {
     --    'phaazon/hop.nvim',
@@ -635,7 +654,7 @@ return packer.startup(
       config = function()
         require('plugins.todo-comments')
       end,
-      event = 'BufWinEnter',
+      --event = 'BufWinEnter',
       disable = false,
     }
     use {

@@ -33,10 +33,15 @@ which_key.setup {
     layout = {
         height = {min = 4, max = 25}, -- min and max height of the columns
         width = {min = 20, max = 50}, -- min and max width of the columns
-        spacing = 3 -- spacing between columns
+        spacing = 6 -- spacing between columns
     },
     hidden = {"<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ "}, -- hide mapping boilerplate
-    show_help = true -- show help message on the command line when the popup is visible
+    show_help = true, -- show help message on the command line when the popup is visible
+    triggers_blacklist = {
+       -- list of mode / prefixes that should never be hooked by WhichKey
+       i = { "j", "k" },
+       v = { "j", "k" },
+    },
 }
 
 local opts = {
@@ -75,24 +80,25 @@ local mappings = {
         n = { "<cmd>enew<cr>", "New File" },
         --. = {"<cmd>Telescope filetypes<cr>"                   , "filetypes"},
         B = {"<cmd>Telescope git_branches<cr>"                , "git branches"},
-        d = {"<cmd>Telescope lsp_document_diagnostics<cr>"    , "document_diagnostics"},
-        D = {"<cmd>Telescope lsp_workspace_diagnostics<cr>"   , "workspace_diagnostics"},
+        d = {"<cmd>Telescope lsp_document_diagnostics<cr>"    , " document_diagnostics"},
+        D = {"<cmd>Telescope lsp_workspace_diagnostics<cr>"   , " workspace_diagnostics"},
         --f = {"<cmd>Telescope find_files <cr>"                 , "files"},
-        f = {"<cmd>Telescope find_files follow=true no_ignore=true hidden=true <cr>", "files"},
-        h = {"<cmd>Telescope command_history<cr>"            , "history"},
-        i = {"<cmd>Telescope media_files<cr>"                , "media files"},
+        f = {"<cmd>Telescope find_files follow=true no_ignore=true hidden=true <cr>", " files"},
+        h = {"<cmd>Telescope command_history<cr>"            , " history"},
+        i = {"<cmd>Telescope media_files<cr>"                , " media files"},
         m = {"<cmd>Telescope marks<cr>"                      , "marks"},
-        M = {"<cmd>Telescope man_pages<cr>"                  , "man_pages"},
+        M = {"<cmd>Telescope man_pages<cr>"                  , " man_pages"},
         v = {"<cmd>Telescope vim_options<cr>"                , "vim_options"},
-        a = {"<cmd>Telescope live_grep<cr>"                  , "text"},
-        b = {"<cmd>Telescope file_browser<cr>"               , "file browser"},
-        u = {"<cmd>Telescope colorscheme<cr>"                , "colorschemes"},
+        a = {"<cmd>Telescope live_grep<cr>"                  , " live grep"},
+        b = {"<cmd>Telescope file_browser<cr>"               , " file browser"},
+        u = {"<cmd>Telescope colorscheme<cr>"                , " colorschemes"},
         g = {"<cmd>Telescope git_files<cr>"                  , "git_files"},
         w = {"<cmd>Telescope grep_string<cr>"                , "grep_string"},
         o = {"<cmd>Telescope oldfiles<cr>"                   , "oldfiles"},
         c = {"<cmd>Telescope git_commits<cr>"                , "git_commits"},
         s = {"<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
         S = {"<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols"},
+--        ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "   pick hidden term" },
         q = {"<cmd>Telescope quickfix<cr>", "Quickfix"},
         t = {"<cmd>TodoTelescope<cr>", "Find TODO"},
         k = {"<cmd>Telescope keymaps<CR>", "Find keymaps"},
@@ -107,18 +113,18 @@ local mappings = {
       ['n'] = {"bnext"                  , 'next-buffer'},
       ['p'] = {"bprevious"              , 'previous-buffer'},
       ['?'] = {"Buffers"                , 'fzf-buffer'},
-      ['b'] = {"<cmd>Telescope buffers<cr>"                , 'find bufers'},
+      ['b'] = {"<cmd>Telescope buffers<cr>"                , ' find bufers'},
     },
     g = {
         name = "+Git",
         b = {"<cmd>Git blame<cr>", "Git Blame"},
         d = {"<cmd>Git diff<cr>", "Git Diff"},
         l = {"<cmd>Git log<cr>", "Git Log"},
-        s = {"<cmd>Git status<cr>", "Git Status"},
+        s = {"<cmd>Git status<cr>", "  Git Status"},
 
         o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
         B = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-        c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
+        c = { "<cmd>Telescope git_commits<cr>", "  Checkout commit" },
         C = {
           "<cmd>Telescope git_bcommits<cr>",
           "Checkout commit(for current file)",

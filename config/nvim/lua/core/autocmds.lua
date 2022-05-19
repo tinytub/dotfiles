@@ -1,5 +1,30 @@
 local acmd = {}
 
+local autocmd = vim.api.nvim_create_autocmd
+
+-- Disable statusline in dashboard
+autocmd("FileType", {
+   pattern = "alpha",
+   callback = function()
+      vim.opt.laststatus = 0
+   end,
+})
+
+autocmd("BufUnload", {
+   buffer = 0,
+   callback = function()
+      vim.opt.laststatus = 3
+   end,
+})
+---- open nvim with a dir while still lazy loading nvimtree
+--autocmd("BufEnter", {
+--   callback = function()
+--      if vim.api.nvim_buf_get_option(0, "buftype") ~= "terminal" then
+--         vim.cmd "lcd %:p:h"
+--      end
+--   end,
+--})
+
 function acmd.define_augroups(definitions) -- {{{1
 
     -- Create autocommand groups based on the passed definitions
@@ -35,7 +60,6 @@ end
 
 --auto close file exploer when quiting incase a single buffer is left
 vim.cmd([[ autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'nvimtree') | q | endif ]])
-
 vim.cmd([[
   function! QuickFixToggle()
     if empty(filter(getwininfo(), 'v:val.quickfix'))
