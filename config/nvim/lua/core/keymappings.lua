@@ -8,32 +8,13 @@ local opt = {}
 
 
 M.misc = function()
-
     local function non_config_mappings()
-        -- Don't copy the replaced text after pasting in visual mode
-        -- https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text#Alternative_mapping_for_paste
-        map("v", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { silent = true })
-        -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
-        -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
-        -- empty mode is same as using :map
-        -- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
-        map({ "n", "x", "o" }, "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-        map({ "n", "x", "o" }, "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
-        map("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-        map("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
-
         -- navigation between windows
         map('n', '<C-h>', '<C-w>h')
         map('n', '<C-j>', '<C-w>j')
         map('n', '<C-k>', '<C-w>k')
         map('n', '<C-l>', '<C-w>l')
 
-        ---- Insert Mode 移动光标
-        --map('i', '<C-h>', '<Left>', opt)
-        --map('i', '<C-l>', '<Right>', opt)
-        --map('i', '<C-j>', '<Down>', opt)
-        --map('i', '<C-k>', '<Up>', opt)
-        --map('i', '<C-s>', '<Esc>:w<CR>', opt)
         -- move cursor within insert mode
         map("i", "<C-h>", "<Left>")
         map("i", "<C-l>", "<Right>")
@@ -49,51 +30,18 @@ M.misc = function()
         map('c', '<C-k>', '<Up>', opt)
         map('c', '<C-t>', '[[<C-R>=expand("%:p:h") . "/" <CR>]]', opt)
 
-        -- TODO fix this
-        -- resize with arrows
-        map('n', '<C-Up>', ':resize -2<CR>', {silent = true})
-        map('n', '<C-Down>', ':resize +2<CR>', {silent = true})
-        -- M-key means ALT-xxxx
-        map('n', '<M-[>', ':vertical resize -2<CR>', {silent = true})
-        map('n', '<M-]>', ':vertical resize +2<CR>', {silent = true})
-
-        -- better indenting
-        map('v', '<', '<gv', {noremap = true, silent = true})
-        map('v', '>', '>gv', {noremap = true, silent = true})
-
         -- Move selected line / block of text in visual mode
         map('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silent = true})
         map('x', 'J', ':move \'>+1<CR>gv-gv', {noremap = true, silent = true})
 
-        -- use ESC to turn off search highlighting
-        map("n", "<Esc>", "<cmd> :noh <CR>")
-
-        -- fix to get netrw's gx command to work correctly
-        --vim.api.nvim_set_keymap('n', 'gx', ":call netrw#BrowseX(expand((exists('g:netrw_gx')? g:netrw_gx : '<cfile>')),netrw#CheckIfRemote())<cr>", {noremap = true, silent = true})
-
         vim.cmd('vnoremap p "0p')
         vim.cmd('vnoremap P "0P')
 
-        -- Toggle the QuickFix window
-        map('', '<C-q>', ':call QuickFixToggle()<CR>', {noremap = true, silent = true})
+        -- map('n', '<C-x>', ':lua require(\'core.utils\').close_buffer() <CR>', {noremap = true, silent = true})
 
-        --map('n', '<C-x>', ':bdelete<CR>', {noremap = true, silent = true})
-        map('n', '<C-x>', ':lua require(\'core.utils\').close_buffer() <CR>', {noremap = true, silent = true})
-
-        map("i", "<C-Space>", "compe#complete()", { noremap = true, silent = true, expr = true })
-        --vim.api.nvim_set_keymap("i", "<CR>", "compe#confirm('<CR>')", { noremap = true, silent = true, expr = true })
-        map("i", "<C-e>", "compe#close('<C-e>')", { noremap = true, silent = true, expr = true })
-        map("i", "<C-f>", "compe#scroll({ 'delta': +4 })", { noremap = true, silent = true, expr = true })
-        map("i", "<C-d>", "compe#scroll({ 'delta': -4 })", { noremap = true, silent = true, expr = true })
     end
 
     local function required_mappings()
-        --cmd "silent! command PackerClean lua require 'pluginList' require('packer').clean()"
-        --cmd "silent! command PackerCompile lua require 'pluginList' require('packer').compile()"
-        --cmd "silent! command PackerInstall lua require 'pluginList' require('packer').install()"
-        --cmd "silent! command PackerStatus lua require 'pluginList' require('packer').status()"
-        --cmd "silent! command PackerSync lua require 'pluginList' require('packer').sync()"
-        --cmd "silent! command PackerUpdate lua require 'pluginList' require('packer').update()"
         -- snapshot stuff
         local packer_cmd = function(callback)
            return function()
@@ -127,53 +75,6 @@ M.misc = function()
     non_config_mappings()
     required_mappings()
 end
-
-
--- terminals
---local function terms()
-M.terms = function()
-   -- get out of terminal mode
-   map("t", "jk", "<C-\\><C-n>", opt)
-   -- hide a term from within terminal mode
-   map("t", "JK", "<C-\\><C-n> :lua require('core.utils').close_buffer() <CR>", opt)
-  -- pick a hidden term
-   map("n", "<leader>W", ":Telescope terms <CR>", opt)
-
-   -- Open terminals
-   -- TODO this opens on top of an existing vert/hori term, fixme
-   --map("n", "<leader>w", ":execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>", opt)
-   --map("n", "<leader>v", ":execute 'vnew +terminal' | let b:term_type = 'vert' | startinsert <CR>", opt)
-   map("n", "<leader>w", ":execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>", opt)
-
-   map(
-      "n",
-      "<leader>H",
-      ":execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>"
-   )
-   map("n", "<leader>V", ":execute 'vnew +terminal' | let b:term_type = 'vert' | startinsert <CR>")
-   --  map("n", "<leader>w", ":execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
-
-end
-
-M.bufferline = function ()
-   map("n", "<TAB>", "<cmd> :BufferLineCycleNext <CR>")
-   map("n", "<S-Tab>", "<cmd> :BufferLineCyclePrev <CR>")
-end
-
-M.comment = function()
-   --map("n", "m", ":lua require('Comment.api').toggle_current_linewise()<CR>")
-   --map("v", "m", ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
-   map("n", "<leader>/", "<cmd> :lua require('Comment.api').toggle_current_linewise()<CR>")
-   map("v", "<leader>/", "<esc><cmd> :lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
-end
-
-M.dap = function ()
-    map("n", "<F5>", ":lua require'dap'.continue()<CR>", { silent = true})
-    map("n", "<F10>", ":lua require'dap'.step_over()<CR>", { silent = true})
-    map("n", "<F11>", ":lua require'dap'.step_into()<CR>", { silent = true})
-    map("n", "<F12>", ":lua require'dap'.step_out()<CR>", { silent = true})
-end
-
 
 --M.misc()
 --M.terms()

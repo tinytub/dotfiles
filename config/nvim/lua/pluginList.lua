@@ -1,14 +1,11 @@
-local present, packer = pcall(require, "packerInit")
-
-if not present then
-   return false
-end
+--local present, packer = pcall(require, "packerInit")
+local packer = require("packerInit").run()
 
 local use = packer.use
 
 return packer.startup(
     function()
-    use {"wbthomason/packer.nvim", event = "VimEnter"}
+    use {"wbthomason/packer.nvim"}
     use "lewis6991/impatient.nvim"
     use "nathom/filetype.nvim"
     use "nvim-lua/plenary.nvim"
@@ -94,6 +91,7 @@ return packer.startup(
 
     use {
       'CanKolay3499/base46',
+      after = "plenary.nvim",
       config = function()
         local base46 = require('base46')
         base46.setup({ theme = 'everforest' })
@@ -446,7 +444,6 @@ return packer.startup(
       config = function()
         -- require "dap"
          require("plugins.dap_init")
-         require("core.keymappings").dap()
 
          require('dap-go').setup()
       end,
@@ -497,7 +494,7 @@ return packer.startup(
     -- Markdown preview
     use {
         'iamcco/markdown-preview.nvim',
-        run = 'cd app && npm install',
+        run = function() vim.fn["mkdp#util#install"]() end,
         ft = 'markdown',
         event = "BufRead",
     }
@@ -664,9 +661,6 @@ return packer.startup(
        --config = override_req("nvim_comment", "(plugins.configs.others).comment()"),
        config = function ()
           require("plugins.others").comment()
-       end,
-       setup = function()
-          require("core.keymappings").comment()
        end,
     }
     end

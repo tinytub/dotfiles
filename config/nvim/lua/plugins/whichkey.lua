@@ -4,21 +4,25 @@ if not status_ok then
 end
 
 which_key.setup {
-    plugins = {
-        marks = true, -- shows a list of your marks on ' and `
-        registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
-        -- the presets plugin, adds help for a bunch of default keybindings in Neovim
-        -- No actual key bindings are created
-        presets = {
-            operators = false, -- adds help for operators like d, y, ...
-            motions = false, -- adds help for motions
-            text_objects = false, -- help for text objects triggered after entering an operator
-            windows = true, -- default bindings on <c-w>
-            nav = true, -- misc bindings to work with windows
-            z = true, -- bindings for folds, spelling and others prefixed with z
-            g = true -- bindings for prefixed with g
-        }
-    },
+   -- plugins = {
+   --     marks = true, -- shows a list of your marks on ' and `
+   --     registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+   --     -- the presets plugin, adds help for a bunch of default keybindings in Neovim
+   --     -- No actual key bindings are created
+   --     presets = {
+   --         operators = false, -- adds help for operators like d, y, ...
+   --         motions = false, -- adds help for motions
+   --         text_objects = false, -- help for text objects triggered after entering an operator
+   --         windows = true, -- default bindings on <c-w>
+   --         nav = true, -- misc bindings to work with windows
+   --         z = true, -- bindings for folds, spelling and others prefixed with z
+   --         g = true -- bindings for prefixed with g
+   --     }
+   -- },
+   popup_mappings = {
+      scroll_down = "<c-d>", -- binding to scroll down inside the popup
+      scroll_up = "<c-u>", -- binding to scroll up inside the popup
+   },
     icons = {
         breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
         separator = "➜", -- symbol used between a key and it's label
@@ -62,7 +66,6 @@ local mappings = {
     [";"] = {"<cmd>Dashboard<cr>"                                        , "home screen"},
     ["M"] = {"<cmd>MarkdownPreviewToggle<cr>"                          , "markdown preview"},
     ["h"] = {"<cmd>let @/ = \"\"<cr>"                                    , "no highlight" },
-    ["T"] = {"<cmd>TSHighlightCapturesUnderCursor<cr>"                 , "treesitter highlight" },
     ["v"] = {"<C-W>v"                                          , "split right"},
     ["w"] = {"<cmd>execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>", "open terminal"},
 
@@ -74,6 +77,7 @@ local mappings = {
       ['n'] = {"<cmd>set nonumber!<cr>"          , 'line-numbers'},
       ['r'] = {"<cmd>set norelativenumber!<cr>"  , 'relative line nums'},
     },
+
     f = {
         name = "+Finder",
         r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
@@ -102,6 +106,7 @@ local mappings = {
         q = {"<cmd>Telescope quickfix<cr>", "Quickfix"},
         t = {"<cmd>TodoTelescope<cr>", "Find TODO"},
         k = {"<cmd>Telescope keymaps<CR>", "Find keymaps"},
+        W = {"<cmd>Telescope terms <CR>", "Pick a hidden term"}
       },
 
     b = {
@@ -167,9 +172,64 @@ local mappings = {
         ['c'] = {"<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", "set breakpoint"},
         ['l'] = {":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", "Log point message"},
 
+
     },
     S = {name = "+Session", s = {"<cmd>SessionSave<cr>", "Save Session"}, l = {"<cmd>SessionLoad<cr>", "Load Session"}}
 }
 
+local misc_n_opts = {
+    mode = "n", -- NORMAL mode
+    buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+    silent = true, -- use `silent` when creating keymaps
+    noremap = true, -- use `noremap` when creating keymaps
+    nowait = false -- use `nowait` when creating keymaps
+}
+
+local misc_n_mapping = {
+    -- close buffer + hide terminal buffer
+    ["<C-x>"] = {"<cmd>lua require(\'core.utils\').close_buffer() <CR>", "  close buffer"},
+    ["<ESC>"] = {"<cmd> noh <CR>", "  no highlight" },
+
+    -- M-key means ALT-xxxx
+    ['<M-[>'] = {'<cmd>vertical resize -2<CR>', "vertical resize -2"},
+    ['<M-]>'] = {'<cmd>vertical resize +2<CR>', "vertical resize +2"},
+
+    -- cycle through buffers
+    ["<TAB>"] = { "<cmd> BufferLineCycleNext <CR>", "  cycle next buffer" },
+    ["<S-Tab>"] = { "<cmd> BufferLineCyclePrev <CR>", "  cycle prev buffer" },
+    ["<S-b>"] = { "<cmd> enew <CR>", "烙 new buffer" },
+
+    ["<F5>"]  = {"<cmd>lua require'dap'.continue()<CR>", "dap continue"},
+    ["<F10>"] = {"<cmd>lua require'dap'.step_over()<CR>", "dap step over"},
+    ["<F11>"] = {"<cmd>lua require'dap'.step_into()<CR>", "dap step into"},
+    ["<F12>"] = {"<cmd>lua require'dap'.step_out()<CR>", "dap step out"},
+    ["<leader>/"] = {
+         function()
+            require("Comment.api").toggle_current_linewise()
+         end,
+
+         "toggle comment",
+     },
+}
+
+local misc_v_opts = {
+    mode = "v", -- NORMAL mode
+    buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+    silent = true, -- use `silent` when creating keymaps
+    noremap = true, -- use `noremap` when creating keymaps
+    nowait = false -- use `nowait` when creating keymaps
+}
+
+local misc_v_mapping = {
+      ["<leader>/"] = {
+         "<ESC><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>",
+         "toggle comment",
+      },
+}
+
 local wk = require("which-key")
+
+wk.register(misc_n_mapping, misc_n_opts)
+wk.register(misc_v_mapping, misc_v_opts)
+
 wk.register(mappings, opts)
