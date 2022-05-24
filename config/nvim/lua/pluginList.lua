@@ -1,5 +1,5 @@
 --local present, packer = pcall(require, "packerInit")
-local packer = require("packerInit").run()
+local packer = require("core.packerInit").run()
 
 local use = packer.use
 

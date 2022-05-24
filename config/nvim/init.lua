@@ -12,7 +12,7 @@ end
 require("core.options")
 require("core.autocmds")
 require("core.global")
-require("packerInit").bootstrap()
+require("core.packerInit").bootstrap()
 
 -- set all the non plugin mappings
 require("core.keymappings").misc()
