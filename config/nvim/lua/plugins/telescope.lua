@@ -7,46 +7,6 @@ local actions = require('telescope.actions')
 local action_state = require("telescope.actions.state")
 local transform_mod = require('telescope.actions.mt').transform_mod
 
--- https://github.com/nvim-telescope/telescope.nvim/issues/223#issuecomment-810091610    don't show binaryfile
-local previewers = require('telescope.previewers')
-local Job = require('plenary.job')
-local new_maker = function(filepath, bufnr, opts)
-  filepath = vim.fn.expand(filepath)
-  Job:new({
-    command = 'file',
-    args = { '--mime-type', '-b', filepath },
-    on_exit = function(j)
-      local mime_type = vim.split(j:result()[1], '/')[1]
-      if mime_type == "text" then
-        previewers.buffer_previewer_maker(filepath, bufnr, opts)
-      else
-        -- maybe we want to write something to the buffer here
-        vim.schedule(function()
-          vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { 'BINARY' })
-        end)
-      end
-    end
-  }):sync()
-end
-local function multiopen(prompt_bufnr, open_cmd)
-    local picker = action_state.get_current_picker(prompt_bufnr)
-    local num_selections = #picker:get_multi_selection()
-    if num_selections > 1 then
-        for _, entry in ipairs(picker:get_multi_selection()) do
-            vim.cmd(string.format("%s %s", open_cmd, entry.value))
-        end
-    else
-        vim.cmd(string.format("%s %s", open_cmd, action_state.get_selected_entry().value))
-    end
-    vim.cmd("stopinsert")
-    vim.o.winhighlight = ''
-end
-local custom_actions = transform_mod({
-    multi_selection_open_vsplit = function(prompt_bufnr) multiopen(prompt_bufnr, ":vsplit") end,
-    multi_selection_open_split = function(prompt_bufnr) multiopen(prompt_bufnr, ":split") end,
-    multi_selection_open_tab =  function(prompt_bufnr) multiopen(prompt_bufnr, ":tabe") end,
-    multi_selection_open = function(prompt_bufnr) multiopen(prompt_bufnr, ":edit") end,
-})
 --local trouble = require("trouble.providers.telescope")
 -- Global remapping
 ------------------------------
@@ -105,7 +65,6 @@ telescope.setup {
 
         ---- Developer configurations: Not meant for general override
         -- buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker,
-        buffer_previewer_maker = new_maker,
         mappings = {
             i = {
                 ["<C-c>"] = actions.close,
@@ -145,55 +104,6 @@ telescope.setup {
             end
         }
     },
-    pickers = {
-        oldfiles = {
-            mappings = {
-                i = {
-                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
-                    ["<C-s>"] = custom_actions.multi_selection_open_split,
-                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
-                },
-                n = {
-                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
-                    ["<C-s>"] = custom_actions.multi_selection_open_split,
-                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
-                },
-            },
-        },
-        find_files = {
-            follow = true,
-            mappings = {
-                i = {
-                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
-                    ["<C-s>"] = custom_actions.multi_selection_open_split,
-                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
-                },
-                n = {
-                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
-                    ["<C-s>"] = custom_actions.multi_selection_open_split,
-                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
-                },
-            },
-        },
-        buffers = {
-            sort_mru = true,
-            mappings = {
-                i = {
-                    ["<C-r>"] = actions.delete_buffer,
-                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
-                    ["<C-s>"] = custom_actions.multi_selection_open_split,
-                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
-                },
-                n = {
-                    ["<C-r>"] = actions.delete_buffer,
-                    ["<C-v>"] = custom_actions.multi_selection_open_vsplit,
-                    ["<C-s>"] = custom_actions.multi_selection_open_split,
-                    ["<C-t>"] = custom_actions.multi_selection_open_tab,
-                },
-            },
-        },
-    },
-    --extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
 }
 
 -- load the term_picker extension

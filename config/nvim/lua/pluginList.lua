@@ -1,7 +1,6 @@
 --local present, packer = pcall(require, "packerInit")
-local packer = require("core.packerInit").run()
-
-local use = packer.use
+local use, packer = require("core.packerInit").getPacker()
+--local use = packer.use
 
 return packer.startup(
     function()
@@ -127,58 +126,46 @@ return packer.startup(
         disable = true,
     }
 
-    --use {
-    --    use "RRethy/nvim-base16",
-    --    config = function ()
-    --        vim.cmd([[
-    --            colorscheme base16-gruvbox-dark-medium
-    --        ]])
-    --    end
-
-    --}
-
-
-    --use {
-    --    "ellisonleao/gruvbox.nvim",
-    --    requires = {"rktjmp/lush.nvim"},
-    --    config = function ()
-    --        vim.o.background = "dark" -- or "light" for light mode
-    --        vim.cmd([[colorscheme gruvbox]])
-    --        require("colors").init()
-    --    end
-    --}
-
-    --use({
-    --    'rose-pine/neovim',
-    --    as = 'rose-pine',
-    --    config = function()
-    --        -- Options (see available options below)
-    --        vim.g.rose_pine_variant = 'base'
-    --
-    --        -- Load colorscheme after options
-    --        vim.cmd('colorscheme rose-pine')
-    --    end
-    --})
-
-    --use {
-    --    'folke/tokyonight.nvim',
-    --    config = function ()
-    --        vim.g.tokyonight_style = "storm"
-    --        vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
-
-    --        vim.cmd([[
-    --            colorscheme tokyonight
-    --        ]])
-    --    end
-    --}
-
-    --use {
-    --    "NvChad/nvim-base16.lua",
-    --    disable = true,
-    --    config = function ()
-    --       require("colors").init("tomorrow-night")
-    --    end
-    --}
+--    use {
+--        "ellisonleao/gruvbox.nvim",
+--        requires = {"rktjmp/lush.nvim"},
+--        config = function ()
+--            vim.o.background = "dark" -- or "light" for light mode
+--            vim.cmd([[colorscheme gruvbox]])
+--            require("colors").init()
+--        end
+--    }
+--
+--    use({
+--        'rose-pine/neovim',
+--        as = 'rose-pine',
+--        config = function()
+--            -- Options (see available options below)
+--            vim.g.rose_pine_variant = 'base'
+--            -- Load colorscheme after options
+--            vim.cmd('colorscheme rose-pine')
+--        end
+--    })
+--
+--    use {
+--        'folke/tokyonight.nvim',
+--        config = function ()
+--            vim.g.tokyonight_style = "storm"
+--            vim.g.tokyonight_colors = { hint = "orange", error = "#ff0000" }
+--
+--            vim.cmd([[
+--                colorscheme tokyonight
+--            ]])
+--        end
+--    }
+--
+--    use {
+--        "NvChad/nvim-base16.lua",
+--        disable = true,
+--        config = function ()
+--           require("colors").init("tomorrow-night")
+--        end
+--    }
 
     -- try https://github.com/nvim-lualine/lualine.nvim ?
     use {
@@ -223,64 +210,64 @@ return packer.startup(
         end
     }
 
-   use {
-      "max397574/better-escape.nvim",
-      event = "InsertCharPre",
-      config = function()
-         require("plugins.others").better_escape()
-      end,
-   }
-   -- load luasnips + cmp related in insert mode only
-   use {
-      "rafamadriz/friendly-snippets",
-      module = "cmp_nvim_lsp",
-      event = "InsertEnter",
-   }
+    use {
+       "max397574/better-escape.nvim",
+       event = "InsertCharPre",
+       config = function()
+          require("plugins.others").better_escape()
+       end,
+    }
+    -- load luasnips + cmp related in insert mode only
+    use {
+       "rafamadriz/friendly-snippets",
+       module = "cmp_nvim_lsp",
+       event = "InsertEnter",
+    }
 
-   use {
-      "hrsh7th/nvim-cmp",
-      event = "InsertEnter",
---      commit = "30ed4e43a6fcb65b5816c578c78e3df3d87e6b1f",
-      after = "friendly-snippets",
-      config = function()
-         require "plugins.cmp"
-      end,
-   }
+    use {
+       "hrsh7th/nvim-cmp",
+       event = "InsertEnter",
+--       commit = "30ed4e43a6fcb65b5816c578c78e3df3d87e6b1f",
+       after = "friendly-snippets",
+       config = function()
+          require "plugins.cmp"
+       end,
+    }
 
-   use {
-      "L3MON4D3/LuaSnip",
-      wants = "friendly-snippets",
-      after = {"nvim-cmp", "nvim-treesitter"},
-      config = function()
-         require "plugins.others".luasnip()
-         --require "plugins.luasnips"
-      end,
-   }
+    use {
+       "L3MON4D3/LuaSnip",
+       wants = "friendly-snippets",
+       after = {"nvim-cmp", "nvim-treesitter"},
+       config = function()
+          require "plugins.others".luasnip()
+          --require "plugins.luasnips"
+       end,
+    }
 
-   use {
-      "saadparwaiz1/cmp_luasnip",
-      after = "LuaSnip",
-   }
+    use {
+       "saadparwaiz1/cmp_luasnip",
+       after = "LuaSnip",
+    }
 
-   use {
-      "hrsh7th/cmp-nvim-lua",
-      after = "cmp_luasnip",
-   }
+    use {
+       "hrsh7th/cmp-nvim-lua",
+       after = "cmp_luasnip",
+    }
 
-   use {
-      "hrsh7th/cmp-nvim-lsp",
-      after = "cmp-nvim-lua",
-   }
+    use {
+       "hrsh7th/cmp-nvim-lsp",
+       after = "cmp-nvim-lua",
+    }
 
-   use {
-      "hrsh7th/cmp-buffer",
-      after = "cmp-nvim-lsp",
-   }
+    use {
+       "hrsh7th/cmp-buffer",
+       after = "cmp-nvim-lsp",
+    }
 
-   use {
-      "hrsh7th/cmp-path",
-      after = "cmp-buffer",
-   }
+    use {
+       "hrsh7th/cmp-path",
+       after = "cmp-buffer",
+    }
 
 
    -- Treesitter
@@ -312,14 +299,6 @@ return packer.startup(
         --end,
         disable = false
     }
-    --use {
-    --    "nvim-treesitter/nvim-treesitter-refactor",
-    --    after = "nvim-treesitter-textobjects",
-    --    config = function ()
-    --      require("plugins.treesitter").treesitter_ref()
-    --    end,
-    --    disable = false
-    --}
     -- Smart text objects
     use {
         "RRethy/nvim-treesitter-textsubjects",
@@ -377,21 +356,6 @@ return packer.startup(
         require "plugins.others".autopairs()
       end,
     }
-
-    -- Color
-    --use {"christianchiarulli/nvcode-color-schemes.vim", opt = true}
-
-
-
-    --use {
-    --    'phaazon/hop.nvim',
-    --    event = 'BufRead',
-    --    config = function()
-    --        require('n-hop').config()
-    --    end,
-    --    disable = false,
-    --    opt = true
-    --}
 
     -- Dashboard
     use {
@@ -482,14 +446,6 @@ return packer.startup(
       end
       --disable = not lvim.builtin.terminal.active,
     }
-    -- lsp root with this nvim-tree will follow you
-    --use {
-    --    "ahmedkhalf/lsp-rooter.nvim",
-    --    config = function()
-    --        require("lsp-rooter").setup()
-    --    end,
-    --    disable = false,
-    --}
 
     -- Markdown preview
     use {
@@ -499,21 +455,6 @@ return packer.startup(
         event = "BufRead",
     }
 
-    ---- Interactive scratchpad
-    --use {
-    --    'metakirby5/codi.vim',
-    --    cmd = 'Codi',
-    --    ft = 'python',
-    --    event = "BufRead",
-    --}
-
-    ---- HTML preview
-    --use {
-    --    'turbio/bracey.vim',
-    --    event = "BufRead",
-    --    run = 'npm install --prefix server',
-    --    disable = true
-    --}
     -- LSP Colors
     use {
       "folke/lsp-colors.nvim",
@@ -524,15 +465,8 @@ return packer.startup(
     use {
       "kdheepak/lazygit.nvim",
       cmd = "LazyGit",
-      disable = false,
+      disable = true,
     }
-    -- Octo
-    --use {
-    --  "pwntester/octo.nvim",
-    --  event = "BufRead",
-    --  disable = false,
-    --}
-
     -- Language
     use {
         'ray-x/go.nvim',
@@ -541,14 +475,6 @@ return packer.startup(
             require("plugins.go-nvim")
         end
     }
-    --use {'fatih/vim-go',
-    --    opt = true,
-    --    ft = {'go','golang'},
-    --    config = function()
-    --        require('n-vim-go').config()
-    --    end
-    --}
-
 
     -- smooth scroll
     use {"psliwka/vim-smoothie"}
@@ -576,13 +502,6 @@ return packer.startup(
             vim.api.nvim_command('augroup END')
         end
     }
-    --use {
-    --    "liuchengxu/vista.vim",
-    --    event = "BufRead",
-    --    config = function ()
-    --       require('plugins.vista').config()
-    --    end
-    --}
 
     -- Git
     use {
@@ -625,6 +544,7 @@ return packer.startup(
             vim.g["test#echo_command"] = 1
     end
     }
+
     use {
         "lukas-reineke/indent-blankline.nvim",
         disable = false,

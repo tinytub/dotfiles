@@ -23,7 +23,7 @@ M.bootstrap = function()
 
 end
 
-M.run = function()
+M.getPacker = function()
    local present, packer = pcall(require, "packer")
 
    if not present then
@@ -32,7 +32,7 @@ M.run = function()
 
    packer.init(M.options)
 
-   return packer
+   return packer.use, packer
 end
 
 M.options = {

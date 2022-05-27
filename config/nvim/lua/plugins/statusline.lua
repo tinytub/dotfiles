@@ -195,6 +195,7 @@ local lsp_progress = {
          local percentage = Lsp.percentage or 0
          local title = Lsp.title or ""
          local spinners = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+
          local success_icon = {
             "",
             "",
@@ -212,9 +213,6 @@ local lsp_progress = {
       end
 
       return ""
-   end,
-   enabled = shortline or function(winid)
-      return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 80
    end,
    hl = "Feline_LspProgress",
 }
@@ -360,7 +358,6 @@ add_table(left, diagnostic.info)
 add_table(right, diff.add)
 add_table(right, diff.change)
 add_table(right, diff.remove)
-add_table(right, lsp_icon)
 add_table(right, git_branch)
 
 add_table(right, empty_space)
