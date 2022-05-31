@@ -1,10 +1,10 @@
 if (vim.g.vscode) then
     require("core.options")
-	require('vscode')
+    require('vscode')
 else
     local present, impatient = pcall(require, "impatient")
     if present then
-       impatient.enable_profile()
+        impatient.enable_profile()
     end
 
     require("core.options")

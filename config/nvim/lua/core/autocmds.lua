@@ -4,17 +4,17 @@ local autocmd = vim.api.nvim_create_autocmd
 
 -- Disable statusline in dashboard
 autocmd("FileType", {
-   pattern = "alpha",
-   callback = function()
-      vim.opt.laststatus = 0
-   end,
+    pattern = "alpha",
+    callback = function()
+        vim.opt.laststatus = 0
+    end,
 })
 
 autocmd("BufUnload", {
-   buffer = 0,
-   callback = function()
-      vim.opt.laststatus = 3
-   end,
+    buffer = 0,
+    callback = function()
+        vim.opt.laststatus = 3
+    end,
 })
 ---- open nvim with a dir while still lazy loading nvimtree
 --autocmd("BufEnter", {
@@ -40,7 +40,7 @@ function acmd.define_augroups(definitions) -- {{{1
         vim.cmd('autocmd!')
 
         for _, def in pairs(definition) do
-            local command = table.concat(vim.tbl_flatten {'autocmd', def}, ' ')
+            local command = table.concat(vim.tbl_flatten { 'autocmd', def }, ' ')
             vim.cmd(command)
         end
 
@@ -71,24 +71,24 @@ endfunction
 ]]
 )
 
-acmd.define_augroups({
-    autoformat = {
-        {'BufWritePre', '*', ':silent lua vim.lsp.buf.formatting_seq_sync()'},
-    --    {'BufWritePre', '*', ':silent lua vim.lsp.buf.formatting_sync()'},
-    }
-})
+--acmd.define_augroups({
+--    autoformat = {
+--        {'BufWritePre', '*', ':silent lua vim.lsp.buf.formatting_seq_sync()'},
+--    --    {'BufWritePre', '*', ':silent lua vim.lsp.buf.formatting_sync()'},
+--    }
+--})
 
 acmd.define_augroups({
     goautofmt = {
         -- Go generally requires Tabs instead of spaces.
-        {'FileType', '*.go', 'setlocal tabstop=4'},
-        {'FileType', '*.go', 'setlocal shiftwidth=4'},
-        {'FileType', '*.go', 'setlocal softtabstop=4'},
-        {'FileType', '*.go', 'setlocal noexpandtab'},
+        { 'FileType', '*.go', 'setlocal tabstop=4' },
+        { 'FileType', '*.go', 'setlocal shiftwidth=4' },
+        { 'FileType', '*.go', 'setlocal softtabstop=4' },
+        { 'FileType', '*.go', 'setlocal noexpandtab' },
 
         --{'BufWritePre', '*.go', 'lua vim.lsp.buf.formatting()'},
         --{'FileType', '*.go', ':autocmd! autoformat'},
-        {'BufWritePre', '*.go', 'lua require(\'lsp.format\').OrgImports(1000)'},
+        { 'BufWritePre', '*.go', 'lua require(\'lsp.format\').OrgImports(1000)' },
     }
 })
 
@@ -114,8 +114,8 @@ acmd.define_augroups {
         --{'FileType', 'qf', 'set nobuflisted'}
     },
     _git = {
-      { "FileType", "gitcommit", "setlocal wrap" },
-      { "FileType", "gitcommit", "setlocal spell" },
+        { "FileType", "gitcommit", "setlocal wrap" },
+        { "FileType", "gitcommit", "setlocal spell" },
     },
 }
 

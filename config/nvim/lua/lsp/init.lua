@@ -1,155 +1,99 @@
-local present1, nvim_lsp = pcall(require, "lspconfig")
+local present1, lspconfig = pcall(require, "lspconfig")
 
 if not present1 then
-   return
+    return
 end
 
-local lsp_config = {}
+-- Lsp highlights managed by
+--   `illuminate` plugin
+local function lsp_highlight_document(client)
+    if client.resolved_capabilities.document_highlight then
+        local illuminate_ok, illuminate = pcall(require, "illuminate")
+        if not illuminate_ok then
+            return
+        end
+        illuminate.on_attach(client)
+    end
+end
 
---local function document_highlight(client, bufnr)
---    -- Set autocommands conditional on server_capabilities
---    --if client.resolved_capabilities.document_highlight then
---    --    vim.api.nvim_exec(
---    --        [[
---    --  augroup lsp_document_highlight
---    --    "autocmd! * <buffer>
---    --    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
---    --    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
---    --  augroup END
---    --]],
---    --        false
---    --    )
---    if client.resolved_capabilities.document_highlight then
---        local lsp_references_au_id = vim.api.nvim_create_augroup("LSP_references", { clear = true })
---        vim.api.nvim_create_autocmd(
---            "CursorHold",
---            { callback = vim.lsp.buf.document_highlight, buffer = bufnr, group = lsp_references_au_id }
---        )
---        vim.api.nvim_create_autocmd(
---            "CursorMoved",
---            { callback = vim.lsp.buf.clear_references, buffer = bufnr, group = lsp_references_au_id }
---        )
---    end
---end
+-- Create custom keymaps for useful
+--   lsp functions
+-- The missing functions are most covered whith which-key mappings
+-- the `hover()` -> covers even signature_help on functions/methods
+local function lsp_keymaps(client, bufnr)
+    local function buf_set_keymap(...)
+        vim.api.nvim_buf_set_keymap(bufnr, ...)
+    end
 
+    -- Mappings.
+    local opts = { noremap = true, silent = true }
 
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+    buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+    buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+    buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+    buf_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+    buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+    buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+    buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+    buf_set_keymap("n", "<space>lt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+    buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+    buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+    --buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+    buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+    buf_set_keymap("n", "ge", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+    --buf_set_keymap("n", "[e", '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
+    --buf_set_keymap("n", "]e", '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
+    buf_set_keymap("n", "[e", '<cmd>lua vim.diagnostic.goto_prev({float = {border = "single"}})<CR>', opts)
+    buf_set_keymap("n", "]e", '<cmd>lua vim.diagnostic.goto_next({float = {border = "single"}})<CR>', opts)
+    buf_set_keymap("n", "<space>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+    buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
+    buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
 
-function lsp_config.on_attach(client, bufnr)
-   local function buf_set_keymap(...)
-      vim.api.nvim_buf_set_keymap(bufnr, ...)
-   end
+    if client.resolved_capabilities.document_formatting then
+        vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_seq_sync, opts)
+        vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", vim.lsp.buf.formatting_seq_sync, {})
+    end
 
-   --client.resolved_capabilities.document_formatting = false
-   --client.resolved_capabilities.document_range_formatting = false
-
-   -- Mappings.
-   local opts = { noremap = true, silent = true }
-
-   -- See `:help vim.lsp.*` for documentation on any of the below functions
-   buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-   buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-   buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-   buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-   buf_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-   buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-   buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-   buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
-   buf_set_keymap("n", "<space>lt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-   buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-   buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-   --buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-   buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
-   buf_set_keymap("n", "ge", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-   --buf_set_keymap("n", "[e", '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
-   --buf_set_keymap("n", "]e", '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
-   buf_set_keymap("n", "[e", '<cmd>lua vim.diagnostic.goto_prev({float = {border = "single"}})<CR>', opts)
-   buf_set_keymap("n", "]e", '<cmd>lua vim.diagnostic.goto_next({float = {border = "single"}})<CR>', opts)
-   buf_set_keymap("n", "<space>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-   buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
-   buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
-
-   -- neovim master not support
-   --document_highlight(client, bufnr)
-   -- if client.resolved_capabilities.document_highlight then
-   --     local lsp_references_au_id = vim.api.nvim_create_augroup("LSP_references", { clear = true })
-   --     vim.api.nvim_create_autocmd(
-   --         "CursorHold",
-   --         { callback = vim.lsp.buf.document_highlight, buffer = bufnr, group = lsp_references_au_id }
-   --     )
-   --     vim.api.nvim_create_autocmd(
-   --         "CursorMoved",
-   --         { callback = vim.lsp.buf.clear_references, buffer = bufnr, group = lsp_references_au_id }
-   --     )
-   -- end
-   --
-   if client.resolved_capabilities.document_formatting then
-       vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_seq_sync, opts)
-       vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", vim.lsp.buf.formatting_seq_sync, {})
-   end
-
-   if client.resolved_capabilities.document_range_formatting then
+    if client.resolved_capabilities.document_range_formatting then
         vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, opts)
         vim.api.nvim_buf_create_user_command(bufnr, "LspRangeFormat", vim.lsp.buf.formatting_seq_sync, { range = true })
-   end
+    end
 
-   local lsp_diag_au_id = vim.api.nvim_create_augroup("LSP_diagnostics", { clear = true })
-   vim.api.nvim_create_autocmd(
-       "CursorHold",
-       { callback = require("lsp.utilities").echo_cursor_diagnostic, group = lsp_diag_au_id, buffer = bufnr }
-   )
-   vim.api.nvim_create_autocmd("CursorMoved", { command = 'echo ""', group = lsp_diag_au_id, buffer = bufnr })
+    local lsp_diag_au_id = vim.api.nvim_create_augroup("LSP_diagnostics", { clear = true })
+    vim.api.nvim_create_autocmd(
+        "CursorHold",
+        { callback = require("lsp.utilities").echo_cursor_diagnostic, group = lsp_diag_au_id, buffer = bufnr }
+    )
+    vim.api.nvim_create_autocmd("CursorMoved", { command = 'echo ""', group = lsp_diag_au_id, buffer = bufnr })
 
-   -- Enable completion triggered by <c-x><c-o>
-   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    -- Enable completion triggered by <c-x><c-o>
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
 end
-
---vim.api.nvim_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
-----vim.api.nvim_set_keymap('n', 'ga', ':Lspsaga code_action<CR>', {noremap = true, silent = true})
-----vim.api.nvim_set_keymap('v', 'ga', ':Lspsaga range_code_action<CR>', {noremap = true, silent = true})
-----vim.api.nvim_set_keymap('n', 'gD', ':Lspsaga preview_definition<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', 'gs', ':lua vim.lsp.buf signature_help<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', 'ge', ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', {noremap = true, silent = true})
-----vim.api.nvim_set_keymap('n', 'gr', ':Telescope lsp_references<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', 'gr', ':lua vim.lsp.buf.references()<CR>', {noremap = true, silent = true})
-
---vim.api.nvim_set_keymap('n', 'K', ':lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
-
---vim.api.nvim_set_keymap('n', '[e', ':lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', ']e', ':lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', {noremap = true, silent = true})
-
---vim.api.nvim_set_keymap('n', '[e', ':Lspsaga diagnostic_jump_next<CR>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('n', ']e', ':Lspsaga diagnostic_jump_prev<CR>', {noremap = true, silent = true})
--- scroll down hover doc or scroll in definition preview
---vim.cmd("nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>")
--- scroll up hover doc
---vim.cmd("nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>")
-
---vim.cmd('command! -nargs=0 LspVirtualTextToggle lua require("lsp/virtual_text").toggle()')
-
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem = {
-   documentationFormat = { "markdown", "plaintext" },
-   snippetSupport = true,
-   preselectSupport = true,
-   insertReplaceSupport = true,
-   labelDetailsSupport = true,
-   deprecatedSupport = true,
-   commitCharactersSupport = true,
-   tagSupport = { valueSet = { 1 } },
-   resolveSupport = {
-      properties = {
-         "documentation",
-         "detail",
-         "additionalTextEdits",
-      },
-   },
-   workDoneProgress = true,
+    documentationFormat = { "markdown", "plaintext" },
+    snippetSupport = true,
+    preselectSupport = true,
+    insertReplaceSupport = true,
+    labelDetailsSupport = true,
+    deprecatedSupport = true,
+    commitCharactersSupport = true,
+    tagSupport = { valueSet = { 1 } },
+    resolveSupport = {
+        properties = {
+            "documentation",
+            "detail",
+            "additionalTextEdits",
+        },
+    },
+    workDoneProgress = true,
 }
 capabilities.textDocument.codeAction.dynamicRegistration = true
-
-lsp_config.capabilities = capabilities
 -- Code actions
 capabilities.textDocument.codeAction = {
     dynamicRegistration = true,
@@ -165,149 +109,151 @@ capabilities.textDocument.codeAction = {
 }
 capabilities.textDocument.completion.completionItem.snippetSupport = true;
 
+--lsp_config.capabilities = capabilities
+
 
 local lsp_handlers = function()
-   local function lspSymbol(name, icon)
-    --vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon })
-      local hl = "DiagnosticSign" .. name
-      vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
-   end
+    local function lspSymbol(name, icon)
+        --vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon })
+        local hl = "DiagnosticSign" .. name
+        vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
+    end
 
-   lspSymbol("Error", "")
-   lspSymbol("Info",  "")
-   lspSymbol("Hint",  "")
-   lspSymbol("Warn",  "")
-   --lspSymbol("Error", "")
-   --lspSymbol("Info", "")
-   --lspSymbol("Hint", "")
-   --lspSymbol("Warn", "")
+    lspSymbol("Error", "")
+    lspSymbol("Info", "")
+    lspSymbol("Hint", "")
+    lspSymbol("Warn", "")
+    --lspSymbol("Error", "")
+    --lspSymbol("Info", "")
+    --lspSymbol("Hint", "")
+    --lspSymbol("Warn", "")
 
-   --vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-      --virtual_text = {
-      --   prefix = "",
-      --   spacing = 0,
-      --},
-   vim.diagnostic.config {
-      virtual_text = false,
-      signs = true,
-      underline = true,
-      update_in_insert = false, -- update diagnostics insert mode
-   }
-   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-      border = "single",
-   })
-   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-      border = "single",
-   })
+    --vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+    --virtual_text = {
+    --   prefix = "",
+    --   spacing = 0,
+    --},
+    vim.diagnostic.config {
+        virtual_text = false,
+        signs = true,
+        underline = true,
+        update_in_insert = false, -- update diagnostics insert mode
+    }
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = "single",
+    })
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+        border = "single",
+    })
 
-   -- suppress error messages from lang servers
-   vim.notify = function(msg, log_level)
-      if msg:match "exit code" then
-         return
-      end
-      if log_level == vim.log.levels.ERROR then
-         vim.api.nvim_err_writeln(msg)
-      else
-         vim.api.nvim_echo({ { msg } }, true, {})
-      end
-   end
+    -- suppress error messages from lang servers
+    vim.notify = function(msg, log_level)
+        if msg:match "exit code" then
+            return
+        end
+        if log_level == vim.log.levels.ERROR then
+            vim.api.nvim_err_writeln(msg)
+        else
+            vim.api.nvim_echo({ { msg } }, true, {})
+        end
+    end
 end
 
 
+-- Default lsp config for filetypes
+local filetype_attach = setmetatable({
+    go = function()
+        local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
 
-require('lsp.lspservers').setup_lsp(lsp_config.on_attach, lsp_config.capabilities)
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            group = lspbufformat,
+            callback = function()
+                vim.lsp.buf.formatting_sync()
+            end,
+        })
+    end,
+}, {
+    __index = function()
+        return function() end
+    end,
+})
+
+local custom_init = function(client)
+    client.config.flags = client.config.flags or {}
+    client.config.flags.allow_incremental_sync = true
+end
+
+local custom_attach = function(client, bufnr)
+    local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+    filetype_attach[filetype](client)
+
+    lsp_keymaps(client, bufnr)
+    --lsp_highlight_document(client)
+end
+
+-- Manage server with custom setup
+local util = require "lspconfig.util"
+local servers = {
+    sumneko_lua = require("lsp.servers.sumneko_lua"),
+    pyright = require("lsp.servers.pyright"),
+    jsonls = require("lsp.servers.jsonls"),
+    --emmet_ls = require("user.lsp.settings.emmet_ls"),
+    vimls = require("lsp.servers.vimls"),
+    gopls = require("lsp.servers.gopls"),
+    bashls = {
+        cmd = { "bash-language-server", "start" },
+        cmd_env = {
+            GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)",
+        },
+        filetypes = { "sh" },
+        root_dir = util.find_git_ancestor,
+        single_file_support = true,
+    },
+    grammarly = {
+        filetypes = { "markdown" },
+        single_file_support = true,
+        autostart = false,
+        root_dir = util.find_git_ancestor,
+    },
+}
+
+-- LSP: Servers Configuration
+local setup_server = function(server, config)
+    if not config then
+        vim.notify(
+            " No configuration passed to server < " .. server .. " >",
+            "Warn",
+            { title = "LSP: Servers Configuration" }
+        )
+        return
+    end
+
+    if type(config) ~= "table" then
+        config = {}
+    end
+
+    config = vim.tbl_deep_extend("force", {
+        on_init = custom_init,
+        on_attach = custom_attach,
+        --capabilities = updated_capabilities,
+        capabilities = capabilities,
+        flags = {
+            debounce_text_changes = nil,
+        },
+    }, config)
+
+    lspconfig[server].setup(config)
+end
+
+for server, config in pairs(servers) do
+    setup_server(server, config)
+end
 
 lsp_handlers()
 
-local border_vertical   = "║"
-local border_horizontal = "═"
-local border_topleft    = "╔"
-local border_topright   = "╗"
-local border_botleft    = "╚"
-local border_botright   = "╝"
-local border_juncleft   = "╠"
-local border_juncright  = "╣"
-
-local if_nil = vim.F.if_nil
-
-vim.lsp.diagnostic.show_line_diagnostics = function(opts, bufnr, line_nr, client_id)
-    opts = opts or {}
-    opts.severity_sort = if_nil(opts.severity_sort, true)
-
-    local show_header = if_nil(opts.show_header, true)
-
-    bufnr = bufnr or 0
-    line_nr = line_nr or (vim.api.nvim_win_get_cursor(0)[1] - 1)
-
-    local lines = {}
-    local highlights = {}
-    if show_header then
-        table.insert(lines, "Diagnostics:")
-        table.insert(highlights, {0, "Bold"})
-    end
-
-    local line_diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr, line_nr, opts, client_id)
-    if vim.tbl_isempty(line_diagnostics) then return end
-
-    for i, diagnostic in ipairs(line_diagnostics) do
-        local prefix = string.format("%d. ", i)
-        local hiname = vim.lsp.diagnostic._get_floating_severity_highlight_name(diagnostic.severity)
-        assert(hiname, 'unknown severity: ' .. tostring(diagnostic.severity))
-
-        local message_lines = vim.split(diagnostic.message, '\n', true)
-
-        local columns = api.nvim_get_option('columns')
-        local popup_max_width = math.floor(columns - (columns * 2 / 10))
-        local stripped_max_width = {}
-
-        for _, line in ipairs(message_lines) do
-            local len = line:len()
-
-            if len > popup_max_width then
-                for j=1,math.ceil(len / popup_max_width) do
-                    table.insert(stripped_max_width, string.sub(line, 1 + ((j-1) * popup_max_width), (j * popup_max_width)))
-                end
-            else
-                table.insert(stripped_max_width, line)
-            end
-        end
-
-        message_lines = stripped_max_width
-
-        table.insert(lines, prefix..message_lines[1])
-        table.insert(highlights, {#prefix + 1, hiname})
-        for j = 2, #message_lines do
-            table.insert(lines, message_lines[j])
-            table.insert(highlights, {2, hiname})
-        end
-    end
-
-    local max_length = 0
-
-    for _, line in ipairs(lines) do
-        local len = line:len()
-        if len > max_length then
-            max_length = len
-        end
-    end
-
-    for i, line in ipairs(lines) do
-        local len = line:len()
-        lines[i] = string.format('%s%s%s%s', border_vertical, line, string.rep(" ", max_length - len), border_vertical)
-    end
-
-    table.insert(lines, 1, border_topleft..string.rep(border_horizontal, max_length)..border_topright)
-    table.insert(lines, border_botleft..string.rep(border_horizontal, max_length)..border_botright)
-
-    local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, 'plaintext')
-    for i, hi in ipairs(highlights) do
-        local prefixlen, hiname = unpack(hi)
-        -- Start highlight after the prefix
-        api.nvim_buf_add_highlight(popup_bufnr, -1, hiname, i, prefixlen+2, max_length + 4)
-    end
-
-    return popup_bufnr, winnr
-end
-
-
-return lsp_config
+--return lsp_config
+return {
+    on_init = custom_init,
+    on_attach = custom_attach,
+    capabilities = capabilities,
+}
