@@ -11,8 +11,6 @@ M.bootstrap = function()
 
       fn.system { "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path }
 
-      print "Packer cloned successfully!"
-
       -- install plugins + compile their configs
       vim.cmd "packadd packer.nvim"
       --require "plugins"
@@ -40,10 +38,10 @@ M.options = {
    compile_on_sync = true,
    git = { clone_timeout = 6000 },
    display = {
-      working_sym = "ﲊ",
-      error_sym = "✗",
-      done_sym = "﫟",
-      removed_sym = "",
+      working_sym = " ﲊ",
+      error_sym = "✗ ",
+      done_sym = " ",
+      removed_sym = " ",
       moved_sym = "",
       open_fn = function()
          return require("packer.util").float { border = "single" }
@@ -52,12 +50,6 @@ M.options = {
 }
 
 return M
-
-
-
-
-
-
 
 
 --vim.cmd "packadd packer.nvim"

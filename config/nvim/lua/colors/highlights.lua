@@ -1,6 +1,5 @@
 -- breaking change: moved highlight stuff to base16 repo | rewrote whole…
 -- https://github.com/NvChad/NvChad/commit/02d545cd42ccb4d8bcb6120c18f8d8d27958a1e0
-local cmd = vim.cmd
 
 --local colors = require("colors").get()
 local colors = require('base46').get_colors('base_30')

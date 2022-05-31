@@ -45,22 +45,22 @@ M.misc = function()
         -- snapshot stuff
         local packer_cmd = function(callback)
            return function()
-              require "pluginList"
+              require "plugins.pluginList"
               require("packer")[callback]()
            end
         end
         user_cmd("PackerSnapshot", function(info)
-           require "pluginList"
+           require "plugins.pluginList"
            require("packer").snapshot(info.args)
         end, { nargs = "+" })
 
         user_cmd("PackerSnapshotDelete", function(info)
-           require "pluginList"
+           require "plugins.pluginList"
            require("packer.snapshot").delete(info.args)
         end, { nargs = "+" })
 
         user_cmd("PackerSnapshotRollback", function(info)
-           require "pluginList"
+           require "plugins.pluginList"
            require("packer").rollback(info.args)
         end, { nargs = "+" })
 

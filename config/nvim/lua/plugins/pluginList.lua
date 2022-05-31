@@ -342,9 +342,13 @@ return packer.startup(
     -- whichkey
     use {
         "folke/which-key.nvim",
+        setup = function()
+           require("core.utils").packer_lazy_load "which-key.nvim"
+        end,
         config = function()
             require "plugins.whichkey"
         end,
+        cond = function() return not vim.g.vscode end
     }
 
     ---- autopairs

@@ -1,56 +1,5 @@
 -- globals must be set prior to requiring nvim-tree to function
 --
-local g = vim.g
-
-g.nvim_tree_add_trailing = 0 -- append a trailing slash to folder names
-g.nvim_tree_git_hl = 1
-g.nvim_tree_highlight_opened_files = 1
-
---g.nvim_tree_window_picker_exclude = {
---   filetype = { 'notify', 'packer', 'qf' },
---   buftype = {'terminal' },
---}
-
-g.nvim_tree_show_icons = {
-   folders = 1,
-   folder_arrows = 1,
-   files = 1,
-   git = 1,
-}
-
-g.nvim_tree_icons = {
-   default = "",
-   symlink = "",
-   git = {
-      deleted = "",
-      ignored = "◌",
-      renamed = "➜",
-      staged = "✓",
-      unmerged = "",
-      unstaged = "✗",
-      untracked = "★",
-   },
-   folder = {
-      -- disable indent_markers option to get arrows working or if you want both arrows and indent then just add the arrow icons in front            ofthe default and opened folders below!
-      -- arrow_open = "",
-      -- arrow_closed = "",
-      default = "",
-      empty = "", -- 
-      empty_open = "",
-      open = "",
-      symlink = "",
-      symlink_open = "",
-      arrow_open = "",
-      arrow_closed = "",
-   },
-	lsp = {
-		hint = "",
-		info = "",
-		warning = "",
-		error = "",
-	},
-}
-
 local present, nvimtree = pcall(require, "nvim-tree")
 if not present then
    return
@@ -119,9 +68,44 @@ nvimtree.setup {
       },
    },
    renderer = {
+      highlight_git = false,
+      highlight_opened_files = "none",
       indent_markers = {
          enable = false,
-      }
+      },
+      icons = {
+         padding = " ",
+         symlink_arrow = " ➛ ",
+         show = {
+            file = true,
+            folder = true,
+            folder_arrow = true,
+            git = false,
+         },
+         glyphs = {
+            default = "",
+            symlink = "",
+            folder = {
+               default = "",
+               empty = "",
+               empty_open = "",
+               open = "",
+               symlink = "",
+               symlink_open = "",
+               arrow_open = "",
+               arrow_closed = "",
+            },
+            git = {
+               unstaged = "✗",
+               staged = "✓",
+               unmerged = "",
+               renamed = "➜",
+               untracked = "★",
+               deleted = "",
+               ignored = "◌",
+            },
+         },
+      },
    },
    view = {
     --allow_resize = true,
