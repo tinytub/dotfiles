@@ -1,4 +1,5 @@
 local util = require "lspconfig.util"
+
 return {
 	root_dir = function(fname)
 		local Path = require("plenary.path")

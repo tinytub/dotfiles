@@ -21,9 +21,11 @@ return packer.startup(
         -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
         use {
             'williamboman/nvim-lsp-installer',
-            config = function()
-                require("lsp.lsp-installer")
-            end
+            disable = false,
+
+            --config = function()
+            --    require("lsp.lsp-installer")
+            --end
             --setup = function()
             --  -- reload the current file so lsp actually starts for it
             --  vim.defer_fn(function()
@@ -39,9 +41,10 @@ return packer.startup(
         use {
             "neovim/nvim-lspconfig",
             after = "nvim-lsp-installer",
-            module = "lspconfig",
             config = function()
-                require "lsp"
+                -- lsp-installer should setup first
+                require("lsp.lsp-installer")
+                require("lsp.lspconfig")
             end,
         }
 
@@ -78,6 +81,7 @@ return packer.startup(
             config = function()
                 require('plugins.nvim-notify').config()
             end,
+            disable = false,
         })
 
 

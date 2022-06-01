@@ -1,6 +1,6 @@
-local present1, lspconfig = pcall(require, "lspconfig")
+local present, lspconfig = pcall(require, "lspconfig")
 
-if not present1 then
+if not present then
     return
 end
 
@@ -14,6 +14,16 @@ local function lsp_highlight_document(client)
         end
         illuminate.on_attach(client)
     end
+end
+
+-- Borders for LspInfo winodw
+local win = require "lspconfig.ui.windows"
+local _default_opts = win.default_opts
+
+win.default_opts = function(options)
+   local opts = _default_opts(options)
+   opts.border = "single"
+   return opts
 end
 
 -- Create custom keymaps for useful
@@ -51,26 +61,8 @@ local function lsp_keymaps(client, bufnr)
     buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
     buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
 
-    if client.resolved_capabilities.document_formatting then
-        vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_seq_sync, opts)
-        vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", vim.lsp.buf.formatting_seq_sync, {})
-    end
-
-    if client.resolved_capabilities.document_range_formatting then
-        vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, opts)
-        vim.api.nvim_buf_create_user_command(bufnr, "LspRangeFormat", vim.lsp.buf.formatting_seq_sync, { range = true })
-    end
-
-    local lsp_diag_au_id = vim.api.nvim_create_augroup("LSP_diagnostics", { clear = true })
-    vim.api.nvim_create_autocmd(
-        "CursorHold",
-        { callback = require("lsp.utilities").echo_cursor_diagnostic, group = lsp_diag_au_id, buffer = bufnr }
-    )
-    vim.api.nvim_create_autocmd("CursorMoved", { command = 'echo ""', group = lsp_diag_au_id, buffer = bufnr })
-
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -200,12 +192,13 @@ local servers = {
     --emmet_ls = require("user.lsp.settings.emmet_ls"),
     vimls = require("lsp.servers.vimls"),
     gopls = require("lsp.servers.gopls"),
+    yamlls = {},
     bashls = {
         cmd = { "bash-language-server", "start" },
         cmd_env = {
             GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)",
         },
-        filetypes = { "sh" },
+        filetypes = { "sh","zsh" },
         root_dir = util.find_git_ancestor,
         single_file_support = true,
     },
@@ -246,6 +239,12 @@ local setup_server = function(server, config)
 end
 
 for server, config in pairs(servers) do
+--    local ok, lsp_installer = pcall(require, "nvim-lsp-installer")
+--	local server_is_found, theserver = lsp_installer.get_server(server)
+--	if server_is_found and not theserver:is_installed() then
+--		print("Installing " .. server)
+--		--server:install()
+--	end
     setup_server(server, config)
 end
 
