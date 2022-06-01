@@ -21,9 +21,9 @@ local win = require "lspconfig.ui.windows"
 local _default_opts = win.default_opts
 
 win.default_opts = function(options)
-   local opts = _default_opts(options)
-   opts.border = "single"
-   return opts
+    local opts = _default_opts(options)
+    opts.border = "single"
+    return opts
 end
 
 -- Create custom keymaps for useful
@@ -60,6 +60,37 @@ local function lsp_keymaps(client, bufnr)
     buf_set_keymap("n", "<space>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
     buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
     buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
+    if client.resolved_capabilities.document_formatting then
+        --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_seq_sync, opts)
+        vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", vim.lsp.buf.formatting_seq_sync, {})
+    end
+
+    if client.resolved_capabilities.document_range_formatting then
+        --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, opts)
+        vim.api.nvim_buf_create_user_command(bufnr, "LspRangeFormat", vim.lsp.buf.formatting_seq_sync, { range = true })
+    end
+
+    -- neovim 0.8?
+    --if client.server_capabilities.documentFormattingProvider then
+    --    vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
+    --    vim.api.nvim_buf_create_user_command(
+    --        bufnr,
+    --        "LspFormat",
+    --        vim.lsp.buf.format,
+    --        { range = false, desc = "LSP format" }
+    --    )
+    --end
+
+    --if client.server_capabilities.documentRangeFormattingProvider then
+    --    vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
+    --    vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
+    --    vim.api.nvim_buf_create_user_command(
+    --        bufnr,
+    --        "LspRangeFormat",
+    --        vim.lsp.buf.range_formatting,
+    --        { range = true, desc = "LSP range format" }
+    --    )
+    --end
 
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -156,7 +187,6 @@ end
 local filetype_attach = setmetatable({
     go = function()
         local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
-
         vim.api.nvim_create_autocmd("BufWritePre", {
             group = lspbufformat,
             callback = function()
@@ -164,6 +194,16 @@ local filetype_attach = setmetatable({
             end,
         })
     end,
+    lua = function()
+        local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            group = lspbufformat,
+            callback = function()
+                vim.lsp.buf.formatting_sync()
+            end,
+        })
+    end,
+
 }, {
     __index = function()
         return function() end
@@ -198,7 +238,7 @@ local servers = {
         cmd_env = {
             GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)",
         },
-        filetypes = { "sh","zsh" },
+        filetypes = { "sh", "zsh" },
         root_dir = util.find_git_ancestor,
         single_file_support = true,
     },
@@ -239,12 +279,12 @@ local setup_server = function(server, config)
 end
 
 for server, config in pairs(servers) do
---    local ok, lsp_installer = pcall(require, "nvim-lsp-installer")
---	local server_is_found, theserver = lsp_installer.get_server(server)
---	if server_is_found and not theserver:is_installed() then
---		print("Installing " .. server)
---		--server:install()
---	end
+    --    local ok, lsp_installer = pcall(require, "nvim-lsp-installer")
+    --	local server_is_found, theserver = lsp_installer.get_server(server)
+    --	if server_is_found and not theserver:is_installed() then
+    --		print("Installing " .. server)
+    --		--server:install()
+    --	end
     setup_server(server, config)
 end
 
