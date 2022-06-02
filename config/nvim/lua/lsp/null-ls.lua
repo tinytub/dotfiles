@@ -65,9 +65,9 @@ require("null-ls").setup({
 
 	sources = {
 		-- Whitespace
-		builtins.diagnostics.trail_space.with({
-			disabled_filetypes = { "gitcommit" },
-		}),
+		--builtins.diagnostics.trail_space.with({
+		--	disabled_filetypes = { "gitcommit" },
+		--}),
 
 		-- Ansible
 		builtins.diagnostics.ansiblelint.with({
