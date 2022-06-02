@@ -58,10 +58,9 @@ return packer.startup(
 
         use {
             "jose-elias-alvarez/null-ls.nvim",
-            ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css', 'javascript', 'javascriptreact', 'python' },
-            after = "nvim-lspconfig",
+            --            ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css', 'javascript', 'javascriptreact', 'python' },
             config = function()
-                require("plugins.null-ls").setup()
+                require("lsp.null-ls")
             end,
             disable = true
         }
@@ -81,7 +80,7 @@ return packer.startup(
             config = function()
                 require('plugins.nvim-notify').config()
             end,
-            disable = false,
+            disable = true,
         })
 
 

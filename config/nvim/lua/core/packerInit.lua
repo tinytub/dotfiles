@@ -14,7 +14,7 @@ M.bootstrap = function()
       -- install plugins + compile their configs
       vim.cmd "packadd packer.nvim"
       --require "plugins"
-      require "pluginList"
+      require "plugins.pluginList"
       vim.cmd "PackerSync"
    end
 
