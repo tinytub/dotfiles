@@ -59,10 +59,11 @@ return packer.startup(
         use {
             "jose-elias-alvarez/null-ls.nvim",
             --            ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css', 'javascript', 'javascriptreact', 'python' },
+            after = "nvim-lsp-installer",
             config = function()
                 require("lsp.null-ls")
             end,
-            disable = true
+            disable = false
         }
 
         -- use {"dstein64/vim-startuptime"}
@@ -80,7 +81,7 @@ return packer.startup(
             config = function()
                 require('plugins.nvim-notify').config()
             end,
-            disable = true,
+            disable = false,
         })
 
 
@@ -175,10 +176,16 @@ return packer.startup(
         use {
             "feline-nvim/feline.nvim",
             disable = false,
+            requires = "SmiteshP/nvim-gps",
             after = "nvim-web-devicons",
             config = function()
                 require "plugins.statusline"
             end,
+        }
+        -- Simple statusline component that shows what scope you are working inside
+        use {
+            "SmiteshP/nvim-gps",
+            requires = "nvim-treesitter/nvim-treesitter",
         }
 
         use {
@@ -591,5 +598,6 @@ return packer.startup(
                 require("plugins.others").comment()
             end,
         }
+
     end
 )

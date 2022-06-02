@@ -1,6 +1,12 @@
 --local colors = require("colors").get()
 local lsp = require "feline.providers.lsp"
 local lsp_severity = vim.diagnostic.severity
+local nvim_gps = require("nvim-gps")
+nvim_gps.setup({
+    separator = '  ',
+})
+
+
 local shortline = true
 
 local icon_styles = {
@@ -331,6 +337,20 @@ local current_line = {
     hl = "Feline_CurrentLine",
 }
 
+local gps_path = {
+    provider = function()
+        return nvim_gps.get_location()
+    end,
+    enabled = function()
+        return nvim_gps.is_available()
+    end,
+
+    --hl = {
+    --	bg = colors.bg_dark,
+    --	fg = colors.fg,
+    --},
+}
+
 local function add_table(a, b)
     table.insert(a, b)
 end
@@ -345,18 +365,21 @@ add_table(left, main_icon)
 add_table(left, file_name)
 add_table(left, dir_name)
 
+
 --add_table(left, diff.add)
 --add_table(left, diff.change)
 --add_table(left, diff.remove)
 
 -- lsp
-add_table(left, lsp_icon)
+add_table(right, lsp_icon)
 add_table(left, diagnostic.error)
 add_table(left, diagnostic.warning)
 add_table(left, diagnostic.hint)
 add_table(left, diagnostic.info)
 
 --add_table(middle, lsp_progress)
+-- gps
+--add_table(middle, gps_path)
 
 -- right
 -- git diffs
@@ -377,7 +400,6 @@ add_table(right, current_line)
 components.active[1] = left
 components.active[2] = middle
 components.active[3] = right
-
 require("feline").setup {
     theme = {
         fg = get_color("Feline", "fg#"),
@@ -385,3 +407,49 @@ require("feline").setup {
     },
     components = components,
 }
+
+local winbar_components = {
+    file = {
+        provider = {
+            name = 'file_info',
+            --opts = {
+            --    file_readonly_icon = '',
+            --    file_modified_icon = '',
+            --},
+        },
+        left_sep = {
+            str = '  ',
+            --hl = { bg = '#1c1c1c' },
+        },
+        --hl = { bg = '#1c1c1c', style = 'bold' },
+    },
+    gps = {
+        provider = function()
+            local location = nvim_gps.get_location()
+            return location == '' and '' or '  ' .. location
+        end,
+        enabled = function()
+            return nvim_gps.is_available()
+        end,
+        --    hl = { fg = '#eeeeee', bg = '#1c1c1c' },
+    },
+}
+
+local winbar = {
+    {
+        --        winbar_components.file,
+        winbar_components.gps,
+    },
+}
+
+require("feline").winbar.setup({
+    components = { active = winbar, inactive = winbar },
+    disable = {
+        filetypes = {
+            'term',
+            'startify',
+            'NvimTree',
+            'packer',
+        },
+    },
+})

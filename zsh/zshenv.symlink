@@ -2,7 +2,10 @@
 
 export TERM="xterm-256color"
 # LANG 如设置为 en_US 会导致特殊字符乱码
-export LANG=zh_CN.UTF-8
+#export LANG=zh_CN.UTF-8
+
+export LC_ALL=en_US.UTF-8  
+export LANG=en_US.UTF-8
 
 #export LANG=en_US.UTF-8
 

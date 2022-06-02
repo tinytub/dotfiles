@@ -7,13 +7,22 @@ end
 -- Lsp highlights managed by
 --   `illuminate` plugin
 local function lsp_highlight_document(client)
-    if client.resolved_capabilities.document_highlight then
+    --if client.resolved_capabilities.document_highlight then
+    --    local illuminate_ok, illuminate = pcall(require, "illuminate")
+    --    if not illuminate_ok then
+    --        return
+    --    end
+    --    illuminate.on_attach(client)
+    --end
+    if client.server_capabilities.document_highlight then
         local illuminate_ok, illuminate = pcall(require, "illuminate")
         if not illuminate_ok then
             return
         end
         illuminate.on_attach(client)
     end
+
+
 end
 
 -- Borders for LspInfo winodw
@@ -60,37 +69,37 @@ local function lsp_keymaps(client, bufnr)
     buf_set_keymap("n", "<space>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
     buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
     buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
-    if client.resolved_capabilities.document_formatting then
-        --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_seq_sync, opts)
-        vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", vim.lsp.buf.formatting_seq_sync, {})
-    end
+    --if client.resolved_capabilities.document_formatting then
+    --    --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_seq_sync, opts)
+    --    vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", vim.lsp.buf.formatting_seq_sync, {})
+    --end
 
-    if client.resolved_capabilities.document_range_formatting then
-        --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, opts)
-        vim.api.nvim_buf_create_user_command(bufnr, "LspRangeFormat", vim.lsp.buf.formatting_seq_sync, { range = true })
-    end
+    --if client.resolved_capabilities.document_range_formatting then
+    --    --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, opts)
+    --    vim.api.nvim_buf_create_user_command(bufnr, "LspRangeFormat", vim.lsp.buf.formatting_seq_sync, { range = true })
+    --end
 
     -- neovim 0.8?
-    --if client.server_capabilities.documentFormattingProvider then
-    --    vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
-    --    vim.api.nvim_buf_create_user_command(
-    --        bufnr,
-    --        "LspFormat",
-    --        vim.lsp.buf.format,
-    --        { range = false, desc = "LSP format" }
-    --    )
-    --end
+    if client.server_capabilities.documentFormattingProvider then
+        --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
+        vim.api.nvim_buf_create_user_command(
+            bufnr,
+            "LspFormat",
+            vim.lsp.buf.format,
+            { range = false, desc = "LSP format" }
+        )
+    end
 
-    --if client.server_capabilities.documentRangeFormattingProvider then
-    --    vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
-    --    vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
-    --    vim.api.nvim_buf_create_user_command(
-    --        bufnr,
-    --        "LspRangeFormat",
-    --        vim.lsp.buf.range_formatting,
-    --        { range = true, desc = "LSP range format" }
-    --    )
-    --end
+    if client.server_capabilities.documentRangeFormattingProvider then
+        vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
+        --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
+        vim.api.nvim_buf_create_user_command(
+            bufnr,
+            "LspRangeFormat",
+            vim.lsp.buf.range_formatting,
+            { range = true, desc = "LSP range format" }
+        )
+    end
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
@@ -179,62 +188,62 @@ local lsp_handlers = function()
             vim.api.nvim_echo({ { msg } }, true, {})
         end
     end
-    ---- credits to @Malace : https://www.reddit.com/r/neovim/comments/ql4iuj/rename_hover_including_window_title_and/
-    ---- This is modified version of the above snippet
-    --vim.lsp.buf.rename = {
-    --    float = function()
-    --        local currName = vim.fn.expand "<cword>"
+    -- credits to @Malace : https://www.reddit.com/r/neovim/comments/ql4iuj/rename_hover_including_window_title_and/
+    -- This is modified version of the above snippet
+    vim.lsp.buf.rename = {
+        float = function()
+            local currName = vim.fn.expand "<cword>"
 
-    --        local win = require("plenary.popup").create("  ", {
-    --            title = currName,
-    --            style = "minimal",
-    --            borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    --            relative = "cursor",
-    --            borderhighlight = "RenamerBorder",
-    --            titlehighlight = "RenamerTitle",
-    --            focusable = true,
-    --            width = 25,
-    --            height = 1,
-    --            line = "cursor+2",
-    --            col = "cursor-1",
-    --        })
+            local win = require("plenary.popup").create("  ", {
+                title = currName,
+                style = "minimal",
+                borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+                relative = "cursor",
+                borderhighlight = "RenamerBorder",
+                titlehighlight = "RenamerTitle",
+                focusable = true,
+                width = 25,
+                height = 1,
+                line = "cursor+2",
+                col = "cursor-1",
+            })
 
-    --        local map_opts = { noremap = true, silent = true }
+            local map_opts = { noremap = true, silent = true }
 
-    --        vim.cmd "startinsert"
+            vim.cmd "startinsert"
 
-    --        vim.api.nvim_buf_set_keymap(0, "i", "<Esc>", "<cmd>stopinsert | q!<CR>", map_opts)
-    --        vim.api.nvim_buf_set_keymap(0, "n", "<Esc>", "<cmd>stopinsert | q!<CR>", map_opts)
+            vim.api.nvim_buf_set_keymap(0, "i", "<Esc>", "<cmd>stopinsert | q!<CR>", map_opts)
+            vim.api.nvim_buf_set_keymap(0, "n", "<Esc>", "<cmd>stopinsert | q!<CR>", map_opts)
 
-    --        vim.api.nvim_buf_set_keymap(
-    --            0,
-    --            "i",
-    --            "<CR>",
-    --            "<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. win .. ")<CR>",
-    --            map_opts
-    --        )
+            vim.api.nvim_buf_set_keymap(
+                0,
+                "i",
+                "<CR>",
+                "<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. win .. ")<CR>",
+                map_opts
+            )
 
-    --        vim.api.nvim_buf_set_keymap(
-    --            0,
-    --            "n",
-    --            "<CR>",
-    --            "<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. win .. ")<CR>",
-    --            map_opts
-    --        )
-    --    end,
+            vim.api.nvim_buf_set_keymap(
+                0,
+                "n",
+                "<CR>",
+                "<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. win .. ")<CR>",
+                map_opts
+            )
+        end,
 
-    --    apply = function(curr, win)
-    --        local newName = vim.trim(vim.fn.getline ".")
-    --        vim.api.nvim_win_close(win, true)
+        apply = function(curr, win)
+            local newName = vim.trim(vim.fn.getline ".")
+            vim.api.nvim_win_close(win, true)
 
-    --        if #newName > 0 and newName ~= curr then
-    --            local params = vim.lsp.util.make_position_params()
-    --            params.newName = newName
+            if #newName > 0 and newName ~= curr then
+                local params = vim.lsp.util.make_position_params()
+                params.newName = newName
 
-    --            vim.lsp.buf_request(0, "textDocument/rename", params)
-    --        end
-    --    end,
-    --}
+                vim.lsp.buf_request(0, "textDocument/rename", params)
+            end
+        end,
+    }
 end
 
 
@@ -245,7 +254,8 @@ local filetype_attach = setmetatable({
         vim.api.nvim_create_autocmd("BufWritePre", {
             group = lspbufformat,
             callback = function()
-                vim.lsp.buf.formatting_sync()
+                --vim.lsp.buf.formatting_sync()
+                vim.lsp.buf.format()
             end,
         })
     end,
@@ -254,7 +264,8 @@ local filetype_attach = setmetatable({
         vim.api.nvim_create_autocmd("BufWritePre", {
             group = lspbufformat,
             callback = function()
-                vim.lsp.buf.formatting_sync()
+                --vim.lsp.buf.formatting_sync()
+                vim.lsp.buf.format()
             end,
         })
     end,
