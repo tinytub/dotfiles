@@ -4,8 +4,6 @@ if not present then
 	return
 end
 
-local luasnip = require("luasnip")
-
 vim.opt.completeopt = "menuone,noselect"
 
 local function border(hl_name)

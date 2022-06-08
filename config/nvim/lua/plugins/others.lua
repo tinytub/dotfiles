@@ -5,19 +5,19 @@ M.autopairs = function()
     local present2, cmp = pcall(require, "cmp")
 
     if not (present1 or present2) then
-       return
+        return
     end
 
     -- autopairs.setup()
 
-    autopairs.setup {
-      fast_wrap = {},
-      disable_filetype = { "TelescopePrompt" , "vim" },
-      --autopairs = {enable = true},
-      --enable_check_bracket_line = false,
-      --html_break_line_filetype = {'html', 'vue', 'typescriptreact', 'svelte', 'javascriptreact'},
-    }
-    local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+    autopairs.setup({
+        fast_wrap = {},
+        disable_filetype = { "TelescopePrompt", "vim" },
+        --autopairs = {enable = true},
+        --enable_check_bracket_line = false,
+        --html_break_line_filetype = {'html', 'vue', 'typescriptreact', 'svelte', 'javascriptreact'},
+    })
+    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
@@ -42,131 +42,137 @@ M.autopairs = function()
     --}
 end
 
-
 M.colorizer = function()
-   local present, colorizer = pcall(require, "colorizer")
-   if present then
-      local default = {
-         filetypes = {
-            "*",
-         },
-         user_default_options = {
-            RGB = true, -- #RGB hex codes
-            RRGGBB = true, -- #RRGGBB hex codes
-            names = false, -- "Name" codes like Blue
-            RRGGBBAA = false, -- #RRGGBBAA hex codes
-            rgb_fn = false, -- CSS rgb() and rgba() functions
-            hsl_fn = false, -- CSS hsl() and hsla() functions
-            css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-            css_fn = false, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+    local present, colorizer = pcall(require, "colorizer")
+    if present then
+        local default = {
+            filetypes = {
+                "*",
+            },
+            user_default_options = {
+                RGB = true, -- #RGB hex codes
+                RRGGBB = true, -- #RRGGBB hex codes
+                names = false, -- "Name" codes like Blue
+                RRGGBBAA = false, -- #RRGGBBAA hex codes
+                rgb_fn = false, -- CSS rgb() and rgba() functions
+                hsl_fn = false, -- CSS hsl() and hsla() functions
+                css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+                css_fn = false, -- Enable all CSS *functions*: rgb_fn, hsl_fn
 
-            -- Available modes: foreground, background
-            mode = "background", -- Set the display mode.
-         },
-      }
-      colorizer.setup(default["filetypes"], default["user_default_options"])
-      vim.cmd "ColorizerReloadAllBuffers"
-   end
+                -- Available modes: foreground, background
+                mode = "background", -- Set the display mode.
+            },
+        }
+        colorizer.setup(default["filetypes"], default["user_default_options"])
+        vim.cmd("ColorizerReloadAllBuffers")
+    end
 end
 
 M.blankline = function()
-   require("indent_blankline").setup {
-      indentLine_enabled = 1,
-      char = "▏",
-      filetype_exclude = {
-         "help",
-         "terminal",
-         "alpha",
-         "packer",
-         "lspinfo",
-         "TelescopePrompt",
-         "TelescopeResults",
-         "lsp-installer",
-         ""
-      },
-      buftype_exclude = { "terminal" },
-      show_trailing_blankline_indent = false,
-      show_first_indent_level = false,
-   }
+    require("indent_blankline").setup({
+        indentLine_enabled = 1,
+        char = "▏",
+        filetype_exclude = {
+            "help",
+            "terminal",
+            "alpha",
+            "packer",
+            "lspinfo",
+            "TelescopePrompt",
+            "TelescopeResults",
+            "lsp-installer",
+            "",
+        },
+        buftype_exclude = { "terminal" },
+        show_trailing_blankline_indent = false,
+        show_first_indent_level = false,
+    })
 end
 
 M.better_escape = function()
-   require("better_escape").setup {
-      mapping = { "jk" },
-      timeout =  300,
-      clear_empty_lines = false, -- clear line after escaping if there is only whitespace
-      keys = "<Esc>",
-   }
+    require("better_escape").setup({
+        mapping = { "jk" },
+        timeout = 300,
+        clear_empty_lines = false, -- clear line after escaping if there is only whitespace
+        keys = "<Esc>",
+    })
 end
 
 M.luasnip = function()
     -- configs from https://github.com/arsham/shark/blob/master/lua/settings/luasnip/init.lua
-   local present, luasnip = pcall(require, "luasnip")
- --  local types = require("luasnip.util.types")
-   if not present then
-       return
-   end
-   luasnip.config.set_config {
-      history = true,
-      updateevents = "TextChanged,TextChangedI",
- --     ext_opts = {
- --       [types.choiceNode] = {
- --         active = {
- --           virt_text = { { " ", "TSTextReference" } },
- --         },
- --       },
- --       [types.insertNode] = {
- --         active = {
- --           virt_text = { { " ", "TSEmphasis" } },
- --         },
- --       },
- --     },
+    local present, luasnip = pcall(require, "luasnip")
+    --  local types = require("luasnip.util.types")
+    if not present then
+        return
+    end
+    luasnip.config.set_config({
+        history = true,
+        updateevents = "TextChanged,TextChangedI",
+        --     ext_opts = {
+        --       [types.choiceNode] = {
+        --         active = {
+        --           virt_text = { { " ", "TSTextReference" } },
+        --         },
+        --       },
+        --       [types.insertNode] = {
+        --         active = {
+        --           virt_text = { { " ", "TSEmphasis" } },
+        --         },
+        --       },
+        --     },
+    })
+    luasnip.snippets = {
+        all = require("plugins.luasnips.all"),
+        go = require("plugins.luasnips.golang"),
+        lua = require("plugins.luasnips.lua"),
+        gitcommit = require("plugins.luasnips.gitcommit"),
+        markdown = require("plugins.luasnips.markdown"),
     }
-   luasnip.snippets = {
-     all = require("plugins.luasnips.all"),
-     go = require("plugins.luasnips.golang"),
-     lua = require("plugins.luasnips.lua"),
-     gitcommit = require("plugins.luasnips.gitcommit"),
-     markdown = require("plugins.luasnips.markdown"),
-   }
 
-
-   -- require("luasnip/loaders/from_vscode").load()
-   --require("luasnip.loaders.from_vscode").lazy_load()
-   -- add snippet path here!
-   require("luasnip.loaders.from_vscode").lazy_load()
+    -- require("luasnip/loaders/from_vscode").load()
+    --require("luasnip.loaders.from_vscode").lazy_load()
+    -- add snippet path here!
+    require("luasnip.loaders.from_vscode").lazy_load()
 end
 
 M.signature = function()
     local present, lspsignature = pcall(require, "lsp_signature")
     if present then
-        lspsignature.setup(
-            {
-                bind = true,
-                doc_lines = 0,
-                floating_window = true,
-                fix_pos = true,
-                hint_enable = true,
-                hint_prefix = " ",
-                hint_scheme = "String",
-                hi_parameter = "Search",
-                max_height = 22,
-                max_width = 120, -- max_width of signature floating_window, line will be wrapped if exceed max_width
-                handler_opts = {
-                    border = "single" -- double, single, shadow, none
-                },
-                zindex = 200, -- by default it will be on top of all floating windows, set to 50 send it to bottom
-                padding = "" -- character to pad on left and right of signature can be ' ', or '|'  etc
-            }
-        )
+        lspsignature.setup({
+            bind = true,
+            doc_lines = 0,
+            floating_window = true,
+            fix_pos = true,
+            hint_enable = true,
+            hint_prefix = " ",
+            hint_scheme = "String",
+            hi_parameter = "Search",
+            max_height = 22,
+            max_width = 120, -- max_width of signature floating_window, line will be wrapped if exceed max_width
+            handler_opts = {
+                border = "single", -- double, single, shadow, none
+            },
+            zindex = 200, -- by default it will be on top of all floating windows, set to 50 send it to bottom
+            padding = "", -- character to pad on left and right of signature can be ' ', or '|'  etc
+        })
     end
 end
 
 M.comment = function()
-   local present, nvim_comment = pcall(require, "Comment")
-   if present then
-      nvim_comment.setup()
-   end
+    local present, nvim_comment = pcall(require, "Comment")
+    if present then
+        nvim_comment.setup()
+    end
+end
+
+M.base46 = function()
+    local base46 = require("base46")
+    --base46.setup({ theme = "everforest", custom_highlights = "colors.themes.everforest" })
+    base46.setup({ theme = "everforest" })
+    --base46.setup({ theme = "gruvbox" })
+    -- then load the highlights
+    package.loaded["colors.highlights" or false] = nil
+    require("colors.highlights")
 end
 
 return M

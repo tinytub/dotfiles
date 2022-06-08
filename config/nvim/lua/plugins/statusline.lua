@@ -1,9 +1,5 @@
---local colors = require("colors").get()
 local lsp = require("feline.providers.lsp")
 local lsp_severity = vim.diagnostic.severity
---nvim_gps.setup({
---	separator = "  ",
---})
 
 local fn = vim.fn
 local function get_color(group, attr)
@@ -263,12 +259,7 @@ local vi_mode = {
 
 	right_sep = {
 		str = statusline_style.right,
-		hl = function()
-			return {
-				fg = get_color("Feline_EmptySpace", "bg#"),
-				bg = get_color("Feline_nvim_gps", "bg#"),
-			}
-		end,
+		hl = "Feline_vimode",
 	},
 }
 
@@ -307,6 +298,31 @@ local mode_icon = {
 			}
 		end,
 	},
+}
+
+local nvim_gps = {
+	provider = function()
+		-- nvim-gps loads at cursorMoved so need to handle this
+		local gps_loaded, gps = pcall(require, "nvim-gps")
+
+		if not gps_loaded then
+			return
+		end
+
+		return " " .. gps.get_location()
+	end,
+
+	enabled = function()
+		local gps_loaded, gps = pcall(require, "nvim-gps")
+
+		if not gps_loaded then
+			return false
+		end
+
+		return gps.is_available()
+	end,
+
+	hl = "Feline_nvim_gps",
 }
 
 local separator_left = {
