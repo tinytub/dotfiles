@@ -185,13 +185,14 @@ local lsp_handlers = function()
 			vim.api.nvim_echo({ { msg } }, true, {})
 		end
 	end
+
 	-- credits to @Malace : https://www.reddit.com/r/neovim/comments/ql4iuj/rename_hover_including_window_title_and/
 	-- This is modified version of the above snippet
 	vim.lsp.buf.rename = {
 		float = function()
 			local currName = vim.fn.expand("<cword>") .. " "
 
-			local win = require("plenary.popup").create(currName, {
+			local popwin = require("plenary.popup").create(currName, {
 				title = "Renamer",
 				style = "minimal",
 				borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
@@ -217,7 +218,7 @@ local lsp_handlers = function()
 				0,
 				"i",
 				"<CR>",
-				"<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. win .. ")<CR>",
+				"<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. popwin .. ")<CR>",
 				map_opts
 			)
 
@@ -225,14 +226,14 @@ local lsp_handlers = function()
 				0,
 				"n",
 				"<CR>",
-				"<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. win .. ")<CR>",
+				"<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. popwin .. ")<CR>",
 				map_opts
 			)
 		end,
 
-		apply = function(curr, win)
+		apply = function(curr, popwin)
 			local newName = vim.trim(vim.fn.getline("."))
-			vim.api.nvim_win_close(win, true)
+			vim.api.nvim_win_close(popwin, true)
 
 			if #newName > 0 and newName ~= curr then
 				local params = vim.lsp.util.make_position_params()
