@@ -244,29 +244,41 @@ local lsp_handlers = function()
         end,
     }
 end
+local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
+local format_acmd = function()
+    vim.api.nvim_create_autocmd("BufWritePre", {
+        group = lspbufformat,
+        callback = function()
+            --vim.lsp.buf.formatting_sync()
+            vim.lsp.buf.format()
+        end,
+    })
+end
 
 -- Default lsp config for filetypes
 local filetype_attach = setmetatable({
-    go = function()
-        local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            group = lspbufformat,
-            callback = function()
-                --vim.lsp.buf.formatting_sync()
-                vim.lsp.buf.format()
-            end,
-        })
-    end,
-    lua = function()
-        local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
-        vim.api.nvim_create_autocmd("BufWritePre", {
-            group = lspbufformat,
-            callback = function()
-                --vim.lsp.buf.formatting_sync()
-                vim.lsp.buf.format()
-            end,
-        })
-    end,
+    go = format_acmd,
+    --go = function()
+    --    local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
+    --    vim.api.nvim_create_autocmd("BufWritePre", {
+    --        group = lspbufformat,
+    --        callback = function()
+    --            --vim.lsp.buf.formatting_sync()
+    --            vim.lsp.buf.format()
+    --        end,
+    --    })
+    --end,
+    lua = format_acmd,
+    --lua = function()
+    --    local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
+    --    vim.api.nvim_create_autocmd("BufWritePre", {
+    --        group = lspbufformat,
+    --        callback = function()
+    --            --vim.lsp.buf.formatting_sync()
+    --            vim.lsp.buf.format()
+    --        end,
+    --    })
+    --end,
 }, {
     __index = function()
         return function() end

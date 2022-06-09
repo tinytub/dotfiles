@@ -8,32 +8,18 @@ return packer.startup(function()
     use("nathom/filetype.nvim")
     use("nvim-lua/plenary.nvim")
 
-    use({
-        "ray-x/lsp_signature.nvim",
-        after = "nvim-lspconfig",
-        config = function()
-            require("plugins.others").signature()
-        end,
-    })
-
     -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
     use({
         "williamboman/nvim-lsp-installer",
+        opt = true,
+        setup = function()
+            require("core.utils").packer_lazy_load "nvim-lsp-installer"
+            -- reload the current file so lsp actually starts for it
+            vim.defer_fn(function()
+                vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
+            end, 0)
+        end,
         disable = false,
-
-        --config = function()
-        --    require("lsp.lsp-installer")
-        --end
-        --setup = function()
-        --  -- reload the current file so lsp actually starts for it
-        --  vim.defer_fn(function()
-        --     vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
-        --  end, 0)
-        --end,
-        --config = function ()
-        --    require('lsp')
-        --    --require('lsp.lspservers').setup_lsp()
-        --end
     })
 
     use({
@@ -43,6 +29,14 @@ return packer.startup(function()
             -- lsp-installer should setup first
             require("lsp.lsp-installer")
             require("lsp.lspconfig")
+        end,
+    })
+
+    use({
+        "ray-x/lsp_signature.nvim",
+        after = "nvim-lspconfig",
+        config = function()
+            require("plugins.others").signature()
         end,
     })
 
@@ -408,7 +402,7 @@ return packer.startup(function()
         end,
     })
 
-    -- matchup
+    -- matchup 高亮显示光标所在位置的光标,函数等
     use({
         "andymass/vim-matchup",
         --event = "CursorMoved",
