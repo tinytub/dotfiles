@@ -64,142 +64,153 @@ local orange = colors.orange
 -- highlight groups & colors
 local hl_cols = {
 
-	Comment = { fg = grey_fg },
+    Comment = { fg = grey_fg },
 
-	-- line numbers
-	CursorLineNr = { fg = white },
-	LineNr = { fg = grey },
+    -- line numbers
+    CursorLineNr = { fg = white },
+    LineNr = { fg = grey },
 
-	-- those ugly ~'s
-	EndOfBuffer = { fg = black },
+    -- those ugly ~'s
+    EndOfBuffer = { fg = black },
 
-	-- floating windows like whichkey_window
-	--FloatBorder = { fg = blue },
-	--NormalFloat = { bg = darker_black },
+    -- floating windows like whichkey_window
+    --FloatBorder = { fg = blue },
+    --NormalFloat = { bg = darker_black },
 
-	-- Pmenu i.e completion menu
-	Pmenu = { bg = one_bg },
-	PmenuSbar = { bg = one_bg2 },
-	PmenuSel = { bg = pmenu_bg, fg = black },
-	PmenuThumb = { bg = nord_blue },
+    -- Pmenu i.e completion menu
+    Pmenu = { bg = one_bg },
+    PmenuSbar = { bg = one_bg2 },
+    PmenuSel = { bg = pmenu_bg, fg = black },
+    PmenuThumb = { bg = nord_blue },
 
-	-- nvim cmp
-	CmpItemAbbr = { fg = white },
-	CmpItemAbbrMatch = { fg = white },
-	CmpItemKind = { fg = white },
-	CmpItemMenu = { fg = white },
+    -- nvim cmp
+    CmpItemAbbr = { fg = white },
+    CmpItemAbbrMatch = { fg = white },
+    CmpItemKind = { fg = white },
+    CmpItemMenu = { fg = white },
 
-	NvimInternalError = { fg = red },
-	WinSeparator = { fg = one_bg2 },
+    NvimInternalError = { fg = red },
+    WinSeparator = { fg = one_bg2 },
 
-	-- Dashboard i.e alpha.nvim
-	AlphaHeader = { fg = grey_fg },
-	AlphaButtons = { fg = light_grey },
+    -- Dashboard i.e alpha.nvim
+    AlphaHeader = { fg = grey_fg },
+    AlphaButtons = { fg = light_grey },
 
-	-- Gitsigns.nvim
-	DiffAdd = {
-		fg = green,
-		bg = "NONE",
-	},
+    -- Gitsigns.nvim
+    DiffAdd = {
+        fg = green,
+        bg = "NONE",
+    },
 
-	DiffChange = {
-		fg = blue,
-		bg = "NONE",
-	},
+    DiffChange = {
+        fg = blue,
+        bg = "NONE",
+    },
 
-	DiffChangeDelete = {
-		fg = red,
-		bg = "NONE",
-	},
+    DiffChangeDelete = {
+        fg = red,
+        bg = "NONE",
+    },
 
-	DiffModified = {
-		fg = orange,
-		bg = "NONE",
-	},
+    DiffModified = {
+        fg = orange,
+        bg = "NONE",
+    },
 
-	DiffDelete = {
-		fg = red,
-		bg = "NONE",
-	},
+    DiffDelete = {
+        fg = red,
+        bg = "NONE",
+    },
 
-	-- Indent blankline
-	IndentBlanklineChar = { fg = line },
-	IndentBlanklineSpaceChar = { fg = line },
+    -- Indent blankline
+    IndentBlanklineChar = { fg = line },
+    IndentBlanklineSpaceChar = { fg = line },
 
-	-- Lsp Diagnostics
-	DiagnosticHint = { fg = purple },
-	DiagnosticError = { fg = red },
-	DiagnosticWarn = { fg = yellow },
-	DiagnosticInformation = { fg = green },
+    -- Lsp Diagnostics
+    DiagnosticHint = { fg = purple },
+    DiagnosticError = { fg = red },
+    DiagnosticWarn = { fg = yellow },
+    DiagnosticInformation = { fg = green },
 
-	-- NvimTree
-	NvimTreeEmptyFolderName = { fg = folder_bg },
-	NvimTreeEndOfBuffer = { fg = darker_black },
-	NvimTreeFolderIcon = { fg = folder_bg },
-	NvimTreeFolderName = { fg = folder_bg },
-	NvimTreeGitDirty = { fg = red },
-	NvimTreeIndentMarker = { fg = one_bg2 },
-	NvimTreeNormal = { bg = darker_black },
-	NvimTreeNormalNC = { bg = darker_black },
-	NvimTreeOpenedFolderName = { fg = folder_bg },
+    -- NvimTree
+    NvimTreeEmptyFolderName = { fg = folder_bg },
+    NvimTreeEndOfBuffer = { fg = darker_black },
+    NvimTreeFolderIcon = { fg = folder_bg },
+    NvimTreeFolderName = { fg = folder_bg },
+    NvimTreeGitDirty = { fg = red },
+    NvimTreeIndentMarker = { fg = one_bg2 },
+    NvimTreeNormal = { bg = darker_black },
+    NvimTreeNormalNC = { bg = darker_black },
+    NvimTreeOpenedFolderName = { fg = folder_bg },
 
-	NvimTreeWinSeparator = {
-		fg = darker_black,
-		bg = darker_black,
-	},
+    NvimTreeWinSeparator = {
+        fg = darker_black,
+        bg = darker_black,
+    },
 
-	NvimTreeWindowPicker = {
-		fg = red,
-		bg = black2,
-	},
+    NvimTreeWindowPicker = {
+        fg = red,
+        bg = black2,
+    },
 
-	-- Telescope
-	TelescopeBorder = {
-		--fg = purple,
-		fg = colors.darker_black,
-		bg = colors.darker_black,
-	},
+    -- Telescope
+    TelescopeBorder = {
+        --fg = purple,
+        fg = colors.darker_black,
+        bg = colors.darker_black,
+    },
 
-	TelescopePromptBorder = {
-		--fg = purple,
-		fg = colors.black2,
-		bg = colors.black2,
-	},
+    TelescopePromptBorder = {
+        --fg = purple,
+        fg = colors.black2,
+        bg = colors.black2,
+    },
 
-	TelescopePromptNormal = {
-		fg = colors.white,
-		bg = colors.black2,
-	},
+    TelescopePromptNormal = {
+        fg = colors.white,
+        bg = colors.black2,
+    },
 
-	TelescopePromptPrefix = {
-		fg = colors.red,
-		bg = colors.black2,
-	},
+    TelescopePromptPrefix = {
+        fg = colors.red,
+        bg = colors.black2,
+    },
 
-	TelescopeNormal = { bg = colors.darker_black },
+    TelescopeNormal = { bg = colors.darker_black },
 
-	TelescopePreviewTitle = {
-		fg = colors.black,
-		bg = colors.green,
-	},
+    TelescopePreviewTitle = {
+        fg = colors.black,
+        bg = colors.green,
+    },
 
-	TelescopePromptTitle = {
-		fg = colors.black,
-		bg = colors.red,
-	},
+    TelescopePromptTitle = {
+        fg = colors.black,
+        bg = colors.red,
+    },
 
-	TelescopeResultsTitle = {
-		fg = colors.darker_black,
-		bg = colors.darker_black,
-	},
+    TelescopeResultsTitle = {
+        fg = colors.darker_black,
+        bg = colors.darker_black,
+    },
 
-	TelescopeSelection = { bg = colors.black2 },
+    TelescopeSelection = { bg = colors.black2 },
 
-	LspReferenceText = { fg = darker_black, bg = white },
-	LspReferenceRead = { fg = darker_black, bg = white },
-	LspReferenceWrite = { fg = darker_black, bg = white },
+    LspReferenceText = { fg = darker_black, bg = white },
+    LspReferenceRead = { fg = darker_black, bg = white },
+    LspReferenceWrite = { fg = darker_black, bg = white },
+
+    QuickScopePrimary = {
+        fg = colors.orange,
+        --link = "IncSearch",
+        --bg = colors.black,
+    },
+    QuickScopeSecondary = {
+        fg = colors.blue,
+        --link = "Search",
+        --bg = colors.black,
+    },
 }
 
 for hl, col in pairs(hl_cols) do
-	vim.api.nvim_set_hl(0, hl, col)
+    vim.api.nvim_set_hl(0, hl, col)
 end

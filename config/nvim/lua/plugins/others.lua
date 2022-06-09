@@ -175,4 +175,34 @@ M.base46 = function()
     require("colors.highlights")
 end
 
+M.quickscope = function()
+    vim.g.qs_highlight_on_keys = { "f", "F", "t", "T" }
+    vim.g.qs_max_chars = 150
+    -- colors config in colors.highlights
+
+    --local quickscopercolor = vim.api.nvim_create_augroup("quickscopercolor", { clear = true })
+    --vim.api.nvim_create_autocmd("ColorScheme", {
+    --	group = quickscopercolor,
+    --	pattern = "*",
+    --	--command = "highlight QuickScopePrimary guifg='#b1fa87' gui=underline ctermfg=155 cterm=underline",
+    --	command = "highlight link QuickScopePrimary IncSearch",
+    --})
+
+    --vim.api.nvim_create_autocmd("ColorScheme", {
+    --	group = quickscopercolor,
+    --	pattern = "*",
+    --	--command = "highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline",
+    --	command = "highlight link QuickScopeSecondary Search",
+    --})
+    --vim.api.nvim_command("augroup quickscopecolor")
+    --vim.api.nvim_command("autocmd!")
+    --vim.api.nvim_command(
+    --    "autocmd ColorScheme * highlight QuickScopePrimary guifg='#b1fa87' gui=underline ctermfg=155 cterm=underline"
+    --)
+    --vim.api.nvim_command(
+    --    "autocmd ColorScheme * highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline"
+    --)
+    --vim.api.nvim_command("augroup END")
+end
+
 return M

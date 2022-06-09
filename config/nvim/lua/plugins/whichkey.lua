@@ -151,6 +151,9 @@ local mappings = {
                 --TODO: can use this tiny plugin https://github.com/smjonas/inc-rename.nvim
                 vim.lsp.buf.rename.float()
             end,
+            --function()
+            --    return ":IncRename " .. vim.fn.expand("<cword>")
+            --end,
             "   lsp rename",
         },
     },
