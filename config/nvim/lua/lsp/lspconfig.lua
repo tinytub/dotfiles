@@ -257,6 +257,9 @@ end
 
 -- Default lsp config for filetypes
 local filetype_attach = setmetatable({
+    -- v0.7
+    --go = require('lsp.format').OrgImports(1000),
+    -- v0.8
     go = format_acmd,
     --go = function()
     --    local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
