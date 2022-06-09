@@ -10,10 +10,11 @@ local shortline = true
 
 local icon_styles = {
     default = {
-        --left = "",
-        left = " ",
+        left = "",
+        --left = " ",
         right = " ",
-        main_icon = "  ",
+        --main_icon = "  ",
+        main_icon = " ",
         vi_mode_icon = " ",
         position_icon = "  ",
     },
@@ -53,7 +54,7 @@ local icon_styles = {
 local icons = {
     mode_icon = "  ",
     position_icon = "  ",
-    empty_file = " Empty ",
+    empty_file = "  Empty ",
     dir = " ",
     clock = " ",
 }
@@ -72,7 +73,7 @@ local diff = {
     add = {
         provider = "git_diff_added",
         hl = "Feline_diffIcons",
-        icon = " ",
+        icon = "  ",
     },
 
     change = {
@@ -93,8 +94,27 @@ local git_branch = {
     enabled = shortline or function(winid)
         return vim.api.nvim_win_get_width(tonumber(winid) or 0) > 70
     end,
-    hl = "Feline_diffIcons",
+    hl = "Feline_gitIcons",
     icon = "  ",
+}
+
+local dir_name = {
+    provider = function()
+        local dir_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+        local filename = vim.fn.expand "%:t"
+        local extension = vim.fn.expand "%:e"
+        local icon = require("nvim-web-devicons").get_icon(filename, extension)
+        if icon == nil then
+            icon = " "
+        end
+        return " " .. icon .. " " .. dir_name .. " "
+    end,
+
+    hl = "FelineCwd",
+    right_sep = {
+        str = statusline_style.right,
+        hl = "FelineCwd"
+    },
 }
 
 local file_info = {
@@ -132,6 +152,7 @@ local file_info = {
             return " " .. fn.fnamemodify(filename, ":r") .. " "
         end,
 
+        --hl = "Feline_file_info"
         hl = function()
             return {
                 fg = get_color("Feline_file_info", "bg#"),
@@ -274,10 +295,56 @@ local cwd = {
     -- dirname
     provider = function()
         local dir_name = fn.fnamemodify(fn.getcwd(), ":t")
-        return " " .. dir_name .. " "
+        return "" .. dir_name .. " "
     end,
 
     hl = "FelineCwd",
+}
+
+local left_file_info = {
+    left_sep = {
+        --str = statusline_style.left,
+        str = " ",
+        hl = "FelineCwd",
+    },
+
+    -- file icon
+    provider = function()
+        local filename = fn.expand("%:t")
+        local extension = fn.expand("%:e")
+
+        if filename == "" then
+            return icons.empty_file
+        end
+
+        local icon = require("nvim-web-devicons").get_icon(filename, extension)
+
+        if icon == nil then
+            icon = " "
+        else
+            icon = "" .. icon .. " "
+        end
+
+        return icon
+    end,
+
+    hl = "FelineCwd",
+
+    -- file name
+    right_sep = {
+        str = function()
+            local filename = fn.expand("%:t")
+            return "" .. fn.fnamemodify(filename, ":r") .. " "
+        end,
+
+        hl = "FelineCwd"
+        --hl = function()
+        --    return {
+        --        fg = get_color("Feline_file_info", "bg#"),
+        --        bg = get_color("Feline_file_info", "fg#"),
+        --    }
+        --end,
+    },
 }
 
 local mode_icon = {
@@ -392,31 +459,55 @@ local right = {}
 add_table(left, mode_icon)
 add_table(left, separator_left)
 add_table(left, vi_mode)
-add_table(left, cwd)
+--add_table(left, cwd)
+add_table(left, left_file_info)
+--add_table(left, dir_name)
 
--- lsp
-add_table(left, lsp_status)
-add_table(left, diagnostic.error)
-add_table(left, diagnostic.warning)
-add_table(left, diagnostic.hint)
-add_table(left, diagnostic.info)
+add_table(left, git_branch)
+add_table(left, diff.add)
+add_table(left, diff.change)
+add_table(left, diff.remove)
 
---add_table(middle, lsp_progress)
---add_table(middle, nvim_gps)
+add_table(right, diagnostic.error)
+add_table(right, diagnostic.warning)
+add_table(right, diagnostic.hint)
+add_table(right, diagnostic.info)
+add_table(right, lsp_status)
 
--- git diffs
-add_table(right, diff.add)
-add_table(right, diff.change)
-add_table(right, diff.remove)
-add_table(right, git_branch)
-
-add_table(right, separator_right_file)
-add_table(right, file_info)
-
+--add_table(right, separator_right_file)
+--add_table(right, file_info)
 --add_table(right, separator_right)
+add_table(right, cwd)
 add_table(right, separator_right_position)
 add_table(right, position_icon)
 add_table(right, current_line)
+
+
+
+--
+---- lsp
+--add_table(left, lsp_status)
+--add_table(left, diagnostic.error)
+--add_table(left, diagnostic.warning)
+--add_table(left, diagnostic.hint)
+--add_table(left, diagnostic.info)
+--
+----add_table(middle, lsp_progress)
+----add_table(middle, nvim_gps)
+--
+---- git diffs
+--add_table(right, diff.add)
+--add_table(right, diff.change)
+--add_table(right, diff.remove)
+--add_table(right, git_branch)
+--
+--add_table(right, separator_right_file)
+--add_table(right, file_info)
+--
+----add_table(right, separator_right)
+--add_table(right, separator_right_position)
+--add_table(right, position_icon)
+--add_table(right, current_line)
 
 components.active[1] = left
 components.active[2] = middle
