@@ -16,9 +16,11 @@ g.did_load_filetypes = 0
 g.do_filetype_lua = 1
 
 opt.laststatus = 3
+opt.showmode = false
+
 opt.title = true
 opt.clipboard = "unnamedplus"
-opt.cmdheight = 1
+opt.cmdheight = 0
 opt.cul = true -- cursor line
 
 -- Indentline

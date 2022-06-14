@@ -368,31 +368,6 @@ local mode_icon = {
     },
 }
 
-local nvim_gps = {
-    provider = function()
-        -- nvim-gps loads at cursorMoved so need to handle this
-        local gps_loaded, gps = pcall(require, "nvim-gps")
-
-        if not gps_loaded then
-            return
-        end
-
-        return " " .. gps.get_location()
-    end,
-
-    enabled = function()
-        local gps_loaded, gps = pcall(require, "nvim-gps")
-
-        if not gps_loaded then
-            return false
-        end
-
-        return gps.is_available()
-    end,
-
-    hl = "Feline_nvim_gps",
-}
-
 local separator_left = {
     provider = statusline_style.right,
     hl = "Feline_EmptySpace",
@@ -518,6 +493,16 @@ require("feline").setup({
         bg = get_color("Feline", "bg#"),
     },
     components = components,
+    disable = {
+        filetypes = {
+            "term",
+            "startify",
+            "NvimTree",
+            "packer",
+            "Telescop",
+        },
+    },
+
 })
 
 local winbar_components = {
@@ -536,7 +521,15 @@ local winbar_components = {
     },
     gps = {
         provider = function()
-            local gps_loaded, gps = pcall(require, "nvim-gps")
+            --local gps_loaded, gps = pcall(require, "nvim-gps")
+            --if not gps_loaded then
+            --    return
+            --end
+
+            --local location = gps.get_location()
+            --return location == "" and "" or "  " .. location
+
+            local gps_loaded, gps = pcall(require, "nvim-navic")
             if not gps_loaded then
                 return
             end
@@ -545,7 +538,14 @@ local winbar_components = {
             return location == "" and "" or "  " .. location
         end,
         enabled = function()
-            local gps_loaded, gps = pcall(require, "nvim-gps")
+            --local gps_loaded, gps = pcall(require, "nvim-gps")
+
+            --if not gps_loaded then
+            --    return false
+            --end
+            --return gps.is_available()
+
+            local gps_loaded, gps = pcall(require, "nvim-navic")
 
             if not gps_loaded then
                 return false
@@ -573,6 +573,7 @@ require("feline").winbar.setup({
             "startify",
             "NvimTree",
             "packer",
+            "Telescop",
         },
     },
 })
