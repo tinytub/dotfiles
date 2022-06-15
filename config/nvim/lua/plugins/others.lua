@@ -64,11 +64,12 @@ M.colorizer = function()
             },
         }
         colorizer.setup(default["filetypes"], default["user_default_options"])
-        vim.cmd("ColorizerReloadAllBuffers")
+        vim.cmd "ColorizerAttachToBuffer"
     end
 end
 
 M.blankline = function()
+    --    require("base46").load_highlight "blankline"
     require("indent_blankline").setup({
         indentLine_enabled = 1,
         char = "▏",

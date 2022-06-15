@@ -3,7 +3,7 @@ local present, lspconfig = pcall(require, "lspconfig")
 if not present then
     return
 end
-
+--require("base46").load_highlight "lsp"
 -- Lsp highlights managed by
 --   `illuminate` plugin
 local function lsp_highlight_document(client)
@@ -100,6 +100,26 @@ local function lsp_keymaps(client, bufnr)
     end
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
+    if client.supports_method "textDocument/signatureHelp" then
+        vim.api.nvim_create_autocmd({ "CursorHoldI" }, {
+            pattern = "*",
+            group = vim.api.nvim_create_augroup("LspSignature", {}),
+            callback = function()
+                vim.lsp.buf.signature_help()
+            end,
+        })
+    end
+
+    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+        border = "single",
+        silent = true,
+        focusable = false,
+        close_events = { "InsertCharPre", "CursorMoved" },
+        anchor = "SW",
+        relative = "cursor",
+        row = -1,
+    })
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -162,6 +182,9 @@ local lsp_handlers = function()
     --   spacing = 0,
     --},
     vim.diagnostic.config({
+        --virtual_text = {
+        --    prefix = "",
+        --},
         virtual_text = false,
         signs = true,
         underline = true,

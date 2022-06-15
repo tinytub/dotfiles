@@ -3,8 +3,7 @@ local use, packer = require("core.packerInit").getPacker()
 --local use = packer.use
 
 return packer.startup(function()
-    use({ "wbthomason/packer.nvim" })
-    use("lewis6991/impatient.nvim")
+    use("wbthomason/packer.nvim")
     use("nathom/filetype.nvim")
     use("nvim-lua/plenary.nvim")
 
@@ -13,12 +12,15 @@ return packer.startup(function()
         "williamboman/nvim-lsp-installer",
         opt = true,
         setup = function()
-            require("core.utils").packer_lazy_load "nvim-lsp-installer"
-            -- reload the current file so lsp actually starts for it
-            vim.defer_fn(function()
-                vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
-            end, 0)
+            require("core.lazy_load").on_file_open()
         end,
+        --        setup = function()
+        --            require("core.utils").packer_lazy_load "nvim-lsp-installer"
+        --            -- reload the current file so lsp actually starts for it
+        --            vim.defer_fn(function()
+        --                vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
+        --            end, 0)
+        --        end,
         disable = false,
     })
 
@@ -35,6 +37,7 @@ return packer.startup(function()
     use({
         "ray-x/lsp_signature.nvim",
         after = "nvim-lspconfig",
+        disable = true,
         config = function()
             require("plugins.others").signature()
         end,
@@ -53,7 +56,7 @@ return packer.startup(function()
     use({
         "jose-elias-alvarez/null-ls.nvim",
         --            ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css', 'javascript', 'javascriptreact', 'python' },
-        after = "nvim-lsp-installer",
+        after = "nvim-lspconfig",
         config = function()
             require("lsp.null-ls")
         end,
@@ -64,6 +67,7 @@ return packer.startup(function()
     -- Icons
     use({
         "kyazdani42/nvim-web-devicons",
+        --module = "nvim-web-devicons",
         after = "base46",
         config = function()
             require("plugins.icons")
@@ -219,9 +223,11 @@ return packer.startup(function()
     })
 
     use({
-        "akinsho/nvim-bufferline.lua",
+        "akinsho/bufferline.nvim",
         tag = "v2.*",
-        after = "nvim-web-devicons",
+        setup = function()
+            require("core.lazy_load").bufferline()
+        end,
         config = function()
             require("plugins.bufferline")
         end,
@@ -311,7 +317,11 @@ return packer.startup(function()
     -- Treesitter
     use({
         "nvim-treesitter/nvim-treesitter",
-        event = { "BufRead", "BufNewFile" },
+        module = "nvim-treesitter",
+        cmd = { "TSInstall", "TSUninstall" },
+        setup = function()
+            require("core.lazy_load").treesitter()
+        end,
         config = function()
             require("plugins.treesitter").treesitter()
         end,
@@ -364,8 +374,9 @@ return packer.startup(function()
 
     use({
         "kyazdani42/nvim-tree.lua",
-        -- cmd = "NvimTreeToggle",
-        after = "nvim-web-devicons",
+        --after = "nvim-web-devicons",
+        ft = "alpha",
+        cmd = { "NvimTreeToggle", "NvimTreeFocus" },
         --cmd = { "NvimTreeToggle", "NvimTreeFocus" },
         config = function()
             --require("plugins.nvimtree").config()
@@ -383,16 +394,17 @@ return packer.startup(function()
             require("plugins.gitsigns").config()
         end,
         setup = function()
-            require("core.utils").packer_lazy_load("gitsigns.nvim")
+            require("core.lazy_load").gitsigns()
         end,
+        --setup = function()
+        --    require("core.utils").packer_lazy_load("gitsigns.nvim")
+        --end,
     })
 
     -- whichkey
     use({
         "folke/which-key.nvim",
-        setup = function()
-            require("core.utils").packer_lazy_load("which-key.nvim")
-        end,
+        --module = "which-key",
         config = function()
             require("plugins.whichkey")
         end,
@@ -415,6 +427,8 @@ return packer.startup(function()
     -- Dashboard
     use({
         "goolord/alpha-nvim",
+        disable = true,
+        after = "base46",
         config = function()
             require("plugins.dashboard").setup()
         end,
@@ -428,15 +442,18 @@ return packer.startup(function()
         config = function()
             require("plugins.matchup").config()
         end,
-        setup = function()
-            require("core.utils").packer_lazy_load("vim-matchup")
-        end,
+        --setup = function()
+        --    require("core.utils").packer_lazy_load("vim-matchup")
+        --end,
         disable = false,
     })
 
     use({
         "norcalli/nvim-colorizer.lua",
-        event = "BufWinEnter",
+        opt = true,
+        setup = function()
+            require("core.lazy_load").colorizer()
+        end,
         config = function()
             require("plugins.others").colorizer()
         end,
@@ -540,9 +557,9 @@ return packer.startup(function()
         config = function()
             require("neoscroll").setup()
         end,
-        setup = function()
-            require("core.utils").packer_lazy_load("neoscroll.nvim")
-        end,
+        --setup = function()
+        --    require("core.utils").packer_lazy_load("neoscroll.nvim")
+        --end,
     })
 
     -- F 键查询增强
@@ -650,8 +667,8 @@ return packer.startup(function()
 
     use({
         "lukas-reineke/indent-blankline.nvim",
+        opt = true,
         disable = false,
-        event = "BufRead",
         config = function()
             require("plugins.others").blankline()
         end,

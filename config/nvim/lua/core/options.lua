@@ -14,6 +14,9 @@ end)
 -- use filetype.lua instead of filetype.vim
 g.did_load_filetypes = 0
 g.do_filetype_lua = 1
+g.toggle_theme_icon = "  "
+g.theme_switcher_loaded = false
+
 
 opt.laststatus = 3
 opt.showmode = false
@@ -94,6 +97,19 @@ local disabled_built_ins = {
     "vimballPlugin",
     "zip",
     "zipPlugin",
+    "python3_provider",
+    "python_provider",
+    "node_provider",
+    "ruby_provider",
+    "perl_provider",
+    "tutor",
+    "rplugin",
+    "syntax",
+    "synmenu",
+    "optwin",
+    "compiler",
+    "bugreport",
+    "ftplugin",
 }
 
 for _, plugin in pairs(disabled_built_ins) do
