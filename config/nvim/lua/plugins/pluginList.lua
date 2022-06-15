@@ -14,13 +14,6 @@ return packer.startup(function()
         setup = function()
             require("core.lazy_load").on_file_open()
         end,
-        --        setup = function()
-        --            require("core.utils").packer_lazy_load "nvim-lsp-installer"
-        --            -- reload the current file so lsp actually starts for it
-        --            vim.defer_fn(function()
-        --                vim.cmd 'if &ft == "packer" | echo "" | else | silent! e %'
-        --            end, 0)
-        --        end,
         disable = false,
     })
 
@@ -396,9 +389,6 @@ return packer.startup(function()
         setup = function()
             require("core.lazy_load").gitsigns()
         end,
-        --setup = function()
-        --    require("core.utils").packer_lazy_load("gitsigns.nvim")
-        --end,
     })
 
     -- whichkey
@@ -442,9 +432,6 @@ return packer.startup(function()
         config = function()
             require("plugins.matchup").config()
         end,
-        --setup = function()
-        --    require("core.utils").packer_lazy_load("vim-matchup")
-        --end,
         disable = false,
     })
 
@@ -557,9 +544,6 @@ return packer.startup(function()
         config = function()
             require("neoscroll").setup()
         end,
-        --setup = function()
-        --    require("core.utils").packer_lazy_load("neoscroll.nvim")
-        --end,
     })
 
     -- F 键查询增强
