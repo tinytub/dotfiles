@@ -98,6 +98,7 @@ local function lsp_keymaps(client, bufnr)
             { range = true, desc = "LSP range format" }
         )
     end
+
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -212,6 +213,7 @@ local lsp_handlers = function()
         end
     end
 end
+
 local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
 local format_acmd = function()
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -228,8 +230,8 @@ local format_acmd_go = function()
         group = lspbufformat,
         callback = function()
             --vim.lsp.buf.formatting_sync()
-            vim.lsp.buf.formatting_sync(nil, 1000)
-            --vim.lsp.buf.format()
+            --vim.lsp.buf.formatting_sync(nil, 1000)
+            vim.lsp.buf.format({ async = true })
         end,
     })
 
@@ -237,6 +239,7 @@ local format_acmd_go = function()
     -- organize imports aka goimports
     vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = { "*.go" },
+        group = lspbufformat,
         callback = function()
             --local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
             local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
