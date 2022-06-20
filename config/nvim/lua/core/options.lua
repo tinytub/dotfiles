@@ -23,17 +23,15 @@ opt.showmode = false
 
 opt.title = true
 opt.clipboard = "unnamedplus"
-opt.cmdheight = 0
+--opt.cmdheight = 0
 opt.cul = true -- cursor line
 
--- Indentline
+-- Indenting
 opt.expandtab = true
 opt.shiftwidth = 4
 opt.smartindent = true
 
--- disable tilde on end of buffer: https://github.com/  neovim/neovim/pull/8546#issuecomment-643643758
 opt.fillchars = { eob = " " }
-
 --opt.listchars = "tab:»·,nbsp:+, trail:·, extends:→,precedes:←";
 --opt.listchars = { tab = " " }
 

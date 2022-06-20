@@ -12,7 +12,7 @@ return packer.startup(function()
         "williamboman/nvim-lsp-installer",
         opt = true,
         setup = function()
-            require("core.lazy_load").on_file_open()
+            require("core.lazy_load").on_file_open("nvim-lsp-installer")
         end,
         disable = false,
     })

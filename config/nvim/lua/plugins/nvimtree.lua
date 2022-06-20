@@ -47,12 +47,12 @@ nvimtree.setup {
         custom = { 'node_modules', '.cache', 'build', 'var', 'vendor' },
     },
     disable_netrw = true,
+    open_on_setup = false,
     hijack_netrw = true,
     hijack_unnamed_buffer_when_opening = false,
     ignore_ft_on_setup = { "alpha" },
     --   ignore = { ".git", "node_modules", ".cache" },
     --auto_close = false,
-    open_on_tab = false,
     hijack_cursor = true,
     update_cwd = true,
     update_focused_file = {
@@ -60,8 +60,8 @@ nvimtree.setup {
         update_cwd = false,
     },
     git = {
-        enable = false,
-        ignore = false,
+        enable = true,
+        --        ignore = false,
     },
     actions = {
         open_file = {
@@ -75,13 +75,11 @@ nvimtree.setup {
             enable = false,
         },
         icons = {
-            padding = " ",
-            symlink_arrow = " ➛ ",
             show = {
                 file = true,
                 folder = true,
                 folder_arrow = true,
-                git = false,
+                git = true,
             },
             glyphs = {
                 default = "",

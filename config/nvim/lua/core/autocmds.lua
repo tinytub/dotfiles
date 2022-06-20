@@ -22,6 +22,22 @@ autocmd("BufEnter", {
     pattern = "*",
     command = "set fo-=c fo-=r fo-=o",
 })
+
+--autocmd("VimEnter", {
+--   callback = function()
+--      vim.cmd "command! -nargs=* -complete=customlist,v:lua.require'packer'.plugin_complete PackerSync lua require('core.utils').packer_sync(<f-args>)"
+--   end,
+--})
+
+autocmd("InsertLeave", {
+   callback = function()
+      if require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
+          and not require("luasnip").session.jump_active
+      then
+         require("luasnip").unlink_current()
+      end
+   end,
+})
 ---- open nvim with a dir while still lazy loading nvimtree
 --autocmd("BufEnter", {
 --   callback = function()

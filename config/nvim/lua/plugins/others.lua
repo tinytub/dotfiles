@@ -59,7 +59,6 @@ M.colorizer = function()
                 css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
                 css_fn = false, -- Enable all CSS *functions*: rgb_fn, hsl_fn
 
-                -- Available modes: foreground, background
                 mode = "background", -- Set the display mode.
             },
         }
@@ -87,6 +86,8 @@ M.blankline = function()
         buftype_exclude = { "terminal" },
         show_trailing_blankline_indent = false,
         show_first_indent_level = false,
+        show_current_context = true,
+        show_current_context_start = true,
     })
 end
 

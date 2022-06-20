@@ -26,5 +26,5 @@ lsp_installer.setup {
 
     log_level = vim.log.levels.DEBUG,
 
-    max_concurrent_installers = 20, -- 并发安装数量
+    max_concurrent_installers = 10, -- 并发安装数量
 }

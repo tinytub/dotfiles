@@ -101,25 +101,28 @@ local function lsp_keymaps(client, bufnr)
     -- Enable completion triggered by <c-x><c-o>
     vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
-    if client.supports_method "textDocument/signatureHelp" then
-        vim.api.nvim_create_autocmd({ "CursorHoldI" }, {
-            pattern = "*",
-            group = vim.api.nvim_create_augroup("LspSignature", {}),
-            callback = function()
-                vim.lsp.buf.signature_help()
-            end,
-        })
-    end
 
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = "single",
-        silent = true,
-        focusable = false,
-        close_events = { "InsertCharPre", "CursorMoved" },
-        anchor = "SW",
-        relative = "cursor",
-        row = -1,
-    })
+    if client.server_capabilities.signatureHelpProvider then
+        require("lsp.signature").signature(client)
+    end
+    -- 高亮光标所在文本的reference
+    --if client.server_capabilities.documentHighlightProvider then
+    --    vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
+    --    vim.api.nvim_clear_autocmds { buffer = bufnr, group = "lsp_document_highlight" }
+    --    vim.api.nvim_create_autocmd("CursorHold", {
+    --        callback = vim.lsp.buf.document_highlight,
+    --        buffer = bufnr,
+    --        group = "lsp_document_highlight",
+    --        desc = "Document Highlight",
+    --    })
+    --    vim.api.nvim_create_autocmd("CursorMoved", {
+    --        callback = vim.lsp.buf.clear_references,
+    --        buffer = bufnr,
+    --        group = "lsp_document_highlight",
+    --        desc = "Clear All the References",
+    --    })
+    --end
+
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -208,64 +211,6 @@ local lsp_handlers = function()
             vim.api.nvim_echo({ { msg } }, true, {})
         end
     end
-
-    -- credits to @Malace : https://www.reddit.com/r/neovim/comments/ql4iuj/rename_hover_including_window_title_and/
-    -- This is modified version of the above snippet
-    vim.lsp.buf.rename = {
-        float = function()
-            local currName = vim.fn.expand("<cword>") .. " "
-
-            local popwin = require("plenary.popup").create(currName, {
-                title = "Renamer",
-                style = "minimal",
-                borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-                relative = "cursor",
-                borderhighlight = "RenamerBorder",
-                titlehighlight = "RenamerTitle",
-                focusable = true,
-                width = 25,
-                height = 1,
-                line = "cursor+2",
-                col = "cursor-1",
-            })
-
-            local map_opts = { noremap = true, silent = true }
-
-            vim.cmd("normal w")
-            vim.cmd("startinsert")
-
-            vim.api.nvim_buf_set_keymap(0, "i", "<Esc>", "<cmd>stopinsert | q!<CR>", map_opts)
-            vim.api.nvim_buf_set_keymap(0, "n", "<Esc>", "<cmd>stopinsert | q!<CR>", map_opts)
-
-            vim.api.nvim_buf_set_keymap(
-                0,
-                "i",
-                "<CR>",
-                "<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. popwin .. ")<CR>",
-                map_opts
-            )
-
-            vim.api.nvim_buf_set_keymap(
-                0,
-                "n",
-                "<CR>",
-                "<cmd>stopinsert | lua vim.lsp.buf.rename.apply(" .. currName .. "," .. popwin .. ")<CR>",
-                map_opts
-            )
-        end,
-
-        apply = function(curr, popwin)
-            local newName = vim.trim(vim.fn.getline("."))
-            vim.api.nvim_win_close(popwin, true)
-
-            if #newName > 0 and newName ~= curr then
-                local params = vim.lsp.util.make_position_params()
-                params.newName = newName
-
-                vim.lsp.buf_request(0, "textDocument/rename", params)
-            end
-        end,
-    }
 end
 local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
 local format_acmd = function()
@@ -283,7 +228,8 @@ local format_acmd_go = function()
         group = lspbufformat,
         callback = function()
             --vim.lsp.buf.formatting_sync()
-            vim.lsp.buf.format()
+            vim.lsp.buf.formatting_sync(nil, 1000)
+            --vim.lsp.buf.format()
         end,
     })
 
@@ -293,14 +239,14 @@ local format_acmd_go = function()
         pattern = { "*.go" },
         callback = function()
             --local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
-            local params = vim.lsp.util.make_range_params(nil, "utf-16")
+            local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
             params.context = { only = { "source.organizeImports" } }
 
             local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
             for _, res in pairs(result or {}) do
                 for _, r in pairs(res.result or {}) do
                     if r.edit then
-                        vim.lsp.util.apply_workspace_edit(r.edit, "utf-16")
+                        vim.lsp.util.apply_workspace_edit(r.edit, vim.lsp.util._get_offset_encoding())
                     else
                         vim.lsp.buf.execute_command(r.command)
                     end

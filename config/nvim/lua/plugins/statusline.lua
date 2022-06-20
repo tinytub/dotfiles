@@ -204,9 +204,22 @@ local diagnostic = {
 local lsp_status = {
     provider = function()
         if next(vim.lsp.buf_get_clients()) ~= nil then
-            local lsp_name = vim.lsp.get_active_clients()[1].name
+            local names = {}
+            local clients = vim.lsp.get_active_clients()
+            for _, client in ipairs(clients) do
+                if client.attached_buffers[vim.api.nvim_get_current_buf()] then
+                    table.insert(names, client.name)
+                end
+            end
+            local name = false
+            if names ~= {} then
+                name = table.concat(names, '|')
+            end
+            return "   LSP ~ " .. name .. " "
+            --return content and ("%#St_LspStatus#" .. content) or ""
+            --local lsp_name = vim.lsp.get_active_clients()[1].name
 
-            return "   LSP ~ " .. lsp_name .. " "
+            --return "   LSP ~ " .. lsp_name .. " "
         else
             return ""
         end
