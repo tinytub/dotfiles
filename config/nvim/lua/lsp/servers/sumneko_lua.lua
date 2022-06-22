@@ -7,13 +7,13 @@ local main_path = vim.fn.stdpath "data" .. "/lsp_servers/sumneko_lua/extension/s
 -- need brew install lua-language-server
 return {
     init_options = { documentFormatting = true, codeAction = false },
- --   cmd = { "lua-language-server", "-E", main_path },
+    --   cmd = { "lua-language-server", "-E", main_path },
     filetypes = { "lua" },
     settings = {
         Lua = {
             runtime = {
                 version = 'LuaJIT',
---                path = runtime_path,
+                --                path = runtime_path,
             },
             diagnostics = {
                 enable = true,
@@ -24,9 +24,9 @@ return {
                 callSnippet = "Replace",
             },
             workspace = {
-                library = {
-                    [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                    [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true },
+                --                library = {
+                --                    [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+                --                    [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true },
                 preloadFileSize = 100000,
                 maxPreload = 10000
             },

@@ -43,7 +43,7 @@ return packer.startup(function()
         config = function()
             require("plugins.fidget-nvim")
         end,
-        event = { "BufRead", "BufNewFile", "InsertEnter" },
+        event = { "BufAdd", "BufRead", "BufNewFile", "InsertEnter" },
     })
 
     use({
@@ -485,13 +485,12 @@ return packer.startup(function()
         end,
     })
 
-    --    -- Better quickfix
-    --    use {
-    --        "kevinhwang91/nvim-bqf",
-    --        event = "BufRead",
-    --        disable = false
-    --    }
-    --
+    -- Better quickfix
+    use {
+        "kevinhwang91/nvim-bqf",
+        event = "BufRead",
+        disable = false
+    }
 
     -- Terminal
     use({
