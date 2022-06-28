@@ -95,11 +95,6 @@ local disabled_built_ins = {
     "vimballPlugin",
     "zip",
     "zipPlugin",
-    "python3_provider",
-    "python_provider",
-    "node_provider",
-    "ruby_provider",
-    "perl_provider",
     "tutor",
     "rplugin",
     "syntax",
@@ -112,4 +107,15 @@ local disabled_built_ins = {
 
 for _, plugin in pairs(disabled_built_ins) do
     g["loaded_" .. plugin] = 1
+end
+
+local default_providers = {
+    "node",
+    "perl",
+    "python3",
+    "ruby",
+}
+
+for _, provider in ipairs(default_providers) do
+    vim.g["loaded_" .. provider .. "_provider"] = 0
 end

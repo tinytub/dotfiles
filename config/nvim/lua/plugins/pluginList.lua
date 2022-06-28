@@ -489,6 +489,9 @@ return packer.startup(function()
     use {
         "kevinhwang91/nvim-bqf",
         event = "BufRead",
+        config = function()
+            require("plugins.nvim-bqf")
+        end,
         disable = false
     }
 

@@ -63,6 +63,9 @@ nvimtree.setup {
         enable = true,
         --        ignore = false,
     },
+    filesystem_watchers = {
+        enable = true,
+    },
     actions = {
         open_file = {
             resize_window = true,
@@ -107,6 +110,7 @@ nvimtree.setup {
         },
     },
     view = {
+        adaptive_size = true,
         --allow_resize = true,
         side = "left",
         width = 25,
