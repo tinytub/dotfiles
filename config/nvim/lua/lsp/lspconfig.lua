@@ -3,6 +3,7 @@ local present, lspconfig = pcall(require, "lspconfig")
 if not present then
     return
 end
+
 --require("base46").load_highlight "lsp"
 -- Lsp highlights managed by
 --   `illuminate` plugin
@@ -98,69 +99,47 @@ local function lsp_keymaps(client, bufnr)
             { range = true, desc = "LSP range format" }
         )
     end
-
-    -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-
-    if client.server_capabilities.signatureHelpProvider then
-        require("lsp.signature").signature(client)
-    end
-    -- 高亮光标所在文本的reference
-    --if client.server_capabilities.documentHighlightProvider then
-    --    vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
-    --    vim.api.nvim_clear_autocmds { buffer = bufnr, group = "lsp_document_highlight" }
-    --    vim.api.nvim_create_autocmd("CursorHold", {
-    --        callback = vim.lsp.buf.document_highlight,
-    --        buffer = bufnr,
-    --        group = "lsp_document_highlight",
-    --        desc = "Document Highlight",
-    --    })
-    --    vim.api.nvim_create_autocmd("CursorMoved", {
-    --        callback = vim.lsp.buf.clear_references,
-    --        buffer = bufnr,
-    --        group = "lsp_document_highlight",
-    --        desc = "Clear All the References",
-    --    })
-    --end
-
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem = {
-    documentationFormat = { "markdown", "plaintext" },
-    snippetSupport = true,
-    preselectSupport = true,
-    insertReplaceSupport = true,
-    labelDetailsSupport = true,
-    deprecatedSupport = true,
-    commitCharactersSupport = true,
-    tagSupport = { valueSet = { 1 } },
-    resolveSupport = {
-        properties = {
-            "documentation",
-            "detail",
-            "additionalTextEdits",
+local function make_capabilities()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+    capabilities.textDocument.completion.completionItem = {
+        documentationFormat = { "markdown", "plaintext" },
+        snippetSupport = true,
+        preselectSupport = true,
+        insertReplaceSupport = true,
+        labelDetailsSupport = true,
+        deprecatedSupport = true,
+        commitCharactersSupport = true,
+        tagSupport = { valueSet = { 1 } },
+        resolveSupport = {
+            properties = {
+                "documentation",
+                "detail",
+                "additionalTextEdits",
+            },
         },
-    },
-    workDoneProgress = true,
-}
-capabilities.textDocument.codeAction.dynamicRegistration = true
--- Code actions
-capabilities.textDocument.codeAction = {
-    dynamicRegistration = true,
-    codeActionLiteralSupport = {
-        codeActionKind = {
-            valueSet = (function()
-                local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
-                table.sort(res)
-                return res
-            end)(),
+        workDoneProgress = true,
+    }
+    capabilities.textDocument.codeAction.dynamicRegistration = true
+    -- Code actions
+    capabilities.textDocument.codeAction = {
+        dynamicRegistration = true,
+        codeActionLiteralSupport = {
+            codeActionKind = {
+                valueSet = (function()
+                    local res = vim.tbl_values(vim.lsp.protocol.CodeActionKind)
+                    table.sort(res)
+                    return res
+                end)(),
+            },
         },
-    },
-}
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+    }
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+    return capabilities
+end
 
 --lsp_config.capabilities = capabilities
 
@@ -189,9 +168,10 @@ local lsp_handlers = function()
         --virtual_text = {
         --    prefix = "",
         --},
+        --virtual_text = { spacing = 4, prefix = '●' },
         virtual_text = false,
         signs = true,
-        underline = true,
+        --underline = true,
         update_in_insert = false, -- update diagnostics insert mode
     })
     vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
@@ -200,6 +180,10 @@ local lsp_handlers = function()
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = "single",
     })
+
+    --vim.lsp.handlers['textDocument/references'] = function(_, _, _)
+    --    require('telescope.builtin').lsp_references()
+    --end
 
     -- suppress error messages from lang servers
     vim.notify = function(msg, log_level)
@@ -219,8 +203,8 @@ local format_acmd = function()
     vim.api.nvim_create_autocmd("BufWritePre", {
         group = lspbufformat,
         callback = function()
-            --vim.lsp.buf.formatting_sync()
-            vim.lsp.buf.format()
+            vim.lsp.buf.formatting_sync(nil, 500)
+            --vim.lsp.buf.format()
         end,
     })
 end
@@ -304,6 +288,35 @@ local custom_attach = function(client, bufnr)
     filetype_attach[filetype](client)
     lsp_keymaps(client, bufnr)
 
+    -- Enable completion triggered by <c-x><c-o>
+    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
+
+    if client.server_capabilities.signatureHelpProvider then
+        require("lsp.signature").signature(client)
+    end
+
+    -- 高亮光标所在文本的reference
+    --if client.server_capabilities.documentHighlightProvider then
+    --    vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
+    --    vim.api.nvim_clear_autocmds { buffer = bufnr, group = "lsp_document_highlight" }
+    --    vim.api.nvim_create_autocmd("CursorHold", {
+    --        callback = vim.lsp.buf.document_highlight,
+    --        buffer = bufnr,
+    --        group = "lsp_document_highlight",
+    --        desc = "Document Highlight",
+    --    })
+    --    vim.api.nvim_create_autocmd("CursorMoved", {
+    --        callback = vim.lsp.buf.clear_references,
+    --        buffer = bufnr,
+    --        group = "lsp_document_highlight",
+    --        desc = "Clear All the References",
+    --    })
+    --end
+    --if client.supports_method('textDocument/codeAction') then
+    --    require('lsp.lightbulb').setup()
+    --end
+
     local npresent, navic = pcall(require, "nvim-navic")
     if npresent then
         navic.attach(client, bufnr)
@@ -357,7 +370,7 @@ local setup_server = function(server, config)
         on_init = custom_init,
         on_attach = custom_attach,
         --capabilities = updated_capabilities,
-        capabilities = capabilities,
+        capabilities = make_capabilities(),
         flags = {
             debounce_text_changes = nil,
         },
@@ -382,5 +395,5 @@ lsp_handlers()
 return {
     on_init = custom_init,
     on_attach = custom_attach,
-    capabilities = capabilities,
+    capabilities = make_capabilities(),
 }
