@@ -19,6 +19,7 @@ local icons = {
     dir = " ",
     clock = " ",
 }
+options.icons = icons
 
 -- https://github.com/FelixKratz/dotfiles/blob/master/.config/nvim/lua/custom/plugins/feline.lua
 options.icon_styles = {
@@ -168,7 +169,7 @@ options.left_file_info = {
         local extension = fn.expand("%:e")
 
         if filename == "" then
-            return icons.empty_file
+            return options.icons.empty_file
         end
 
         local icon = require("nvim-web-devicons").get_icon(filename, extension)
@@ -320,6 +321,7 @@ options.lsp_progress = {
     end,
     hl = { fg = options.colors.green },
 }
+
 options.lsp_status = {
     provider = function()
         if next(vim.lsp.buf_get_clients()) ~= nil then
@@ -349,16 +351,7 @@ options.lsp_status = {
         bg = options.colors.statusline_bg,
     }
 }
-options.lsp_icon = {
-    provider = function()
-        if next(vim.lsp.buf_get_clients()) ~= nil then
-            return "    LSP "
-        else
-            return " "
-        end
-    end,
-    hl = { fg = options.colors.grey_fg2, bg = options.colors.statusline_bg },
-}
+
 options.cwd = {
     -- icon
     left_sep = {
