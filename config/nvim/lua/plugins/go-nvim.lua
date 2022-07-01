@@ -5,6 +5,7 @@ require('go').setup({
     filstruct = "gopls",
     lsp_cfg = false,
     textobjects = false,
+    tag_transform = "camelcase", -- can be transform option("snakecase", "camelcase", etc) check gomodifytags for details and more options
     --log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
     --lsp_codelens = false, -- use navigator
     dap_debug = true,

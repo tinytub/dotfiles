@@ -176,6 +176,7 @@ M.base46 = function()
     local base46 = require("base46")
     --base46.setup({ theme = "everforest", custom_highlights = "colors.themes.everforest" })
     base46.setup({ theme = "everforest" })
+    --base46.setup({ theme = "onedark" })
     --base46.setup({ theme = "gruvbox" })
     -- then load the highlights
     package.loaded["colors.highlights" or false] = nil

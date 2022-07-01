@@ -1,5 +1,8 @@
 --local present, packer = pcall(require, "packerInit")
 local use, packer = require("core.packerInit").getPacker()
+if not packer or not use then
+    return
+end
 --local use = packer.use
 
 return packer.startup(function()
@@ -184,7 +187,8 @@ return packer.startup(function()
         disable = false,
         after = { "nvim-web-devicons" },
         config = function()
-            require("plugins.statusline")
+            --require("plugins.statusline")
+            require("plugins.feline")
         end,
     })
 

@@ -87,3 +87,6 @@ symbol = " "
 
 [swift]
 symbol = "ﯣ "
+
+[vagrant]
+disabled = true
