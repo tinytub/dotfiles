@@ -533,6 +533,7 @@ return packer.startup(function()
         disable = true,
     })
     -- Language
+    -- may be i can try https://github.com/olexsmir/gopher.nvim or https://github.com/crispgm/nvim-go
     use({
         "ray-x/go.nvim",
         ft = { "go", "golang" },
