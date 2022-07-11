@@ -465,29 +465,48 @@ return packer.startup(function()
     })
 
     -- Debugging
+    -- DAP
     use({
-        "mfussenegger/nvim-dap",
-        config = function()
-            -- require "dap"
-            require("plugins.dap_init")
-
-            require("dap-go").setup()
-        end,
-        requires = {
-            "leoluz/nvim-dap-go",
+        { 'mfussenegger/nvim-dap',
+            config = function()
+                require('plugins.dap')
+            end,
+            keys = { '<F5>', '<F8>', '<F9>' }
         },
-
-        disable = false,
+        { 'rcarriga/nvim-dap-ui',
+            config = function()
+                require('plugins.dap.ui')
+            end,
+            after = { 'nvim-dap' }
+        },
+        { 'jbyuki/one-small-step-for-vimkind',
+            after = { 'nvim-dap' }
+        }
     })
+    --use({
+    --    "mfussenegger/nvim-dap",
+    --    config = function()
+    --        -- require "dap"
+    --        require("plugins.dap_init")
 
-    use({
-        after = "nvim-dap",
-        "rcarriga/nvim-dap-ui",
-        config = function()
-            require("dapui").setup()
-            --require('dap.ext.vscode').load_launchjs()
-        end,
-    })
+    --        require("dap-go").setup()
+    --    end,
+    --    requires = {
+    --        "leoluz/nvim-dap-go",
+    --    },
+
+    --    disable = true,
+    --})
+
+    --use({
+    --    after = "nvim-dap",
+    --    "rcarriga/nvim-dap-ui",
+    --    config = function()
+    --        require("dapui").setup()
+    --        --require('dap.ext.vscode').load_launchjs()
+    --    end,
+    --    disable = true,
+    --})
 
     -- Better quickfix
     use {

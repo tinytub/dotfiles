@@ -6,7 +6,8 @@ else
     require("core.autocmds")
     require("core.global")
     require("core.packerInit").bootstrap()
-    require("plugins.pluginList")
+    require("core.packerInit").startup()
+    --require("plugins.pluginList")
 
     -- set all the non plugin mappings
     require("core.keymappings").misc()

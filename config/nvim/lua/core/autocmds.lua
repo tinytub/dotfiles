@@ -30,13 +30,13 @@ autocmd("BufEnter", {
 --})
 
 autocmd("InsertLeave", {
-   callback = function()
-      if require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-          and not require("luasnip").session.jump_active
-      then
-         require("luasnip").unlink_current()
-      end
-   end,
+    callback = function()
+        if require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
+            and not require("luasnip").session.jump_active
+        then
+            require("luasnip").unlink_current()
+        end
+    end,
 })
 ---- open nvim with a dir while still lazy loading nvimtree
 --autocmd("BufEnter", {
@@ -47,6 +47,24 @@ autocmd("InsertLeave", {
 --   end,
 --})
 
+--auto close file exploer when quiting incase a single buffer is left
+autocmd("BufEnter", {
+    pattern = "*",
+    command = "if (winnr(\"$\") == 1 && &filetype == 'nvimtree') | q | endif",
+})
+autocmd("BufEnter", {
+    pattern = "*",
+    command = "if (winnr(\"$\") == 1 && &filetype == 'nvimtree') | q | endif",
+})
+
+-- dont list quickfix buffers
+autocmd("FileType", {
+    pattern = "qf",
+    callback = function()
+        vim.opt_local.buflisted = false
+    end,
+})
+--vim.cmd([[ autocmd BufEnter  if (winnr("$") == 1 && &filetype == 'nvimtree') | q | endif ]])
 function acmd.define_augroups(definitions) -- {{{1
     -- Create autocommand groups based on the passed definitions
     --
@@ -68,17 +86,6 @@ function acmd.define_augroups(definitions) -- {{{1
         vim.cmd("augroup END")
     end
 end
-
---auto close file exploer when quiting incase a single buffer is left
-autocmd("BufEnter", {
-    pattern = "*",
-    command = "if (winnr(\"$\") == 1 && &filetype == 'nvimtree') | q | endif",
-})
-autocmd("BufEnter", {
-    pattern = "*",
-    command = "if (winnr(\"$\") == 1 && &filetype == 'nvimtree') | q | endif",
-})
---vim.cmd([[ autocmd BufEnter  if (winnr("$") == 1 && &filetype == 'nvimtree') | q | endif ]])
 
 acmd.define_augroups({
     goautofmt = {
