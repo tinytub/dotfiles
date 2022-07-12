@@ -308,8 +308,9 @@ local custom_attach = function(client, bufnr)
     if client.server_capabilities.signatureHelpProvider then
         require("lsp.signature").signature(client)
     end
+    lsp_highlight_document(client)
 
-    -- 高亮光标所在文本的reference
+    ---- 高亮光标所在文本的reference
     --if client.server_capabilities.documentHighlightProvider then
     --    vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
     --    vim.api.nvim_clear_autocmds { buffer = bufnr, group = "lsp_document_highlight" }

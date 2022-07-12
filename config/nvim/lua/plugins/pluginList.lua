@@ -116,6 +116,11 @@ return packer.startup(function()
     })
 
     use({
+        "rrethy/vim-illuminate",
+        disable = true,
+    })
+
+    use({
         "sainnhe/everforest",
         config = function()
             require("colors").init()
