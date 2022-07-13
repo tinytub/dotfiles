@@ -75,33 +75,34 @@ local function lsp_keymaps(client, bufnr)
     -- nightly
     client.server_capabilities.documentFormattingProvider = true
     client.server_capabilities.documentRangeFormattingProvider = true
+    -- neovim 0.8?
+    if client.server_capabilities.documentFormattingProvider then
+      --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
+      vim.api.nvim_buf_create_user_command(
+        bufnr,
+        "LspFormat",
+        vim.lsp.buf.format,
+        { range = false, desc = "LSP format" }
+      )
+    end
+
+    if client.server_capabilities.documentRangeFormattingProvider then
+      vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
+      --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
+      vim.api.nvim_buf_create_user_command(
+        bufnr,
+        "LspRangeFormat",
+        vim.lsp.buf.range_formatting,
+        { range = true, desc = "LSP range format" }
+      )
+    end
   else
     -- stable
     client.resolved_capabilities.document_formatting = true
     client.resolved_capabilities.document_range_formatting = true
   end
 
-  -- neovim 0.8?
-  if client.server_capabilities.documentFormattingProvider then
-    --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
-    vim.api.nvim_buf_create_user_command(
-      bufnr,
-      "LspFormat",
-      vim.lsp.buf.format,
-      { range = false, desc = "LSP format" }
-    )
-  end
 
-  if client.server_capabilities.documentRangeFormattingProvider then
-    vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
-    --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
-    vim.api.nvim_buf_create_user_command(
-      bufnr,
-      "LspRangeFormat",
-      vim.lsp.buf.range_formatting,
-      { range = true, desc = "LSP range format" }
-    )
-  end
 end
 
 local function make_capabilities()
