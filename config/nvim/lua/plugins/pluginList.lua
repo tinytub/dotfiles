@@ -51,12 +51,13 @@ return packer.startup(function()
 
   use({
     "jose-elias-alvarez/null-ls.nvim",
-    --            ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css', 'javascript', 'javascriptreact', 'python' },
-    after = "nvim-lspconfig",
+    --ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css',
+    --  'javascript', 'javascriptreact', 'python' },
+    after = { "nvim-lspconfig" },
     config = function()
       require("lsp.null-ls")
     end,
-    disable = false,
+    disable = true,
   })
 
   -- use {"dstein64/vim-startuptime"}
@@ -388,7 +389,8 @@ return packer.startup(function()
 
   use({
     "lewis6991/gitsigns.nvim",
-    opt = true,
+    ft = "gitcommit",
+    disable = false,
     --cond = function()
     --   return vim.fn.isdirectory ".git" == 1
     --end,
@@ -436,8 +438,8 @@ return packer.startup(function()
   -- matchup 高亮显示光标所在位置的光标,函数等
   use({
     "andymass/vim-matchup",
-    --event = "CursorMoved",
-    opt = true,
+    event = "CursorMoved",
+    --opt = true,
     config = function()
       require("plugins.matchup").config()
     end,
@@ -520,7 +522,7 @@ return packer.startup(function()
     config = function()
       require("plugins.nvim-bqf")
     end,
-    disable = false
+    disable = false,
   }
 
   -- Terminal

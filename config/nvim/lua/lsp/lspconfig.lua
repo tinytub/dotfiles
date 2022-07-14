@@ -107,7 +107,9 @@ end
 
 local function make_capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+  if pcall(require, 'cmp_nvim_lsp') then
+    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+  end
   capabilities.textDocument.completion.completionItem = {
     documentationFormat = { "markdown", "plaintext" },
     snippetSupport = true,
@@ -174,10 +176,24 @@ local lsp_handlers = function()
     --    prefix = "",
     --},
     --virtual_text = { spacing = 4, prefix = '●' },
-    virtual_text = false,
+    -- virtual_text = false,
+    virtual_text = {
+      spacing = 4,
+      prefix = '●',
+      source = 'always',
+      severity = {
+        min = vim.diagnostic.severity.HINT,
+      },
+    },
     signs = true,
+    severity_sort = true,
     --underline = true,
     update_in_insert = false, -- update diagnostics insert mode
+    float = {
+      show_header = false,
+      source = 'always',
+      border = 'rounded',
+    },
   })
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = "single",
@@ -221,8 +237,13 @@ local format_acmd_go = function()
     group = lspbufformat,
     callback = function()
       --vim.lsp.buf.formatting_sync()
-      --vim.lsp.buf.formatting_sync(nil, 1000)
-      vim.lsp.buf.format({ async = true })
+      local vim_version = vim.version()
+      if vim_version.minor > 7 then
+        vim.lsp.buf.format({ async = true })
+      else
+        vim.lsp.buf.formatting_sync(nil, 1000)
+      end
+
     end,
   })
 
