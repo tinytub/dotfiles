@@ -1,14 +1,14 @@
 if vim.g.vscode then
-    require("core.options")
-    require("vscode")
+  require("core.options")
+  require("vscode")
 else
-    require("core.options")
-    require("core.autocmds")
-    require("core.global")
-    require("core.packerInit").bootstrap()
-    require("core.packerInit").startup()
-    --require("plugins.pluginList")
+  require("core.options")
+  require("core.autocmds")
+  require("core.global")
+  require("core.packerInit").bootstrap()
+  require("core.packerInit").startup()
+  --require("plugins.pluginList")
 
-    -- set all the non plugin mappings
-    require("core.keymappings").misc()
+  -- set all the non plugin mappings
+  require("core.keymappings").misc()
 end

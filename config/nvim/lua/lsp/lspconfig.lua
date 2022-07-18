@@ -15,7 +15,7 @@ win.default_opts = function(options)
 end
 
 -- Create custom keymaps for useful
---   lsp functions
+-- lsp functions
 -- The missing functions are most covered whith which-key mappings
 -- the `hover()` -> covers even signature_help on functions/methods
 local function lsp_keymaps(client, bufnr)
@@ -324,27 +324,6 @@ local custom_attach = function(client, bufnr)
     require("lsp.signature").signature(client)
   end
   --lsp_highlight_document(client)
-
-  ---- 高亮光标所在文本的reference
-  --if client.server_capabilities.documentHighlightProvider then
-  --    vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
-  --    vim.api.nvim_clear_autocmds { buffer = bufnr, group = "lsp_document_highlight" }
-  --    vim.api.nvim_create_autocmd("CursorHold", {
-  --        callback = vim.lsp.buf.document_highlight,
-  --        buffer = bufnr,
-  --        group = "lsp_document_highlight",
-  --        desc = "Document Highlight",
-  --    })
-  --    vim.api.nvim_create_autocmd("CursorMoved", {
-  --        callback = vim.lsp.buf.clear_references,
-  --        buffer = bufnr,
-  --        group = "lsp_document_highlight",
-  --        desc = "Clear All the References",
-  --    })
-  --end
-  --if client.supports_method('textDocument/codeAction') then
-  --    require('lsp.lightbulb').setup()
-  --end
 
   local npresent, navic = pcall(require, "nvim-navic")
   if npresent then

@@ -435,7 +435,7 @@ return packer.startup(function()
     end,
   })
 
-  -- matchup 高亮显示光标所在位置的光标,函数等
+  -- matchup 高亮显示光标所在位置对应的括号,函数等
   use({
     "andymass/vim-matchup",
     event = "CursorMoved",
@@ -685,7 +685,7 @@ return packer.startup(function()
 
   use({
     "lukas-reineke/indent-blankline.nvim",
-    opt = true,
+    opt = false,
     disable = false,
     config = function()
       require("plugins.others").blankline()
