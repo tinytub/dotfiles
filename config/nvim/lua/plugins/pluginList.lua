@@ -57,7 +57,7 @@ return packer.startup(function()
     config = function()
       require("lsp.null-ls")
     end,
-    disable = true,
+    disable = false,
   })
 
   -- use {"dstein64/vim-startuptime"}
@@ -450,7 +450,7 @@ return packer.startup(function()
     "norcalli/nvim-colorizer.lua",
     opt = true,
     setup = function()
-      require("core.lazy_load").colorizer()
+      require("core.lazy_load").on_file_open("nvim-colorizer.lua")
     end,
     config = function()
       require("plugins.others").colorizer()
@@ -473,47 +473,50 @@ return packer.startup(function()
 
   -- Debugging
   -- DAP
+  --use({
+  --  { 'mfussenegger/nvim-dap',
+  --    event = "BufRead",
+  --    config = function()
+  --      require('plugins.dap')
+  --    end,
+  --    keys = { '<F5>', '<F8>', '<F9>' }
+  --  },
+  --  { 'rcarriga/nvim-dap-ui',
+  --    config = function()
+  --      require('plugins.dap.ui')
+  --    end,
+  --    after = { 'nvim-dap' }
+  --  },
+  --  { 'jbyuki/one-small-step-for-vimkind',
+  --    after = { 'nvim-dap' }
+  --  }
+  --})
+
   use({
-    { 'mfussenegger/nvim-dap',
-      config = function()
-        require('plugins.dap')
-      end,
-      keys = { '<F5>', '<F8>', '<F9>' }
+    "mfussenegger/nvim-dap",
+    config = function()
+      -- require "dap"
+      require("plugins.dap")
+
+      require("dap-go").setup()
+    end,
+    requires = {
+      "leoluz/nvim-dap-go",
     },
-    { 'rcarriga/nvim-dap-ui',
-      config = function()
-        require('plugins.dap.ui')
-      end,
-      after = { 'nvim-dap' }
-    },
-    { 'jbyuki/one-small-step-for-vimkind',
-      after = { 'nvim-dap' }
-    }
+
+    disable = false,
   })
-  --use({
-  --    "mfussenegger/nvim-dap",
-  --    config = function()
-  --        -- require "dap"
-  --        require("plugins.dap_init")
 
-  --        require("dap-go").setup()
-  --    end,
-  --    requires = {
-  --        "leoluz/nvim-dap-go",
-  --    },
-
-  --    disable = true,
-  --})
-
-  --use({
-  --    after = "nvim-dap",
-  --    "rcarriga/nvim-dap-ui",
-  --    config = function()
-  --        require("dapui").setup()
-  --        --require('dap.ext.vscode').load_launchjs()
-  --    end,
-  --    disable = true,
-  --})
+  use({
+    after = "nvim-dap",
+    "rcarriga/nvim-dap-ui",
+    config = function()
+      require('plugins.dap.ui')
+      --require("dapui").setup()
+      --require('dap.ext.vscode').load_launchjs()
+    end,
+    disable = false,
+  })
 
   -- Better quickfix
   use {
@@ -700,6 +703,7 @@ return packer.startup(function()
         use_diagnostic_signs = true,
       })
     end,
+    disable = true,
   })
 
   -- todo highlights

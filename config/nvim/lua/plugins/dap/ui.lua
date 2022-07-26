@@ -1,39 +1,39 @@
 local res, dapui = pcall(require, "dapui")
 if not res then
-    return
+  return
 end
 
 dapui.setup({
-    layouts = {
-        {
-            position = "bottom",
-            size = 10,
-            elements = {
-                { id = "repl", size = 0.50, },
-                { id = "console", size = 0.50 },
-            },
-        },
-        {
-            position = "right",
-            size = 40,
-            elements = {
-                { id = "scopes", size = 0.46, },
-                { id = "stacks", size = 0.36 },
-                { id = "breakpoints", size = 0.18 },
-                -- { id = "watches", size = 00.25 },
-            },
-        },
-    },
+  --layouts = {
+  --    {
+  --        position = "bottom",
+  --        size = 10,
+  --        elements = {
+  --            { id = "repl", size = 0.50, },
+  --            { id = "console", size = 0.50 },
+  --        },
+  --    },
+  --    {
+  --        position = "right",
+  --        size = 40,
+  --        elements = {
+  --            { id = "scopes", size = 0.46, },
+  --            { id = "stacks", size = 0.36 },
+  --            { id = "breakpoints", size = 0.18 },
+  --            -- { id = "watches", size = 00.25 },
+  --        },
+  --    },
+  --},
 })
 
 local dap = require("dap")
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
-    dapui.open()
+  dapui.open()
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
-    dapui.close()
+  dapui.close()
 end
 dap.listeners.before.event_exited["dapui_config"] = function()
-    dapui.close()
+  dapui.close()
 end
