@@ -67,7 +67,7 @@ autocmd("FileType", {
     vim.opt_local.buflisted = false
   end,
 })
---vim.cmd([[ autocmd BufEnter  if (winnr("$") == 1 && &filetype == 'nvimtree') | q | endif ]])
+
 function acmd.define_augroups(definitions) -- {{{1
   -- Create autocommand groups based on the passed definitions
   --

@@ -94,7 +94,8 @@ return packer.startup(function()
 
   use({
     -- this repo has break some base46 colors
-    --		"CanKolay3499/base46",
+    -- "CanKolay3499/base46",
+    -- "jayden-chan/base46.nvim",
     "tinytub/base46",
     after = "plenary.nvim",
     config = function()
@@ -102,24 +103,16 @@ return packer.startup(function()
     end,
     disable = false,
   })
-  use({
-    --		"zahimeen/nvim-base46.lua",
-    "jayden-chan/base46.nvim",
-    after = "plenary.nvim",
-    config = function()
-      local theme_opts = {
-        base = "base46",
-        theme = "everforest",
-        transparency = false,
-      }
-      local base46 = require("base46")
-      base46.load_theme(theme_opts)
 
-      package.loaded["colors.highlights" or false] = nil
-      require("colors.highlights")
+  use {
+    "catppuccin/nvim",
+    as = "catppuccin",
+    after = "bufferline.nvim",
+    run = ":CatppuccinCompile",
+    config = function()
+      require "plugins.catppuccin"
     end,
-    disable = true,
-  })
+  }
 
   use({
     "rrethy/vim-illuminate",
