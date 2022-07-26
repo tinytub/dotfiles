@@ -1,3 +1,6 @@
+-- add binaries installed by mason.nvim to path
+vim.env.PATH = vim.env.PATH .. ":" .. vim.fn.stdpath "data" .. "/mason/bin"
+
 local acmd = {}
 
 local autocmd = vim.api.nvim_create_autocmd

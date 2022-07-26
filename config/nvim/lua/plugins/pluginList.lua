@@ -12,20 +12,25 @@ return packer.startup(function()
 
   -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
   use({
-    "williamboman/nvim-lsp-installer",
-    opt = true,
-    setup = function()
-      require("core.lazy_load").on_file_open("nvim-lsp-installer")
+    "williamboman/mason.nvim",
+    --    opt = true,
+    cmd = require("core.lazy_load").mason_cmds,
+    config = function()
+      require "plugins.mason"
     end,
     disable = false,
   })
 
   use({
+    opt = true,
     "neovim/nvim-lspconfig",
-    after = "nvim-lsp-installer",
+    --    after = "nvim-lsp-installer",
+    setup = function()
+      require("core.lazy_load").on_file_open "nvim-lspconfig"
+    end,
     config = function()
       -- lsp-installer should setup first
-      require("lsp.lsp-installer")
+      --require("lsp.lsp-installer")
       require("lsp.lspconfig")
     end,
   })
