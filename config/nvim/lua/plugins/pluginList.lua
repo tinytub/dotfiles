@@ -45,6 +45,16 @@ return packer.startup(function()
   })
 
   use({
+    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    after = { "nvim-lspconfig" },
+    config = function()
+      require("plugins.lsp-line").setup()
+      -- require("lsp_lines").setup()
+    end,
+  })
+
+
+  use({
     -- lspserver 状态插件, 停用了 statuslines 中的状态。
     "j-hui/fidget.nvim",
     after = { "nvim-lspconfig" },
@@ -112,6 +122,7 @@ return packer.startup(function()
     config = function()
       require "plugins.catppuccin"
     end,
+    disable = true,
   }
 
   use({

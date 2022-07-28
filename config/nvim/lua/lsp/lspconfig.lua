@@ -69,9 +69,9 @@ local function lsp_keymaps(client, bufnr)
   --    --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, opts)
   --    vim.api.nvim_buf_create_user_command(bufnr, "LspRangeFormat", vim.lsp.buf.formatting_seq_sync, { range = true })
   --end
-  local vim_version = vim.version()
+  --  local vim_version = vim.version()
 
-  if vim_version.minor > 7 then
+  if vim.g.vim_version > 7 then
     -- nightly
     client.server_capabilities.documentFormattingProvider = true
     client.server_capabilities.documentRangeFormattingProvider = true

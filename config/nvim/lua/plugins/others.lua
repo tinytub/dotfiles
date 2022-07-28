@@ -110,18 +110,6 @@ M.luasnip = function()
   luasnip.config.set_config({
     history = true,
     updateevents = "TextChanged,TextChangedI",
-    --     ext_opts = {
-    --       [types.choiceNode] = {
-    --         active = {
-    --           virt_text = { { " ", "TSTextReference" } },
-    --         },
-    --       },
-    --       [types.insertNode] = {
-    --         active = {
-    --           virt_text = { { " ", "TSEmphasis" } },
-    --         },
-    --       },
-    --     },
   })
   luasnip.snippets = {
     all = require("plugins.luasnips.all"),
@@ -131,9 +119,6 @@ M.luasnip = function()
     markdown = require("plugins.luasnips.markdown"),
   }
 
-  -- require("luasnip/loaders/from_vscode").load()
-  --require("luasnip.loaders.from_vscode").lazy_load()
-  -- add snippet path here!
   require("luasnip.loaders.from_vscode").lazy_load()
 end
 

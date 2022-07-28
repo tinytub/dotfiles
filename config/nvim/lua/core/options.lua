@@ -7,13 +7,16 @@ local g = vim.g
 
 --Defer loading shada until after startup_
 vim.schedule(function()
-  vim.opt.shadafile = vim.fn.expand("$HOME") .. "/.local/share/nvim/shada/main.shada"
+  vim.opt.shadafile = vim.fn.stdpath(g.vim_version > 7 and "state" or "data") .. "/shada/main.shada"
   vim.cmd([[ silent! rsh ]])
 end)
 
 -- use filetype.lua instead of filetype.vim
-g.did_load_filetypes = 0
-g.do_filetype_lua = 1
+g.vim_version = vim.version().minor
+if g.vim_version < 8 then
+  g.did_load_filetypes = 0
+  g.do_filetype_lua = 1
+end
 g.toggle_theme_icon = "  "
 g.theme_switcher_loaded = false
 
