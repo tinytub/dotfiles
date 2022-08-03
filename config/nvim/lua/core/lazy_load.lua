@@ -13,7 +13,7 @@ M.lazy_load = function(tb)
           vim.defer_fn(function()
             require("packer").loader(tb.plugin)
             if tb.plugin == "nvim-lspconfig" then
-              vim.cmd "silent! e %"
+              vim.cmd "silent! do FileType"
             end
           end, 0)
         else
