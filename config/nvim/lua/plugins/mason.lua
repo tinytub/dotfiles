@@ -26,10 +26,11 @@ local options = {
 
     "pyright",
     "gopls",
+    "prettierd",
 
     -- shell
-    "shfmt",
-    "shellcheck",
+    --"shfmt",
+    --"shellcheck",
   }, -- not an option from mason.nvim
 
   ui = {

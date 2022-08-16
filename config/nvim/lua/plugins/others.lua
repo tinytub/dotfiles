@@ -80,7 +80,7 @@ M.blankline = function()
       "lspinfo",
       "TelescopePrompt",
       "TelescopeResults",
-      "Mason",
+      "mason",
       "",
     },
     buftype_exclude = { "terminal" },

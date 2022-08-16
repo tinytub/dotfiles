@@ -7,7 +7,7 @@ local api = vim.api
 local diagnostic = vim.diagnostic
 
 -- 默认使用单行虚拟行，可以使用快捷键进行切换
-local is_virtual_text = true
+local is_virtual_text = false
 local function toggle_virtual_line()
   if is_virtual_text then
     diagnostic.config({
@@ -16,6 +16,7 @@ local function toggle_virtual_line()
     })
     is_virtual_text = false
   else
+    -- 和lspconfig内一样
     diagnostic.config({
       virtual_text = {
         spacing = 4,

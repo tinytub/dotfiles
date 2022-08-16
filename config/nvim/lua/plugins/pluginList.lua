@@ -6,7 +6,9 @@ end
 --local use = packer.use
 
 return packer.startup(function()
-  use("wbthomason/packer.nvim")
+  use({ "wbthomason/packer.nvim",
+    --cmd = require("core.lazy_load").packer_cmds,
+  })
   use("nathom/filetype.nvim")
   use("nvim-lua/plenary.nvim")
 
@@ -277,7 +279,7 @@ return packer.startup(function()
   -- load luasnips + cmp related in insert mode only
   use({
     "rafamadriz/friendly-snippets",
-    module = "cmp_nvim_lsp",
+    module = { "cmp", "cmp_nvim_lsp" },
     event = "InsertEnter",
   })
 
@@ -573,7 +575,7 @@ return packer.startup(function()
   -- Language
   -- may be i can try https://github.com/olexsmir/gopher.nvim or https://github.com/crispgm/nvim-go
   use({
-    disable = true,
+    disable = false,
     "ray-x/go.nvim",
     ft = { "go", "golang" },
     config = function()
@@ -736,4 +738,6 @@ return packer.startup(function()
       require("plugins.others").comment()
     end,
   })
+  -- Speed up deffered plugins
+  use({ "lewis6991/impatient.nvim" })
 end)

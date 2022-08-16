@@ -7,6 +7,7 @@ local M = {}
 local compile_suffix = "/plugin/packer_compiled.lua"
 local compile_path = vim.fn.stdpath("data") .. compile_suffix
 local install_path = vim.fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+--local install_path = vim.fn.stdpath "data" .. "/site/pack/packer/opt/packer.nvim"
 
 M.bootstrap = function()
   local fn = vim.fn
@@ -14,6 +15,7 @@ M.bootstrap = function()
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1e222a" })
 
   if fn.empty(fn.glob(install_path)) > 0 then
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#1e222a" })
     print "Cloning packer .."
 
     fn.delete(install_path, "rf")

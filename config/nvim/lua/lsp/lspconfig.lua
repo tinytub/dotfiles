@@ -18,7 +18,8 @@ end
 -- lsp functions
 -- The missing functions are most covered whith which-key mappings
 -- the `hover()` -> covers even signature_help on functions/methods
-local function lsp_keymaps(client, bufnr)
+-- null-ls also call this
+function Lsp_keymaps(client, bufnr)
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
@@ -44,7 +45,7 @@ local function lsp_keymaps(client, bufnr)
   buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
   --buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
   buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
-  buf_set_keymap("n", "ge", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+  buf_set_keymap("n", "ge", '<cmd>lua vim.diagnostic.open_float(0, { scope = "line", header = false, focus = false })<CR>', opts)
   --buf_set_keymap("n", "[e", '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
   --buf_set_keymap("n", "]e", '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
   buf_set_keymap("n", "[e", '<cmd>lua vim.diagnostic.goto_prev({float = {border = "single"}})<CR>', opts)
@@ -314,7 +315,7 @@ end
 local custom_attach = function(client, bufnr)
   local filetype = vim.api.nvim_buf_get_option(0, "filetype")
   filetype_attach[filetype](client)
-  lsp_keymaps(client, bufnr)
+  Lsp_keymaps(client, bufnr)
 
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -342,15 +343,15 @@ local servers = {
   vimls = require("lsp.servers.vimls"),
   gopls = require("lsp.servers.gopls"),
   yamlls = {},
-  bashls = {
-    cmd = { "bash-language-server", "start" },
-    cmd_env = {
-      GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)",
-    },
-    filetypes = { "sh", "zsh" },
-    root_dir = util.find_git_ancestor,
-    single_file_support = true,
-  },
+  --bashls = {
+  --  cmd = { "bash-language-server", "start" },
+  --  cmd_env = {
+  --    GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)",
+  --  },
+  --  filetypes = { "sh", "zsh" },
+  --  root_dir = util.find_git_ancestor,
+  --  single_file_support = true,
+  --},
   grammarly = {
     filetypes = { "markdown" },
     single_file_support = true,

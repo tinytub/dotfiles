@@ -64,7 +64,6 @@ local opts = {
 
 local mappings = {
   --["/"] = "Comment",
-  ["c"] = "Close Buffer",
   ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
   ["F"] = { "<cmd>NvimTreeFindFile<cr>", "Find Current File" },
   --["V"] = {"<cmd>Vista<cr>"                                          ,"Vista"},
@@ -119,7 +118,7 @@ local mappings = {
     ["n"] = { "bnext", "next-buffer" },
     ["p"] = { "bprevious", "previous-buffer" },
     ["?"] = { "Buffers", "fzf-buffer" },
-    ["b"] = { "<cmd>Telescope buffers<cr>", " find bufers" },
+    ["b"] = { "<cmd>Telescope buffers<cr>", "find bufers" },
 
     ["c"] = {
       function()
@@ -134,7 +133,7 @@ local mappings = {
         end
       end,
 
-      "  Jump to current_context",
+      "Jump to current_context",
     },
   },
   g = {
@@ -142,11 +141,11 @@ local mappings = {
     b = { "<cmd>Git blame<cr>", "Git Blame" },
     d = { "<cmd>Git diff<cr>", "Git Diff" },
     l = { "<cmd>Git log<cr>", "Git Log" },
-    s = { "<cmd>Git status<cr>", "  Git Status" },
+    s = { "<cmd>Git status<cr>", "Git Status" },
 
     o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
     B = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-    c = { "<cmd>Telescope git_commits<cr>", "  Checkout commit" },
+    c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
     C = {
       "<cmd>Telescope git_bcommits<cr>",
       "Checkout commit(for current file)",
@@ -159,6 +158,7 @@ local mappings = {
     f = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" },
     j = { "<cmd>lua vim.diagnostic.goto_next({popup_opts = {border = 'single'}})<cr>", "Next Diagnostic" },
     k = { "<cmd>lua vim.diagnostic.goto_prev({popup_opts = {border = 'single'}})<cr>", "Prev Diagnostic" },
+    l = { "<cmd>ToggleLspVirtualLine<cr>", "Lsp Lines" },
     --r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
     q = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", "Quickfix" },
     t = { "<cmd>lua vim.lsp.buf.type_definition()<CR>", "Type Definition" },
@@ -171,7 +171,7 @@ local mappings = {
       --function()
       --    return ":IncRename " .. vim.fn.expand("<cword>")
       --end,
-      "   lsp rename",
+      "lsp rename",
     },
   },
   --t = {
@@ -222,17 +222,17 @@ local misc_n_opts = {
 
 local misc_n_mapping = {
   -- close buffer + hide terminal buffer
-  ["<C-x>"] = { "<cmd>lua require('core.utils').close_buffer() <CR>", "  close buffer" },
-  ["<ESC>"] = { "<cmd> noh <CR>", "  no highlight" },
+  ["<C-x>"] = { "<cmd>lua require('core.utils').close_buffer() <CR>", "close buffer" },
+  ["<ESC>"] = { "<cmd> noh <CR>", "no highlight" },
 
   -- M-key means ALT-xxxx
   ["<M-[>"] = { "<cmd>vertical resize -2<CR>", "vertical resize -2" },
   ["<M-]>"] = { "<cmd>vertical resize +2<CR>", "vertical resize +2" },
 
   -- cycle through buffers
-  ["<TAB>"] = { "<cmd> BufferLineCycleNext <CR>", "  cycle next buffer" },
-  ["<S-Tab>"] = { "<cmd> BufferLineCyclePrev <CR>", "  cycle prev buffer" },
-  ["<S-b>"] = { "<cmd> enew <CR>", "烙 new buffer" },
+  ["<TAB>"] = { "<cmd> BufferLineCycleNext <CR>", "cycle next buffer" },
+  ["<S-Tab>"] = { "<cmd> BufferLineCyclePrev <CR>", "cycle prev buffer" },
+  ["<S-b>"] = { "<cmd> enew <CR>", "new buffer" },
 
   ["<F5>"] = { "<cmd>lua require'dap'.continue()<CR>", "dap continue" },
   ["<F10>"] = { "<cmd>lua require'dap'.step_over()<CR>", "dap step over" },
@@ -251,7 +251,7 @@ local misc_v_opts = {
   mode = "v", -- NORMAL mode
   buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
   silent = true, -- use `silent` when creating keymaps
-  noremap = true, -- use `noremap` when creating keymaps
+  -- noremap = true, -- use `noremap` when creating keymaps
   nowait = false, -- use `nowait` when creating keymaps
 }
 

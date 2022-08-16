@@ -5,12 +5,6 @@ CACHE_PATH = vim.fn.stdpath("cache")
 local opt = vim.opt
 local g = vim.g
 
---Defer loading shada until after startup_
-vim.schedule(function()
-  vim.opt.shadafile = vim.fn.stdpath(g.vim_version > 7 and "state" or "data") .. "/shada/main.shada"
-  vim.cmd([[ silent! rsh ]])
-end)
-
 -- use filetype.lua instead of filetype.vim
 g.vim_version = vim.version().minor
 if g.vim_version < 8 then
