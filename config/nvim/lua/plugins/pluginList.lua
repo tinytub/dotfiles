@@ -120,11 +120,11 @@ return packer.startup(function()
     "catppuccin/nvim",
     as = "catppuccin",
     after = "bufferline.nvim",
-    run = ":CatppuccinCompile",
+    --    run = ":CatppuccinCompile",
     config = function()
       require "plugins.catppuccin"
     end,
-    disable = true,
+    disable = false,
   }
 
   use({

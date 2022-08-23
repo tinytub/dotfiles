@@ -7,7 +7,7 @@ local cp = require("catppuccin.palettes").get_palette() -- fetch colors from pal
 local options = {
   transparent_background = true,
   compile = {
-    enabled = true,
+    enabled = false,
     path = vim.fn.stdpath "cache" .. "/catppuccin"
   },
   integrations = {
