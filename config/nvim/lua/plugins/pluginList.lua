@@ -439,7 +439,7 @@ return packer.startup(function()
   -- Dashboard
   use({
     "goolord/alpha-nvim",
-    disable = true,
+    disable = false,
     after = "base46",
     config = function()
       require("plugins.dashboard").setup()

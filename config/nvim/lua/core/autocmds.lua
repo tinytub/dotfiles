@@ -69,6 +69,12 @@ autocmd("FileType", {
   end,
 })
 
+-- Auto resize panes
+autocmd("VimResized", {
+  pattern = "*",
+  command = "tabdo wincmd =",
+})
+
 function acmd.define_augroups(definitions) -- {{{1
   -- Create autocommand groups based on the passed definitions
   --
