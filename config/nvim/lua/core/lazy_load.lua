@@ -114,7 +114,7 @@ M.gitsigns = function()
   -- taken from https://github.com/max397574
   vim.api.nvim_create_autocmd({ "BufRead" }, {
     callback = function()
-      vim.fn.system("git rev-parse " .. vim.fn.expand("%:p:h"))
+      vim.fn.system("git rev-parse " .. vim.fn.expand "%:p:h")
       if vim.v.shell_error == 0 then
         vim.schedule(function()
           require("packer").loader "gitsigns.nvim"
