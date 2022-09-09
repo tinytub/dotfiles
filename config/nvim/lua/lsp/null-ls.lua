@@ -74,10 +74,10 @@ require("null-ls").setup({
     --}),
 
     -- Ansible
-    builtins.diagnostics.ansiblelint.with({
-      runtime_condition = has_exec("ansible-lint"),
-      extra_filetypes = { "yaml", "yaml.ansible" },
-    }),
+    --builtins.diagnostics.ansiblelint.with({
+    --  runtime_condition = has_exec("ansible-lint"),
+    --  extra_filetypes = { "yaml", "yaml.ansible" },
+    --}),
 
     ---- Javascript
     --builtins.diagnostics.eslint,

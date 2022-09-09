@@ -284,7 +284,7 @@ function M.get()
   --}
 
   -- genral diagnostics (errors, warnings. info and hints)
-  components.active[2][2] = {
+  components.active[3][1] = {
     provider = "diagnostic_errors",
     enabled = function()
       return lsp.diagnostics_exist(lsp_severity.ERROR)
@@ -297,7 +297,7 @@ function M.get()
     icon = "  ",
   }
 
-  components.active[2][3] = {
+  components.active[3][2] = {
     provider = "diagnostic_warnings",
     enabled = function()
       return lsp.diagnostics_exist(lsp_severity.WARN)
@@ -309,7 +309,7 @@ function M.get()
     icon = "  ",
   }
 
-  components.active[2][4] = {
+  components.active[3][3] = {
     provider = "diagnostic_info",
     enabled = function()
       return lsp.diagnostics_exist(lsp_severity.INFO)
@@ -321,7 +321,7 @@ function M.get()
     icon = "  ",
   }
 
-  components.active[2][5] = {
+  components.active[3][4] = {
     provider = "diagnostic_hints",
     enabled = function()
       return lsp.diagnostics_exist(lsp_severity.HINT)
@@ -333,7 +333,7 @@ function M.get()
     icon = "  ",
   }
 
-  components.active[3][1] = {
+  components.active[3][5] = {
     provider = function()
       if next(vim.lsp.buf_get_clients()) ~= nil then
         local names = {}
@@ -358,7 +358,7 @@ function M.get()
     },
     right_sep = invi_sep,
   }
-  components.active[3][2] = {
+  components.active[3][6] = {
     provider = assets.left_semicircle,
     hl = {
       fg = clrs.red,
@@ -366,7 +366,7 @@ function M.get()
     }
   }
 
-  components.active[3][3] = {
+  components.active[3][7] = {
     -- icon
     left_sep = {
       str = "" .. " ",
@@ -389,7 +389,7 @@ function M.get()
     },
   }
 
-  components.active[3][4] = {
+  components.active[3][8] = {
     provider = function()
       local current_line = vim.fn.line "."
       local current_col = vim.fn.col "."
