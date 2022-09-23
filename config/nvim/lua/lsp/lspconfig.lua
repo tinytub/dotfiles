@@ -227,8 +227,13 @@ local format_acmd = function()
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = lspbufformat,
     callback = function()
-      vim.lsp.buf.formatting_sync(nil, 500)
       --vim.lsp.buf.format()
+      local vim_version = vim.version()
+      if vim_version.minor > 7 then
+        vim.lsp.buf.format()
+      else
+        vim.lsp.buf.formatting_sync(nil, 500)
+      end
     end,
   })
 end
@@ -280,27 +285,10 @@ local filetype_attach = setmetatable({
   --go = require('lsp.format').OrgImports(1000),
   -- v0.8
   go = format_acmd_go,
-  --go = function()
-  --    local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
-  --    vim.api.nvim_create_autocmd("BufWritePre", {
-  --        group = lspbufformat,
-  --        callback = function()
-  --            --vim.lsp.buf.formatting_sync()
-  --            vim.lsp.buf.format()
-  --        end,
-  --    })
-  --end,
   lua = format_acmd,
-  --lua = function()
-  --    local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
-  --    vim.api.nvim_create_autocmd("BufWritePre", {
-  --        group = lspbufformat,
-  --        callback = function()
-  --            --vim.lsp.buf.formatting_sync()
-  --            vim.lsp.buf.format()
-  --        end,
-  --    })
-  --end,
+  yaml = format_acmd,
+  json = format_acmd,
+  py = format_acmd,
 }, {
   __index = function()
     return function() end
