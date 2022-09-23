@@ -62,8 +62,11 @@ M.colorizer = function()
         mode = "background", -- Set the display mode.
       },
     }
-    colorizer.setup(default["filetypes"], default["user_default_options"])
-    vim.cmd "ColorizerAttachToBuffer"
+    colorizer.setup(default)
+    vim.defer_fn(function()
+      require("colorizer").attach_to_buffer(0)
+    end, 0)
+    --vim.cmd "ColorizerAttachToBuffer"
   end
 end
 

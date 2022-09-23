@@ -202,7 +202,7 @@ return packer.startup(function()
   use({
     "feline-nvim/feline.nvim",
     disable = false,
-    after = { "nvim-web-devicons" },
+    after = { "nvim-web-devicons", "catppuccin" },
     config = function()
       --require("plugins.statusline")
       require("plugins.feline")
@@ -303,30 +303,15 @@ return packer.startup(function()
     end,
   })
 
-  use({
-    "saadparwaiz1/cmp_luasnip",
-    after = "LuaSnip",
-  })
+  use({ "saadparwaiz1/cmp_luasnip", after = "LuaSnip" })
 
-  use({
-    "hrsh7th/cmp-nvim-lua",
-    after = "cmp_luasnip",
-  })
+  use({ "hrsh7th/cmp-nvim-lua", after = "cmp_luasnip" })
 
-  use({
-    "hrsh7th/cmp-nvim-lsp",
-    after = "cmp-nvim-lua",
-  })
+  use({ "hrsh7th/cmp-nvim-lsp", after = "cmp-nvim-lua" })
 
-  use({
-    "hrsh7th/cmp-buffer",
-    after = "cmp-nvim-lsp",
-  })
+  use({ "hrsh7th/cmp-buffer", after = "cmp-nvim-lsp" })
 
-  use({
-    "hrsh7th/cmp-path",
-    after = "cmp-buffer",
-  })
+  use({ "hrsh7th/cmp-path", after = "cmp-buffer" })
 
   -- Treesitter
   use({
@@ -416,6 +401,7 @@ return packer.startup(function()
   -- whichkey
   use({
     "folke/which-key.nvim",
+    keys = { "<leader>", '"', "'", "`" },
     --module = "which-key",
     config = function()
       require("plugins.whichkey")
