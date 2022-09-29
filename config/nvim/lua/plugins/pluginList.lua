@@ -444,7 +444,8 @@ return packer.startup(function()
   })
 
   use({
-    "norcalli/nvim-colorizer.lua",
+    --"norcalli/nvim-colorizer.lua",
+    "NvChad/nvim-colorizer.lua",
     opt = true,
     setup = function()
       require("core.lazy_load").on_file_open("nvim-colorizer.lua")

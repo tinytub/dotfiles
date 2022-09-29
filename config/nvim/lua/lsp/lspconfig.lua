@@ -14,6 +14,8 @@ win.default_opts = function(options)
   return opts
 end
 
+-- some from https://github.com/ibhagwan/nvim-lua
+
 -- Create custom keymaps for useful
 -- lsp functions
 -- The missing functions are most covered whith which-key mappings
