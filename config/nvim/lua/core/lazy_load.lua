@@ -78,15 +78,6 @@ M.treesitter = function()
   }
 end
 
-M.mason_cmds = {
-  "Mason",
-  "MasonInstall",
-  "MasonInstallAll",
-  "MasonUninstall",
-  "MasonUninstallAll",
-  "MasonLog",
-}
-
 M.packer_cmds = {
   "PackerSnapshot",
   "PackerSnapshotRollback",
@@ -101,14 +92,8 @@ M.packer_cmds = {
   "PackerLoad",
 }
 
-M.treesitter_cmds = {
-  "TSInstall",
-  "TSBufEnable",
-  "TSBufDisable",
-  "TSEnable",
-  "TSDisable",
-  "TSModuleInfo",
-}
+M.treesitter_cmds = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" }
+M.mason_cmds = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" }
 
 M.gitsigns = function()
   -- taken from https://github.com/max397574

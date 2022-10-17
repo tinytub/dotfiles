@@ -55,63 +55,38 @@ function Lsp_keymaps(client, bufnr)
   buf_set_keymap("n", "<space>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
   buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.format()<cr>", opts)
   buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
-  --  if client_has_capability(client, 'documentFormattingProvider') then
-  --    buf_set_keymap('n', 'gq', '<cmd>lua vim.lsp.buf.formatting()<CR>',
-  --      { desc = "format document [LSP]" })
-  --  end
-  --  if client_has_capability(client, 'documentRangeFormattingProvider') then
-  --    buf_set_keymap('v', 'gq', '<cmd>lua vim.lsp.buf.range_formatting()<CR>',
-  --      { desc = "format selection [LSP]" })
-  --  end
-  --if client.resolved_capabilities.document_formatting then
-  --    --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.formatting_seq_sync, opts)
-  --    vim.api.nvim_buf_create_user_command(bufnr, "LspFormat", vim.lsp.buf.formatting_seq_sync, {})
-  --end
 
-  --if client.resolved_capabilities.document_range_formatting then
-  --    --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, opts)
-  --    vim.api.nvim_buf_create_user_command(bufnr, "LspRangeFormat", vim.lsp.buf.formatting_seq_sync, { range = true })
-  --end
-  --  local vim_version = vim.version()
-
-  if vim.g.vim_version > 7 then
-    -- nightly
-    client.server_capabilities.documentFormattingProvider = true
-    client.server_capabilities.documentRangeFormattingProvider = true
-    -- neovim 0.8?
-    if client.server_capabilities.documentFormattingProvider then
-      --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
-      vim.api.nvim_buf_create_user_command(
-        bufnr,
-        "LspFormat",
-        vim.lsp.buf.format,
-        { range = false, desc = "LSP format" }
-      )
-    end
-
-    if client.server_capabilities.documentRangeFormattingProvider then
-      vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
-      --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
-      vim.api.nvim_buf_create_user_command(
-        bufnr,
-        "LspRangeFormat",
-        vim.lsp.buf.range_formatting,
-        { range = true, desc = "LSP range format" }
-      )
-    end
-  else
-    -- stable
-    client.resolved_capabilities.document_formatting = true
-    client.resolved_capabilities.document_range_formatting = true
+  client.server_capabilities.documentFormattingProvider = true
+  client.server_capabilities.documentRangeFormattingProvider = true
+  -- neovim 0.8?
+  if client.server_capabilities.documentFormattingProvider then
+    --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
+    vim.api.nvim_buf_create_user_command(
+      bufnr,
+      "LspFormat",
+      vim.lsp.buf.format,
+      { range = false, desc = "LSP format" }
+    )
   end
 
+  if client.server_capabilities.documentRangeFormattingProvider then
+    vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
+    --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
+    vim.api.nvim_buf_create_user_command(
+      bufnr,
+      "LspRangeFormat",
+      vim.lsp.buf.range_formatting,
+      { range = true, desc = "LSP range format" }
+    )
+  end
 
 end
 
 local function make_capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   if pcall(require, 'cmp_nvim_lsp') then
-    capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+    --capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
   end
   capabilities.textDocument.completion.completionItem = {
     documentationFormat = { "markdown", "plaintext" },
@@ -131,7 +106,6 @@ local function make_capabilities()
     },
     workDoneProgress = true,
   }
-  capabilities.textDocument.codeAction.dynamicRegistration = true
   -- Code actions
   capabilities.textDocument.codeAction = {
     dynamicRegistration = true,
@@ -229,13 +203,8 @@ local format_acmd = function()
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = lspbufformat,
     callback = function()
-      --vim.lsp.buf.format()
-      local vim_version = vim.version()
-      if vim_version.minor > 7 then
-        vim.lsp.buf.format()
-      else
-        vim.lsp.buf.formatting_sync(nil, 500)
-      end
+      --vim.lsp.buf.format({ async = true })
+      vim.lsp.buf.format()
     end,
   })
 end
@@ -245,12 +214,7 @@ local format_acmd_go = function()
     group = lspbufformat,
     callback = function()
       --vim.lsp.buf.formatting_sync()
-      local vim_version = vim.version()
-      if vim_version.minor > 7 then
-        vim.lsp.buf.format({ async = true })
-      else
-        vim.lsp.buf.formatting_sync(nil, 1000)
-      end
+      vim.lsp.buf.format({ async = true })
 
     end,
   })

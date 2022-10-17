@@ -6,11 +6,6 @@ local opt = vim.opt
 local g = vim.g
 
 -- use filetype.lua instead of filetype.vim
-g.vim_version = vim.version().minor
-if g.vim_version < 8 then
-  g.did_load_filetypes = 0
-  g.do_filetype_lua = 1
-end
 g.toggle_theme_icon = "  "
 g.theme_switcher_loaded = false
 
