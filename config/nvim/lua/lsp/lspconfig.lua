@@ -186,16 +186,16 @@ local lsp_handlers = function()
   --end
 
   -- suppress error messages from lang servers
-  vim.notify = function(msg, log_level)
-    if msg:match("exit code") then
-      return
-    end
-    if log_level == vim.log.levels.ERROR then
-      vim.api.nvim_err_writeln(msg)
-    else
-      vim.api.nvim_echo({ { msg } }, true, {})
-    end
-  end
+  --vim.notify = function(msg, log_level)
+  --  if msg:match("exit code") then
+  --    return
+  --  end
+  --  if log_level == vim.log.levels.ERROR then
+  --    vim.api.nvim_err_writeln(msg)
+  --  else
+  --    vim.api.nvim_echo({ { msg } }, true, {})
+  --  end
+  --end
 end
 
 local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
@@ -252,7 +252,7 @@ local filetype_attach = setmetatable({
   -- v0.8
   go = format_acmd_go,
   lua = format_acmd,
-  yaml = format_acmd,
+  --yaml = format_acmd,
   json = format_acmd,
   py = format_acmd,
 }, {

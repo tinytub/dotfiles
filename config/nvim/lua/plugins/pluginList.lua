@@ -96,6 +96,20 @@ return packer.startup(function()
     disable = false,
   })
 
+  --use({
+  --  "folke/noice.nvim",
+  --  event = "BufWinEnter",
+  --  config = function()
+  --    require("plugins.nvim-notify").config()
+  --    require("plugins.nvim-noice").config()
+  --  end,
+  --  requires = {
+  --    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+  --    "MunifTanjim/nui.nvim",
+  --    "rcarriga/nvim-notify",
+  --  }
+  --})
+
   use({
     "stevearc/dressing.nvim",
     event = "BufWinEnter",
