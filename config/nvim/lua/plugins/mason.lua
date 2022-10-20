@@ -7,9 +7,9 @@ end
 vim.api.nvim_create_augroup("_mason", { clear = true })
 vim.api.nvim_create_autocmd("Filetype", {
   pattern = "mason",
-  callback = function()
-    require("base46").load_highlight "mason"
-  end,
+  --callback = function()
+  --  require("base46").load_highlight "mason"
+  --end,
   group = "_mason",
 })
 
@@ -22,7 +22,7 @@ local options = {
 
     -- web dev
     "json-lsp",
-    "yaml-language-server",
+    --"yaml-language-server",
 
     "pyright",
     "gopls",

@@ -82,7 +82,7 @@ return packer.startup(function()
   use({
     "kyazdani42/nvim-web-devicons",
     --module = "nvim-web-devicons",
-    after = "base46",
+    --after = "base46",
     config = function()
       require("plugins.icons")
     end,
@@ -96,19 +96,19 @@ return packer.startup(function()
     disable = false,
   })
 
-  --use({
-  --  "folke/noice.nvim",
-  --  event = "BufWinEnter",
-  --  config = function()
-  --    require("plugins.nvim-notify").config()
-  --    require("plugins.nvim-noice").config()
-  --  end,
-  --  requires = {
-  --    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-  --    "MunifTanjim/nui.nvim",
-  --    "rcarriga/nvim-notify",
-  --  }
-  --})
+  --  use({
+  --    "folke/noice.nvim",
+  --    event = "VimEnter",
+  --    config = function()
+  --      require("plugins.nvim-notify").config()
+  --      require("plugins.nvim-noice").config()
+  --    end,
+  --    requires = {
+  --      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+  --      "MunifTanjim/nui.nvim",
+  --      "rcarriga/nvim-notify",
+  --    }
+  --  })
 
   use({
     "stevearc/dressing.nvim",
@@ -127,7 +127,7 @@ return packer.startup(function()
     config = function()
       require("plugins.others").base46()
     end,
-    disable = false,
+    disable = true,
   })
 
   use {
@@ -234,7 +234,7 @@ return packer.startup(function()
   -- Simple statusline component that shows what scope you are working inside
   use {
     "SmiteshP/nvim-navic",
-    after = "base46",
+    --after = "base46",
     event = "CursorMoved",
     config = function()
       require("plugins.navic")
@@ -440,7 +440,7 @@ return packer.startup(function()
   use({
     "goolord/alpha-nvim",
     disable = false,
-    after = "base46",
+    --after = "base46",
     config = function()
       require("plugins.dashboard").setup()
     end,
@@ -715,7 +715,7 @@ return packer.startup(function()
         use_diagnostic_signs = true,
       })
     end,
-    disable = true,
+    disable = false,
   })
 
   -- todo highlights
