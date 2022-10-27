@@ -6,13 +6,23 @@ end
 --local use = packer.use
 
 return packer.startup(function()
+
+  -- Plugin manager
   use({ "wbthomason/packer.nvim",
     --cmd = require("core.lazy_load").packer_cmds,
   })
+
+  -- Optimiser
+  -- Speed up deffered plugins
+  use({ "lewis6991/impatient.nvim" })
+
+  -- Easily speed up your neovim startup time!
   use("nathom/filetype.nvim")
+
+  -- Lua functions
   use("nvim-lua/plenary.nvim")
 
-  -- TODO refactor all of this (for now it works, but yes I know it could be wrapped in a simpler function)
+  -- Package Manager
   use({
     "williamboman/mason.nvim",
     --    opt = true,
@@ -26,17 +36,15 @@ return packer.startup(function()
   use({
     opt = true,
     "neovim/nvim-lspconfig",
-    --    after = "nvim-lsp-installer",
     setup = function()
       require("core.lazy_load").on_file_open "nvim-lspconfig"
     end,
     config = function()
-      -- lsp-installer should setup first
-      --require("lsp.lsp-installer")
       require("lsp.lspconfig")
     end,
   })
 
+  -- lsp signature 展示
   use({
     "ray-x/lsp_signature.nvim",
     after = "nvim-lspconfig",
@@ -46,18 +54,18 @@ return packer.startup(function()
     end,
   })
 
+  -- lsp_lines 可以分层显示 lsp 弹出的行内错误
   use({
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     after = { "nvim-lspconfig" },
     config = function()
       require("plugins.lsp-line").setup()
-      -- require("lsp_lines").setup()
     end,
   })
 
 
+  -- lspserver 状态插件, 停用了 statuslines 中的状态。
   use({
-    -- lspserver 状态插件, 停用了 statuslines 中的状态。
     "j-hui/fidget.nvim",
     after = { "nvim-lspconfig" },
     config = function()
@@ -88,6 +96,7 @@ return packer.startup(function()
     end,
   })
 
+  -- Notification Enhancer
   use({
     "rcarriga/nvim-notify",
     config = function()
@@ -110,12 +119,22 @@ return packer.startup(function()
   --    }
   --  })
 
+  -- Neovim UI Enhancer
   use({
     "stevearc/dressing.nvim",
     event = "BufWinEnter",
     config = function()
       require("plugins.dressing").config()
     end,
+  })
+
+  -- Smarter Splits
+  use({
+    "mrjones2014/smart-splits.nvim",
+    module = "smart-splits",
+    config = function()
+      require("plugins.smart-splits")
+    end
   })
 
   use({
@@ -140,11 +159,6 @@ return packer.startup(function()
     end,
     disable = false,
   }
-
-  use({
-    "rrethy/vim-illuminate",
-    disable = true,
-  })
 
   use({
     "sainnhe/everforest",
@@ -212,6 +226,14 @@ return packer.startup(function()
   --        end
   --    }
 
+  -- automatically highlighting other uses of the word under the cursor
+  use({
+    "rrethy/vim-illuminate",
+    disable = false,
+  })
+
+
+  -- Statusline
   -- try https://github.com/nvim-lualine/lualine.nvim ?
   use({
     "feline-nvim/feline.nvim",
@@ -223,6 +245,15 @@ return packer.startup(function()
     end,
   })
 
+  --  use({
+  --    "rebelot/heirline.nvim",
+  --    after = { "nvim-web-devicons", "catppuccin" },
+  --    config = function()
+  --      require("plugins.heirline")
+  --    end
+  --  })
+
+
   use({
     'nvim-lualine/lualine.nvim',
     after = { "nvim-web-devicons" },
@@ -231,24 +262,16 @@ return packer.startup(function()
     end,
     disable = true,
   })
+
   -- Simple statusline component that shows what scope you are working inside
   use {
     "SmiteshP/nvim-navic",
-    --after = "base46",
     event = "CursorMoved",
     config = function()
       require("plugins.navic")
     end,
     disable = false,
   }
-  use({
-    "SmiteshP/nvim-gps",
-    event = "CursorMoved",
-    config = function()
-      require("plugins.gps")
-    end,
-    disable = true,
-  })
 
   use({
     "akinsho/bufferline.nvim",
@@ -260,12 +283,6 @@ return packer.startup(function()
       require("plugins.bufferline")
     end,
     disable = false,
-  })
-
-  use({
-    "romgrk/barbar.nvim",
-    config = function() end,
-    disable = true,
   })
 
   -- Telescope
@@ -283,18 +300,19 @@ return packer.startup(function()
     end,
   })
 
-  --use({
-  --    "max397574/better-escape.nvim",
-  --    event = "InsertCharPre",
-  --    config = function()
-  --        require("plugins.others").better_escape()
-  --    end,
-  --})
-  -- load luasnips + cmp related in insert mode only
+  -- Smooth escaping
   use({
-    "rafamadriz/friendly-snippets",
-    module = { "cmp", "cmp_nvim_lsp" },
-    event = "InsertEnter",
+    "max397574/better-escape.nvim",
+    event = "InsertCharPre",
+    config = function()
+      require("plugins.others").better_escape()
+    end,
+  })
+
+  -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
+  use({
+    "b0o/SchemaStore.nvim",
+    module = "schemastore",
   })
 
   use({
@@ -307,6 +325,7 @@ return packer.startup(function()
     end,
   })
 
+  -- Snippet engine
   use({
     "L3MON4D3/LuaSnip",
     wants = "friendly-snippets",
@@ -316,6 +335,14 @@ return packer.startup(function()
       --require "plugins.luasnips"
     end,
   })
+  -- load luasnips + cmp related in insert mode only
+  use({
+    "rafamadriz/friendly-snippets",
+    module = { "cmp", "cmp_nvim_lsp" },
+    event = "InsertEnter",
+  })
+
+
 
   use({ "saadparwaiz1/cmp_luasnip", after = "LuaSnip" })
 
@@ -327,7 +354,7 @@ return packer.startup(function()
 
   use({ "hrsh7th/cmp-path", after = "cmp-buffer" })
 
-  -- Treesitter
+  -- Syntax highlighting
   use({
     "nvim-treesitter/nvim-treesitter",
     module = "nvim-treesitter",
@@ -359,6 +386,7 @@ return packer.startup(function()
     after = "nvim-treesitter",
     disable = false,
   })
+
   -- Custom semantic text objects
   use({
     "nvim-treesitter/nvim-treesitter-textobjects",
@@ -504,31 +532,32 @@ return packer.startup(function()
   --  }
   --})
 
-  use({
-    "mfussenegger/nvim-dap",
-    config = function()
-      -- require "dap"
-      require("plugins.dap")
+  -- dap 很遗憾,不会用
+  -- use({
+  --   "mfussenegger/nvim-dap",
+  --   config = function()
+  --     -- require "dap"
+  --     require("plugins.dap")
 
-      require("dap-go").setup()
-    end,
-    requires = {
-      "leoluz/nvim-dap-go",
-    },
+  --     require("dap-go").setup()
+  --   end,
+  --   requires = {
+  --     "leoluz/nvim-dap-go",
+  --   },
 
-    disable = false,
-  })
+  --   disable = false,
+  -- })
 
-  use({
-    after = "nvim-dap",
-    "rcarriga/nvim-dap-ui",
-    config = function()
-      require('plugins.dap.ui')
-      --require("dapui").setup()
-      --require('dap.ext.vscode').load_launchjs()
-    end,
-    disable = false,
-  })
+  -- use({
+  --   after = "nvim-dap",
+  --   "rcarriga/nvim-dap-ui",
+  --   config = function()
+  --     require('plugins.dap.ui')
+  --     --require("dapui").setup()
+  --     --require('dap.ext.vscode').load_launchjs()
+  --   end,
+  --   disable = false,
+  -- })
 
   -- Better quickfix
   use {
@@ -642,7 +671,7 @@ return packer.startup(function()
       vim.g["test#go#gotest#options"] = "-v --count=1"
       vim.g["test#echo_command"] = 1
     end,
-    disable = true,
+    disable = false,
   })
 
   use {
@@ -702,6 +731,5 @@ return packer.startup(function()
       require("plugins.others").comment()
     end,
   })
-  -- Speed up deffered plugins
-  use({ "lewis6991/impatient.nvim" })
+
 end)

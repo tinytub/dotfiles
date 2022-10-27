@@ -31,8 +31,8 @@ local clrs = require("catppuccin.palettes").get_palette()
 
 -- settings
 local sett = {
-  --bkg = clrs.surface0,
-  bkg = '#2e363c', -- from base46
+  bkg = clrs.surface0,
+  --bkg = '#2e363c', -- from base46
   diffs = clrs.overlay0,
   extras = clrs.overlay1,
   position = clrs.rosewater,

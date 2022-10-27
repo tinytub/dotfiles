@@ -15,7 +15,7 @@ opt.showmode = false
 
 opt.title = true
 opt.clipboard = "unnamedplus"
---opt.cmdheight = 0
+--opt.cmdheight = 0 -- 控制cmd 高度, 0 会隐藏
 opt.cul = true -- cursor line
 
 -- Indenting

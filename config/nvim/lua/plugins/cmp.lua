@@ -51,7 +51,10 @@ cmp.setup({
   },
 
   formatting = {
+    -- 补全窗口的顺序
+    fields = { "kind", "abbr", "menu" },
     format = function(_, vim_item)
+
       -- load lspkind icons
       vim_item.kind = string.format("%s %s", require("plugins.lspkind_icons")[vim_item.kind], vim_item.kind)
 
