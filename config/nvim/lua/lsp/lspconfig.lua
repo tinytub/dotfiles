@@ -198,6 +198,8 @@ local lsp_handlers = function()
   --end
 end
 
+lsp_handlers()
+
 local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
 local format_acmd = function()
   vim.api.nvim_create_autocmd("BufWritePre", {
@@ -353,7 +355,6 @@ for server, config in pairs(servers) do
   setup_server(server, config)
 end
 
-lsp_handlers()
 
 --return lsp_config
 return {

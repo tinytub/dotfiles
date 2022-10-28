@@ -155,7 +155,7 @@ return packer.startup(function()
     after = "bufferline.nvim",
     --    run = ":CatppuccinCompile",
     config = function()
-      require "plugins.catppuccin"
+      require "colors".setup()
     end,
     disable = false,
   }
@@ -229,7 +229,7 @@ return packer.startup(function()
   -- automatically highlighting other uses of the word under the cursor
   use({
     "rrethy/vim-illuminate",
-    disable = false,
+    disable = true,
   })
 
 
@@ -237,7 +237,7 @@ return packer.startup(function()
   -- try https://github.com/nvim-lualine/lualine.nvim ?
   use({
     "feline-nvim/feline.nvim",
-    disable = false,
+    disable = true,
     after = { "nvim-web-devicons", "catppuccin" },
     config = function()
       --require("plugins.statusline")
@@ -245,13 +245,15 @@ return packer.startup(function()
     end,
   })
 
-  --  use({
-  --    "rebelot/heirline.nvim",
-  --    after = { "nvim-web-devicons", "catppuccin" },
-  --    config = function()
-  --      require("plugins.heirline")
-  --    end
-  --  })
+  use({
+    "rebelot/heirline.nvim",
+    disable = false,
+    after = { "nvim-web-devicons", "catppuccin", "nvim-lspconfig" },
+    config = function()
+      --require("plugins.heirline").setup()
+      require("plugins.heirline")
+    end
+  })
 
 
   use({
@@ -266,7 +268,7 @@ return packer.startup(function()
   -- Simple statusline component that shows what scope you are working inside
   use {
     "SmiteshP/nvim-navic",
-    event = "CursorMoved",
+    --event = "CursorMoved",
     config = function()
       require("plugins.navic")
     end,
@@ -283,6 +285,12 @@ return packer.startup(function()
       require("plugins.bufferline")
     end,
     disable = false,
+  })
+
+  -- Better buffer closing
+  use({
+    "famiu/bufdelete.nvim",
+    cmd = { "Bdelete", "Bwipeout" },
   })
 
   -- Telescope

@@ -448,7 +448,7 @@ local winbar_components = {
     left_sep = {
       str = "  ",
     },
-    --hl = { bg = '#1c1c1c', style = 'bold' },
+    hl = { bg = clrs.cyan, style = 'bold' },
   },
   gps = {
     provider = function()
@@ -486,16 +486,18 @@ local winbar_components = {
     --    hl = { fg = '#eeeeee', bg = '#1c1c1c' },
     hl = {
       --fg = options.colors.purple,
-      fg = '#ecafcc',
+      --fg = '#ecafcc',
       --bg = options.colors.statusline_bg,
       --bg = '#2e363c',
       bg = sett.bkg,
     },
   },
 }
+
+
 local winbar = {
   {
-    --        winbar_components.file,
+    --    winbar_components.file,
     winbar_components.gps,
   },
 }

@@ -222,7 +222,8 @@ local misc_n_opts = {
 
 local misc_n_mapping = {
   -- close buffer + hide terminal buffer
-  ["<C-x>"] = { "<cmd>lua require('core.utils').close_buffer() <CR>", "close buffer" },
+  --["<C-x>"] = { "<cmd>lua require('core.utils').close_buffer() <CR>", "close buffer" },
+  ["<C-x>"] = { "<cmd>Bdelete<cr>", "close buffer" },
   ["<ESC>"] = { "<cmd> noh <CR>", "no highlight" },
 
   -- M-key means ALT-xxxx

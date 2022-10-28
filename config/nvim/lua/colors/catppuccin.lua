@@ -2,6 +2,8 @@
 
 --vim.g.catppuccin_flavour = "frappe" -- latte, frappe, macchiato, mocha
 
+local M = {}
+
 local colors = require("catppuccin.palettes").get_palette() -- fetch colors from palette
 
 local options = {
@@ -77,6 +79,9 @@ local options = {
   }
 }
 
-require("catppuccin").setup(options)
+function M.setup()
+  require("catppuccin").setup(options)
+end
 
-vim.cmd [[colorscheme catppuccin]]
+--vim.cmd [[colorscheme catppuccin]]
+return M
