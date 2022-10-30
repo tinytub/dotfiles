@@ -1,5 +1,7 @@
--- https://github.com/JK-Flip-Flop96/nvim-config/blob/main/lua/configs/heirline.lua
+-- may be try https://github.com/anuvyklack/dotfiles/blob/main/roles/neovim/files/lua/anuvyklack/heirline/init.lua
+-- https://github.com/rebelot/dotfiles/blob/master/nvim/lua/plugins/heirline.lua
 
+-- https://github.com/JK-Flip-Flop96/nvim-config/blob/main/lua/configs/heirline.lua
 -- Load Heirline
 local heirline_status, heirline = pcall(require, "heirline")
 
@@ -41,17 +43,14 @@ local Align = { provider = "%=" }
 
 -- ## STATUS LINE COMPONENTS ## --
 
--- Mode Indicator - Modified from the Heirline Cookbook
 local ViMode = {
   init = function(self)
     self.mode = vim.fn.mode(1)
-
     if not self.once then
-      vim.api.nvim_create_autocmd("ModeChanged", { command = 'redrawstatus' })
+      vim.cmd("au ModeChanged *:*o redrawstatus")
     end
+    self.once = true
   end,
-
-  -- Define the text used in each mode
   static = {
     mode_names = {
       n = "NORMAL",
@@ -90,24 +89,89 @@ local ViMode = {
       t = "TERMINAL",
     },
   },
-
-  -- Define the layout of the indicator
   provider = function(self)
-    return " %2(" .. self.mode_names[self.mode] .. " %)"
+    return "  %2(" .. self.mode_names[self.mode] .. " %)"
   end,
 
-  -- Define the colours of the indicator
   hl = function(self)
     -- Get the pair of colours from the table
     local m_colors = self:mode_color()
 
     -- Return the highlight
-    return { bg = m_colors[1], fg = m_colors[2], }
+    return { bg = m_colors[1], fg = m_colors[2], bold = true }
   end,
 
-  -- Update when the vim mode changes
-  update = "ModeChanged"
+  update = {
+    "ModeChanged",
+  },
 }
+-- Mode Indicator - Modified from the Heirline Cookbook
+--local ViMode = {
+--  init = function(self)
+--    self.mode = vim.fn.mode(1)
+--
+--    if not self.once then
+--      vim.api.nvim_create_autocmd("ModeChanged", { command = 'redrawstatus' })
+--    end
+--  end,
+--
+--  -- Define the text used in each mode
+--  static = {
+--    mode_names = {
+--      n = "NORMAL",
+--      no = "NORMAL [?]",
+--      nov = "NORMAL [?]",
+--      noV = "NORMAL [?]",
+--      ["no\22"] = "NORMAL [?]",
+--      niI = "NORMAL [i]",
+--      niR = "NORMAL [r]",
+--      niV = "NORMAL [v]",
+--      nt = "NORMAL [t]",
+--      v = "VISUAL",
+--      vs = "VISUAL [s]",
+--      V = "VISUAL_",
+--      Vs = "VISUAL [s]",
+--      ["\22"] = "^VISUAL",
+--      ["\22s"] = "^VISUAL",
+--      s = "SELECT",
+--      S = "SELECT_",
+--      ["\19"] = "^SELECT",
+--      i = "INSERT",
+--      ic = "INSERT [c]",
+--      ix = "INSERT [x]",
+--      R = "REPLACE",
+--      Rc = "REPLACE [c]",
+--      Rx = "REPLACE [x]",
+--      Rv = "REPLACE [v]",
+--      Rvc = "REPLACE [v]",
+--      Rvx = "REPLACE [v]",
+--      c = "COMMAND",
+--      cv = "EX",
+--      r = "...",
+--      rm = "M",
+--      ["r?"] = "?",
+--      ["!"] = "!",
+--      t = "TERMINAL",
+--    },
+--  },
+--
+--  -- Define the layout of the indicator
+--  provider = function(self)
+--    return " %2(" .. self.mode_names[self.mode] .. " %)"
+--  end,
+--
+--  -- Define the colours of the indicator
+--  hl = function(self)
+--    -- Get the pair of colours from the table
+--    local m_colors = self:mode_color()
+--
+--    -- Return the highlight
+--    return { bg = m_colors[1], fg = m_colors[2], }
+--  end,
+--
+--  -- Update when the vim mode changes
+--  update = "ModeChanged"
+--}
 
 -- Get the cwd and add it to the statusline.
 local WorkDir = {
@@ -322,11 +386,17 @@ local Diagnostics = {
   -- Get the icons for the diagnostics
 
   static = {
-    error_icon = vim.fn.sign_getdefined("DiagnosticSignError")[1].text,
-    warn_icon = vim.fn.sign_getdefined("DiagnosticSignWarn")[1].text,
-    info_icon = vim.fn.sign_getdefined("DiagnosticSignInfo")[1].text,
-    hint_icon = vim.fn.sign_getdefined("DiagnosticSignHint")[1].text,
+    error_icon = " ",
+    warn_icon = " ",
+    info_icon = " ",
+    hint_icon = " ",
+    --   error_icon = vim.fn.sign_getdefined("DiagnosticSignError")[1].text,
+    --   warn_icon = vim.fn.sign_getdefined("DiagnosticSignWarn")[1].text,
+    --   info_icon = vim.fn.sign_getdefined("DiagnosticSignInfo")[1].text,
+    --   hint_icon = vim.fn.sign_getdefined("DiagnosticSignHint")[1].text,
   },
+
+
 
   -- Get the counts for each type of diagnostic message
   init = function(self)
@@ -492,9 +562,31 @@ local SearchResults = {
   Space
 }
 
+local StatusLineOffset = {
+  condition = function(self)
+    local win = vim.api.nvim_tabpage_list_wins(0)[1]
+    local bufnr = vim.api.nvim_win_get_buf(win)
+    self.winid = win
+
+    if vim.bo[bufnr].filetype == "NvimTree" then
+      return true
+    end
+  end,
+  {
+    provider = function(self)
+      return string.rep(" ", vim.api.nvim_win_get_width(self.winid))
+    end,
+
+    hl = { bg = "mantle" },
+  },
+}
+
+--    return { bg = m_colors[1], fg = m_colors[2], }
+--ViMode = utils.surround({ "", "" }, m_colors[1], { ViMode })
 -- Build out the status line
 local statusline = {
   {
+    StatusLineOffset,
     ViMode,
     WorkDir,
     Space,
@@ -502,10 +594,10 @@ local statusline = {
     Space,
     GitFile,
     Space,
-    LSPActive,
-    Diagnostics,
     Align,
     SearchResults,
+    LSPActive,
+    Diagnostics,
     --ShowCommand,
     Space,
     Ruler,
@@ -688,219 +780,219 @@ local winbar = {
   }
 }
 
--- ## TABLINE ## --
+---- ## TABLINE ## --
+--
+---- Get the number of the buffer
+--local TablineBufnr = {
+--  provider = function(self)
+--    return tostring(self.bufnr) .. ": "
+--  end,
+--  hl = function(self)
+--    if self.is_active then
+--      return "TabLineSel"
+--    else
+--      return "TabLine"
+--    end
+--  end,
+--}
+--
+---- Get the file's name
+--local TablineFileName = {
+--  provider = function(self)
+--    local filename = self.filename
+--    filename = filename == "" and "[No Name]" or vim.fn.fnamemodify(filename, ":t")
+--    return filename
+--  end,
+--  -- Bold the text if the buffer is visible
+--  hl = function(self)
+--    return { bold = self.is_active or self.is_visible }
+--  end,
+--}
+--
+---- Add additional icons to the block based on the file's flags
+--local TablineFileFlags = {
+--  {
+--    provider = function(self)
+--      if vim.bo[self.bufnr].modified then
+--        return " "
+--      end
+--    end,
+--    hl = { fg = "yellow" }
+--  },
+--  {
+--    provider = function(self)
+--      if not vim.bo[self.bufnr].modifiable or vim.bo[self.bufnr].readonly then
+--        return " "
+--      end
+--    end,
+--    hl = { fg = "peach" },
+--  },
+--}
+--
+---- Construct the final file name block
+--local TablineFileNameBlock = {
+--  -- Get the file's name on initialisation
+--  init = function(self)
+--    self.filename = vim.api.nvim_buf_get_name(self.bufnr)
+--  end,
+--  hl = function(self)
+--    if self.is_active then
+--      return "TabLineSel"
+--    else
+--      return "TabLine"
+--    end
+--  end,
+--  on_click = {
+--    callback = function(_, minwid, _, button)
+--      if (button == "m") then
+--        vim.api.nvim_buf_delete(minwid, { force = false })
+--      else
+--        vim.api.nvim_win_set_buf(0, minwid)
+--      end
+--    end,
+--    minwid = function(self)
+--      return self.bufnr
+--    end,
+--    name = "heirline_tabline_buffer_callback"
+--  },
+--  TablineBufnr,
+--  FileIcon,
+--  TablineFileName,
+--  TablineFileFlags,
+--}
+--
+---- Add a close button to the buffer block
+--local TablineCloseButton = {
+--  condition = function(self)
+--    return not vim.bo[self.bufnr].modified
+--  end,
+--  Space,
+--  {
+--    provider = "",
+--    on_click = {
+--      callback = function(_, minwid)
+--        vim.api.nvim_buf_delete(minwid, { force = false })
+--      end,
+--
+--      minwid = function(self)
+--        return self.bufnr
+--      end,
+--      name = "heirline_tabline_close_buffer_callback",
+--    },
+--  },
+--  hl = function(self)
+--    if self.is_active then
+--      return "TabLineSel"
+--    else
+--      return "TabLine"
+--    end
+--  end,
+--}
 
--- Get the number of the buffer
-local TablineBufnr = {
-  provider = function(self)
-    return tostring(self.bufnr) .. ": "
-  end,
-  hl = function(self)
-    if self.is_active then
-      return "TabLineSel"
-    else
-      return "TabLine"
-    end
-  end,
-}
+--local TablineBufferBlockLeft = {
+--  provider = "▎ ",
+--  hl = function(self)
+--    if self.is_active then
+--      return { bg = utils.get_highlight("TablineSel").bg, fg = utils.get_highlight("TablineFill").bg }
+--    else
+--      return { bg = utils.get_highlight("Tabline").bg, fg = utils.get_highlight("TablineFill").bg }
+--    end
+--  end,
+--}
 
--- Get the file's name
-local TablineFileName = {
-  provider = function(self)
-    local filename = self.filename
-    filename = filename == "" and "[No Name]" or vim.fn.fnamemodify(filename, ":t")
-    return filename
-  end,
-  -- Bold the text if the buffer is visible
-  hl = function(self)
-    return { bold = self.is_active or self.is_visible }
-  end,
-}
-
--- Add additional icons to the block based on the file's flags
-local TablineFileFlags = {
-  {
-    provider = function(self)
-      if vim.bo[self.bufnr].modified then
-        return " "
-      end
-    end,
-    hl = { fg = "yellow" }
-  },
-  {
-    provider = function(self)
-      if not vim.bo[self.bufnr].modifiable or vim.bo[self.bufnr].readonly then
-        return " "
-      end
-    end,
-    hl = { fg = "peach" },
-  },
-}
-
--- Construct the final file name block
-local TablineFileNameBlock = {
-  -- Get the file's name on initialisation
-  init = function(self)
-    self.filename = vim.api.nvim_buf_get_name(self.bufnr)
-  end,
-  hl = function(self)
-    if self.is_active then
-      return "TabLineSel"
-    else
-      return "TabLine"
-    end
-  end,
-  on_click = {
-    callback = function(_, minwid, _, button)
-      if (button == "m") then
-        vim.api.nvim_buf_delete(minwid, { force = false })
-      else
-        vim.api.nvim_win_set_buf(0, minwid)
-      end
-    end,
-    minwid = function(self)
-      return self.bufnr
-    end,
-    name = "heirline_tabline_buffer_callback"
-  },
-  TablineBufnr,
-  FileIcon,
-  TablineFileName,
-  TablineFileFlags,
-}
-
--- Add a close button to the buffer block
-local TablineCloseButton = {
-  condition = function(self)
-    return not vim.bo[self.bufnr].modified
-  end,
-  Space,
-  {
-    provider = "",
-    on_click = {
-      callback = function(_, minwid)
-        vim.api.nvim_buf_delete(minwid, { force = false })
-      end,
-
-      minwid = function(self)
-        return self.bufnr
-      end,
-      name = "heirline_tabline_close_buffer_callback",
-    },
-  },
-  hl = function(self)
-    if self.is_active then
-      return "TabLineSel"
-    else
-      return "TabLine"
-    end
-  end,
-}
-
-local TablineBufferBlockLeft = {
-  provider = "▎ ",
-  hl = function(self)
-    if self.is_active then
-      return { bg = utils.get_highlight("TablineSel").bg, fg = utils.get_highlight("TablineFill").bg }
-    else
-      return { bg = utils.get_highlight("Tabline").bg, fg = utils.get_highlight("TablineFill").bg }
-    end
-  end,
-}
-
-local TablineBufferBlockRight = {
-  provider = "█▊",
-  hl = function(self)
-    if self.is_active then
-      return { bg = utils.get_highlight("TablineFill").bg, fg = utils.get_highlight("TablineSel").bg }
-    else
-      return { bg = utils.get_highlight("TablineFill").bg, fg = utils.get_highlight("Tabline").bg }
-    end
-  end,
-}
-
--- Construct the final buffer block
-local TablineBufferBlock = { TablineBufferBlockLeft, TablineFileNameBlock, TablineCloseButton, TablineBufferBlockRight }
+--local TablineBufferBlockRight = {
+--  provider = "█▊",
+--  hl = function(self)
+--    if self.is_active then
+--      return { bg = utils.get_highlight("TablineFill").bg, fg = utils.get_highlight("TablineSel").bg }
+--    else
+--      return { bg = utils.get_highlight("TablineFill").bg, fg = utils.get_highlight("Tabline").bg }
+--    end
+--  end,
+--}
+--
+---- Construct the final buffer block
+--local TablineBufferBlock = { TablineBufferBlockLeft, TablineFileNameBlock, TablineCloseButton, TablineBufferBlockRight }
 
 -- Construct the bufferline using the elements defined above
-local BufferLine = utils.make_buflist(
-  TablineBufferBlock,
-  -- Define the icons used for left/right truncation
-  { provicer = "", hl = { fg = "subtext0" } },
-  { provicer = "", hl = { fg = "subtext0" } }
-)
+--local BufferLine = utils.make_buflist(
+--  TablineBufferBlock,
+--  -- Define the icons used for left/right truncation
+--  { provicer = "", hl = { fg = "subtext0" } },
+--  { provicer = "", hl = { fg = "subtext0" } }
+--)
+--
+--local TabPage = {
+--  provider = function(self)
+--    return "%" .. self.tabnr .. "T " .. self.tabnr .. " %T"
+--  end,
+--  hl = function(self)
+--    if not self.is_active then
+--      return "TabLine"
+--    else
+--      return "TabLineSel"
+--    end
+--  end,
+--}
 
-local TabPage = {
-  provider = function(self)
-    return "%" .. self.tabnr .. "T " .. self.tabnr .. " %T"
-  end,
-  hl = function(self)
-    if not self.is_active then
-      return "TabLine"
-    else
-      return "TabLineSel"
-    end
-  end,
-}
+--local TabPageClose = {
+--  provider = "%999X  %X",
+--  hl = "TabLine",
+--}
+--
+--local TabPages = {
+--  condition = function()
+--    return #vim.api.nvim_list_tabpages() >= 2
+--  end,
+--  Align, -- Make the following component right justified
+--  utils.make_tablist(TabPage),
+--  TabPageClose,
+--}
 
-local TabPageClose = {
-  provider = "%999X  %X",
-  hl = "TabLine",
-}
-
-local TabPages = {
-  condition = function()
-    return #vim.api.nvim_list_tabpages() >= 2
-  end,
-  Align, -- Make the following component right justified
-  utils.make_tablist(TabPage),
-  TabPageClose,
-}
-
-local TablineOffset = {
-  condition = function(self)
-    local win = vim.api.nvim_tabpage_list_wins(0)[1]
-    local bufnr = vim.api.nvim_win_get_buf(win)
-    self.winid = win
-
-    if vim.bo[bufnr].filetype == "NvimTree" then
-      self.title = "Files"
-      return true
-    end
-  end,
-  {
-    provider = function(self)
-      local title = self.title
-      local width = vim.api.nvim_win_get_width(self.winid)
-      local leftpad = math.ceil((width - #title) / 2)
-      local rightPad = leftpad
-
-      -- Correct for odd widths
-      if width % 2 ~= #title % 2 then
-        rightPad = rightPad - 1
-      end
-
-      return string.rep(" ", leftpad) .. title .. string.rep(" ", rightPad)
-    end,
-
-    hl = function(self)
-      if vim.api.nvim_get_current_win() == self.winid then
-        return "TabLineSel"
-      else
-        return "TabLine"
-      end
-    end,
-
-  },
-  {
-    Space,
-  },
-
-}
+--local TablineOffset = {
+--  condition = function(self)
+--    local win = vim.api.nvim_tabpage_list_wins(0)[1]
+--    local bufnr = vim.api.nvim_win_get_buf(win)
+--    self.winid = win
+--
+--    if vim.bo[bufnr].filetype == "NvimTree" then
+--      self.title = "Files"
+--      return true
+--    end
+--  end,
+--  {
+--    provider = function(self)
+--      local title = self.title
+--      local width = vim.api.nvim_win_get_width(self.winid)
+--      local leftpad = math.ceil((width - #title) / 2)
+--      local rightPad = leftpad
+--
+--      -- Correct for odd widths
+--      if width % 2 ~= #title % 2 then
+--        rightPad = rightPad - 1
+--      end
+--
+--      return string.rep(" ", leftpad) .. title .. string.rep(" ", rightPad)
+--    end,
+--
+--    hl = function(self)
+--      if vim.api.nvim_get_current_win() == self.winid then
+--        return "TabLineSel"
+--      else
+--        return "TabLine"
+--      end
+--    end,
+--
+--  },
+--  {
+--    Space,
+--  },
+--
+--}
 
 -- Build out the tabline
-local tabline = { TablineOffset, BufferLine, TabPages }
+--local tabline = { TablineOffset, BufferLine, TabPages }
 
 -- Set the statusline
 --heirline.setup({ TablineOffset, statusline }, winbar, tabline)
-heirline.setup({ TablineOffset, statusline }, winbar)
+heirline.setup(statusline, winbar)

@@ -246,9 +246,10 @@ return packer.startup(function()
   })
 
   use({
+    -- 会导致查询闪屏,看看是为什么
     "rebelot/heirline.nvim",
     disable = false,
-    after = { "nvim-web-devicons", "catppuccin", "nvim-lspconfig" },
+    after = { "nvim-web-devicons", "catppuccin" },
     config = function()
       --require("plugins.heirline").setup()
       require("plugins.heirline")
@@ -684,7 +685,7 @@ return packer.startup(function()
 
   use {
     'nvim-neotest/neotest',
-    disable = false,
+    disable = true,
     requires = {
       'nvim-lua/plenary.nvim',
       --'nvim-treesitter/nvim-treesitter',
