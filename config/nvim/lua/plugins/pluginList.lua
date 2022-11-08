@@ -716,6 +716,13 @@ return packer.startup(function()
     config = function()
       require("trouble").setup({
         use_diagnostic_signs = true,
+        --position = 'right',
+        height = 7,
+        group = true,
+        padding = true,
+        auto_close = true,
+
+        auto_preview = true,
       })
     end,
     disable = false,
