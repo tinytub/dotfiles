@@ -511,17 +511,17 @@ local LanguageBlock = {
   end,
 }
 
---local ShowCommand = {
---  condition = false,
---  provider = function()
---    if require("noice").api.statusline.command.get() == nil then
---      return ""
---    else
---      return "  " .. require("noice").api.statusline.command.get() .. " "
---    end
---  end,
---  hl = { fg = "subtext0", bg = "surface0" }
---}
+local ShowCommand = {
+  condition = false,
+  provider = function()
+    if require("noice").api.statusline.command.get() == nil then
+      return ""
+    else
+      return "  " .. require("noice").api.statusline.command.get() .. " "
+    end
+  end,
+  hl = { fg = "subtext0", bg = "surface0" }
+}
 
 local SearchResults = {
   condition = function(self)

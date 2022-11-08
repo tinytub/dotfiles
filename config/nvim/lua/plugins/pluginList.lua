@@ -26,7 +26,7 @@ return packer.startup(function()
   use({
     "williamboman/mason.nvim",
     --    opt = true,
-    cmd = require("core.lazy_load").mason_cmds,
+    --cmd = require("core.lazy_load").mason_cmds,
     config = function()
       require "plugins.mason"
     end,
@@ -105,19 +105,20 @@ return packer.startup(function()
     disable = false,
   })
 
-  --  use({
-  --    "folke/noice.nvim",
-  --    event = "VimEnter",
-  --    config = function()
-  --      require("plugins.nvim-notify").config()
-  --      require("plugins.nvim-noice").config()
-  --    end,
-  --    requires = {
-  --      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-  --      "MunifTanjim/nui.nvim",
-  --      "rcarriga/nvim-notify",
-  --    }
-  --  })
+  --use({
+  --  "folke/noice.nvim",
+  --  event = "VimEnter",
+  --  config = function()
+  --    require("plugins.nvim-notify").config()
+  --    require("plugins.nvim-noice").config()
+  --    --require("plugins.nvim-noice")
+  --  end,
+  --  requires = {
+  --    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+  --    "MunifTanjim/nui.nvim",
+  --    "rcarriga/nvim-notify",
+  --  }
+  --})
 
   -- Neovim UI Enhancer
   use({
@@ -291,6 +292,7 @@ return packer.startup(function()
   -- Better buffer closing
   use({
     "famiu/bufdelete.nvim",
+    module = "bufdelete",
     cmd = { "Bdelete", "Bwipeout" },
   })
 

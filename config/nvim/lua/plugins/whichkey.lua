@@ -51,6 +51,9 @@ which_key.setup({
     i = { "j", "k" },
     v = { "j", "k" },
   },
+  disable = {
+    filetypes = { "TelescopePrompt", "neo-tree" },
+  },
 })
 
 local opts = {
@@ -224,11 +227,15 @@ local misc_n_mapping = {
   -- close buffer + hide terminal buffer
   --["<C-x>"] = { "<cmd>lua require('core.utils').close_buffer() <CR>", "close buffer" },
   ["<C-x>"] = { "<cmd>Bdelete<cr>", "close buffer" },
+
+  --["<C-x>"] = { "<cmd>lua require('bufdelete').bufdelete(0, false) <CR>", "close buffer" },
   ["<ESC>"] = { "<cmd> noh <CR>", "no highlight" },
 
   -- M-key means ALT-xxxx
-  ["<M-[>"] = { "<cmd>vertical resize -2<CR>", "vertical resize -2" },
-  ["<M-]>"] = { "<cmd>vertical resize +2<CR>", "vertical resize +2" },
+  --["<M-[>"] = { "<cmd>vertical resize -2<CR>", "vertical resize -2" },
+  --["<M-]>"] = { "<cmd>vertical resize +2<CR>", "vertical resize +2" },
+  ["<M-[>"] = { "<cmd>lua require('smart-splits').resize_left(amount)<CR>", "vertical resize -2" },
+  ["<M-]>"] = { "<cmd>lua require('smart-splits').resize_right(amount)<CR>", "vertical resize +2" },
 
   -- cycle through buffers
   ["<TAB>"] = { "<cmd> BufferLineCycleNext <CR>", "cycle next buffer" },
