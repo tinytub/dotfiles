@@ -45,7 +45,7 @@ function Lsp_keymaps(client, bufnr)
   --  , { desc = "show line diagnostic [LSP]" })
   --buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
   buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-  --buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+  --buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references({includeDeclaration = false} )<CR>", opts)
   buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
   buf_set_keymap("n", "ge", '<cmd>lua vim.diagnostic.open_float(0, { scope = "line", header = false, focus = false })<CR>', opts)
   --buf_set_keymap("n", "[e", '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
@@ -182,7 +182,7 @@ local lsp_handlers = function()
   })
 
   --vim.lsp.handlers['textDocument/references'] = function(_, _, _)
-  --    require('telescope.builtin').lsp_references()
+  --  require('telescope.builtin').lsp_references()
   --end
 
   -- suppress error messages from lang servers
@@ -277,9 +277,9 @@ local custom_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 
-  if client.server_capabilities.signatureHelpProvider then
-    require("lsp.signature").signature(client)
-  end
+  -- if client.server_capabilities.signatureHelpProvider then
+  --   require("lsp.signature").signature(client)
+  -- end
   --lsp_highlight_document(client)
 
   local npresent, navic = pcall(require, "nvim-navic")

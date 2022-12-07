@@ -3,9 +3,10 @@ if not status_ok then
   return
 end
 
+
 local actions = require('telescope.actions')
-local action_state = require("telescope.actions.state")
-local transform_mod = require('telescope.actions.mt').transform_mod
+--local action_state = require("telescope.actions.state")
+--local transform_mod = require('telescope.actions.mt').transform_mod
 
 vim.g.theme_switcher_loaded = true
 -- require("base46").load_highlight "telescope"
@@ -17,8 +18,8 @@ telescope.setup {
   defaults = {
     find_command = { 'rg', "-L", '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' },
     ---- prompt_prefix = " ",
-    prompt_prefix = " ",
-    selection_caret = " ",
+    prompt_prefix = " ",
+    selection_caret = "❯ ",
     entry_prefix = "  ",
     initial_mode = "insert",
     selection_strategy = "reset",
@@ -32,9 +33,12 @@ telescope.setup {
     --  local tail = require("telescope.utils").path_tail(path)
     --  return string.format("%s (%s)", tail, path)
     --end,
-    path_display = {
-      truncate = 1,
-    },
+
+    path_display = { "truncate" },
+
+    --path_display = {
+    --  truncate = 1,
+    --},
     winblend = 0,
     border = {},
     borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },

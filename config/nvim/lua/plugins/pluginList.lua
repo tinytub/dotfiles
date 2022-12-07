@@ -48,7 +48,7 @@ return packer.startup(function()
   use({
     "ray-x/lsp_signature.nvim",
     after = "nvim-lspconfig",
-    disable = true,
+    disable = false,
     config = function()
       require("plugins.others").signature()
     end,
@@ -56,6 +56,7 @@ return packer.startup(function()
 
   -- lsp_lines 可以分层显示 lsp 弹出的行内错误
   use({
+    disable = true,
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     after = { "nvim-lspconfig" },
     config = function()
@@ -376,7 +377,8 @@ return packer.startup(function()
     config = function()
       require("plugins.treesitter").treesitter()
     end,
-    run = ":TSUpdate",
+    --run = ":TSUpdate",
+    run = function() require("nvim-treesitter.install").update { with_sync = true } () end,
     --config = function ()
     --   require "plugins.treesitter"
     --end

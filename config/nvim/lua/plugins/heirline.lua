@@ -255,7 +255,7 @@ local GitFolder = {
   hl = { fg = "subtext0", bg = "surface1" },
   {
     conditions = function(self)
-      return self.status_dict ~= ''
+      return self.status_dict.head:sub(1, 5) ~= 'fatal'
     end,
     provider = function(self)
       return "  " .. self.status_dict.head .. " "
@@ -759,8 +759,8 @@ local winbar = {
   {
     condition = function()
       return conditions.buffer_matches({
-        buftype = { "nofile", "prompt", "help", "quickfix", "nvimtree" },
-        filetype = { "^git.*", "fugitive", "alpha", "nvimtree" },
+        buftype = { "nofile", "terminal", "prompt", "help", "quickfix", "nvimtree" },
+        filetype = { "^git.*", "fugitive", "alpha", "nvimtree", "dashboard" },
       })
     end,
     init = function()

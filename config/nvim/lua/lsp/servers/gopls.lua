@@ -41,7 +41,7 @@ return {
 
       matcher = "Fuzzy",
       diagnosticsDelay = "500ms",
-      experimentalWatchedFileDelay = "100ms",
+      --experimentalWatchedFileDelay = "100ms",
       symbolMatcher = "fuzzy",
       -- ["local"] = "",
       deepCompletion = true,

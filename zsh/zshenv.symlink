@@ -36,6 +36,7 @@ export PATH=$PATH:/usr/local/kubebuilder/bin
 #export PATH=${JAVA_HOME}/bin:$PATH
 export PATH="/usr/local/opt/ruby/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
 export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="/usr/local/opt/go@1.18/bin:$PATH"
 
 #autossh
 export AUTOSSH_PIDFILE=~/autossh.pid

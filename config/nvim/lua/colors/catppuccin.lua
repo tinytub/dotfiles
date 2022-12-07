@@ -57,7 +57,7 @@ function M.setup()
       gitgutter = true,
       gitsigns = true,
       lsp_trouble = true,
-      neogit = true,
+      --neogit = true,
       symbols_outline = true,
       telescope = true,
       nvimtree = true, --false? neotree
