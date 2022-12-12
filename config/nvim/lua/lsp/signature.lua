@@ -24,7 +24,8 @@ end
 -- thx to https://github.com/seblj/dotfiles/blob/0542cae6cd9a2a8cbddbb733f4f65155e6d20edf/nvim/lua/config/lspconfig/init.lua
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-local util = require "vim.lsp.util"
+local util = require('vim.lsp.util')
+local handler
 local clients = {}
 
 local check_trigger_char = function(line_to_cursor, triggers)
@@ -38,7 +39,7 @@ local check_trigger_char = function(line_to_cursor, triggers)
     if current_char == trigger_char then
       return true
     end
-    if current_char == " " and prev_char == trigger_char then
+    if current_char == ' ' and prev_char == trigger_char then
       return true
     end
   end
@@ -52,8 +53,8 @@ local open_signature = function()
     local triggers = client.server_capabilities.signatureHelpProvider.triggerCharacters
 
     -- csharp has wrong trigger chars for some odd reason
-    if client.name == "csharp" then
-      triggers = { "(", "," }
+    if client.name == 'csharp' then
+      triggers = { '(', ',' }
     end
 
     local pos = vim.api.nvim_win_get_cursor(0)
@@ -67,26 +68,24 @@ local open_signature = function()
 
   if triggered then
     local params = util.make_position_params()
-    vim.lsp.buf_request(
-      0,
-      "textDocument/signatureHelp",
-      params,
-      vim.lsp.with(M.signature_window, {
-        border = "single",
-        focusable = false,
-      })
-    )
+    vim.lsp.buf_request(0, 'textDocument/signatureHelp', params, handler)
   end
 end
 
 M.setup = function(client)
-  table.insert(clients, client)
-  local group = augroup("LspSignature", { clear = false })
-  vim.api.nvim_clear_autocmds { group = group, pattern = "<buffer>" }
+  handler = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    border = CUSTOM_BORDER,
+    silent = true,
+    focusable = false,
+  })
 
-  autocmd("TextChangedI", {
+  table.insert(clients, client)
+
+  local group = augroup('LspSignature', { clear = false })
+  vim.api.nvim_clear_autocmds({ group = group, pattern = '<buffer>' })
+  autocmd('TextChangedI', {
     group = group,
-    pattern = "<buffer>",
+    pattern = '<buffer>',
     callback = function()
       -- Guard against spamming of method not supported after
       -- stopping a language serer with LspStop
@@ -96,6 +95,7 @@ M.setup = function(client)
       end
       open_signature()
     end,
+    desc = 'Start lsp signature',
   })
 end
 
