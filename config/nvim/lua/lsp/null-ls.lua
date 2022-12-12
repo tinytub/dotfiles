@@ -29,7 +29,7 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
   if client.server_capabilities.signatureHelpProvider then
-    require("lsp.signature").signature(client)
+    require("lsp.signature").setup(client)
   end
 
   if client.supports_method("textDocument/formatting") then

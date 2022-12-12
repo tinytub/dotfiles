@@ -45,14 +45,14 @@ return packer.startup(function()
   })
 
   -- lsp signature 展示
-  use({
-    "ray-x/lsp_signature.nvim",
-    after = "nvim-lspconfig",
-    disable = false,
-    config = function()
-      require("plugins.others").signature()
-    end,
-  })
+  --use({
+  --  "ray-x/lsp_signature.nvim",
+  --  after = "nvim-lspconfig",
+  --  disable = true,
+  --  config = function()
+  --    require("plugins.others").signature()
+  --  end,
+  --})
 
   -- lsp_lines 可以分层显示 lsp 弹出的行内错误
   use({

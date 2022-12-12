@@ -50,8 +50,8 @@ function Lsp_keymaps(client, bufnr)
   buf_set_keymap("n", "ge", '<cmd>lua vim.diagnostic.open_float(0, { scope = "line", header = false, focus = false })<CR>', opts)
   --buf_set_keymap("n", "[e", '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
   --buf_set_keymap("n", "]e", '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
-  buf_set_keymap("n", "[e", '<cmd>lua vim.diagnostic.goto_prev({float = {border = "single"}})<CR>', opts)
-  buf_set_keymap("n", "]e", '<cmd>lua vim.diagnostic.goto_next({float = {border = "single"}})<CR>', opts)
+  buf_set_keymap("n", "[e", '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap("n", "]e", '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap("n", "<space>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
   buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.format()<cr>", opts)
   buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
@@ -153,23 +153,31 @@ local lsp_handlers = function()
     --    prefix = "",
     --},
     --virtual_text = { spacing = 4, prefix = '●' },
-    -- virtual_text = false,
-    virtual_text = {
-      spacing = 4,
-      prefix = '●',
-      source = 'always',
-      severity = {
-        min = vim.diagnostic.severity.HINT,
-      },
-    },
+    virtual_text = false,
+    --virtual_text = {
+    --  spacing = 4,
+    --  prefix = '●',
+    --  source = 'always',
+    --  severity = {
+    --    min = vim.diagnostic.severity.HINT,
+    --  },
+    --},
     signs = true,
     severity_sort = true,
     --underline = true,
     update_in_insert = false, -- update diagnostics insert mode
+    --float = {
+    --  show_header = false,
+    --  source = 'always',
+    --  border = 'rounded',
+    --},
     float = {
-      show_header = false,
-      source = 'always',
-      border = 'rounded',
+      focused = false,
+      style = "minimal",
+      border = "rounded",
+      source = "always",
+      header = "",
+      prefix = "",
     },
   })
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
@@ -177,8 +185,6 @@ local lsp_handlers = function()
   })
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     border = "single",
-    focusable = false,
-    relative = "cursor",
   })
 
   --vim.lsp.handlers['textDocument/references'] = function(_, _, _)
@@ -277,9 +283,9 @@ local custom_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 
-  -- if client.server_capabilities.signatureHelpProvider then
-  --   require("lsp.signature").signature(client)
-  -- end
+  if client.server_capabilities.signatureHelpProvider then
+    require("lsp.signature").setup(client)
+  end
   --lsp_highlight_document(client)
 
   local npresent, navic = pcall(require, "nvim-navic")
