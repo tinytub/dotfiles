@@ -20,15 +20,6 @@ local function border(hl_name)
   }
 end
 
-local cmp_window = require("cmp.utils.window")
-
-cmp_window.info_ = cmp_window.info
-cmp_window.info = function(self)
-  local info = self:info_()
-  info.scrollable = false
-  return info
-end
-
 --local has_words_before = function()
 --  if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
 --    return false
@@ -80,21 +71,15 @@ cmp.setup({
     behavior = cmp.ConfirmBehavior.Insert,
     select = false,
   },
-  --documentation = {
-  --   border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-  --   winhighlight = 'NormalFloat:NormalFloat,FloatBorder:TelescopePreviewBorder',
-  --},
-  --   window = {
-  --      completion = cmp.config.window.bordered(),
-  --      documentation = cmp.config.window.bordered(),
-  --   },
   window = {
     completion = {
       border = border("CmpBorder"),
       winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
+      scrollbar = false,
     },
     documentation = {
       border = border("CmpDocBorder"),
+      winhighlight = "Normal:CmpDoc",
     },
   },
   mapping = {

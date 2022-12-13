@@ -25,8 +25,7 @@ return packer.startup(function()
   -- Package Manager
   use({
     "williamboman/mason.nvim",
-    --    opt = true,
-    --cmd = require("core.lazy_load").mason_cmds,
+    cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
     config = function()
       require "plugins.mason"
     end,
@@ -37,7 +36,7 @@ return packer.startup(function()
     opt = true,
     "neovim/nvim-lspconfig",
     setup = function()
-      require("core.lazy_load").on_file_open "nvim-lspconfig"
+      require("core.lazy_load").lazy_load("nvim-lspconfig")
     end,
     config = function()
       require("lsp.lspconfig")
@@ -45,14 +44,14 @@ return packer.startup(function()
   })
 
   -- lsp signature 展示
-  --use({
-  --  "ray-x/lsp_signature.nvim",
-  --  after = "nvim-lspconfig",
-  --  disable = true,
-  --  config = function()
-  --    require("plugins.others").signature()
-  --  end,
-  --})
+  use({
+    "ray-x/lsp_signature.nvim",
+    after = "nvim-lspconfig",
+    disable = false,
+    config = function()
+      require("plugins.others").signature()
+    end,
+  })
 
   -- lsp_lines 可以分层显示 lsp 弹出的行内错误
   use({
@@ -282,7 +281,7 @@ return packer.startup(function()
     "akinsho/bufferline.nvim",
     tag = "v2.*",
     setup = function()
-      require("core.lazy_load").bufferline()
+      require("core.lazy_load").lazy_load("bufferline.nvim")
     end,
     config = function()
       require("plugins.bufferline")
@@ -370,9 +369,9 @@ return packer.startup(function()
   use({
     "nvim-treesitter/nvim-treesitter",
     module = "nvim-treesitter",
-    cmd = { "TSInstall", "TSUninstall" },
+    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" },
     setup = function()
-      require("core.lazy_load").treesitter()
+      require("core.lazy_load").lazy_load("nvim-treesitter")
     end,
     config = function()
       require("plugins.treesitter").treesitter()
@@ -449,7 +448,19 @@ return packer.startup(function()
       require("plugins.gitsigns").config()
     end,
     setup = function()
-      require("core.lazy_load").gitsigns()
+      -- load gitsigns only when a git file is opened
+      vim.api.nvim_create_autocmd({ "BufRead" }, {
+        group = vim.api.nvim_create_augroup("GitSignslazy_load", { clear = true }),
+        callback = function()
+          vim.fn.system("git -C " .. vim.fn.expand "%:p:h" .. " rev-parse")
+          if vim.v.shell_error == 0 then
+            vim.api.nvim_del_augroup_by_name "GitSignslazy_load"
+            vim.schedule(function()
+              require("packer").loader "gitsigns.nvim"
+            end)
+          end
+        end,
+      })
     end,
   })
 
@@ -503,7 +514,7 @@ return packer.startup(function()
     "NvChad/nvim-colorizer.lua",
     opt = true,
     setup = function()
-      require("core.lazy_load").on_file_open("nvim-colorizer.lua")
+      require("core.lazy_load").lazy_load("nvim-colorizer.lua")
     end,
     config = function()
       require("plugins.others").colorizer()

@@ -283,9 +283,9 @@ local custom_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 
-  if client.server_capabilities.signatureHelpProvider then
-    require("lsp.signature").setup(client)
-  end
+  --if client.server_capabilities.signatureHelpProvider then
+  --  require("lsp.signature").setup(client)
+  --end
   --lsp_highlight_document(client)
 
   local npresent, navic = pcall(require, "nvim-navic")
