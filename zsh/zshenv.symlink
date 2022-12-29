@@ -38,6 +38,8 @@ export PATH="/usr/local/opt/ruby/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
 export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/go@1.18/bin:$PATH"
 
+export PATH="/usr/local/opt/openssl@3/bin:$PATH"
+
 #autossh
 export AUTOSSH_PIDFILE=~/autossh.pid
 export AUTOSSH_POLL=60
@@ -57,5 +59,9 @@ export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 #export https_proxy=http://10.12.164.8:7890 http_proxy=http://10.12.164.8:7890 all_proxy=socks5://10.12.164.8:7891
 export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
 . "$HOME/.cargo/env"
+
+# proxy apiserver by remote bastion
+# ssh -t -L 127.0.0.1:6443:{apiserver}:{apiserverPort} root@{bastion} -- kubectl  proxy --port 6443
+# ssh -t -L 127.0.0.1:6443:11.50.138.36:6443 root@11.50.138.45 -- kubectl  proxy --port 6443
 
 #alias -g zplug="LC_MESSAGES=en_US.UTF-8 zplug"
