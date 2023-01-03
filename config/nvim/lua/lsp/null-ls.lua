@@ -143,5 +143,22 @@ require("null-ls").setup({
     }),
     builtins.hover.dictionary.with({ extra_filetypes = { "vimwiki" } }),
     builtins.completion.spell.with({ extra_filetypes = { "vimwiki" } }),
+
+    --builtins.formatting.stylua.with({ extra_args = { "--indent-type", "Spaces", "--indent-width", "2" } }),
+    --builtins.diagnostics.eslint_d,
+    --builtins.formatting.prettier.with({
+    --  extra_args = { "--single-quote", "false" },
+    --}),
+    --builtins.formatting.terraform_fmt,
+    --builtins.formatting.black,
+    --builtins.formatting.goimports,
+    --builtins.formatting.gofumpt,
+    --builtins.formatting.latexindent.with({
+    --  extra_args = { "-g", "/dev/null" }, -- https://github.com/cmhughes/latexindent.pl/releases/tag/V3.9.3
+    --}),
+
+    builtins.code_actions.shellcheck,
+    --builtins.diagnostics.vale,
+    builtins.code_actions.gitsigns,
   },
 })

@@ -55,7 +55,7 @@ return packer.startup(function()
 
   -- lsp_lines 可以分层显示 lsp 弹出的行内错误
   use({
-    disable = true,
+    disable = false,
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     after = { "nvim-lspconfig" },
     config = function()
@@ -105,20 +105,21 @@ return packer.startup(function()
     disable = false,
   })
 
-  --use({
-  --  "folke/noice.nvim",
-  --  event = "VimEnter",
-  --  config = function()
-  --    require("plugins.nvim-notify").config()
-  --    require("plugins.nvim-noice").config()
-  --    --require("plugins.nvim-noice")
-  --  end,
-  --  requires = {
-  --    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-  --    "MunifTanjim/nui.nvim",
-  --    "rcarriga/nvim-notify",
-  --  }
-  --})
+  use({
+    "folke/noice.nvim",
+    event = "VimEnter",
+    disable = false,
+    config = function()
+      --require("plugins.nvim-notify").config()
+      require("plugins.nvim-noice").config()
+      --require("plugins.nvim-noice")
+    end,
+    requires = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    }
+  })
 
   -- Neovim UI Enhancer
   use({

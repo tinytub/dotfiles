@@ -12,6 +12,7 @@ local function toggle_virtual_line()
   if is_virtual_text then
     diagnostic.config({
       virtual_text = false,
+      --virtual_lines = { only_current_line = true }
       virtual_lines = true
     })
     is_virtual_text = false

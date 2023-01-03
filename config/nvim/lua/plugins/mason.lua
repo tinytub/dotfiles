@@ -18,6 +18,7 @@ end
 local options = {
   ensure_installed = {
     "lua-language-server",
+    "bash-language-server",
     "stylua",
 
     -- web dev

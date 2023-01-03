@@ -598,7 +598,7 @@ local statusline = {
     SearchResults,
     LSPActive,
     Diagnostics,
-    --ShowCommand,
+    -- ShowCommand,
     Space,
     Ruler,
     Space,
