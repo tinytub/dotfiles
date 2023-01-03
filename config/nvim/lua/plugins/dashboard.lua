@@ -42,22 +42,33 @@ local options = {
   headerPaddingBottom = { type = "padding", val = 2 },
 }
 
+--local ascii = {
+--  "   ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆          ",
+--  "    ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦       ",
+--  "          ⠈⢿⣿⣟⠦ ⣾⣿⣿⣷    ⠻⠿⢿⣿⣧⣄     ",
+--  "           ⣸⣿⣿⢧ ⢻⠻⣿⣿⣷⣄⣀⠄⠢⣀⡀⠈⠙⠿⠄    ",
+--  "          ⢠⣿⣿⣿⠈    ⣻⣿⣿⣿⣿⣿⣿⣿⣛⣳⣤⣀⣀   ",
+--  "   ⢠⣧⣶⣥⡤⢄ ⣸⣿⣿⠘  ⢀⣴⣿⣿⡿⠛⣿⣿⣧⠈⢿⠿⠟⠛⠻⠿⠄  ",
+--  "  ⣰⣿⣿⠛⠻⣿⣿⡦⢹⣿⣷   ⢊⣿⣿⡏  ⢸⣿⣿⡇ ⢀⣠⣄⣾⠄   ",
+--  " ⣠⣿⠿⠛ ⢀⣿⣿⣷⠘⢿⣿⣦⡀ ⢸⢿⣿⣿⣄ ⣸⣿⣿⡇⣪⣿⡿⠿⣿⣷⡄  ",
+--  " ⠙⠃   ⣼⣿⡟  ⠈⠻⣿⣿⣦⣌⡇⠻⣿⣿⣷⣿⣿⣿ ⣿⣿⡇ ⠛⠻⢷⣄ ",
+--  "      ⢻⣿⣿⣄   ⠈⠻⣿⣿⣿⣷⣿⣿⣿⣿⣿⡟ ⠫⢿⣿⡆     ",
+--  "       ⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃     ",
+--}
+
 local ascii = {
-  "   ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆          ",
-  "    ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦       ",
-  "          ⠈⢿⣿⣟⠦ ⣾⣿⣿⣷    ⠻⠿⢿⣿⣧⣄     ",
-  "           ⣸⣿⣿⢧ ⢻⠻⣿⣿⣷⣄⣀⠄⠢⣀⡀⠈⠙⠿⠄    ",
-  "          ⢠⣿⣿⣿⠈    ⣻⣿⣿⣿⣿⣿⣿⣿⣛⣳⣤⣀⣀   ",
-  "   ⢠⣧⣶⣥⡤⢄ ⣸⣿⣿⠘  ⢀⣴⣿⣿⡿⠛⣿⣿⣧⠈⢿⠿⠟⠛⠻⠿⠄  ",
-  "  ⣰⣿⣿⠛⠻⣿⣿⡦⢹⣿⣷   ⢊⣿⣿⡏  ⢸⣿⣿⡇ ⢀⣠⣄⣾⠄   ",
-  " ⣠⣿⠿⠛ ⢀⣿⣿⣷⠘⢿⣿⣦⡀ ⢸⢿⣿⣿⣄ ⣸⣿⣿⡇⣪⣿⡿⠿⣿⣷⡄  ",
-  " ⠙⠃   ⣼⣿⡟  ⠈⠻⣿⣿⣦⣌⡇⠻⣿⣿⣷⣿⣿⣿ ⣿⣿⡇ ⠛⠻⢷⣄ ",
-  "      ⢻⣿⣿⣄   ⠈⠻⣿⣿⣿⣷⣿⣿⣿⣿⣿⡟ ⠫⢿⣿⡆     ",
-  "       ⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃     ",
+  " ",
+  "    ███    ██ ██    ██ ██ ███    ███",
+  "    ████   ██ ██    ██ ██ ████  ████",
+  "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
+  "    ██  ██ ██  ██  ██  ██ ██  ██  ██",
+  "    ██   ████   ████   ██ ██      ██",
 }
+
 
 options.header = {
   type = "text",
+  --val = ascii,
   val = ascii,
   opts = {
     position = "center",
@@ -69,12 +80,13 @@ options.header = {
 options.buttons = {
   type = "group",
   val = {
-    button("SPC f f", "  Find File  ", ":Telescope find_files<CR>"),
-    button("SPC f o", "  Recent File  ", ":Telescope oldfiles<CR>"),
-    button("SPC f w", "  Find Word  ", ":Telescope live_grep<CR>"),
-    button("SPC b m", "  Bookmarks  ", ":Telescope marks<CR>"),
-    button("SPC t h", "  Themes  ", ":Telescope themes<CR>"),
-    button("SPC e s", "  Settings", ":e $MYVIMRC | :cd %:p:h <CR>"),
+    button("N", "  New file", ":ene <BAR> startinsert <CR>"),
+    button("SPC F F", "  Find File  ", ":Telescope find_files<CR>"),
+    button("SPC F A", "  Find text", ":FzfLua live_grep <CR>"),
+    button("SPC F W", "  Find Word  ", ":Telescope live_grep<CR>"),
+    button("SPC F O", "  Recent File  ", ":Telescope oldfiles<CR>"),
+    button("SPC E S", "  Settings", ":e $MYVIMRC | :cd %:p:h <CR>"),
+    button("SPC P S", "  Update plugins", ":PackerSync<CR>"),
   },
   opts = {
     spacing = 1,
