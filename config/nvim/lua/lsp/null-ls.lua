@@ -157,8 +157,8 @@ require("null-ls").setup({
     --  extra_args = { "-g", "/dev/null" }, -- https://github.com/cmhughes/latexindent.pl/releases/tag/V3.9.3
     --}),
 
-    builtins.code_actions.shellcheck,
-    --builtins.diagnostics.vale,
-    builtins.code_actions.gitsigns,
+    --builtins.code_actions.shellcheck,
+    ----builtins.diagnostics.vale,
+    --builtins.code_actions.gitsigns,
   },
 })

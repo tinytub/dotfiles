@@ -549,7 +549,7 @@ local SearchResults = {
   end,
   {
     provider = function(self)
-      return '  ' .. self.query .. ' '
+      return '  ' .. self.query .. ' '
     end,
     hl = { fg = "subtext0", bg = "surface0" }
   },

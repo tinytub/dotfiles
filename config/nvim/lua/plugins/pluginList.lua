@@ -108,7 +108,7 @@ return packer.startup(function()
   use({
     "folke/noice.nvim",
     event = "VimEnter",
-    disable = false,
+    disable = true,
     config = function()
       --require("plugins.nvim-notify").config()
       require("plugins.nvim-noice").config()
@@ -728,16 +728,7 @@ return packer.startup(function()
     "folke/trouble.nvim",
     cmd = { "Trouble", "TroubleToggle" },
     config = function()
-      require("trouble").setup({
-        use_diagnostic_signs = true,
-        --position = 'right',
-        height = 7,
-        group = true,
-        padding = true,
-        auto_close = true,
-
-        auto_preview = true,
-      })
+      require("plugins.trouble")
     end,
     disable = false,
   })

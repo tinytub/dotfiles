@@ -6,7 +6,7 @@ end
 local M = {}
 
 function M.config()
-  require("noice").setup({
+  noice.setup({
     lsp = {
       override = {
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -21,8 +21,8 @@ function M.config()
       },
       format = {
         spinner = {
-          name = "dots12",
-          --name = "sand",
+          --name = "dots12",
+          name = "sand",
         },
       },
       progress = {
@@ -53,6 +53,31 @@ function M.config()
           col = "90%",
         },
       }
+    },
+    routes = {
+      { -- filter annoying buffer messages
+        filter = {
+          event = "msg_show",
+          kind = "",
+          any = {
+            { find = "written" },
+            { find = "line less" },
+            { find = "fewer lines" },
+            { find = "more line" },
+            { find = "change; before" },
+            { find = "change; after" },
+            { find = '<leader>' },
+          },
+        },
+        opts = { skip = true },
+      },
+      --{
+      --  filter = {
+      --    event = "msg_show",
+      --    kind = "search_count",
+      --  },
+      --  opts = { skip = true },
+      --},
     }
   })
 end
