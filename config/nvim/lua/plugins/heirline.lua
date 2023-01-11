@@ -995,4 +995,7 @@ local winbar = {
 
 -- Set the statusline
 --heirline.setup({ TablineOffset, statusline }, winbar, tabline)
-heirline.setup(statusline, winbar)
+heirline.setup({
+  statusline = statusline,
+  winbar = winbar
+})

@@ -72,14 +72,19 @@ cmp.setup({
     select = false,
   },
   window = {
+
     completion = {
       border = border("CmpBorder"),
+      side_padding = 1,
       winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-      scrollbar = false,
+      --scrollbar = false,
+      zindex = 1001,
     },
     documentation = {
+      side_padding = 1,
       border = border("CmpDocBorder"),
       winhighlight = "Normal:CmpDoc",
+      zindex = 1001,
     },
   },
   mapping = {
