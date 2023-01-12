@@ -187,13 +187,13 @@ local mappings = {
   --   ["t"] = {"<cmd>FloatermToggle<cr>"                                , "toggle"},
   --   ["k"] = {"<cmd>FloatermKill<cr>"                                  , "kill term"},
   --},
-  p = {
-    name = "Packer",
-    ["u"] = { "<cmd>PackerUpdate<cr>", "packer update" },
-    ["i"] = { "<cmd>PackerInstall<cr>", "packer install" },
-    ["c"] = { "<cmd>PackerCompile<cr>", "packer compile" },
-    ["s"] = { "<cmd>PackerSync<cr>", "packer sync" },
-  },
+  --p = {
+  --  name = "Packer",
+  --  ["u"] = { "<cmd>PackerUpdate<cr>", "packer update" },
+  --  ["i"] = { "<cmd>PackerInstall<cr>", "packer install" },
+  --  ["c"] = { "<cmd>PackerCompile<cr>", "packer compile" },
+  --  ["s"] = { "<cmd>PackerSync<cr>", "packer sync" },
+  --},
   d = {
     name = "Dap",
     ["d"] = { "<cmd>lua require'dapui'.toggle()<CR>", "toggle dap UI" },

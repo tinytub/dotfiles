@@ -19,15 +19,17 @@ local function toggle_virtual_line()
   else
     -- 和lspconfig内一样
     diagnostic.config({
-      virtual_text = {
-        spacing = 4,
-        prefix = '●',
-        source = 'always',
-        severity = {
-          min = vim.diagnostic.severity.HINT,
-        },
-      },
+      virtual_text = false,
       virtual_lines = false,
+      --virtual_text = {
+      --  spacing = 4,
+      --  prefix = '●',
+      --  source = 'always',
+      --  severity = {
+      --    min = vim.diagnostic.severity.HINT,
+      --  },
+      --},
+      --virtual_lines = false,
     })
     is_virtual_text = true
   end

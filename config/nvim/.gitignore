@@ -19,5 +19,7 @@ spell/
 nv-settings.lua
 settings.lua
 spell
+lazy-lock.json
 
 .DS_Store
+

@@ -52,39 +52,7 @@ M.misc = function()
 
   end
 
-  local function required_mappings()
-    -- snapshot stuff
-    local packer_cmd = function(callback)
-      return function()
-        require "plugins.pluginList"
-        require("packer")[callback]()
-      end
-    end
-    user_cmd("PackerSnapshot", function(info)
-      require "plugins.pluginList"
-      require("packer").snapshot(info.args)
-    end, { nargs = "+" })
-
-    user_cmd("PackerSnapshotDelete", function(info)
-      require "plugins.pluginList"
-      require("packer.snapshot").delete(info.args)
-    end, { nargs = "+" })
-
-    user_cmd("PackerSnapshotRollback", function(info)
-      require "plugins.pluginList"
-      require("packer").rollback(info.args)
-    end, { nargs = "+" })
-
-    user_cmd("PackerClean", packer_cmd "clean", {})
-    user_cmd("PackerCompile", packer_cmd "compile", {})
-    user_cmd("PackerInstall", packer_cmd "install", {})
-    user_cmd("PackerStatus", packer_cmd "status", {})
-    user_cmd("PackerSync", packer_cmd "sync", {})
-    user_cmd("PackerUpdate", packer_cmd "update", {})
-  end
-
   non_config_mappings()
-  required_mappings()
 end
 
 --M.misc()

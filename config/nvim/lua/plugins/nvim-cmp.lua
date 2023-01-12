@@ -1,8 +1,4 @@
-local present, cmp = pcall(require, "cmp")
-
-if not present then
-  return
-end
+local cmp = require'cmp'
 
 --require("base46").load_highlight "cmp"
 vim.o.completeopt = "menu,menuone,noselect"

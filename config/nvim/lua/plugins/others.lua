@@ -1,26 +1,6 @@
 local M = {}
 
 M.autopairs = function()
-  local present1, autopairs = pcall(require, "nvim-autopairs")
-  local present2, cmp = pcall(require, "cmp")
-
-  if not (present1 or present2) then
-    return
-  end
-
-  -- autopairs.setup()
-
-  autopairs.setup({
-    fast_wrap = {},
-    disable_filetype = { "TelescopePrompt", "vim" },
-    --autopairs = {enable = true},
-    --enable_check_bracket_line = false,
-    --html_break_line_filetype = {'html', 'vue', 'typescriptreact', 'svelte', 'javascriptreact'},
-  })
-  local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-
-  cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-
   --local ts_conds = require "nvim-autopairs.ts-conds"
   --local Rule = require "nvim-autopairs.rule"
   --autopairs.add_rules {
@@ -60,6 +40,7 @@ M.colorizer = function()
         css_fn = false, -- Enable all CSS *functions*: rgb_fn, hsl_fn
 
         mode = "background", -- Set the display mode.
+        tailwind = true, -- Enable tailwind colors
       },
     }
     colorizer.setup(default)
@@ -79,7 +60,7 @@ M.blankline = function()
       "help",
       "terminal",
       "alpha",
-      "packer",
+      "lazy",
       "lspinfo",
       "TelescopePrompt",
       "TelescopeResults",
