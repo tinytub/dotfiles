@@ -760,7 +760,7 @@ local winbar = {
     condition = function()
       return conditions.buffer_matches({
         buftype = { "nofile", "terminal", "prompt", "help", "quickfix", "nvimtree" },
-        filetype = { "^git.*", "fugitive", "alpha", "nvimtree", "dashboard" },
+        filetype = { "^git.*", "alpha", "nvimtree", "dashboard" },
       })
     end,
     init = function()

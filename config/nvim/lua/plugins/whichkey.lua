@@ -177,23 +177,6 @@ local mappings = {
       "lsp rename",
     },
   },
-  --t = {
-  --   name = '+Terminal' ,
-  --   [";"] = {"<cmd>FloatermNew --wintype=normal --height=6<cr>"       , "terminal"},
-  --   ["f"] = {"<cmd>FloatermNew fzf<cr>"                               , "fzf"},
-  --   ["g"] = {"<cmd>FloatermNew lazygit<cr>"                           , "git"},
-  --   ["n"] = {"<cmd>FloatermNew node<cr>"                              , "node"},
-  --   ["p"] = {"<cmd>FloatermNew python<cr>"                            , "python"},
-  --   ["t"] = {"<cmd>FloatermToggle<cr>"                                , "toggle"},
-  --   ["k"] = {"<cmd>FloatermKill<cr>"                                  , "kill term"},
-  --},
-  --p = {
-  --  name = "Packer",
-  --  ["u"] = { "<cmd>PackerUpdate<cr>", "packer update" },
-  --  ["i"] = { "<cmd>PackerInstall<cr>", "packer install" },
-  --  ["c"] = { "<cmd>PackerCompile<cr>", "packer compile" },
-  --  ["s"] = { "<cmd>PackerSync<cr>", "packer sync" },
-  --},
   d = {
     name = "Dap",
     ["d"] = { "<cmd>lua require'dapui'.toggle()<CR>", "toggle dap UI" },

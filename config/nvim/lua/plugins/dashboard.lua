@@ -86,7 +86,7 @@ options.buttons = {
     button("SPC F W", "  Find Word  ", ":Telescope live_grep<CR>"),
     button("SPC F O", "  Recent File  ", ":Telescope oldfiles<CR>"),
     button("SPC E S", "  Settings", ":e $MYVIMRC | :cd %:p:h <CR>"),
-    button("SPC P S", "  Update plugins", ":PackerSync<CR>"),
+    button("SPC P S", "  Update plugins", ":Lazy<CR>"),
   },
   opts = {
     spacing = 1,

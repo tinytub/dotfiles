@@ -14,11 +14,9 @@ M.overrides = {
       PmenuThumb = { bg = mocha.surface0 }, -- Popup menu: Thumb of the scrollbar.
       VertSplit = { fg = mocha.surface0 },
       NonText = { fg = mocha.surface0 },
+      FidgetTitle = { fg = mocha.blue, bg = mocha.none },
+      FidgetTask = { fg = mocha.blue, bg = mocha.none },
     }
-    -- mocha = {
-    --   ["@field"] = { fg = mocha.rosewater },
-    --   TSField = { fg = mocha.rosewater },
-    -- }
   }
 }
 
@@ -50,10 +48,12 @@ function M.setup()
       operators = {},
     },
     integrations = {
+      fidget = true,
       treesitter = true,
       treesitter_context = true,
       ts_rainbow = true,
       cmp = true,
+      mason = true,
       gitgutter = true,
       gitsigns = true,
       lsp_trouble = true,

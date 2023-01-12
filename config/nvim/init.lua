@@ -11,11 +11,12 @@ else
   --require("core.packerInit").bootstrap()
   local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
   if not vim.loop.fs_stat(lazypath) then
-    require("core.packerInit").lazy(lazypath)
+    require("core.lazyInit").lazyLoad(lazypath)
   end
 
-  vim.opt.rtp:prepend(lazypath)
-  require("plugins")
+  require("core.lazyInit").lazyStart(lazypath)
+
+
   --require("plugins.pluginList")
   -- install binaries from mason.nvim & tsparsers
   --vim.api.nvim_create_autocmd("User", {

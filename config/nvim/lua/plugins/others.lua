@@ -161,8 +161,8 @@ M.base46 = function()
   --base46.setup({ theme = "gruvbox" })
 
   -- then load the highlights
-  package.loaded["colors.highlights" or false] = nil
-  require("colors.highlights")
+  --package.loaded["colors.highlights" or false] = nil
+  --require("colors.highlights")
 end
 
 M.quickscope = function()
