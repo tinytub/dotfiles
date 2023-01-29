@@ -34,7 +34,7 @@ local opts = {
       { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
       { "filename",
         path = 1,
-        --symbols = { modified = "  ", readonly = "", unnamed = "" },
+        symbols = { modified = "  ", readonly = "", unnamed = "" },
         shorting_target = 30, -- Shortens path to leave 40 space in the window
       },
       ---- stylua: ignore
@@ -119,6 +119,8 @@ local opts = {
         path = 0,
         cond = navic.is_available,
         color = { gui = 'italic,bold' },
+        symbols = { modified = "", readonly = "", unnamed = "" },
+
       },
       { navic.get_location, cond = navic.is_available },
     },
@@ -131,7 +133,7 @@ local opts = {
     lualine_b = {},
     lualine_c = {
       { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-      { 'filename', path = 0, cond = navic.is_available },
+      { 'filename', path = 0, cond = navic.is_available, symbols = { modified = "", readonly = "", unnamed = "" }, },
     },
     lualine_x = {},
     lualine_y = {},
