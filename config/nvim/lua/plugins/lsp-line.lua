@@ -37,10 +37,7 @@ end
 
 M.setup = function()
   -- Disable virtual_text since it's redundant due to lsp_lines.
-  local ok, lsp_lines = pcall(require, "lsp_lines")
-  if not ok then
-    return
-  end
+  local lsp_lines = require("lsp_lines")
 
   lsp_lines.setup()
   toggle_virtual_line()

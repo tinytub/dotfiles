@@ -1,4 +1,4 @@
-local cmp = require'cmp'
+local cmp = require 'cmp'
 
 --require("base46").load_highlight "cmp"
 vim.o.completeopt = "menu,menuone,noselect"
@@ -40,19 +40,21 @@ cmp.setup({
   formatting = {
     ---- 补全窗口的顺序
     --fields = { "kind", "abbr", "menu" },
-    format = function(_, vim_item)
+    --format = function(_, vim_item)
 
-      -- load lspkind icons
-      vim_item.kind = string.format("%s %s", require("plugins.lspkind_icons")[vim_item.kind], vim_item.kind)
+    --  -- load lspkind icons
+    --  -- vim_item.kind = string.format("%s %s", require("plugins.lspkind_icons")[vim_item.kind], vim_item.kind)
 
-      --vim_item.menu = ({
-      --   nvim_lsp = "[LSP]",
-      --   nvim_lua = "[Lua]",
-      --   buffer = "[BUF]",
-      --})[entry.source.name]
+    --  --vim_item.menu = ({
+    --  --   nvim_lsp = "[LSP]",
+    --  --   nvim_lua = "[Lua]",
+    --  --   buffer = "[BUF]",
+    --  --})[entry.source.name]
 
-      return vim_item
-    end,
+    --  return vim_item
+    --end,
+
+    format = require 'lspkind'.cmp_format({ mode = "symbol_text" }),
   },
 
   -- 去重

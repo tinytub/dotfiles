@@ -1,7 +1,4 @@
-local status_ok, which_key = pcall(require, "which-key")
-if not status_ok then
-  return
-end
+local which_key = require("which-key")
 
 which_key.setup({
   plugins = {
@@ -67,8 +64,10 @@ local opts = {
 
 local mappings = {
   --["/"] = "Comment",
-  ["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
-  ["F"] = { "<cmd>NvimTreeFindFile<cr>", "Find Current File" },
+  --["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
+  ["e"] = { "<cmd>Neotree toggle<cr>", "Explorer" },
+  --["F"] = { "<cmd>NvimTreeFindFile<cr>", "Find Current File" },
+  ["F"] = { "<cmd>Neotree reveal<cr>", "Find Current File" },
   --["V"] = {"<cmd>Vista<cr>"                                          ,"Vista"},
   [";"] = { "<cmd>Dashboard<cr>", "home screen" },
   ["M"] = { "<cmd>MarkdownPreviewToggle<cr>", "markdown preview" },

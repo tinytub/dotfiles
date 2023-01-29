@@ -1,8 +1,5 @@
-local present, alpha = pcall(require, "alpha")
+local alpha = require("alpha")
 
-if not present then
-  return
-end
 
 local function button(sc, txt, keybind)
   local sc_ = sc:gsub("%s", ""):gsub("SPC", "<leader>")

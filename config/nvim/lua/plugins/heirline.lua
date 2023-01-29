@@ -571,6 +571,9 @@ local StatusLineOffset = {
     if vim.bo[bufnr].filetype == "NvimTree" then
       return true
     end
+    if vim.bo[bufnr].filetype == "neotree" then
+      return true
+    end
   end,
   {
     provider = function(self)
@@ -759,8 +762,8 @@ local winbar = {
   {
     condition = function()
       return conditions.buffer_matches({
-        buftype = { "nofile", "terminal", "prompt", "help", "quickfix", "nvimtree" },
-        filetype = { "^git.*", "alpha", "nvimtree", "dashboard" },
+        buftype = { "nofile", "terminal", "prompt", "help", "quickfix", "nvimtree", "neotree" },
+        filetype = { "^git.*", "alpha", "nvimtree", "dashboard", "neotree" },
       })
     end,
     init = function()

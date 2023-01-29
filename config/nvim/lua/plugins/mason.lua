@@ -1,8 +1,4 @@
-local present, mason = pcall(require, "mason")
-
-if not present then
-  return
-end
+local mason = require("mason")
 
 --vim.api.nvim_create_augroup("_mason", { clear = true })
 --vim.api.nvim_create_autocmd("Filetype", {

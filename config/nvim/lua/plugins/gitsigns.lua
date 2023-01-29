@@ -2,10 +2,7 @@ local M = {}
 
 M.config = function()
   --    require("base46").load_highlight "git"
-  local status_ok, gitsigns = pcall(require, "gitsigns")
-  if not status_ok then
-    return
-  end
+  local gitsigns = require("gitsigns")
   -- colors from gruvbox8
   gitsigns.setup({
     numhl = false,

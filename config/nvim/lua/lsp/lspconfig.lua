@@ -1,8 +1,4 @@
-local present, lspconfig = pcall(require, "lspconfig")
-
-if not present then
-  return
-end
+local lspconfig = require 'lspconfig'
 
 -- Borders for LspInfo winodw
 local win = require("lspconfig.ui.windows")
@@ -288,10 +284,8 @@ local custom_attach = function(client, bufnr)
   --end
   --lsp_highlight_document(client)
 
-  local npresent, navic = pcall(require, "nvim-navic")
-  if npresent then
-    navic.attach(client, bufnr)
-  end
+  local navic = require("nvim-navic")
+  navic.attach(client, bufnr)
   --lsp_highlight_document(client)
 end
 

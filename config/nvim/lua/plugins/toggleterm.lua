@@ -1,8 +1,5 @@
 local M = {}
-local present, terminal = pcall(require, "toggleterm")
-if not present then
-  return
-end
+local terminal = require("toggleterm")
 
 _G.set_terminal_keymaps = function()
   local opts = { noremap = true }

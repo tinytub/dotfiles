@@ -77,7 +77,7 @@ local plugins = {
   -- use {"dstein64/vim-startuptime"}
   -- Icons
   {
-    "kyazdani42/nvim-web-devicons",
+    "nvim-tree/nvim-web-devicons",
     --name = "nvim-web-devicons",
     --after = "base46",
     config = function()
@@ -226,7 +226,7 @@ local plugins = {
   {
     -- 会导致查询闪屏,看看是为什么
     "rebelot/heirline.nvim",
-    enabled = true,
+    enabled = false,
     dependencies = { "catppuccin", "nvim-web-devicons" },
     config = function()
       --require("plugins.heirline").setup()
@@ -235,15 +235,14 @@ local plugins = {
     event = "VeryLazy",
   },
 
-
   {
-    'nvim-lualine/lualine.nvim',
-    dependencies = { "nvim-web-devicons" },
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
     config = function()
-      require("plugins.lualine")
+      require("plugins.nvim-lualine")
     end,
-    enabled = false,
   },
+
 
   -- Simple statusline component that shows what scope you are working inside
   {
@@ -307,7 +306,7 @@ local plugins = {
       {
         -- snippet plugin
         "L3MON4D3/LuaSnip",
-        dependencies = "rafamadriz/friendly-snippets",
+        dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
         config = function()
           require("plugins.others").luasnip()
         end,
@@ -391,7 +390,7 @@ local plugins = {
   },
 
   {
-    "kyazdani42/nvim-tree.lua",
+    "nvim-tree/nvim-tree.lua",
     --after = "nvim-web-devicons",
     ft = "alpha",
     event = "VimEnter",
@@ -401,6 +400,24 @@ local plugins = {
     config = function()
       --require("plugins.nvimtree").config()
       require("plugins.nvimtree")
+    end,
+    enabled = false,
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    cmd = { "Neotree", "NeotreeLogs" },
+    branch = "v2.x",
+    enabled = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    init = function()
+      vim.g.neo_tree_remove_legacy_commands = 1
+    end,
+    config = function()
+      require("plugins.neotree")
     end,
   },
 

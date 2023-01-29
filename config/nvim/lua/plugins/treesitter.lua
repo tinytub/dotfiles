@@ -1,8 +1,5 @@
 local M = {}
-local present, ts_config = pcall(require, "nvim-treesitter.configs")
-if not present then
-  return
-end
+local ts_config = require("nvim-treesitter.configs")
 
 --require("base46").load_highlight "syntax"
 --require("base46").load_highlight "treesitter"

@@ -23,32 +23,12 @@ M.autopairs = function()
 end
 
 M.colorizer = function()
-  local present, colorizer = pcall(require, "colorizer")
-  if present then
-    local default = {
-      filetypes = {
-        "*",
-      },
-      user_default_options = {
-        RGB = true, -- #RGB hex codes
-        RRGGBB = true, -- #RRGGBB hex codes
-        names = false, -- "Name" codes like Blue
-        RRGGBBAA = false, -- #RRGGBBAA hex codes
-        rgb_fn = false, -- CSS rgb() and rgba() functions
-        hsl_fn = false, -- CSS hsl() and hsla() functions
-        css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = false, -- Enable all CSS *functions*: rgb_fn, hsl_fn
-
-        mode = "background", -- Set the display mode.
-        tailwind = true, -- Enable tailwind colors
-      },
-    }
-    colorizer.setup(default)
-    vim.defer_fn(function()
-      require("colorizer").attach_to_buffer(0)
-    end, 0)
-    --vim.cmd "ColorizerAttachToBuffer"
-  end
+  local options = {}
+  require("colorizer").setup(options)
+  vim.defer_fn(function()
+    require("colorizer").attach_to_buffer(0)
+  end, 0)
+  --vim.cmd "ColorizerAttachToBuffer"
 end
 
 M.blankline = function()
@@ -86,11 +66,8 @@ end
 
 M.luasnip = function()
   -- configs from https://github.com/arsham/shark/blob/master/lua/settings/luasnip/init.lua
-  local present, luasnip = pcall(require, "luasnip")
-  --  local types = require("luasnip.util.types")
-  if not present then
-    return
-  end
+  local luasnip = require("luasnip")
+
   luasnip.config.set_config({
     history = true,
     updateevents = "TextChanged,TextChangedI",
@@ -108,12 +85,7 @@ M.luasnip = function()
 end
 
 M.signature = function()
-  local present, lsp_signature = pcall(require, "lsp_signature")
-
-  if not present then
-    return
-  end
-
+  local lsp_signature = require("lsp_signature")
   local options = {
     bind = true,
     doc_lines = 0,
@@ -136,21 +108,17 @@ M.signature = function()
 end
 
 M.comment = function()
-  local present, nvim_comment = pcall(require, "Comment")
-  if present then
-    nvim_comment.setup({
+  require("Comment").setup({
+    padding = true, -- Add a space b/w comment and the line
+    sticky = true, -- Whether the cursor should stay at its position
 
-      padding = true, -- Add a space b/w comment and the line
-      sticky = true, -- Whether the cursor should stay at its position
-
-      -- We define all mappings manually to support neovim < 0.7
-      mappings = {
-        basic = false, -- Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
-        extra = false, -- Includes `gco`, `gcO`, `gcA`
-        extended = false, -- Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
-      },
-    })
-  end
+    -- We define all mappings manually to support neovim < 0.7
+    mappings = {
+      basic = false, -- Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
+      extra = false, -- Includes `gco`, `gcO`, `gcA`
+      extended = false, -- Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
+    },
+  })
 end
 
 M.base46 = function()
