@@ -2,6 +2,10 @@ local M = {}
 local catppuccin = require("catppuccin")
 local mocha = require("catppuccin.palettes").get_palette("mocha")
 
+
+vim.cmd("hi def GitSignsCurrentLineBlame guifg=" .. mocha.overlay2 .. " ctermfg=244")
+
+
 M.overrides = {
   colors = {},
   highlights = {

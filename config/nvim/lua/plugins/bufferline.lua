@@ -10,6 +10,20 @@ bufferline.setup {
     --separator_style = { '', '' },
     -- separator_style = "thin", -- options "slant" | "thick" | "thin" | { 'any', 'any' },
     buffer_close_icon = '',
+
+    --themable = false,
+    custom_filter = function(buf, _buf_nums)
+      if vim.bo[buf].buflisted
+          and not vim.bo[buf].mod
+          and vim.api.nvim_buf_get_name(buf) == ""
+          and vim.fn.bufwinnr(buf) < 0
+      then
+        return false
+      else
+        return true
+      end
+    end,
+
     modified_icon = '●',
     close_icon = '',
     left_trunc_marker = '',

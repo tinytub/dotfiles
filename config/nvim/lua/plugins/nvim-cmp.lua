@@ -56,11 +56,11 @@ cmp.setup({
 
     format = require 'lspkind'.cmp_format({ mode = "symbol_text" }),
   },
-  experimental = {
-    ghost_text = {
-      hl_group = "LspCodeLens",
-    },
-  },
+  --experimental = {
+  --  ghost_text = {
+  --    hl_group = "LspCodeLens",
+  --  },
+  --},
 
   -- 去重
   duplicates = {
