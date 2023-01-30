@@ -5,7 +5,7 @@ local options = {
   separator = "  ",
   -- limit for amount of context shown
   -- 0 means no limit
-  depth = 5,
+  depth_limit = 5,
 
   highlight = true,
 

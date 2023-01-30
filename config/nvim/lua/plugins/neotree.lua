@@ -150,5 +150,8 @@ require("neo-tree").setup({
     follow_current_file = true,
     use_libuv_file_watcher = true,
   }, -- }}}
+  deactivate = function()
+    vim.cmd([[Neotree close]])
+  end,
 }
 )

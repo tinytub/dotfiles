@@ -1,7 +1,4 @@
 local plugins = {
-  -- Optimiser
-  -- Speed up deffered plugins
-  --{ "lewis6991/impatient.nvim" },
 
   ---- Easily speed up your neovim startup time!
   "nathom/filetype.nvim",
@@ -31,6 +28,7 @@ local plugins = {
   },
 
   -- lsp signature 展示
+  -- 或者试试 nvim_lsp_signature_help
   {
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
@@ -242,6 +240,38 @@ local plugins = {
       require("plugins.nvim-lualine")
     end,
   },
+  {
+    'kdheepak/tabline.nvim',
+    enabled = false,
+    config = function()
+      require 'tabline'.setup {
+        -- Defaults configuration options
+        enable = true,
+        options = {
+          -- If lualine is installed tabline will use separators configured in lualine by default.
+          -- These options can be used to override those settings.
+          component_separators = { '', '' },
+          section_separators = { '', '' },
+          max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
+          show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
+          show_devicons = true, -- this shows devicons in buffer section
+          colored = true,
+          show_bufnr = false, -- this appends [bufnr] to buffer section,
+          tabline_show_last_separator = true,
+          show_filename_only = true, -- shows base filename only instead of relative path in filename
+          modified_icon = "+ ", -- change the default modified icon
+          modified_italic = true, -- set to true by default; this determines whether the filename turns italic if modified
+          show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
+        }
+      }
+      vim.cmd [[
+      set guioptions-=e " Use showtabline in gui vim
+      set sessionoptions+=tabpages,globals " store tabpages and globals in session
+    ]]
+    end,
+    --dependencies = { 'hoob3rt/lualine.nvim', 'kyazdani42/nvim-web-devicons' }
+    dependencies = { 'lualine.nvim', 'nvim-web-devicons' }
+  },
 
 
   -- Simple statusline component that shows what scope you are working inside
@@ -299,6 +329,17 @@ local plugins = {
     end,
   },
 
+  -- auto pairs
+  {
+    enabled = false,
+    "echasnovski/mini.pairs",
+    event = "VeryLazy",
+    config = function(_, opts)
+      require("mini.pairs").setup(opts)
+    end,
+  },
+
+
   {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
@@ -319,7 +360,6 @@ local plugins = {
           require("plugins.autopairs")
         end,
       },
-
       -- cmp sources plugins
       {
         "saadparwaiz1/cmp_luasnip",
@@ -364,31 +404,68 @@ local plugins = {
   },
 
   -- Custom semantic text objects
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    dependencies = "nvim-treesitter",
-    --config = function ()
-    --  require("plugins.treesitter").treesitter_obj()
-    --end,
-    enabled = true,
-  },
-  -- Smart text objects
-  {
-    "RRethy/nvim-treesitter-textsubjects",
-    dependencies = "nvim-treesitter",
-    config = function()
-      require("plugins.treesitter").textsubjects()
-    end,
-    enabled = true,
-  },
-  -- Text objects using hint labels
-  {
-    "mfussenegger/nvim-ts-hint-textobject",
-    event = "BufRead",
-    dependencies = "nvim-treesitter",
-    enabled = true,
-  },
+  --{
+  --  "nvim-treesitter/nvim-treesitter-textobjects",
+  --  dependencies = "nvim-treesitter",
+  --  --config = function ()
+  --  --  require("plugins.treesitter").treesitter_obj()
+  --  --end,
+  --  enabled = false,
+  --},
+  ---- Smart text objects
+  --{
+  --  "RRethy/nvim-treesitter-textsubjects",
+  --  dependencies = "nvim-treesitter",
+  --  config = function()
+  --    require("plugins.treesitter").textsubjects()
+  --  end,
+  --  enabled = false,
+  --},
+  ---- Text objects using hint labels
+  --{
+  --  "mfussenegger/nvim-ts-hint-textobject",
+  --  event = "BufRead",
+  --  dependencies = "nvim-treesitter",
+  --  enabled = false,
+  --},
 
+
+  -- better text-objects
+  {
+    "echasnovski/mini.ai",
+    enabled = true,
+    keys = {
+      { "a", mode = { "x", "o" } },
+      { "i", mode = { "x", "o" } },
+    },
+    dependencies = {
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        init = function()
+          -- no need to load the plugin, since we only need its queries
+          require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
+        end,
+      },
+    },
+    opts = function()
+      local ai = require("mini.ai")
+      return {
+        n_lines = 500,
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter({
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+          }, {}),
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+        },
+      }
+    end,
+    config = function(_, opts)
+      local ai = require("mini.ai")
+      ai.setup(opts)
+    end,
+  },
   {
     "nvim-tree/nvim-tree.lua",
     --after = "nvim-web-devicons",
@@ -415,6 +492,12 @@ local plugins = {
     },
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1
+      if vim.fn.argc() == 1 then
+        local stat = vim.loop.fs_stat(vim.fn.argv(0))
+        if stat and stat.type == "directory" then
+          require("neo-tree")
+        end
+      end
     end,
     config = function()
       require("plugins.neotree")
@@ -658,6 +741,32 @@ local plugins = {
     event = "BufReadPre",
     config = function()
       require("plugins.others").blankline()
+    end,
+  },
+  -- active indent guide and indent text objects
+  {
+    "echasnovski/mini.indentscope",
+    version = false, -- wait till new 0.7.0 release to put it back on semver
+    event = "BufReadPre",
+    opts = {
+      -- symbol = "▏",
+      symbol = "│",
+      options = { try_as_border = true },
+      draw = {
+        delay = 50,
+        animation = function()
+          return 10
+        end,
+      },
+    },
+    config = function(_, opts)
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
+      })
+      require("mini.indentscope").setup(opts)
     end,
   },
 

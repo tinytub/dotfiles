@@ -1,27 +1,5 @@
 local M = {}
 
-M.autopairs = function()
-  --local ts_conds = require "nvim-autopairs.ts-conds"
-  --local Rule = require "nvim-autopairs.rule"
-  --autopairs.add_rules {
-  --  Rule("%", "%", "lua"):with_pair(ts_conds.is_ts_node { "string", "comment" }),
-  --  Rule("$", "$", "lua"):with_pair(ts_conds.is_not_ts_node { "function" }),
-  --  Rule(" ", " "):with_pair(function(opts)
-  --    local pair = opts.line:sub(opts.col - 1, opts.col)
-  --    return vim.tbl_contains({"()", "[]", "{}"}, pair)
-  --  end),
-  --  Rule("(", ")"):with_pair(function(opts)
-  --    return opts.prev_char:match ".%)" ~= nil
-  --  end):use_key ")",
-  --  Rule("{", "}"):with_pair(function(opts)
-  --    return opts.prev_char:match ".%}" ~= nil
-  --    end):use_key "}",
-  --  Rule("[", "]"):with_pair(function(opts)
-  --    return opts.prev_char:match ".%]" ~= nil
-  --    end):use_key "]",
-  --}
-end
-
 M.colorizer = function()
   local options = {}
   require("colorizer").setup(options)
@@ -45,8 +23,12 @@ M.blankline = function()
       "TelescopePrompt",
       "TelescopeResults",
       "mason",
+      "neo-tree",
+      "Trouble",
+      "lazy",
       "",
     },
+
     buftype_exclude = { "terminal" },
     show_trailing_blankline_indent = false,
     show_first_indent_level = false,
@@ -70,7 +52,8 @@ M.luasnip = function()
 
   luasnip.config.set_config({
     history = true,
-    updateevents = "TextChanged,TextChangedI",
+    update_events = "TextChanged,TextChangedI",
+    delete_check_events = "TextChanged",
   })
   luasnip.snippets = {
     all = require("plugins.luasnips.all"),
@@ -105,6 +88,8 @@ M.signature = function()
   }
 
   lsp_signature.setup(options)
+  lsp_signature.on_attach(options)
+
 end
 
 M.comment = function()
