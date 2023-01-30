@@ -1,5 +1,6 @@
 local bufferline = require("bufferline")
 
+-- https://github.com/CKolkey/config/blob/master/nvim/lua/plugins/bufferline.lua
 bufferline.setup {
   highlights = require("catppuccin.groups.integrations.bufferline").get(),
   options = {

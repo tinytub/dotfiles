@@ -1,10 +1,30 @@
+-- some from https://github.com/CKolkey/config/blob/master/nvim/lua/plugins/neo-tree.lua
+-- some from LazyVim
 require("neo-tree").setup({
-  log_level = "error",
-  log_to_file = true,
+  log_level            = "error",
+  log_to_file          = true,
   close_if_last_window = true,
-  popup_border_style = "rounded",
+  popup_border_style   = "rounded",
+  hide_root_node       = true,
+  enable_git_status    = true,
+  enable_diagnostics   = false,
+
 
   default_component_configs = { -- {{{
+    indent = {
+      indent_size        = 2,
+      padding            = 0,
+      with_expanders     = nil,
+      with_markers       = true,
+      indent_marker      = "│ ",
+      last_indent_marker = "╰─ ",
+      highlight          = "NeoTreeIndentMarker",
+    },
+    name = {
+      trailing_slash = true,
+      use_git_status_colors = true,
+    },
+
     diagnostics = {
       symbols = {
         hint = "",
@@ -25,20 +45,34 @@ require("neo-tree").setup({
     },
     git_status = {
       symbols = {
-        added = "",
-        conflict = "",
-        deleted = "",
-        ignored = "◌",
-        renamed = "➜",
-        staged = "✓",
-        unmerged = "",
-        unstaged = "",
-        untracked = "★",
+        -- added = "",
+        -- conflict = "",
+        -- deleted = "",
+        -- ignored = "◌",
+        -- renamed = "➜",
+        -- staged = "✓",
+        -- unmerged = "",
+        -- unstaged = "",
+        -- untracked = "★",
+        status_added    = " ",
+        status_removed  = " ",
+        status_modified = " ",
+        added           = " ",
+        deleted         = " ",
+        modified        = " ",
+        renamed         = " ",
+        untracked       = " ",
+        ignored         = " ",
+        unstaged        = " ",
+        staged          = " ",
+        conflict        = " ",
       },
     },
   }, -- }}}
 
+
   window = {
+    width = 30,
     mappings = { -- {{{
       ["<c-v>"] = "open_vsplit",
       ["l"] = "open",

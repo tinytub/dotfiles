@@ -21,7 +21,9 @@ local colors = {
 
 local vim_icons = {
   function()
-    return " "
+    --return " "
+    return " "
+
   end,
   --separator = { left = "", right = "" },
   color = { bg = "#313244", fg = "#80A7EA" },
@@ -78,12 +80,12 @@ local filetype = {
   --separator = { left = "", right = "" },
 }
 
-local filetype_tab = {
-  "filetype",
-  icon_only = true,
-  colored = true,
-  color = { bg = "#313244" },
-}
+--local filetype_tab = {
+--  "filetype",
+--  icon_only = true,
+--  colored = true,
+--  color = { bg = "#313244" },
+--}
 
 --local buffer = {
 --  require 'tabline'.tabline_buffers,
@@ -113,9 +115,24 @@ local branch = {
   --separator = { left = "", right = "" },
 }
 
+local function buffer_git_diff()
+  local diff = vim.b.gitsigns_status_dict
+
+  if diff then
+    return { added = diff.added, modified = diff.changed, removed = diff.removed }
+  else
+    return {}
+  end
+end
+
+local function buffer_not_empty()
+  return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
+end
+
 local diff = {
   "diff",
   color = { bg = "#313244", fg = "#313244" },
+  cond = buffer_not_empty,
   --separator = { left = "", right = "" },
   symbols = {
     added = icons.git.added,
@@ -123,6 +140,8 @@ local diff = {
     removed = icons.git.removed,
   },
 
+  -- condition buffer_not_empty
+  source = buffer_git_diff,
 }
 
 local modes = {
@@ -141,7 +160,8 @@ local function getLspName()
   for _, client in ipairs(clients) do
     local filetypes = client.config.filetypes
     if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-      return "  " .. client.name
+      --return "  " .. client.name
+      return " " .. client.name
     end
   end
   return "  " .. msg
@@ -149,6 +169,7 @@ end
 
 local dia = {
   'diagnostics',
+  cond = buffer_not_empty,
   color = { bg = "#313244", fg = "#80A7EA" },
   --separator = { left = "", right = "" },
 }
@@ -157,6 +178,8 @@ local lsp = {
   function()
     return getLspName()
   end,
+
+  cond = buffer_not_empty,
   --separator = { left = "", right = "" },
   color = { bg = "#f38ba8", fg = "#1e1e2e" },
 }
@@ -174,7 +197,7 @@ local opts = {
     icons_enabled = true,
     theme = "auto",
     globalstatus = true,
-    disabled_filetypes = { statusline = { "alpha", "dashboard", "lazy", "alpha", "neo-tree" } },
+    disabled_filetypes = { statusline = { "alpha", "dashboard", "lazy", "alpha", "neo-tree", "terminal" } },
     --component_separators = { left = "", right = "" },
     --section_separators = { left = "", right = "" },
     component_separators = { left = '', right = '' },
@@ -201,6 +224,7 @@ local opts = {
       --"branch"
       space,
       dir,
+      space,
     },
     lualine_c = {
       filename,
@@ -283,6 +307,7 @@ local opts = {
     },
     lualine_z = {
       dia,
+      { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = fg("Special") },
       lsp,
       ---- { "progress", separator = "", padding = { left = 1, right = 0 } },
       --{ "location", padding = { left = 1, right = 1 } },
@@ -358,166 +383,3 @@ local opts = {
 }
 
 require 'lualine'.setup(opts)
-
-
------@type LazySpec
---local M = {
---  'hoob3rt/lualine.nvim',
---  dependencies = {
---    'nvim-tree/nvim-web-devicons',
---    'SmiteshP/nvim-navic',
---    'kosayoda/nvim-lightbulb',
---  },
---  lazy = false,
---}
---
---M.config = function()
---  local navic = require('nvim-navic')
---
---  local function diff()
---    local gitsigns = vim.b.gitsigns_status_dict
---    if gitsigns then
---      return {
---        added = gitsigns.added,
---        modified = gitsigns.changed,
---        removed = gitsigns.removed,
---      }
---    end
---  end
---
---  local function get_context()
---    if navic and navic.is_available() then
---      local loc = navic.get_location()
---      if loc ~= '' then
---        return loc
---      end
---    end
---    return ''
---  end
---
---  local function keymap()
---    if vim.bo.iminsert == 0 then
---      return [[us]]
---    else
---      return [[ru]]
---    end
---  end
---
---  local function action_available()
---    return require('nvim-lightbulb').get_status_text()
---  end
---
---  local function mode_to_symbol(mode)
---    local mode_sym_map = {
---      normal = 'α',
---      insert = 'Ɣ',
---      visual = 'Σ',
---      ['v-block'] = 'Θ',
---      select = 'Ϸ',
---      ['v-select'] = 'Ϸ',
---      command = 'Ψ',
---      replace = 'Δ',
---    }
---
---    return mode_sym_map[string.lower(mode)] or mode
---  end
---
---  local filename = {
---    'filename',
---    symbols = {
---      modified = ' ●',
---      readonly = ' ',
---      unnamed = ' ',
---      newfile = ' ',
---    },
---  }
---
---  local filename_path = table.shallow_copy(filename)
---  filename_path.path = 1
---
---  local no_winbar_ext = {
---    winbar = {},
---    inactive_winbar = {},
---    filetypes = {
---      'man',
---      'qf',
---      'Outline',
---      'dap-repl',
---      'dapui_console',
---      'dapui_watches',
---      'dapui_stacks',
---      'dapui_breakpoints',
---      'dapui_scopes',
---      'toggleterm',
---      'Trouble',
---    },
---  }
---
---  --  local noice = require('noice').api.status
---
---  require('lualine').setup({
---    options = {
---      theme = 'dracula',
---      section_separators = { '', '' },
---      component_separators = { '|', '|' },
---      icons_enabled = true,
---      fmt = mode_to_symbol,
---      globalstatus = true,
---    },
---    extensions = { no_winbar_ext },
---    sections = {
---      lualine_a = { 'mode', keymap },
---      lualine_b = { filename },
---      lualine_c = {
---        get_context,
---        action_available,
---      },
---      lualine_x = {
---        {
---          'diagnostics',
---          sources = { 'nvim_diagnostic' },
---          symbols = {
---            error = ' ',
---            warn = ' ',
---            info = '',
---            hint = ' ',
---          },
---        },
---        { 'diff', source = diff },
---        { 'b:gitsigns_head', icon = '' },
---      },
---      lualine_y = {
---        {
---          --noice.search.get,
---          --cond = noice.search.has,
---        },
---      },
---      lualine_z = {},
---    },
---    winbar = {
---      lualine_a = { filename_path },
---      lualine_b = {},
---      lualine_c = {},
---      lualine_x = { 'filetype' },
---      lualine_y = { 'progress' },
---      lualine_z = { 'location' },
---    },
---    inactive_winbar = {
---      lualine_a = {},
---      lualine_b = {},
---      lualine_c = { filename_path },
---      lualine_x = { 'filetype', 'progress', 'location' },
---      lualine_y = {},
---      lualine_z = {},
---    },
---  })
---end
---function table.shallow_copy(t)
---  local t2 = {}
---  for k, v in pairs(t) do
---    t2[k] = v
---  end
---  return t2
---end
---
---return M
