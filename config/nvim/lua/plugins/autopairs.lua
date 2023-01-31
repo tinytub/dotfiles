@@ -8,6 +8,11 @@ autopairs.setup({
   disable_filetype = { "TelescopePrompt", "vim" },
 
   check_ts = true,
+  ts_config = {
+    lua = { 'string' },
+    javascript = { 'template_string' },
+    java = false,
+  }
   --autopairs = {enable = true},
   --enable_check_bracket_line = false,
   --html_break_line_filetype = {'html', 'vue', 'typescriptreact', 'svelte', 'javascriptreact'},

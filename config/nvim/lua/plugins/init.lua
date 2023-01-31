@@ -355,6 +355,7 @@ local plugins = {
 
       -- autopairing of (){}[] etc
       {
+        enabled = true,
         "windwp/nvim-autopairs",
         config = function()
           require("plugins.autopairs")
@@ -694,6 +695,10 @@ local plugins = {
     config = function()
       require("plugins.go-nvim")
     end,
+  },
+
+  {
+    "jose-elias-alvarez/typescript.nvim"
   },
 
   -- smooth scroll

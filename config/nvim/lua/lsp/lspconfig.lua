@@ -121,6 +121,47 @@ local function make_capabilities()
   return capabilities
 end
 
+local function make_ts_capabilities()
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.preselectSupport = true
+  capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+  capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+  capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+  capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+  capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+      'documentation',
+      'detail',
+      'additionalTextEdits',
+    }
+  }
+  capabilities.textDocument.codeAction = {
+    dynamicRegistration = false,
+    codeActionLiteralSupport = {
+      codeActionKind = {
+        valueSet = {
+          "",
+          "quickfix",
+          "refactor",
+          "refactor.extract",
+          "refactor.inline",
+          "refactor.rewrite",
+          "source",
+          "source.organizeImports",
+        },
+      },
+    },
+  }
+  capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+  }
+
+end
+
 --lsp_config.capabilities = capabilities
 
 local lsp_handlers = function()
@@ -257,6 +298,7 @@ local filetype_attach = setmetatable({
   -- v0.8
   go = format_acmd_go,
   lua = format_acmd,
+  javascript = format_acmd,
   --yaml = format_acmd,
   json = format_acmd,
   py = format_acmd,
@@ -287,6 +329,7 @@ local custom_attach = function(client, bufnr)
 
   local navic = require("nvim-navic")
   navic.attach(client, bufnr)
+  vim.g.navic_silence = true
   --lsp_highlight_document(client)
 end
 
@@ -300,6 +343,46 @@ local servers = {
   vimls = require("lsp.servers.vimls"),
   gopls = require("lsp.servers.gopls"),
   --yamlls = {},
+
+  tsserver = require("lsp.servers.tsserver"),
+  tailwindcss = {
+    tailwindCSS = {
+      lint = {
+        cssConflict = "warning",
+        invalidApply = "error",
+        invalidConfigPath = "error",
+        invalidScreen = "error",
+        invalidTailwindDirective = "error",
+        invalidVariant = "error",
+        recommendedVariantOrder = "warning"
+      },
+      experimental = {
+        classRegex = {
+          "tw`([^`]*)",
+          "tw=\"([^\"]*)",
+          "tw={\"([^\"}]*)",
+          "tw\\.\\w+`([^`]*)",
+          "tw\\(.*?\\)`([^`]*)",
+          { "clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+          { "classnames\\(([^)]*)\\)", "'([^']*)'" }
+        }
+      },
+      validate = true
+    }
+  },
+  cssls = {
+    css = {
+      lint = {
+        unknownAtRules = 'ignore',
+      },
+    },
+    scss = {
+      lint = {
+        unknownAtRules = 'ignore',
+      },
+    },
+  },
+  html = {},
   bashls = {},
   --  cmd = { "bash-language-server", "start" },
   --  cmd_env = {
@@ -341,9 +424,20 @@ local setup_server = function(server, config)
       debounce_text_changes = nil,
     },
   }, config)
+  if server == "tsserver" then
+    --config.settings = require('lsp.servers.tsserver')
+    config.capabilities = make_ts_capabilities()
+    require("typescript").setup({
+      disable_commands = false, -- prevent the plugin from creating Vim commands
+      debug = false, -- enable debug logging for commands
+      go_to_source_definition = {
+        fallback = true, -- fall back to standard LSP definition on failure
+      },
 
-
-  lspconfig[server].setup(config)
+      server = config })
+  else
+    lspconfig[server].setup(config)
+  end
 end
 
 for server, config in pairs(servers) do
@@ -355,7 +449,6 @@ for server, config in pairs(servers) do
   --	end
   setup_server(server, config)
 end
-
 
 --return lsp_config
 return {

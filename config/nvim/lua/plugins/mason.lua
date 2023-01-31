@@ -20,6 +20,10 @@ local options = {
     -- web dev
     "json-lsp",
     --"yaml-language-server",
+    --"tsserver",
+    "cssls",
+    "tailwindcss",
+    "html",
 
     "pyright",
     "gopls",
@@ -29,6 +33,8 @@ local options = {
     --"shfmt",
     --"shellcheck",
   }, -- not an option from mason.nvim
+  automatic_installation = true,
+
   PATH = "skip",
   ui = {
     icons = {
