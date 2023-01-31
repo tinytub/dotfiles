@@ -71,7 +71,8 @@ function Lsp_keymaps(client, bufnr)
     vim.api.nvim_buf_create_user_command(
       bufnr,
       "LspRangeFormat",
-      vim.lsp.buf.range_formatting,
+      --vim.lsp.buf.range_formatting,
+      vim.lsp.buf.format,
       { range = true, desc = "LSP range format" }
     )
   end

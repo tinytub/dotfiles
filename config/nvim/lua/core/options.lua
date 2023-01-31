@@ -29,7 +29,8 @@ opt.fillchars = { eob = " " }
 opt.hidden = true
 opt.ignorecase = true
 opt.smartcase = true
-opt.mouse = ""
+opt.mouse = "a"
+--opt.mouse = ""
 
 -- Numbers
 opt.number = true
@@ -40,6 +41,7 @@ opt.ruler = false
 -- disable nvim intro
 opt.shortmess:append("sI")
 
+--opt.signcolumn = "number"
 opt.signcolumn = "yes"
 opt.splitbelow = true
 opt.splitright = true
@@ -66,14 +68,8 @@ opt.whichwrap:append("<>[]hl")
 
 g.mapleader = " "
 
--- disable some builtin vim plugins
-local default_providers = {
-  "node",
-  "perl",
-  "python3",
-  "ruby",
-}
 
-for _, provider in ipairs(default_providers) do
+-- disable some default providers
+for _, provider in ipairs { "node", "perl", "python3", "ruby" } do
   vim.g["loaded_" .. provider .. "_provider"] = 0
 end
