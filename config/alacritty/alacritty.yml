@@ -309,13 +309,13 @@ live_config_reload: true
 #  program: /bin/bash
 #  args:
 #    - --login
-shell:
-   program: /bin/zsh
-   args:
-     # login
-     - -l
-     - -c
-     - zellij attach --index 0 --create
+#shell:
+#   program: /bin/zsh
+#   args:
+#     # login
+#     - -l
+#     - -c
+#     - zellij attach --index 0 --create
   #program: zellij
   #args:
   #  # login

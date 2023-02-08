@@ -65,9 +65,17 @@ local opts = {
 local mappings = {
   --["/"] = "Comment",
   --["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
-  ["e"] = { "<cmd>Neotree toggle<cr>", "Explorer" },
+  ["e"] = {
+    function()
+      require("neo-tree.command").execute({ toggle = true, dir = require("utils").get_root() })
+    end,
+    "Explorer" },
   --["F"] = { "<cmd>NvimTreeFindFile<cr>", "Find Current File" },
-  ["F"] = { "<cmd>Neotree reveal<cr>", "Find Current File" },
+  ["F"] = {
+    function()
+      require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+    end,
+    "Find Current File" },
   --["V"] = {"<cmd>Vista<cr>"                                          ,"Vista"},
   [";"] = { "<cmd>Dashboard<cr>", "home screen" },
   ["M"] = { "<cmd>MarkdownPreviewToggle<cr>", "markdown preview" },

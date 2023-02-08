@@ -278,11 +278,33 @@ local plugins = {
   {
     "SmiteshP/nvim-navic",
     --event = "CursorMoved",
-    config = function()
-      require("plugins.navic")
-    end,
+    --config = function()
+    --  require("plugins.navic")
+    --end,
     enabled = true,
+    lazy = true,
+    init = function()
+      vim.g.navic_silence = true
+      require("utils").on_attach(function(client, buffer)
+        if client.server_capabilities.documentSymbolProvider then
+          require("nvim-navic").attach(client, buffer)
+        end
+      end)
+    end,
+    opts = function()
+      return {
+        separator = "  ",
+        -- limit for amount of context shown
+        -- 0 means no limit
+        depth_limit = 5,
+        highlight = true,
+        -- indicator used when context hits depth limit
+        depth_limit_indicator = "..",
+        icons = require("plugins.lspkind_icons").kinds
+      }
+    end,
   },
+
 
   {
     "akinsho/bufferline.nvim",
@@ -435,10 +457,7 @@ local plugins = {
   {
     "echasnovski/mini.ai",
     enabled = true,
-    keys = {
-      { "a", mode = { "x", "o" } },
-      { "i", mode = { "x", "o" } },
-    },
+    event = "VeryLazy",
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",

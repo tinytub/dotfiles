@@ -1,30 +1,37 @@
 local user_cmd = vim.api.nvim_create_user_command
 
-local map = function(mode, keys, command, opt)
+local map = function(mode, keys, command, opts)
   local options = { noremap = true, silent = true }
-  if opt then
-    options = vim.tbl_extend("force", options, opt)
+  if opts then
+    options = vim.tbl_extend("force", options, opts)
   end
   if type(keys) == "table" then
     for _, keymap in ipairs(keys) do
-      M.map(mode, keymap, command, opt)
+      M.map(mode, keymap, command, opts)
     end
     return
   end
-  vim.keymap.set(mode, keys, command, opt)
+  opts = opts or {}
+  opts.silent = opts.silent ~= false
+  vim.keymap.set(mode, keys, command, opts)
 end
 
 local M = {}
 local opt = {}
 
 
+
 M.misc = function()
   local function non_config_mappings()
-    -- navigation between windows
-    map('n', '<C-h>', '<C-w>h')
-    map('n', '<C-j>', '<C-w>j')
-    map('n', '<C-k>', '<C-w>k')
-    map('n', '<C-l>', '<C-w>l')
+
+    -- better up/down
+    map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+    map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+    -- Move to window using the <ctrl> hjkl keys
+    map("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
+    map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
+    map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
+    map("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 
     -- move cursor within insert mode
     map("i", "<C-h>", "<Left>")
@@ -47,6 +54,12 @@ M.misc = function()
 
     vim.cmd('vnoremap p "0p')
     vim.cmd('vnoremap P "0P')
+
+    -- Resize window using <ctrl> arrow keys
+    map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+    map("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+    map("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+    map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
     -- map('n', '<C-x>', ':lua require(\'core.utils\').close_buffer() <CR>', {noremap = true, silent = true})
 

@@ -68,8 +68,12 @@ M.luasnip = function()
 end
 
 M.signature = function()
-  local lsp_signature = require("lsp_signature")
-  local options = {
+  local options = M.signature_opt()
+  require("lsp_signature").setup(options)
+end
+
+M.signature_opt = function()
+  return {
     bind = true,
     doc_lines = 0,
     floating_window = true,
@@ -86,10 +90,6 @@ M.signature = function()
     zindex = 200, -- by default it will be on top of all floating windows, set to 50 send it to bottom
     padding = "", -- character to pad on left and right of signature can be ' ', or '|'  etc
   }
-
-  lsp_signature.setup(options)
-  lsp_signature.on_attach(options)
-
 end
 
 M.comment = function()
