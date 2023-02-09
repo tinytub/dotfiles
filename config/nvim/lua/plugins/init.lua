@@ -18,6 +18,7 @@ local plugins = {
 
   {
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = { "b0o/SchemaStore.nvim" }, -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
     init = function()
       require("core.lazy_load").lazy_load("nvim-lspconfig")
@@ -63,6 +64,7 @@ local plugins = {
 
   {
     "jose-elias-alvarez/null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     --ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css',
     --  'javascript', 'javascriptreact', 'python' },
     dependencies = { "nvim-lspconfig" },
@@ -194,7 +196,7 @@ local plugins = {
   -- automatically highlighting other uses of the word under the cursor
   {
     "rrethy/vim-illuminate",
-    event = "BufReadPost",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       delay = 200,
       providers = {
@@ -403,7 +405,9 @@ local plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
     name = "nvim-treesitter",
-    event = "BufReadPost",
+    version = false,
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" },
     init = function()
       require("core.lazy_load").lazy_load("nvim-treesitter")
@@ -567,7 +571,7 @@ local plugins = {
   {
     "lewis6991/gitsigns.nvim",
     ft = "gitcommit",
-    event = "BufReadPre",
+    event = { "BufReadPre", "BufNewFile" },
     enabled = true,
     --cond = function()
     --   return vim.fn.isdirectory ".git" == 1
@@ -804,7 +808,7 @@ local plugins = {
 
   {
     "lukas-reineke/indent-blankline.nvim",
-    event = "BufReadPre",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("plugins.others").blankline()
     end,
@@ -814,7 +818,7 @@ local plugins = {
   {
     "echasnovski/mini.indentscope",
     version = false, -- wait till new 0.7.0 release to put it back on semver
-    event = "BufReadPre",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       -- symbol = "▏",
       symbol = "│",
@@ -849,7 +853,7 @@ local plugins = {
   -- todo highlights
   {
     "folke/todo-comments.nvim",
-    event = "BufReadPost",
+    event = { "BufReadPost", "BufNewFile" },
     --dependencies = "nvim-lua/plenary.nvim",
     config = function()
       require("plugins.todo-comments")

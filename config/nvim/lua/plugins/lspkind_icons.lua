@@ -47,7 +47,7 @@ local icons = {
     Unit = " ",
     Value = " ",
     Variable = " ",
-
+    Copilot = " ",
     Table = " ",
     Tag = " ",
     Calendar = " ",

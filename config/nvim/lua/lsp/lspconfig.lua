@@ -421,14 +421,14 @@ local setup_server = function(server, config)
     on_init = custom_init,
     on_attach = custom_attach,
     --capabilities = updated_capabilities,
-    capabilities = make_capabilities(),
+    capabilities = vim.deepcopy(make_capabilities()),
     flags = {
       debounce_text_changes = nil,
     },
   }, config)
   if server == "tsserver" then
     --config.settings = require('lsp.servers.tsserver')
-    config.capabilities = make_ts_capabilities()
+    config.capabilities = vim.deepcopy(make_ts_capabilities())
     require("typescript").setup({
       disable_commands = false, -- prevent the plugin from creating Vim commands
       debug = false, -- enable debug logging for commands

@@ -44,10 +44,6 @@ zinit light-mode for \
 # Zinit Plugins
 #############################################
 
-# Load powerlevel10k theme
-#zinit ice depth"1" # git clone depth
-#zinit light romkatv/powerlevel10k
-
 # Create and bind multiple widgets using fzf
 zinit ice wait'0a' lucid id-as"junegunn/fzf_completions" pick"/dev/null" multisrc"shell/{completion,key-bindings}.zsh"
 zinit light junegunn/fzf
@@ -103,11 +99,12 @@ zinit wait lucid for \
 
 # additional completion definitions
 # https://github.com/zsh-users/zsh-completions
-# zt 0a blockf atpull'zinit creinstall -q .'; z zsh-users/zsh-completions
-zinit ice wait lucid blockf atpull'zinit creinstall -q .'
-zinit ice blockf; zinit light zsh-users/zsh-completions
+#zinit ice wait lucid blockf atpull'zinit creinstall -q .'
+
+#zinit ice blockf; zinit light zsh-users/zsh-completions
 #zinit ice blockf
-#zinit light zsh-users/zsh-completions
+
+zinit light zsh-users/zsh-completions
 
 #zinit ice as"completion"
 #zinit snippet https://github.com/deadc0de6/dotdrop/blob/master/completion/_dotdrop.sh-completion.zsh
@@ -156,12 +153,51 @@ zinit light trapd00r/LS_COLORS
 #CUSTOM=~/.dotfiles/zsh
 
 # make terminal command navigation sane again
-bindkey '^[^[[D' backward-word
-bindkey '^[^[[C' forward-word
-bindkey '^[[5D' beginning-of-line
-bindkey '^[[5C' end-of-line
-bindkey '^[[3~' delete-char
+bindkey "^[[1;5C" forward-word                      # [Ctrl-right] - forward one word
+bindkey "^[[1;5D" backward-word                     # [Ctrl-left] - backward one word
+bindkey '^[^[[C' forward-word                       # [Ctrl-right] - forward one word
+bindkey '^[^[[D' backward-word                      # [Ctrl-left] - backward one word
+bindkey '^[[1;3D' beginning-of-line                 # [Alt-left] - beginning of line
+bindkey '^[[1;3C' end-of-line                       # [Alt-right] - end of line
+bindkey '^[[5D' beginning-of-line                   # [Alt-left] - beginning of line
+bindkey '^[[5C' end-of-line                         # [Alt-right] - end of line
+bindkey '^?' backward-delete-char                   # [Backspace] - delete backward
+if [[ "${terminfo[kdch1]}" != "" ]]; then
+    bindkey "${terminfo[kdch1]}" delete-char        # [Delete] - delete forward
+else
+    bindkey "^[[3~" delete-char                     # [Delete] - delete forward
+    bindkey "^[3;5~" delete-char
+    bindkey "\e[3~" delete-char
+fi
+bindkey "^A" vi-beginning-of-line
+bindkey -M viins "^F" vi-forward-word               # [Ctrl-f] - move to next word
+bindkey -M viins "^E" vi-add-eol                    # [Ctrl-e] - move to end of line
+bindkey "^J" history-beginning-search-forward
+bindkey "^K" history-beginning-search-backward
 
+# matches case insensitive for lowercase
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# pasting with tabs doesn't perform completion
+zstyle ':completion:*' insert-tab pending
+
+# default to file completion
+zstyle ':completion:*' completer _expand _complete _files _correct _approximate
+
+# == fzf-tab
+zstyle ':fzf-tab:complete:_zlua:*' query-string input
+zstyle ':fzf-tab:complete:kill:argument-rest' fzf-preview 'ps --pid=$word -o cmd --no-headers -w -w'
+zstyle ':fzf-tab:complete:kill:argument-rest' fzf-flags '--preview-window=down:3:wrap'
+zstyle ':fzf-tab:complete:kill:*' popup-pad 0 3
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
+zstyle ":fzf-tab:*" fzf-flags --color=bg+:23
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:*' switch-group ',' '.'
+zstyle ":completion:*:git-checkout:*" sort false
+zstyle ':completion:*' file-sort modification
+zstyle ':completion:*:exa' sort false
+zstyle ':completion:files' sort false
 
 #alias
 alias vi="nvim"
@@ -185,6 +221,7 @@ alias la="ls -AF ${colorflag}"
 alias ll="ls -lFh ${colorflag}"
 alias lld="ls -l | grep ^d"
 alias rmf="rm -rf"
+
 # tmux aliases
 alias ta='tmux attach'
 alias tls='tmux ls'
@@ -200,25 +237,43 @@ alias zb='z -b'      # 快速回到父目录
 if type "bat" >/dev/null 2>&1; then
     alias cat="bat"
 fi
-#functions
-#tmux
-ftpane() {
-  local panes current_window current_pane target target_window target_pane
-  panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
-  current_pane=$(tmux display-message -p '#I:#P')
-  current_window=$(tmux display-message -p '#I')
 
-  target=$(echo "$panes" | grep -v "$current_pane" | fzf +m --reverse) || return
+# Attach existing tmux session or create new one
+# https://qiita.com/ssh0/items/a9956a74bff8254a606a
+autoload -Uz is-at-least
+if (( $+commands[tmux] * !$+TMUX )) && is-at-least 5.2.0 && (( ! $+DISABLE_AUTO_TMUX_ATTACH )); then
+   () {
+      # Build session lists
+      # Colons(:) are used as delimiter
+      local -a sess_names
+      local sess_list="$(command tmux list-session 2> /dev/null)"
+      if [[ -n $sess_list ]]; then
+         sess_names+=("${(@f)sess_list}")
+      fi
+      local new_sess_id="c"
+      sess_names+=("$new_sess_id: Create new session")
+      local sess_ids=("${(@f)"$(echo ${(F)sess_names} | cut -d: -f1)"}")
 
-  target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
-  target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
+      local sess_id
+      if (( $+commands[fzf] )); then
+         sess_id="$(echo ${(F)sess_names[@]} | fzf | cut -d: -f1)"
+      else
+         print -u 2 -l "[TMUX Manager]" \
+            "Do you want to attach or create tmux session?"
+         print -u 2 -l -x 4 -- "\t"$^sess_names
+         read sess_id\?"Please enter ID (${(j:/:)sess_ids}): "
+      fi
 
-  if [[ $current_window -eq $target_window ]]; then
-    tmux select-pane -t ${target_window}.${target_pane}
-  else
-    tmux select-pane -t ${target_window}.${target_pane} &&
-    tmux select-window -t $target_window
-  fi
-}
+      if [[ "$sess_id" == "$new_sess_id" ]]; then
+         tmux -f "$TMUX_CONF_DIR/tmux.conf" new-session
+      elif (( $+sess_ids[(re)$sess_id] )); then
+         tmux attach-session -d -t "$sess_id"
+      else
+         print -u 2 -- "Unknown ID: $sess_id. Abort."
+         :  # Start terminal normally
+      fi
+   }
+fi
 
 eval "$(starship init zsh)"
+
