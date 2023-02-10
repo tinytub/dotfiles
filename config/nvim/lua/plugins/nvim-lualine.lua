@@ -25,7 +25,7 @@ local vim_icons = {
     return " "
 
   end,
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
   color = { bg = "#313244", fg = "#80A7EA" },
   padding = { left = 1, right = 0 }
 }
@@ -56,6 +56,7 @@ local dir = {
 
     --return vim.b.short_path
   end,
+  separator = { left = "", right = "" },
   icon = "",
 }
 
@@ -69,7 +70,7 @@ local filename = {
   'filename',
   color = { bg = "#80A7EA", fg = "#242735" },
   path = 1,
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 local filetype = {
@@ -77,7 +78,7 @@ local filetype = {
   icon_only = true,
   colored = true,
   color = { bg = "#313244" },
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 --local filetype_tab = {
@@ -100,19 +101,19 @@ local filetype = {
 local fileformat = {
   'fileformat',
   color = { bg = "#b4befe", fg = "#313244" },
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 local encoding = {
   'encoding',
   color = { bg = "#313244", fg = "#80A7EA" },
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 local branch = {
   'branch',
   color = { bg = "#a6e3a1", fg = "#313244" },
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 local function buffer_git_diff()
@@ -133,7 +134,7 @@ local diff = {
   "diff",
   color = { bg = "#313244", fg = "#313244" },
   cond = buffer_not_empty,
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
   symbols = {
     added = icons.git.added,
     modified = icons.git.modified,
@@ -147,7 +148,7 @@ local diff = {
 local modes = {
   'mode', fmt = function(str) return str:sub(1, 1) end,
   --color = { bg = "#fab387		", fg = "#1e1e2e" },
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 local function getLspName()
@@ -171,7 +172,7 @@ local dia = {
   'diagnostics',
   cond = buffer_not_empty,
   color = { bg = "#313244", fg = "#80A7EA" },
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 local lsp = {
@@ -180,7 +181,7 @@ local lsp = {
   end,
 
   cond = buffer_not_empty,
-  --separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
   color = { bg = "#f38ba8", fg = "#1e1e2e" },
 }
 
@@ -200,10 +201,10 @@ local opts = {
     disabled_filetypes = { statusline = { "alpha", "dashboard", "lazy", "alpha", "neo-tree", "terminal" } },
     --component_separators = { left = "", right = "" },
     --section_separators = { left = "", right = "" },
-    component_separators = { left = '', right = '' },
-    section_separators = { left = '', right = '' },
-    --component_separators = { left = '', right = '' },
-    --section_separators = { left = '', right = '' },
+    --component_separators = { left = '', right = '' },
+    --section_separators = { left = '', right = '' },
+    component_separators = { left = '', right = '' },
+    section_separators = { left = '', right = '' },
 
     ignore_focus = {},
     always_divide_middle = true,
@@ -215,8 +216,8 @@ local opts = {
   },
   sections = {
     lualine_a = {
-      --{ "mode", separator = { left = "", right = "" } },
-      "mode",
+      { "mode", separator = { left = "", right = "" } },
+      --"mode",
       --modes,
       vim_icons,
     },

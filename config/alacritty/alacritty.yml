@@ -241,8 +241,8 @@ shell:
   program: /bin/zsh
   args:
     - -l
-#    - -c
-#    - "tmux new-session -A -D -s main"
+    - -c
+    - "tmux new-session -A -D -s main"
 #shell:
 #   program: /bin/zsh
 #   args:

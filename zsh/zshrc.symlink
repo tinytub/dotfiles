@@ -240,6 +240,7 @@ fi
 
 # Attach existing tmux session or create new one
 # https://qiita.com/ssh0/items/a9956a74bff8254a606a
+TMUX_CONF_DIR=$HOME
 autoload -Uz is-at-least
 if (( $+commands[tmux] * !$+TMUX )) && is-at-least 5.2.0 && (( ! $+DISABLE_AUTO_TMUX_ATTACH )); then
    () {
@@ -265,7 +266,7 @@ if (( $+commands[tmux] * !$+TMUX )) && is-at-least 5.2.0 && (( ! $+DISABLE_AUTO_
       fi
 
       if [[ "$sess_id" == "$new_sess_id" ]]; then
-         tmux -f "$TMUX_CONF_DIR/tmux.conf" new-session
+         tmux -f "$TMUX_CONF_DIR/.tmux.conf" new-session
       elif (( $+sess_ids[(re)$sess_id] )); then
          tmux attach-session -d -t "$sess_id"
       else
