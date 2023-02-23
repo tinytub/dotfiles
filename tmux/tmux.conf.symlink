@@ -11,7 +11,6 @@ set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
 #set -g @plugin 'thewtex/tmux-mem-cpu-load'
 #set -g @plugin "arcticicestudio/nord-tmux"
 set -g @plugin 'catppuccin/tmux'
-
 #set -g @prefix_highlight_show_copy_mode 'on'
 #set -g @prefix_highlight_copy_mode_attr 'fg=white,bg=blue'
 #set -g @continuum-save-interval '15'
@@ -71,7 +70,8 @@ set -g @tilish-navigate 'on'
 
 # tmux-continuum & tmux-resurrecrt
 set -g @continuum-restore 'off'
-set -g @resurrect-capture-pane-contents 'on' set -g @resurrect-strategy-nvim 'session'
+set -g @resurrect-capture-pane-contents 'on' 
+set -g @resurrect-strategy-nvim 'session'
 
 
 # edit configuration

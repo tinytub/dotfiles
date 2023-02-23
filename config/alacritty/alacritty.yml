@@ -24,9 +24,9 @@ window:
   #
   # Specified in number of columns/lines, not pixels.
   # If both are `0`, this setting is ignored.
-  dimensions:
-    columns: 240
-    lines: 40
+  #dimensions:
+  #  columns: 160
+  #  lines: 80
 
   # Window position (changes require restart)
   #
@@ -73,8 +73,8 @@ window:
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
+  #startup_mode: Windowed
   startup_mode: Windowed
-  #startup_mode: SimpleFullscreen
 
   # Window title
   # title: Alacritty
@@ -171,10 +171,10 @@ draw_bold_text_with_bright_colors: true
 #   - Linear
 #
 # Specifying a `duration` of `0` will disable the visual bell.
-#bell:
-#  animation: EaseOutExpo
-#  duration: 0
-#  color: '0xffffff'
+bell:
+  animation: EaseOutExpo
+  duration: 0
+  color: '0xffffff'
 
 # Mouse bindings
 #
@@ -276,9 +276,6 @@ working_directory: /Users/zhaopeng18/Documents/local_projects
 # Alacritty will fall back to the WinPTY automatically if the ConPTY
 # backend cannot be initialized.
 enable_experimental_conpty_backend: false
-
-# Send ESC (\x1b) before characters when alt is pressed.
-alt_send_esc: true
 
 debug:
   # Display the time it takes to redraw each frame.
@@ -407,7 +404,7 @@ key_bindings:
   #- { key: Subtract, mods: Control,       action: DecreaseFontSize }
   #- { key: Minus,    mods: Control,       action: DecreaseFontSize }
   #- { key: Return,   mods: Alt,           action: ToggleFullscreen }
-
+  - { key : N, mods : Command, action : CreateNewWindow             }
   # (macOS only)
   - { key: Key0,   mods: Command,         action: ResetFontSize    }
   - { key: Equals, mods: Command,         action: IncreaseFontSize }

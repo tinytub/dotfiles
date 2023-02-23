@@ -210,7 +210,9 @@ local plugins = {
     },
     config = function(_, opts)
       require("illuminate").configure(opts)
-
+      vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Visual" })
+      vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Visual" })
+      vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Visual" })
       local function map(key, dir, buffer)
         vim.keymap.set("n", key, function()
           require("illuminate")["goto_" .. dir .. "_reference"](false)
@@ -236,21 +238,7 @@ local plugins = {
     enabled = true,
   },
 
-
-  -- Statusline
-  -- try https://github.com/nvim-lualine/lualine.nvim ?
-  --{
-  --  "feline-nvim/feline.nvim",
-  --  enabled = false,
-  --  dependencies = { "nvim-web-devicons", "catppuccin" },
-  --  config = function()
-  --    --require("plugins.statusline")
-  --    require("plugins.feline")
-  --  end,
-  --},
-
   {
-    -- 会导致查询闪屏,看看是为什么
     "rebelot/heirline.nvim",
     enabled = false,
     dependencies = { "catppuccin", "nvim-web-devicons" },
