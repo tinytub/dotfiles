@@ -19,7 +19,10 @@ local plugins = {
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = { "b0o/SchemaStore.nvim" }, -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
+    dependencies = {
+      "b0o/SchemaStore.nvim", -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
+      "hrsh7th/cmp-nvim-lsp",
+    },
     init = function()
       require("core.lazy_load").lazy_load("nvim-lspconfig")
     end,
@@ -93,6 +96,7 @@ local plugins = {
     config = function()
       require("plugins.nvim-notify").config()
     end,
+    event = "VeryLazy",
     enabled = true,
   },
 
@@ -206,8 +210,30 @@ local plugins = {
     },
     config = function(_, opts)
       require("illuminate").configure(opts)
+
+      local function map(key, dir, buffer)
+        vim.keymap.set("n", key, function()
+          require("illuminate")["goto_" .. dir .. "_reference"](false)
+        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+      end
+
+      map("]]", "next")
+      map("[[", "prev")
+
+      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          local buffer = vim.api.nvim_get_current_buf()
+          map("]]", "next", buffer)
+          map("[[", "prev", buffer)
+        end,
+      })
     end,
-    enabled = false,
+    keys = {
+      { "]]", desc = "Next Reference" },
+      { "[[", desc = "Prev Reference" },
+    },
+    enabled = true,
   },
 
 
@@ -366,6 +392,7 @@ local plugins = {
 
   {
     "hrsh7th/nvim-cmp",
+    version = false,
     event = "InsertEnter",
     dependencies = {
       {
@@ -387,11 +414,17 @@ local plugins = {
       },
       -- cmp sources plugins
       {
-        "saadparwaiz1/cmp_luasnip",
-        "hrsh7th/cmp-nvim-lua",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
+        'hrsh7th/cmp-cmdline',
+        "saadparwaiz1/cmp_luasnip",
+
+        --"saadparwaiz1/cmp_luasnip",
+        --"hrsh7th/cmp-nvim-lua",
+        --"hrsh7th/cmp-nvim-lsp",
+        --"hrsh7th/cmp-buffer",
+        --"hrsh7th/cmp-path",
       },
     },
     config = function()
@@ -408,6 +441,28 @@ local plugins = {
     version = false,
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
+    dependencies = {
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        init = function()
+          -- PERF: no need to load the plugin, if we only need its queries for mini.ai
+          local plugin = require("lazy.core.config").spec.plugins["nvim-treesitter"]
+          local opts = require("lazy.core.plugin").values(plugin, "opts", false)
+          local enabled = false
+          if opts.textobjects then
+            for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
+              if opts.textobjects[mod] and opts.textobjects[mod].enable then
+                enabled = true
+                break
+              end
+            end
+          end
+          if not enabled then
+            require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
+          end
+        end,
+      },
+    },
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" },
     init = function()
       require("core.lazy_load").lazy_load("nvim-treesitter")
@@ -462,15 +517,7 @@ local plugins = {
     "echasnovski/mini.ai",
     enabled = true,
     event = "VeryLazy",
-    dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        init = function()
-          -- no need to load the plugin, since we only need its queries
-          require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
-        end,
-      },
-    },
+    dependencies = { "nvim-treesitter-textobjects" },
     opts = function()
       local ai = require("mini.ai")
       return {
@@ -553,6 +600,20 @@ local plugins = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
+      {
+        "s1n7ax/nvim-window-picker",
+        version = "v1.*",
+        opts = {
+          autoselect_one = true,
+          include_current = false,
+          filter_rules = {
+            bo = {
+              filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix" },
+              buftype = { "terminal" },
+            },
+          },
+        },
+      },
     },
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1

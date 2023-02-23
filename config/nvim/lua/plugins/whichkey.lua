@@ -1,4 +1,5 @@
 local which_key = require("which-key")
+local Utils = require("utils")
 
 which_key.setup({
   plugins = {
@@ -54,7 +55,7 @@ which_key.setup({
 })
 
 local opts = {
-  mode = "n", -- NORMAL mode
+  mode = { "n", "v" }, -- NORMAL mode
   prefix = "<leader>",
   buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
   silent = true, -- use `silent` when creating keymaps
@@ -67,7 +68,7 @@ local mappings = {
   --["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
   ["e"] = {
     function()
-      require("neo-tree.command").execute({ toggle = true, dir = require("utils").get_root() })
+      require("neo-tree.command").execute({ toggle = true, dir = Utils.get_root() })
     end,
     "Explorer" },
   --["F"] = { "<cmd>NvimTreeFindFile<cr>", "Find Current File" },
@@ -97,7 +98,6 @@ local mappings = {
     r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
     n = { "<cmd>enew<cr>", "New File" },
     --. = {"<cmd>Telescope filetypes<cr>"                   , "filetypes"},
-    B = { "<cmd>Telescope git_branches<cr>", "git branches" },
     D = { "<cmd>Telescope diagnostics bufnr=0<cr>", "document_diagnostics" },
     d = { "<cmd>Telescope diagnostics<cr>", "workspace_diagnostics" },
     --f = {"<cmd>Telescope find_files <cr>"                 , "files"},
@@ -106,10 +106,8 @@ local mappings = {
     a = { "<cmd>Telescope live_grep<cr>", "live grep" },
     b = { "<cmd>Telescope file_browser<cr>", "file browser" },
     u = { "<cmd>Telescope colorscheme<cr>", "colorschemes" },
-    g = { "<cmd>Telescope git_files<cr>", "git_files" },
     w = { "<cmd>Telescope grep_string<cr>", "grep_string" },
     o = { "<cmd>Telescope oldfiles<cr>", "oldfiles" },
-    c = { "<cmd>Telescope git_commits<cr>", "git_commits" },
     s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
     S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols" },
     --        ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "   pick hidden term" },
@@ -156,10 +154,17 @@ local mappings = {
     o = { "<cmd>Telescope git_status<cr>", "Open changed file" },
     B = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
     c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
+    f = { "<cmd>Telescope git_files<cr>", "git_files" },
+
+    g = { function() Utils.float_term({ "lazygit" }, { cwd = Utils.get_root() }) end, "Lazygit (root dir)" },
+    G = { function() Utils.float_term({ "lazygit" }) end, "Lazygit (cwd)" },
+
     C = {
       "<cmd>Telescope git_bcommits<cr>",
       "Checkout commit(for current file)",
     },
+
+
   },
   l = {
     name = "+LSP",
@@ -178,9 +183,6 @@ local mappings = {
         --TODO: can use this tiny plugin https://github.com/smjonas/inc-rename.nvim
         vim.lsp.buf.rename.float()
       end,
-      --function()
-      --    return ":IncRename " .. vim.fn.expand("<cword>")
-      --end,
       "lsp rename",
     },
   },
@@ -198,11 +200,6 @@ local mappings = {
       "Log point message",
     },
   },
-  S = {
-    name = "+Session",
-    s = { "<cmd>SessionSave<cr>", "Save Session" },
-    l = { "<cmd>SessionLoad<cr>", "Load Session" },
-  },
 }
 
 local misc_n_opts = {
@@ -215,13 +212,8 @@ local misc_n_opts = {
 
 local misc_n_mapping = {
   -- close buffer + hide terminal buffer
-  --["<C-x>"] = { "<cmd>lua require('core.utils').close_buffer() <CR>", "close buffer" },
   ["<C-x>"] = { "<cmd>Bdelete<cr>", "close buffer" },
-
-  --["<C-x>"] = { "<cmd>lua require('bufdelete').bufdelete(0, false) <CR>", "close buffer" },
   ["<ESC>"] = { "<cmd> noh <CR>", "no highlight" },
-
-  -- M-key means ALT-xxxx
   --["<M-[>"] = { "<cmd>vertical resize -2<CR>", "vertical resize -2" },
   --["<M-]>"] = { "<cmd>vertical resize +2<CR>", "vertical resize +2" },
   ["<M-[>"] = { "<cmd>lua require('smart-splits').resize_left(amount)<CR>", "vertical resize -2" },
@@ -238,7 +230,7 @@ local misc_n_mapping = {
   ["<F12>"] = { "<cmd>lua require'dap'.step_out()<CR>", "dap step out" },
   ["<leader>/"] = {
     function()
-      require("Comment.api").toggle_current_linewise()
+      require("Comment.api").toggle.linewise.current()
     end,
 
     "toggle comment",
@@ -252,10 +244,9 @@ local misc_v_opts = {
   -- noremap = true, -- use `noremap` when creating keymaps
   nowait = false, -- use `nowait` when creating keymaps
 }
-
 local misc_v_mapping = {
   ["<leader>/"] = {
-    "<ESC><cmd>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>",
+    "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
     "toggle comment",
   },
 }

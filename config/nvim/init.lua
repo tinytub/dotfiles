@@ -15,4 +15,5 @@ else
 
   -- set all the non plugin mappings
   require("core.keymappings").misc()
+
 end

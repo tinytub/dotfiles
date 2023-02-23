@@ -246,6 +246,7 @@ lsp_handlers()
 
 local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
 local format_acmd = function()
+  --vim.notify("create format acmd")
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = lspbufformat,
     callback = function()
@@ -314,11 +315,24 @@ local custom_init = function(client)
 end
 
 local custom_attach = function(client, bufnr)
-  local filetype = vim.api.nvim_buf_get_option(0, "filetype")
-  filetype_attach[filetype](client)
+  if client.config
+      and client.config.capabilities
+      and client.config.capabilities.documentFormattingProvider == false
+  then
+    -- dont format if client disabled it
+  else
+    local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+    --filetype_attach[filetype](client)
+    local plg = filetype_attach[filetype]
+    if plg == nil then
+      format_acmd()
+    else
+      plg(client)
+    end
+  end
+
   Lsp_keymaps(client, bufnr)
 
-  -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 
@@ -338,7 +352,7 @@ end
 -- Manage server with custom setup
 local util = require("lspconfig.util")
 local servers = {
-  sumneko_lua = require("lsp.servers.sumneko_lua"),
+  lua_ls = require("lsp.servers.sumneko_lua"),
   pyright = require("lsp.servers.pyright"),
   jsonls = require("lsp.servers.jsonls"),
   --emmet_ls = require("user.lsp.settings.emmet_ls"),
@@ -421,14 +435,14 @@ local setup_server = function(server, config)
     on_init = custom_init,
     on_attach = custom_attach,
     --capabilities = updated_capabilities,
-    capabilities = vim.deepcopy(make_capabilities()),
+    capabilities = make_capabilities(),
     flags = {
       debounce_text_changes = nil,
     },
   }, config)
   if server == "tsserver" then
     --config.settings = require('lsp.servers.tsserver')
-    config.capabilities = vim.deepcopy(make_ts_capabilities())
+    config.capabilities = make_ts_capabilities()
     require("typescript").setup({
       disable_commands = false, -- prevent the plugin from creating Vim commands
       debug = false, -- enable debug logging for commands

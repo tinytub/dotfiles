@@ -74,8 +74,10 @@ require("neo-tree").setup({
   window = {
     width = 30,
     mappings = { -- {{{
-      ["<c-v>"] = "open_vsplit",
-      ["l"] = "open",
+      --["<c-v>"] = "open_vsplit",
+      ["<c-x>"] = "split_with_window_picker",
+      ["<c-v>"] = "vsplit_with_window_picker",
+      ["l"] = "open_with_window_picker",
       ["<cr>"] = "open_drop",
       ["t"] = "open_tab_drop",
       ["<tab>"] = { "toggle_preview", config = { use_float = false } },
