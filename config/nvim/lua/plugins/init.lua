@@ -210,9 +210,18 @@ local plugins = {
     },
     config = function(_, opts)
       require("illuminate").configure(opts)
-      vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Visual" })
-      vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Visual" })
-      vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Visual" })
+      --vim.api.nvim_set_hl(0, "IlluminatedWordText", { ctermbg = "237", guibg = "#374145" })
+      --vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "IlluminatedWordText" })
+      --vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "IlluminatedWordText" })
+      --local illuminate_bg = string.format("#%06x", vim.api.nvim_get_hl_by_name("Visual", true).background)
+      --vim.api.nvim_set_hl(0, "IlluminatedWordText", { bg = illuminate_bg })
+      --vim.api.nvim_set_hl(0, "IlluminatedWordRead", { bg = illuminate_bg })
+      --vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { bg = illuminate_bg })
+      --local ILLUMINATION = { bg = "#383D47" }
+      --vim.api.nvim_set_hl(0, "IlluminatedWordText", ILLUMINATION)
+      --vim.api.nvim_set_hl(0, "IlluminatedWordRead", ILLUMINATION)
+      --vim.api.nvim_set_hl(0, "IlluminatedWordWrite", ILLUMINATION)
+      --vim.api.nvim_set_hl(0, "@illuminate", ILLUMINATION)
       local function map(key, dir, buffer)
         vim.keymap.set("n", key, function()
           require("illuminate")["goto_" .. dir .. "_reference"](false)
@@ -386,6 +395,7 @@ local plugins = {
       {
         -- snippet plugin
         "L3MON4D3/LuaSnip",
+        build = "make install_jsregexp",
         dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
         config = function()
           require("plugins.others").luasnip()
@@ -879,13 +889,15 @@ local plugins = {
         end,
       },
     },
-    config = function(_, opts)
+    init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
         callback = function()
           vim.b.miniindentscope_disable = true
         end,
       })
+    end,
+    config = function(_, opts)
       require("mini.indentscope").setup(opts)
     end,
   },

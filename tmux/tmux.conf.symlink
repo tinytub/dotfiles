@@ -2,55 +2,24 @@
 # ===       Plugins        ===
 # ============================
 set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+# keybindings to control panes
+set -g @plugin 'tmux-plugins/tmux-yank'
 #set -g @plugin 'tmux-plugins/tmux-cpu'
 #set -g @plugin 'ofirgall/tmux-window-name'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
-#set -g @plugin 'tmux-plugins/tmux-battery'
-#set -g @plugin 'thewtex/tmux-mem-cpu-load'
-#set -g @plugin "arcticicestudio/nord-tmux"
 set -g @plugin 'catppuccin/tmux'
-#set -g @prefix_highlight_show_copy_mode 'on'
-#set -g @prefix_highlight_copy_mode_attr 'fg=white,bg=blue'
-#set -g @continuum-save-interval '15'
-
-set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'jabirali/tmux-tilish'
 
 
 
-# ==========================
-# ===  General settings  ===
-# ==========================
-# config color of tmux
-# Add truecolor support
-#set -g default-terminal "screen-256color"
-#if 'infocmp -x tmux-256color > /dev/null 2>&1' 'set -g default-terminal "tmux-256color"'
-#set -sa terminal-overrides ',xterm-256color:RGB'
-
-set -g default-terminal "tmux-256color"
-set -ag terminal-overrides ",xterm-256color:RGB"
-
-#set -g default-terminal "${TERM}"
-set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
-set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
-
-#set -g status-interval 1
-
-set -g history-limit 10000
-
 set -s focus-events on
-# enable clipboard
-#set -g set-clipboard on
-
-# Index starts from 1
-set-option -g base-index 1
-setw -g pane-base-index 1   # make pane numbering consistent with windows
 
 # reduce the time when type prefix
 set -s escape-time 10
+set -g status-interval 10     # redraw status line every 10 seconds
 
 set -g history-limit 102400    #  scrollback buffer n lines
 
@@ -60,11 +29,10 @@ set -g repeat-time 600
 set -g mouse on
 bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e'"
 
-set -q -g status-utf8 on                  # expect UTF-8 (tmux < 2.2)
 setw -q -g utf8 on
 
 # Tilish
-#set -g @tilish-default 'tiled'
+set -g @tilish-default 'tiled'
 set -g @tilish-default 'main-vertical'
 set -g @tilish-navigate 'on'
 
@@ -84,22 +52,15 @@ bind E command-prompt -p "Command:" \
 bind r source-file ~/.tmux.conf \; display '~/.tmux.conf sourced'
 
 # -- display -------------------------------------------------------------------
-
 set -g base-index 1           # start windows numbering at 1
 setw -g pane-base-index 1     # make pane numbering consistent with windows
-
 setw -g automatic-rename on   # rename window to reflect current program
-#set-option -g automatic-rename-format '#{b:pane_current_path}'
-
 set -g renumber-windows on    # renumber windows when a window is closed
-
 set -g set-titles on          # set terminal title
 set -g set-titles-string '#h ❐ #S ● #I #W #T'
-
 set -g display-panes-time 800 # slightly longer pane indicators display time
 set -g display-time 1000      # slightly longer status messages display time
 
-set -g status-interval 10     # redraw status line every 10 seconds
 
 # clear both screen and history
 bind -n C-l send-keys C-l \; run 'sleep 0.1' \; clear-history
@@ -116,16 +77,20 @@ bind C-f command-prompt -p find-session 'switch-client -t %%'
 # popup select session
 bind C-j display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
 
-# split current window horizontally
-bind - split-window -v
-# split current window vertically
-bind \\ split-window -h
+## split current window horizontally
+#bind - split-window -v
+## split current window vertically
+#bind \\ split-window -h
 
-# pane navigation
-bind -r h select-pane -L  # move left
-bind -r j select-pane -D  # move down
-bind -r k select-pane -U  # move up
-bind -r l select-pane -R  # move right
+# use vim-like keys for splits and windows
+bind-key v split-window -h -c "#{pane_current_path}"
+bind-key s split-window -v -c "#{pane_current_path}"
+
+# pane navigation -r will repeat
+bind h select-pane -L  # move left
+bind j select-pane -D  # move down
+bind k select-pane -U  # move up
+bind l select-pane -R  # move right
 bind > swap-pane -D       # swap current pane with the next one
 bind < swap-pane -U       # swap current pane with the previous one
 
@@ -144,33 +109,6 @@ unbind p
 bind -r [ previous-window # select previous window
 bind -r ] next-window     # select next window
 bind Tab last-window        # move to last active window
-
-## toggle mouse
-#bind m run "cut -c1- ~/.tmux.conf | sh -s _toggle_mouse"
-#
-## -- urlview -------------------------------------------------------------------
-#
-#bind U run "cut -c3- ~/.tmux.conf | sh -s _urlview #{pane_id}"
-#
-#
-## -- facebook pathpicker -------------------------------------------------------
-#
-#bind F run "cut -c3- ~/.tmux.conf | sh -s _fpp #{pane_id}"
-
-# -- copy mode -----------------------------------------------------------------
-#bind Enter copy-mode # enter copy mode
-#run -b 'tmux bind -t vi-copy v begin-selection 2> /dev/null || true'
-#run -b 'tmux bind -T copy-mode-vi v send -X begin-selection 2> /dev/null || true'
-#run -b 'tmux bind -t vi-copy C-v rectangle-toggle 2> /dev/null || true'
-#run -b 'tmux bind -T copy-mode-vi C-v send -X rectangle-toggle 2> /dev/null || true'
-#run -b 'tmux bind -t vi-copy y copy-selection 2> /dev/null || true'
-#run -b 'tmux bind -T copy-mode-vi y send -X copy-selection-and-cancel 2> /dev/null || true'
-#run -b 'tmux bind -t vi-copy Escape cancel 2> /dev/null || true'
-#run -b 'tmux bind -T copy-mode-vi Escape send -X cancel 2> /dev/null || true'
-#run -b 'tmux bind -t vi-copy H start-of-line 2> /dev/null || true'
-#run -b 'tmux bind -T copy-mode-vi H send -X start-of-line 2> /dev/null || true'
-#run -b 'tmux bind -t vi-copy L end-of-line 2> /dev/null || true'
-#run -b 'tmux bind -T copy-mode-vi L send -X end-of-line 2> /dev/null || true'
 
 # copy to Mac OSX clipboard
 if -b 'command -v reattach-to-user-namespace > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | reattach-to-user-namespace pbcopy"'
@@ -224,4 +162,8 @@ if "test ! -d ~/.tmux/plugins/tpm" \
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
 
+set -g default-terminal "tmux-256color"
+set -ag terminal-overrides ",xterm-256color:RGB"
+set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
+set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 

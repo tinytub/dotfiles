@@ -15,9 +15,11 @@ M.config = function()
       change       = { text = "▎" }, -- catppuccin
       --add          = { text = "▐" },
       --change       = { text = "▐" },
-      delete       = { text = "▎" }, -- catppuccin
       --topdelete = { text = "契" }, -- catppuccin
-      topdelete    = { text = "▔" }, -- catppuccin
+      --delete       = { text = "▎" }, -- catppuccin
+      --topdelete    = { text = "▔" }, -- catppuccin
+      delete       = { text = "" },
+      topdelete    = { text = "" },
       changedelete = { text = "▎" }, -- catppuccin
       untracked    = { text = "▎" }, -- catppuccin
     },
