@@ -1,55 +1,18 @@
 local M = {}
 local catppuccin = require("catppuccin")
-local mocha = require("catppuccin.palettes").get_palette("mocha")
-
-
-vim.cmd("hi def GitSignsCurrentLineBlame guifg=" .. mocha.overlay2 .. " ctermfg=244")
-
-
-M.overrides = {
-  colors = {},
-  highlights = {
-    all = {
-      CmpItemAbbrMatch = { fg = mocha.blue },
-      CmpItemAbbrMatchFuzzy = { fg = mocha.blue },
-      Pmenu = { bg = mocha.crust },
-      PmenuSel = { fg = mocha.sapphire },
-      PmenuSbar = { bg = mocha.base }, -- Popup menu: scrollbar.
-      PmenuThumb = { bg = mocha.surface0 }, -- Popup menu: Thumb of the scrollbar.
-      VertSplit = { fg = mocha.surface0 },
-      NonText = { fg = mocha.surface0 },
-      FidgetTitle = { fg = mocha.blue, bg = mocha.none },
-      FidgetTask = { fg = mocha.blue, bg = mocha.none },
-    }
-  }
-}
 
 function M.setup()
   catppuccin.setup({
+    flavour = "macchiato", -- latte, frappe, macchiato, mocha
+    background = { -- :h background
+      light = "latte",
+      dark = "macchiato",
+      --dark = "mocha",
+    },
     transparent_background = true,
-    term_colors = false,
     compile = {
-      enabled = false,
+      enabled = true,
       path = vim.fn.stdpath("cache") .. "/catppuccin",
-    },
-    dim_inactive = {
-      enabled = false,
-      shade = "dark",
-      percentage = 0.15,
-    },
-    styles = {
-      comments = { "italic" },
-      conditionals = { "italic" },
-      loops = {},
-      functions = {},
-      keywords = { "italic" },
-      strings = {},
-      variables = { "italic" },
-      numbers = {},
-      booleans = {},
-      properties = {},
-      types = {},
-      operators = {},
     },
     integrations = {
       fidget = true,
@@ -97,8 +60,6 @@ function M.setup()
         transparent_panel = false,
       }
     },
-    color_overrides = M.overrides.colors,
-    highlight_overrides = M.overrides.highlights,
   })
 end
 

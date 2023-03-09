@@ -81,10 +81,13 @@ autocmd("BufReadPost", {
 autocmd("FileType", {
   group = augroup("close_with_q"),
   pattern = {
-    "qf",
+    "PlenaryTestPopup",
     "help",
+    "lspinfo",
     "man",
     "notify",
+    "qf",
+    "query", -- :InspectTree
     "lspinfo",
     "spectre_panel",
     "startuptime",

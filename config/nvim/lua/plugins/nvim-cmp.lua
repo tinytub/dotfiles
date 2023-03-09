@@ -24,10 +24,29 @@ end
 --  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line-1, line, true)[1]:sub(col, col):match('%s') == nil
 --end
 
+--local has_words_before = function()
+--  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+--  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+--end
+
+-- for copilot
 local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
 end
+
+local confirm = cmp.mapping.confirm({
+  behavior = cmp.ConfirmBehavior.Replace,
+  select = false,
+})
+
+--opts.mapping["<CR>"]
+local confirm_copilot = cmp.mapping.confirm({
+  select = true,
+  behavior = cmp.ConfirmBehavior.Replace,
+})
+
 
 -- nvim-cmp setup
 cmp.setup({
@@ -101,10 +120,20 @@ cmp.setup({
       i = cmp.mapping.abort(),
       c = cmp.mapping.close(),
     }),
-    ["<CR>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = false,
-    }),
+    -- old
+    --["<CR>"] = cmp.mapping.confirm({
+    --  behavior = cmp.ConfirmBehavior.Replace,
+    --  select = false,
+    --}),
+    -- copilot
+    ["<CR>"] = function(...)
+      local entry = cmp.get_selected_entry()
+      if entry and entry.source.name == "copilot" then
+        return confirm_copilot(...)
+      end
+      return confirm(...)
+    end,
+
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -131,7 +160,26 @@ cmp.setup({
       end
     end, { "i", "s" }),
   },
+  sorting = {
+    priority_weight = 2,
+    comparators = {
+      require("copilot_cmp.comparators").prioritize,
+
+      -- Below is the default comparitor list and order for nvim-cmp
+      cmp.config.compare.offset,
+      -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+      cmp.config.compare.exact,
+      cmp.config.compare.score,
+      cmp.config.compare.recently_used,
+      cmp.config.compare.locality,
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  },
   sources = {
+    { name = "copilot", group_index = 2 },
     { name = "nvim_lsp", priority = 80 },
     { name = "nvim_lua", priority = 80 },
     { name = "path", priority = 40, max_item_count = 4 },

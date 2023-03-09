@@ -16,6 +16,7 @@ local options = {
     "lua-language-server",
     "bash-language-server",
     "stylua",
+    "shfmt",
 
     -- web dev
     "json-lsp",

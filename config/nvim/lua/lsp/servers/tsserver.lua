@@ -1,4 +1,9 @@
 return {
+  settings = {
+    completions = {
+      completeFunctionCalls = true,
+    },
+  },
   typescript = {
     inlayHints = {
       includeInlayParameterNameHints = 'all',

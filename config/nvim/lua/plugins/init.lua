@@ -386,6 +386,29 @@ local plugins = {
     end,
   },
 
+  -- copilot
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    build = ":Copilot auth",
+    opts = {
+      suggestion = { enabled = false },
+      --suggestion = {
+      --  enabled = true,
+      --  auto_trigger = false,
+      --  debounce = 75,
+      --  keymap = {
+      --    accept = "<M-l>",
+      --    accept_word = false,
+      --    accept_line = false,
+      --    next = "<M-]>",
+      --    prev = "<M-[>",
+      --    dismiss = "<C-]>",
+      --  },
+      --},
+      panel = { enabled = false },
+    },
+  },
 
   {
     "hrsh7th/nvim-cmp",
@@ -393,9 +416,28 @@ local plugins = {
     event = "InsertEnter",
     dependencies = {
       {
+        "zbirenbaum/copilot-cmp",
+        dependencies = "copilot.lua",
+        opts = {},
+        config = function(_, opts)
+          local copilot_cmp = require("copilot_cmp")
+          copilot_cmp.setup(opts)
+          -- attach cmp source whenever copilot attaches
+          -- fixes lazy-loading issues with the copilot cmp source
+          require("utils").on_attach(function(client)
+            if client.name == "copilot" then
+              copilot_cmp._on_insert_enter()
+            end
+          end)
+        end,
+      },
+
+      {
         -- snippet plugin
         "L3MON4D3/LuaSnip",
-        build = "make install_jsregexp",
+        build = (not jit.os:find("Windows"))
+            and "echo -e 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
+            or nil,
         dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
         config = function()
           require("plugins.others").luasnip()

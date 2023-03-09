@@ -14,11 +14,14 @@ require("neo-tree").setup({
     indent = {
       indent_size        = 2,
       padding            = 0,
-      with_expanders     = nil,
       with_markers       = true,
       indent_marker      = "│ ",
       last_indent_marker = "╰─ ",
       highlight          = "NeoTreeIndentMarker",
+      with_expanders     = true, -- if nil and file nesting is enabled, will enable expanders
+      expander_collapsed = "",
+      expander_expanded  = "",
+      expander_highlight = "NeoTreeExpander",
     },
     name = {
       trailing_slash = true,
