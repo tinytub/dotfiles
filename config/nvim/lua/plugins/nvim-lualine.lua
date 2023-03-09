@@ -10,6 +10,7 @@ local colors = {
   grey = '#181825',
   black = '#1e1e2e',
   white = '#313244',
+  base = "#24273A", -- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/palettes/macchiato.lua
   light_green = '#6c7086',
   orange = '#fab387',
   green = '#a6e3a1',
@@ -34,7 +35,7 @@ local space = {
   function()
     return " "
   end,
-  color = { bg = colors.black, fg = "#80A7EA" },
+  color = { bg = colors.base, fg = "#80A7EA" },
   padding = { left = 0, right = 0 }
 }
 
@@ -173,6 +174,12 @@ local dia = {
   cond = buffer_not_empty,
   color = { bg = "#313244", fg = "#80A7EA" },
   separator = { left = "", right = "" },
+  symbols = {
+    error = icons.diagnostics.Error,
+    warn = icons.diagnostics.Warn,
+    info = icons.diagnostics.Info,
+    hint = icons.diagnostics.Hint,
+  },
 }
 
 local lsp = {
@@ -234,6 +241,10 @@ local opts = {
       branch,
       diff,
       --{
+      --  function() return require("nvim-navic").get_location() end,
+      --  cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
+      --},
+      --{
       --  "diagnostics",
       --  symbols = {
       --    error = icons.diagnostics.Error,
@@ -256,18 +267,18 @@ local opts = {
     },
     lualine_x = {
       space,
-      ---- stylua: ignore
-      --{
-      --  function() return require("noice").api.status.command.get() end,
-      --  cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-      --  color = fg("Statement")
-      --},
-      ---- stylua: ignore
-      --{
-      --  function() return require("noice").api.status.mode.get() end,
-      --  cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-      --  color = fg("Constant"),
-      --},
+      -- stylua: ignore
+      {
+        function() return require("noice").api.status.command.get() end,
+        cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+        color = fg("Statement")
+      },
+      -- stylua: ignore
+      {
+        function() return require("noice").api.status.mode.get() end,
+        cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+        color = fg("Constant"),
+      },
       --{ require("lazy.status").updates, cond = require("lazy.status").has_updates, color = fg("Special") },
       --{
       --  "diff",
@@ -353,32 +364,53 @@ local opts = {
   extensions = { "neo-tree" },
   winbar = {
     lualine_a = {},
-    lualine_b = {},
+    lualine_b = {
+      --{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+      --{
+      --  'filename',
+      --  path = 0,
+      --  cond = navic.is_available,
+      --  color = { gui = 'italic,bold' },
+      --  symbols = { modified = "", readonly = "", unnamed = "" },
+
+      --},
+      { navic.get_location, cond = navic.is_available },
+    },
     lualine_c = {
-      { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+    },
+    lualine_x = {},
+    lualine_y = {
+      --{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+      { "filetype", icon_only = true,
+        separator = { left = "", right = "" },
+        --separator = "",
+        padding = { left = 1, right = 0 }
+      },
       {
         'filename',
         path = 0,
         cond = navic.is_available,
         color = { gui = 'italic,bold' },
         symbols = { modified = "", readonly = "", unnamed = "" },
-
       },
-      { navic.get_location, cond = navic.is_available },
     },
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = {}
+    lualine_z = {},
   },
   inactive_winbar = {
     lualine_a = {},
     lualine_b = {},
     lualine_c = {
-      { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-      { 'filename', path = 0, cond = navic.is_available, symbols = { modified = "", readonly = "", unnamed = "" }, },
     },
     lualine_x = {},
-    lualine_y = {},
+    lualine_y = {
+      { "filetype", icon_only = true,
+        separator = { left = "", right = "" },
+        --separator = "",
+        padding = { left = 1, right = 0 }
+      },
+      --{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+      { 'filename', path = 0, cond = navic.is_available, symbols = { modified = "", readonly = "", unnamed = "" }, },
+    },
     lualine_z = {}
   }
 }

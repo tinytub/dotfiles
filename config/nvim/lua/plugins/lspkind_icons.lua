@@ -12,7 +12,6 @@ local icons = {
 
   },
   kinds = {
-
     Array = " ",
     Boolean = " ",
     Class = " ",
