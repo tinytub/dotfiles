@@ -122,19 +122,6 @@ function acmd.define_augroups(definitions) -- {{{1
   end
 end
 
---acmd.define_augroups({
---    goautofmt = {
---        -- Go generally requires Tabs instead of spaces.
---        { "FileType", "*.go", "setlocal tabstop=4" },
---        { "FileType", "*.go", "setlocal shiftwidth=4" },
---        { "FileType", "*.go", "setlocal softtabstop=4" },
---        { "FileType", "*.go", "setlocal noexpandtab" },
---        --{'BufWritePre', '*.go', 'lua vim.lsp.buf.formatting()'},
---        --{'FileType', '*.go', ':autocmd! autoformat'},
---        --{ "BufWritePre", "*.go", "lua require('lsp.format').OrgImports(1000)" },
---    },
---})
-
 acmd.define_augroups({
   _general_settings = {
     {

@@ -23,9 +23,6 @@ local plugins = {
       "b0o/SchemaStore.nvim", -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
       "hrsh7th/cmp-nvim-lsp",
     },
-    init = function()
-      require("core.lazy_load").lazy_load("nvim-lspconfig")
-    end,
     config = function()
       require("lsp.lspconfig")
     end,
@@ -190,7 +187,7 @@ local plugins = {
     --dependencies = "bufferline.nvim",
     --    run = ":CatppuccinCompile",
     config  = function()
-      require "colors".setup()
+      require("colors.catppuccin")
     end,
     enabled = true,
     lazy    = false,
@@ -213,14 +210,13 @@ local plugins = {
     enabled = false,
   },
 
-  {
-    "sainnhe/gruvbox-material",
-    config = function()
-      --require "highlights"
-      require("colors").init()
-    end,
-    enabled = false,
-  },
+  --{
+  --	"sainnhe/gruvbox-material",
+  --	config = function()
+  --		require("colors").init()
+  --	end,
+  --	enabled = false,
+  --},
 
 
   -- automatically highlighting other uses of the word under the cursor
@@ -361,10 +357,6 @@ local plugins = {
     "akinsho/bufferline.nvim",
     lazy         = false,
     dependencies = { "catppuccin", "nvim-web-devicons" },
-    --tag = "v2.*",
-    --init = function()
-    --  require("core.lazy_load").lazy_load("bufferline.nvim")
-    --end,
     --event = "VeryLazy",
     config       = function()
       require("plugins.bufferline")
@@ -531,9 +523,6 @@ local plugins = {
       },
     },
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" },
-    init = function()
-      require("core.lazy_load").lazy_load("nvim-treesitter")
-    end,
     config = function()
       require("plugins.treesitter")
     end,
@@ -774,9 +763,6 @@ local plugins = {
   {
     --"norcalli/nvim-colorizer.lua",
     "NvChad/nvim-colorizer.lua",
-    init = function()
-      require("core.lazy_load").lazy_load("nvim-colorizer.lua")
-    end,
     config = function()
       require("plugins.others").colorizer()
     end,
@@ -870,6 +856,7 @@ local plugins = {
 
   -- F 键查询增强
   {
+    enabled = false,
     "unblevable/quick-scope",
     config = function()
       require("plugins.others").quickscope()
@@ -1003,8 +990,4 @@ local plugins = {
   },
 }
 
--- load lazy.nvim options
-local lazy_config = require "plugins.lazy_nvim"
---lazy_config = require("core.utils").load_override(lazy_config, "folke/lazy.nvim")
-
-require("lazy").setup(plugins, lazy_config)
+return plugins

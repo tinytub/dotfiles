@@ -24,6 +24,3 @@ local opts = {
 }
 
 noice.setup(opts)
-
-
-------https://github.com/max397574/omega-nvim/blob/master/lua/omega/modules/ui/noice.lua

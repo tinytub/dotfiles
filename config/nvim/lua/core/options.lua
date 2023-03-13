@@ -1,7 +1,6 @@
 CONFIG_PATH = vim.fn.stdpath("config")
 DATA_PATH = vim.fn.stdpath("data")
 CACHE_PATH = vim.fn.stdpath("cache")
-
 local opt = vim.opt
 local g = vim.g
 
@@ -38,6 +37,8 @@ opt.number = true
 opt.numberwidth = 2
 opt.relativenumber = false
 opt.ruler = false
+opt.pumblend = 10 -- Popup blend
+opt.pumheight = 10 -- Maximum number of entries in a popup
 
 -- disable nvim intro
 opt.shortmess:append("sI")
@@ -56,7 +57,10 @@ opt.sidescrolloff = 5
 
 opt.showcmd = true
 
+opt.list = true -- Show some invisible characters (tabs...
+
 opt.confirm = true
+--opt.cursorline = true
 
 -- interval for writing swap file to disk, also used by gitsigns
 opt.updatetime = 250
