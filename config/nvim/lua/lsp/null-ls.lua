@@ -64,24 +64,11 @@ require("null-ls").setup({
     ".git",
     "go.mod",
     "package.json",
-    "tsconfig.json"
+    "tsconfig.json",
+    ".neoconf.json"
   ),
 
   sources = {
-    -- Whitespace
-    --builtins.diagnostics.trail_space.with({
-    --	disabled_filetypes = { "gitcommit" },
-    --}),
-
-    -- Ansible
-    --builtins.diagnostics.ansiblelint.with({
-    --  runtime_condition = has_exec("ansible-lint"),
-    --  extra_filetypes = { "yaml", "yaml.ansible" },
-    --}),
-
-    ---- Javascript
-    --builtins.diagnostics.eslint,
-
     ---- Go
     --builtins.formatting.gofmt.with({
     --	runtime_condition = has_exec("gofmt"),

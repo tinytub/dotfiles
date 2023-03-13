@@ -16,6 +16,8 @@ end
 local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
 
+local icons = require("plugins.lspkind_icons")
+
 -- ## COLOURS ## --
 
 -- Get the palette from Catppuccin
@@ -386,10 +388,14 @@ local Diagnostics = {
   -- Get the icons for the diagnostics
 
   static = {
-    error_icon = " ",
-    warn_icon = " ",
-    info_icon = " ",
-    hint_icon = " ",
+    error_icon = icons.diagnostics.Error,
+    warn_icon = icons.diagnostics.Warn,
+    info_icon = icons.diagnostics.Info,
+    hint_icon = icons.diagnostics.Hint,
+    --error_icon = " ",
+    --warn_icon = " ",
+    --info_icon = " ",
+    --hint_icon = " ",
     --   error_icon = vim.fn.sign_getdefined("DiagnosticSignError")[1].text,
     --   warn_icon = vim.fn.sign_getdefined("DiagnosticSignWarn")[1].text,
     --   info_icon = vim.fn.sign_getdefined("DiagnosticSignInfo")[1].text,

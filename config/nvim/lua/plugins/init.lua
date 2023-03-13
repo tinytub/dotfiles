@@ -58,11 +58,21 @@ local plugins = {
   {
     "j-hui/fidget.nvim",
     dependencies = { "nvim-lspconfig" },
-    enabled = true,
+    enabled = false,
     config = function()
       require("plugins.fidget-nvim")
     end,
     event = { "BufAdd", "BufRead", "BufNewFile", "InsertEnter" },
+    init = function()
+      -- when noice is not enabled, install notify on VeryLazy
+      local Util = require("utils")
+      if not Util.has("noice.nvim") then
+        print("noice not found, use notify")
+        Util.on_very_lazy(function()
+          vim.notify = require("fidget")
+        end)
+      end
+    end
   },
 
   {
@@ -86,9 +96,12 @@ local plugins = {
     config = function()
       require("plugins.icons")
     end,
-    lazy = false,
+    lazy = true,
 
   },
+
+  -- ui components
+  { "MunifTanjim/nui.nvim", lazy = true },
 
   -- Notification Enhancer
   {
@@ -96,49 +109,29 @@ local plugins = {
     config = function()
       require("plugins.nvim-notify").config()
     end,
-    event = "VeryLazy",
-    enabled = true,
+    --event = "VeryLazy",
+    enabled = false,
+    init = function()
+      -- when noice is not enabled, install notify on VeryLazy
+      local Util = require("utils")
+      if not Util.has("noice.nvim") then
+        print("noice not found, use notify")
+        Util.on_very_lazy(function()
+          vim.notify = require("notify")
+        end)
+      end
+    end
   },
 
-  --{
-  --  "folke/noice.nvim",
-  --  --event = "VimEnter",
-  --  event = "VeryLazy",
-  --  enabled = false,
-  --  config = function()
-  --    --require("plugins.nvim-notify").config()
-  --    require("plugins.nvim-noice")
-  --    --require("plugins.nvim-noice")
-  --  end,
-  --  dependencies = {
-  --    -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-  --    "MunifTanjim/nui.nvim",
-  --    "rcarriga/nvim-notify",
-  --  }
-  --},
-
   -- noicer ui
+  -- 关闭了fidget和notify, 如果手动关闭noice，记得打开fidget和notify
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    enabled = false,
-    opts = {
-      lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-        },
-        signature = {
-          enabled = false,
-        },
-      },
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-      },
-    },
-    -- stylua: ignore
+    enabled = true,
+    config = function()
+      require("plugins.nvim-noice")
+    end,
     keys = {
       { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
       { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
@@ -152,6 +145,7 @@ local plugins = {
   -- Neovim UI Enhancer
   {
     "stevearc/dressing.nvim",
+    lazy = true,
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.select = function(...)
@@ -365,13 +359,14 @@ local plugins = {
 
   {
     "akinsho/bufferline.nvim",
+    lazy         = false,
     dependencies = { "catppuccin", "nvim-web-devicons" },
     --tag = "v2.*",
     --init = function()
     --  require("core.lazy_load").lazy_load("bufferline.nvim")
     --end,
-    event = "VeryLazy",
-    config = function()
+    --event = "VeryLazy",
+    config       = function()
       require("plugins.bufferline")
     end,
   },
