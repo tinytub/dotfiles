@@ -44,9 +44,6 @@ set -g @resurrect-strategy-nvim 'session'
 
 # edit configuration
 bind e new-window -n '~/.tmux.conf' "sh -c '\${EDITOR:-vim} ~/.tmux.conf && tmux source ~/.tmux.conf && tmux display \"~/.tmux.conf sourced\"'"
-bind E command-prompt -p "Command:" \
-    "run \"tmux list-panes -a -F '##{session_name}:##{window_index}.##{pane_index}' \
-    | xargs -I PANE tmux send-keys -t PANE '%1' Enter\""
 
 # reload configuration
 bind r source-file ~/.tmux.conf \; display '~/.tmux.conf sourced'
@@ -74,8 +71,6 @@ setw -g xterm-keys on
 
 # find session
 bind C-f command-prompt -p find-session 'switch-client -t %%'
-# popup select session
-bind C-j display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
 
 ## split current window horizontally
 #bind - split-window -v
