@@ -69,7 +69,7 @@ end
 
 M.signature = function()
   local options = M.signature_opt()
-  require("lsp_signature").setup(options)
+  require("lsp_signature").setup()
 end
 
 M.signature_opt = function()

@@ -14,6 +14,7 @@ local opts = {
     },
     signature = {
       enabled = false,
+      --  silent = true,
     },
   },
   presets = {
