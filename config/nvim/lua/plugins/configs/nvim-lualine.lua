@@ -1,6 +1,6 @@
 local navic = require('nvim-navic')
 
-local icons = require("plugins.lspkind_icons")
+local icons = require("plugins.configs.lspkind_icons")
 
 -- https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
 -- https://github.com/LazyVim/LazyVim

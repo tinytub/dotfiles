@@ -1,6 +1,6 @@
 -- Requires {{{
 local ls = require("luasnip")
-local util = require("plugins.luasnips.util")
+local util = require("plugins.configs.luasnips.util")
 local fmt = require("luasnip.extras.fmt").fmt
 local partial = require("luasnip.extras").partial
 --}}}

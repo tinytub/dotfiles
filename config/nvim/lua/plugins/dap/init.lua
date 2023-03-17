@@ -33,5 +33,5 @@ end
 --remap({ 'n', 'v' }, '<leader>dx', function() fzf_lua("dap_configurations") end, { silent = true })
 
 -- configure language adapaters
-require "plugins.dap.go"
-require "plugins.dap.lua"
+require "plugins.configs.dap.go"
+require "plugins.configs.dap.lua"

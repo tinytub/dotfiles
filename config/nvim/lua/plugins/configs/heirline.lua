@@ -16,7 +16,7 @@ end
 local conditions = require("heirline.conditions")
 local utils = require("heirline.utils")
 
-local icons = require("plugins.lspkind_icons")
+local icons = require("plugins.configs.lspkind_icons")
 
 -- ## COLOURS ## --
 

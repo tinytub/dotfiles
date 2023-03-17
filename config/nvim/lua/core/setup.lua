@@ -24,7 +24,7 @@ local defaults = {
     options = true, -- core.options
   },
   -- icons used by other plugins
-  icons = require("plugins.lspkind_icons")
+  icons = require("plugins.configs.lspkind_icons")
 }
 
 ---@type LazyVimConfig

@@ -3,7 +3,7 @@ local ls = require("luasnip")
 local fmt = require("luasnip.extras.fmt").fmt
 local fmta = require("luasnip.extras.fmt").fmta
 local rep = require("luasnip.extras").rep
-local util = require("plugins.luasnips.util")
+local util = require("plugins.configs.luasnips.util")
 local ai = require("luasnip.nodes.absolute_indexer")
 local partial = require("luasnip.extras").partial
 --}}}

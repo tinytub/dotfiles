@@ -1,7 +1,7 @@
 
 local ls = require("luasnip")
 local fmt = require("luasnip.extras.fmt").fmt
-local util = require("plugins.luasnips.util")
+local util = require("plugins.configs.luasnips.util")
 
 return {
   ls.s( -- Ignore stylua {{{

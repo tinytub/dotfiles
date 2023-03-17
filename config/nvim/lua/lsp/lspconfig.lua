@@ -341,7 +341,7 @@ local custom_attach = function(client, bufnr)
   --end
   --lsp_highlight_document(client)
 
-  require("lsp_signature").on_attach(require("plugins.others").signature_opt())
+  require("lsp_signature").on_attach(require("plugins.configs.others").signature_opt())
 
   local navic = require("nvim-navic")
   navic.attach(client, bufnr)

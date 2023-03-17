@@ -36,7 +36,7 @@ bufferline.setup {
     --always_show_bufferline = false,
     diagnostics_indicator = function(_, _, diag)
       --      local icons = require("lazyvim.config").icons.diagnostics
-      local icons = require("plugins.lspkind_icons").diagnostics
+      local icons = require("plugins.configs.lspkind_icons").diagnostics
       local ret = (diag.error and icons.Error .. diag.error .. " " or "")
           .. (diag.warning and icons.Warn .. diag.warning or "")
       return vim.trim(ret)

@@ -2,7 +2,7 @@
 --if present then
 --    luasnip.snippets = {
 --      --all = require("settings.luasnip.all"),
---      go = require("plugins.luasnips.go"),
+--      go = require("plugins.configs.luasnips.go"),
 --      --lua = require("settings.luasnip.lua"),
 --      --gitcommit = require("settings.luasnip.gitcommit"),
 --      --markdown = require("settings.luasnip.markdown"),
