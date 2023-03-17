@@ -1,6 +1,6 @@
 -- Requires {{{
 local ls = require("luasnip")
-local util = require("plugins.configs.luasnips.util")
+local util = require("plugins.luasnips.util")
 local fmt = require("luasnip.extras.fmt").fmt
 local partial = require("luasnip.extras").partial
 --}}}
@@ -34,7 +34,7 @@ local function lorem(lines) --{{{
 end --}}}
 
 return {
-  ls.s( -- Modeline {{{
+  ls.s(-- Modeline {{{
     { trig = "modeline", dscr = "Add modeline to the file" },
     fmt("vim: {}={}{}", {
       ls.i(1, "k"),

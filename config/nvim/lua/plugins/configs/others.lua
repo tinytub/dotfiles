@@ -56,11 +56,11 @@ M.luasnip = function()
     delete_check_events = "TextChanged",
   })
   luasnip.snippets = {
-    all = require("plugins.configs.luasnips.all"),
-    go = require("plugins.configs.luasnips.golang"),
-    lua = require("plugins.configs.luasnips.lua"),
-    gitcommit = require("plugins.configs.luasnips.gitcommit"),
-    markdown = require("plugins.configs.luasnips.markdown"),
+    all = require("plugins.luasnips.all"),
+    go = require("plugins.luasnips.golang"),
+    lua = require("plugins.luasnips.lua"),
+    gitcommit = require("plugins.luasnips.gitcommit"),
+    markdown = require("plugins.luasnips.markdown"),
   }
 
   require("luasnip.loaders.from_vscode").lazy_load()
