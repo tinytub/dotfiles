@@ -169,6 +169,21 @@ local mappings = {
   l = {
     name = "+LSP",
     a = { "<cmd>lua vim.lsp.buf.range_code_action()<CR>", "Code Action" },
+    --a = { vim.lsp.buf.code_action, desc = "Code Action", has = "codeAction" },
+    --A = {
+    --  function()
+    --    vim.lsp.buf.code_action({
+    --      context = {
+    --        only = {
+    --          "source",
+    --        },
+    --        diagnostics = {},
+    --      },
+    --    })
+    --  end,
+    --  desc = "Source Action",
+    --  has = "codeAction",
+    --},
     i = { "<cmd>LspInfo<cr>", "Info" },
     f = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" },
     j = { "<cmd>lua vim.diagnostic.goto_next({popup_opts = {border = 'single'}})<cr>", "Next Diagnostic" },
