@@ -181,11 +181,6 @@ local lsp_handlers = function()
   --lspSymbol("Hint", "")
   --lspSymbol("Warn", "")
 
-  --vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  --virtual_text = {
-  --   prefix = "",
-  --   spacing = 0,
-  --},
   vim.diagnostic.config({
     --virtual_text = {
     --    prefix = "",

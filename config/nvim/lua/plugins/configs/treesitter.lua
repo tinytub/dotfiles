@@ -44,7 +44,7 @@ end
 ts_config.setup {
   ensure_installed = {
     "go", "gomod", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx",
-    "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "vue", "bash", "vim"
+    "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "vue", "bash", "vim", "luadoc",
   },
   --ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   --ignore_install = {"haskell","comment"}, -- comment make golang file lag
@@ -52,7 +52,7 @@ ts_config.setup {
     enable = true, -- mandatory, false will disable the whole extension
     disable = { "c", "ruby" }, -- optional, list of language that will be disabled
   },
-  indent = { enable = true, disable = { "python" } },
+  indent = { enable = true },
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = false,
