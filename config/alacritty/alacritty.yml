@@ -210,7 +210,7 @@ selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
 
   # When set to `true`, selected text will be copied to the primary clipboard.
-  save_to_clipboard: false
+  save_to_clipboard: true
 
 cursor:
   # Cursor style
@@ -241,8 +241,8 @@ shell:
   program: /bin/zsh
   args:
     - -l
-    - -c
-    - "tmux new-session -A -D -s main"
+  #  - -c
+  #  - "tmux new-session -A -D -s main"
 #shell:
 #   program: /bin/zsh
 #   args:
@@ -403,7 +403,7 @@ key_bindings:
   #- { key: Add,      mods: Control,       action: IncreaseFontSize }
   #- { key: Subtract, mods: Control,       action: DecreaseFontSize }
   #- { key: Minus,    mods: Control,       action: DecreaseFontSize }
-  #- { key: Return,   mods: Alt,           action: ToggleFullscreen }
+  - { key: Return,   mods: Alt,           action: ToggleFullscreen }
   - { key : N, mods : Command, action : CreateNewWindow             }
   # (macOS only)
   - { key: Key0,   mods: Command,         action: ResetFontSize    }
