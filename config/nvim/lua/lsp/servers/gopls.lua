@@ -1,3 +1,15 @@
+local get_current_gomod = function()
+  local file = io.open('go.mod', 'r')
+  if file == nil then
+    return nil
+  end
+
+  local first_line = file:read()
+  local mod_name = first_line:gsub('module ', '')
+  file:close()
+  return mod_name
+end
+
 return {
   root_dir = function(fname)
     local Path = require("plenary.path")
@@ -17,7 +29,35 @@ return {
       return util.root_pattern("go.mod", ".git")(fname) or util.path.dirname(fname)
     end
   end,
+  capabilities = {
+    textDocument = {
+      completion = {
+        completionItem = {
+          commitCharactersSupport = true,
+          deprecatedSupport = true,
+          documentationFormat = { 'markdown', 'plaintext' },
+          preselectSupport = true,
+          insertReplaceSupport = true,
+          labelDetailsSupport = true,
+          snippetSupport = true,
+          resolveSupport = {
+            properties = {
+              'documentation',
+              'details',
+              'additionalTextEdits',
+            },
+          },
+        },
+        contextSupport = true,
+        dynamicRegistration = true,
+      },
+    },
+  },
   filetypes = { "go", "gomod", "gosum", "gotmpl", "gohtmltmpl", "gotexttmpl" },
+  cmd = {
+    'gopls', -- share the gopls instance if there is one already
+    '-remote.debug=:0',
+  },
   -- more settings: https://github.com/golang/tools/blob/master/gopls/doc/settings.md
   settings = {
     gopls = {
@@ -44,7 +84,8 @@ return {
       --experimentalWatchedFileDelay = "100ms",
       symbolMatcher = "fuzzy",
       -- ["local"] = "",
-      deepCompletion = true,
+      ['local'] = get_current_gomod(),
+      --deepCompletion = true,
       gofumpt = false,
       buildFlags = { "-tags", "integration" },
     },
