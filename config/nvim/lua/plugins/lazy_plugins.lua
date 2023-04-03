@@ -41,7 +41,7 @@ local plugins = {
 
   -- lsp_lines 可以分层显示 lsp 弹出的行内错误
   {
-    enabled = true,
+    enabled = false,
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     dependencies = { "nvim-lspconfig" },
     config = function()
@@ -397,7 +397,7 @@ local plugins = {
 
   -- auto pairs
   {
-    enabled = false,
+    enabled = true,
     "echasnovski/mini.pairs",
     event = "VeryLazy",
     config = function(_, opts)
@@ -440,6 +440,9 @@ local plugins = {
         opts = {},
         config = function(_, opts)
           local copilot_cmp = require("copilot_cmp")
+          opts.formatters = {
+            insert_text = require("copilot_cmp.format").remove_existing
+          }
           copilot_cmp.setup(opts)
           -- attach cmp source whenever copilot attaches
           -- fixes lazy-loading issues with the copilot cmp source
@@ -464,13 +467,13 @@ local plugins = {
       },
 
       -- autopairing of (){}[] etc
-      {
-        enabled = true,
-        "windwp/nvim-autopairs",
-        config = function()
-          require("plugins.configs.autopairs")
-        end,
-      },
+      --{
+      --  enabled = false,
+      --  "windwp/nvim-autopairs",
+      --  config = function()
+      --    require("plugins.configs.autopairs")
+      --  end,
+      --},
       -- cmp sources plugins
       {
         "hrsh7th/cmp-nvim-lsp",
@@ -727,17 +730,6 @@ local plugins = {
     end,
   },
 
-  ---- autopairs
-  --{
-  --  "windwp/nvim-autopairs",
-  --  -- after = {"nvim-compe", "nvim-treesitter"},
-  --  after = "nvim-cmp",
-  --  config = function()
-  --    require("plugins.configs.others").autopairs()
-  --  end,
-  --  enabled = true,
-  --},
-
   -- Dashboard
   {
     "goolord/alpha-nvim",
@@ -750,14 +742,52 @@ local plugins = {
   },
 
   -- matchup 高亮显示光标所在位置对应的括号,函数等
+  --{
+  --  "andymass/vim-matchup",
+  --  event = "CursorMoved",
+  --  --opt = true,
+  --  config = function()
+  --    require("plugins.configs.matchup").config()
+  --  end,
+  --  enabled = true,
+  --},
+
+  -- surround
   {
-    "andymass/vim-matchup",
-    event = "CursorMoved",
-    --opt = true,
-    config = function()
-      require("plugins.configs.matchup").config()
+    "echasnovski/mini.surround",
+    keys = function(_, keys)
+      -- Populate the keys based on the user's options
+      local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
+      local opts = require("lazy.core.plugin").values(plugin, "opts", false)
+      local mappings = {
+        { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
+        { opts.mappings.delete, desc = "Delete surrounding" },
+        { opts.mappings.find, desc = "Find right surrounding" },
+        { opts.mappings.find_left, desc = "Find left surrounding" },
+        { opts.mappings.highlight, desc = "Highlight surrounding" },
+        { opts.mappings.replace, desc = "Replace surrounding" },
+        { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
+      }
+      mappings = vim.tbl_filter(function(m)
+        return m[1] and #m[1] > 0
+      end, mappings)
+      return vim.list_extend(mappings, keys)
     end,
-    enabled = true,
+    opts = {
+      mappings = {
+        add = "gza", -- Add surrounding in Normal and Visual modes
+        delete = "gzd", -- Delete surrounding
+        find = "gzf", -- Find surrounding (to the right)
+        find_left = "gzF", -- Find surrounding (to the left)
+        highlight = "gzh", -- Highlight surrounding
+        replace = "gzr", -- Replace surrounding
+        update_n_lines = "gzn", -- Update `n_lines`
+      },
+    },
+    config = function(_, opts)
+      -- use gz mappings instead of s to prevent conflict with leap
+      require("mini.surround").setup(opts)
+    end,
   },
 
   {

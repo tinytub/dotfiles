@@ -22,6 +22,36 @@ local opts = {
     command_palette = true,
     long_message_to_split = true,
   },
+  routes = {
+    {
+      --- hide written messages
+      filter = {
+        event = "msg_show",
+        kind = "",
+        find = "written",
+      },
+      opts = { skip = true },
+    },
+    {
+      --- hide edits
+      filter = {
+        event = "msg_show",
+        kind = "",
+        find = "newer than edits",
+      },
+      opts = { skip = true },
+    },
+    {
+      --- hide more line
+      filter = {
+        event = "msg_show",
+        kind = "",
+        find = " more line",
+      },
+      opts = { skip = true },
+    }
+
+  },
 }
 
 noice.setup(opts)

@@ -205,7 +205,7 @@ local opts = {
     icons_enabled = true,
     theme = "auto",
     globalstatus = true,
-    disabled_filetypes = { statusline = { "alpha", "dashboard", "lazy", "alpha", "neo-tree", "terminal" } },
+    disabled_filetypes = { statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal" } },
     --component_separators = { left = "", right = "" },
     --section_separators = { left = "", right = "" },
     --component_separators = { left = '', right = '' },
@@ -361,7 +361,7 @@ local opts = {
   --  lualine_z = {
   --  },
   --},
-  extensions = { "neo-tree" },
+  extensions = { "neo-tree", "lazy" },
   winbar = {
     lualine_a = {},
     lualine_b = {
