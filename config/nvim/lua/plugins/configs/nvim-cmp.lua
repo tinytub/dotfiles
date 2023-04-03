@@ -1,8 +1,6 @@
 local cmp = require 'cmp'
 local copilot = require "copilot.suggestion"
 
---require("base46").load_highlight "cmp"
-vim.o.completeopt = "menu,menuone"
 
 local function border(hl_name)
   return {
@@ -56,7 +54,9 @@ cmp.setup({
       require("luasnip").lsp_expand(args.body)
     end,
   },
-
+  completion = {
+    completeopt = "menu,menuone,noinsert",
+  },
   formatting = {
     ---- 补全窗口的顺序
     --fields = { "kind", "abbr", "menu" },

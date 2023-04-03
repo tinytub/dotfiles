@@ -52,7 +52,6 @@ M.luasnip = function()
 
   luasnip.config.set_config({
     history = true,
-    update_events = "TextChanged,TextChangedI",
     delete_check_events = "TextChanged",
   })
   luasnip.snippets = {

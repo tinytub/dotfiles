@@ -440,9 +440,9 @@ local plugins = {
         opts = {},
         config = function(_, opts)
           local copilot_cmp = require("copilot_cmp")
-          opts.formatters = {
-            insert_text = require("copilot_cmp.format").remove_existing
-          }
+          --opts.formatters = {
+          --  insert_text = require("copilot_cmp.format").remove_existing
+          --}
           copilot_cmp.setup(opts)
           -- attach cmp source whenever copilot attaches
           -- fixes lazy-loading issues with the copilot cmp source
@@ -858,7 +858,13 @@ local plugins = {
   -- may be i can try https://github.com/olexsmir/gopher.nvim or https://github.com/crispgm/nvim-go
   {
     "ray-x/go.nvim",
-    ft = { "go", "golang" },
+    dependencies = { -- optional packages
+      --   "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
     config = function()
       require("plugins.configs.go-nvim")
     end,
