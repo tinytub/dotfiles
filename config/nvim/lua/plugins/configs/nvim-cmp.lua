@@ -182,23 +182,24 @@ cmp.setup({
     --{ name = "copilot", group_index = 2 },
     { name = "copilot", priority = 70, group_index = 2 },
     { name = "nvim_lsp", priority = 80 },
-    { name = "nvim_lua", priority = 80 },
+    { name = "luasnip", priority = 80 },
+    { name = "buffer", priority = 80 },
+    { name = "nvim_lua", priority = 60 },
     { name = "path", priority = 40, max_item_count = 4 },
-    { name = "luasnip", priority = 10 },
     { name = "calc" },
     { name = "nvim_lsp_signature_help" },
 
-    {
-      name = "buffer",
-      priority = 5,
-      keyword_length = 3,
-      max_item_count = 5,
-      option = {
-        get_bufnrs = function()
-          return vim.api.nvim_list_bufs()
-        end,
-      },
-    },
+    --{
+    --  name = "buffer",
+    --  priority = 5,
+    --  keyword_length = 3,
+    --  max_item_count = 5,
+    --  option = {
+    --    get_bufnrs = function()
+    --      return vim.api.nvim_list_bufs()
+    --    end,
+    --  },
+    --},
     { name = "rg", keyword_length = 3, max_item_count = 10, priority = 1 },
   },
 })
