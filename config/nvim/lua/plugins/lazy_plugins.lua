@@ -943,14 +943,16 @@ local plugins = {
 
   {
     'nvim-neotest/neotest',
-    enabled = false,
+    enabled = true,
+    ft = { "go", "rust", "python" },
     dependencies = {
       'nvim-lua/plenary.nvim',
       --'nvim-treesitter/nvim-treesitter',
       --'antoinemadec/FixCursorHold.nvim',
       "rcarriga/neotest-plenary",
+      "nvim-neotest/neotest-python",
+      "nvim-neotest/neotest-go",
 
-      'akinsho/neotest-go',
     },
     config = function()
       require("plugins.configs.neotest")

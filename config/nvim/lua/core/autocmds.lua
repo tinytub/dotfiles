@@ -59,12 +59,16 @@ vim.api.nvim_create_autocmd("FileType", {
     "lspinfo",
     "man",
     "notify",
+    'fugitive',
+    "git",
     "qf",
     "lspinfo",
     "spectre_panel",
     "startuptime",
     "tsplayground",
-    "PlenaryTestPopup",
+    "neotest-output",
+    "neotest-summary",
+    "neotest-output-panel",
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
