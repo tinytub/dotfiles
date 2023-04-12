@@ -103,7 +103,7 @@ local handlers = { --{{{
   end,
 } --}}}
 
-vim.treesitter.set_query( --{{{
+vim.treesitter.query.set_query(--{{{
   "go",
   "LuaSnip_Result",
   [[
@@ -121,10 +121,9 @@ local function return_value_nodes(info) --{{{
 
   local function_node
   for _, scope in ipairs(scope_tree) do
-    if
-      scope:type() == "function_declaration"
-      or scope:type() == "method_declaration"
-      or scope:type() == "func_literal"
+    if scope:type() == "function_declaration"
+        or scope:type() == "method_declaration"
+        or scope:type() == "func_literal"
     then
       function_node = scope
       break
@@ -217,6 +216,7 @@ M.uuid = function() --{{{
     local v = (((c == "x") and math.random(0, 15)) or math.random(8, 11))
     return string.format("%x", v)
   end
+
   out = template:gsub("[xy]", subs)
   return out
 end --}}}
@@ -279,4 +279,3 @@ M.mirror_t_run_funcs = function(args) --{{{
 end --}}}
 
 return M
-
