@@ -41,7 +41,8 @@ opt.pumblend = 10 -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
 
 -- disable nvim intro
-opt.shortmess:append("sI")
+--opt.shortmess:append("sI")
+opt.shortmess:append({ W = true, I = true, c = true })
 
 --opt.signcolumn = "number"
 opt.signcolumn = "yes"
@@ -72,7 +73,7 @@ opt.whichwrap:append("<>[]hl")
 --opt.guifont = "Hack:h14"
 if vim.fn.has("nvim-0.9.0") == 1 then
   opt.splitkeep = "screen"
-  opt.shortmess:append { C = true }
+  opt.shortmess:append({ C = true })
 end
 
 -- Fix markdown indentation settings

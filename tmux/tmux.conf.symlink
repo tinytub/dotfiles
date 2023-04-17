@@ -28,7 +28,8 @@ set -g repeat-time 600
 
 set -g mouse on
 # bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e'"
-#setw -g mode-keys vi
+setw -g mode-keys vi
+set -g set-clipboard off # race with alacritty
 
 setw -q -g utf8 on
 
@@ -103,6 +104,8 @@ bind -r L resize-pane -R 2
 unbind n
 unbind p
 bind Tab last-window        # move to last active window
+
+set -g set-clipboard off
 
 ## copy to Mac OSX clipboard
 #if -b 'command -v reattach-to-user-namespace > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | reattach-to-user-namespace pbcopy"'

@@ -5,6 +5,13 @@ local icons = {
     Hint = " ",
     Info = " ",
   },
+  dap = {
+    Stopped = { " ", "DiagnosticWarn", "DapStoppedLine" },
+    Breakpoint = " ",
+    BreakpointCondition = " ",
+    BreakpointRejected = { " ", "DiagnosticError" },
+    LogPoint = ".>",
+  },
   git = {
     added = " ",
     modified = " ",

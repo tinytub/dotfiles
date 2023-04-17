@@ -720,7 +720,7 @@ local plugins = {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    keys = { "<leader>", '"', "'", "`" },
+    keys = { "<leader>", '"', "'", "`", "c", "v" },
     --module = "which-key",
     config = function()
       require("plugins.configs.whichkey")
