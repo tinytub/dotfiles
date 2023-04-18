@@ -4,24 +4,46 @@ if not noice_status then
 end
 --https://github.com/LazyVim/LazyVim
 local opts = {
-  cmdline = {
-  },
   lsp = {
     override = {
-      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-      ["vim.lsp.util.stylize_markdown"] = true,
+      ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+      ['vim.lsp.util.stylize_markdown'] = true,
+      ['cmp.entry.get_documentation'] = true,
     },
-    signature = {
-      enabled = false,
-      --  silent = true,
-    },
+    signature = { enabled = false }
   },
-  presets = {
-    bottom_search = true,
-    command_palette = true,
-    long_message_to_split = true,
+  messages = {
+    view_search = false,
   },
   routes = {
+    {
+      filter = { event = 'msg_show', find = '%d+L, %d+B' },
+      view = 'mini',
+    },
+    {
+      filter = { event = 'msg_show', find = 'Hunk %d+ of %d+' },
+      view = 'mini',
+    },
+    {
+      filter = { event = 'msg_show', find = '%d+ more lines' },
+      opts = { skip = true },
+    },
+    {
+      filter = { event = 'msg_show', find = '%d+ lines yanked' },
+      opts = { skip = true },
+    },
+    {
+      filter = { event = 'msg_show', kind = 'quickfix' },
+      view = 'mini',
+    },
+    {
+      filter = { event = 'msg_show', kind = 'search_count' },
+      view = 'mini',
+    },
+    {
+      filter = { event = 'msg_show', kind = 'wmsg' },
+      view = 'mini',
+    },
     {
       --- hide written messages
       filter = {
@@ -49,7 +71,26 @@ local opts = {
       },
       opts = { skip = true },
     }
-
+  },
+  presets = {
+    bottom_search = true,
+    command_palette = true,
+    long_message_to_split = true,
+    lsp_doc_border = true,
+  },
+  commands = {
+    all = {
+      view = 'split',
+      opts = { enter = true, format = 'details' },
+      filter = {},
+    },
+  },
+  ---@type NoiceConfigViews
+  views = {
+    mini = {
+      zindex = 100,
+      win_options = { winblend = 0 },
+    },
   },
 }
 

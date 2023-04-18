@@ -64,7 +64,8 @@ local plugins = {
       -- when noice is not enabled, install notify on VeryLazy
       local Util = require("utils")
       if not Util.has("noice.nvim") then
-        print("noice not found, use notify")
+        print("noice not found, use fidget")
+
         Util.on_very_lazy(function()
           vim.notify = require("fidget")
         end)
@@ -816,7 +817,9 @@ local plugins = {
   -- Better quickfix
   {
     "kevinhwang91/nvim-bqf",
-    event = "BufRead",
+    ft = 'qf',
+    cmd = 'BqfAutoToggle',
+    event = 'QuickFixCmdPost',
     config = function()
       require("plugins.configs.nvim-bqf")
     end,

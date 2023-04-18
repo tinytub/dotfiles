@@ -14,19 +14,22 @@ M.blankline = function()
   require("indent_blankline").setup({
     indentLine_enabled = 1,
     char = "▏",
+
     filetype_exclude = {
       "help",
       "terminal",
       "alpha",
       "lazy",
       "lspinfo",
+      "dashboard",
       "TelescopePrompt",
       "TelescopeResults",
       "mason",
       "neo-tree",
       "Trouble",
       "lazy",
-      "",
+      "noice",
+      "nui",
     },
 
     buftype_exclude = { "terminal" },

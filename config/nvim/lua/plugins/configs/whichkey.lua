@@ -13,6 +13,8 @@ local function map(mode, lhs, rhs, opts)
 end
 
 local options = {
+  plugins = { spelling = true },
+
   icons = {
     breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
     separator = "  ", -- symbol used between a key and it's label

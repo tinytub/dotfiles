@@ -1,5 +1,19 @@
 -- some from https://github.com/CKolkey/config/blob/master/nvim/lua/plugins/neo-tree.lua
 -- some from LazyVim
+-- Enable a strong cursorline.
+local function set_cursorline()
+  vim.wo.winhighlight = 'CursorLine:WildMenu'
+  vim.wo.cursorline = true
+  vim.o.signcolumn = 'auto'
+end
+
+-- Find previous neo-tree window and clear bright highlight selection.
+-- Don't hide cursorline though, so 'follow_current_file' works.
+local function reset_cursorline()
+  local winid = vim.fn.win_getid(vim.fn.winnr('#'))
+  vim.api.nvim_win_set_option(winid, 'winhighlight', '')
+end
+
 require("neo-tree").setup({
   log_level            = "error",
   log_to_file          = true,
@@ -149,6 +163,10 @@ require("neo-tree").setup({
         end
       end,
     },
+
+    -- Toggle strong cursorline highlight
+    { event = 'neo_tree_buffer_enter', handler = set_cursorline },
+    { event = 'neo_tree_buffer_leave', handler = reset_cursorline },
   }, -- }}}
 
   filesystem = { -- {{{
