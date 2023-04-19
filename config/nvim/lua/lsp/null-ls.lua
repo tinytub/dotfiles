@@ -10,40 +10,40 @@ local builtins = require("null-ls").builtins
 --local on_attach = require('lsp.lspconfig').on_attach
 
 -- neovim 0.8 format on save
-local lsp_formatting = function(bufnr)
-  vim.lsp.buf.format({
-    filter = function(client)
-      -- apply whatever logic you want (in this example, we'll only use null-ls)
-      return client.name == "null-ls"
-    end,
-    bufnr = bufnr,
-  })
-end
+--local lsp_formatting = function(bufnr)
+--  vim.lsp.buf.format({
+--    filter = function(client)
+--      -- apply whatever logic you want (in this example, we'll only use null-ls)
+--      return client.name == "null-ls"
+--    end,
+--    bufnr = bufnr,
+--  })
+--end
 
--- if you want to set up formatting on save, you can use this as a callback
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
--- add to your shared on_attach callback
-local on_attach = function(client, bufnr)
-  Lsp_keymaps(client, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-  --if client.server_capabilities.signatureHelpProvider then
-  --  require("lsp.signature").setup(client)
-  --end
-
-  if client.supports_method("textDocument/formatting") then
-    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = augroup,
-      buffer = bufnr,
-      callback = function()
-        lsp_formatting(bufnr)
-      end,
-    })
-  end
-end
-
+---- if you want to set up formatting on save, you can use this as a callback
+--local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+--
+---- add to your shared on_attach callback
+--local on_attach = function(client, bufnr)
+--  require("lsp.keymaps").Lsp_keymaps(client, bufnr)
+--  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+--
+--  --if client.server_capabilities.signatureHelpProvider then
+--  --  require("lsp.signature").setup(client)
+--  --end
+--
+--  if client.supports_method("textDocument/formatting") then
+--    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+--    vim.api.nvim_create_autocmd("BufWritePre", {
+--      group = augroup,
+--      buffer = bufnr,
+--      callback = function()
+--        lsp_formatting(bufnr)
+--      end,
+--    })
+--  end
+--end
+--
 local function has_exec(filename)
   return function(_)
     return vim.fn.executable(filename) == 1
@@ -53,11 +53,11 @@ end
 -- https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md
 require("null-ls").setup({
   -- Ensure key maps are setup
-  on_attach = on_attach,
-  debug = false,
-  debounce = 1000,
-  default_timeout = 3000,
-  fallback_severity = vim.diagnostic.severity.WARN,
+  --on_attach = on_attach,
+  --debug = false,
+  --debounce = 1000,
+  --default_timeout = 3000,
+  --fallback_severity = vim.diagnostic.severity.WARN,
   root_dir = require("lspconfig").util.root_pattern(
     ".null-ls-root",
     "Makefile",

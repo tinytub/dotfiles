@@ -21,7 +21,12 @@ local plugins = {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "b0o/SchemaStore.nvim", -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
-      "hrsh7th/cmp-nvim-lsp",
+      {
+        "hrsh7th/cmp-nvim-lsp",
+        cond = function()
+          return require("utils").has("nvim-cmp")
+        end,
+      }
     },
     config = function()
       require("lsp.lspconfig")
