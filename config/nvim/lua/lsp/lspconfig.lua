@@ -55,27 +55,27 @@ function Lsp_keymaps(client, bufnr)
   client.server_capabilities.documentFormattingProvider = true
   client.server_capabilities.documentRangeFormattingProvider = true
   -- neovim 0.8?
-  if client.server_capabilities.documentFormattingProvider then
-    --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
-    vim.api.nvim_buf_create_user_command(
-      bufnr,
-      "LspFormat",
-      vim.lsp.buf.format,
-      { range = false, desc = "LSP format" }
-    )
-  end
+  --if client.server_capabilities.documentFormattingProvider then
+  --  --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
+  --  vim.api.nvim_buf_create_user_command(
+  --    bufnr,
+  --    "LspFormat",
+  --    vim.lsp.buf.format,
+  --    { range = false, desc = "LSP format" }
+  --  )
+  --end
 
-  if client.server_capabilities.documentRangeFormattingProvider then
-    vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
-    --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
-    vim.api.nvim_buf_create_user_command(
-      bufnr,
-      "LspRangeFormat",
-      --vim.lsp.buf.range_formatting,
-      vim.lsp.buf.format,
-      { range = true, desc = "LSP range format" }
-    )
-  end
+  --if client.server_capabilities.documentRangeFormattingProvider then
+  --  vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
+  --  --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
+  --  vim.api.nvim_buf_create_user_command(
+  --    bufnr,
+  --    "LspRangeFormat",
+  --    --vim.lsp.buf.range_formatting,
+  --    vim.lsp.buf.format,
+  --    { range = true, desc = "LSP range format" }
+  --  )
+  --end
 
 end
 
@@ -121,98 +121,69 @@ local function make_capabilities()
   return capabilities
 end
 
-local function make_ts_capabilities()
-  local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.preselectSupport = true
-  capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-  capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-  capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-  capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-  capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-      'documentation',
-      'detail',
-      'additionalTextEdits',
-    }
-  }
-  capabilities.textDocument.codeAction = {
-    dynamicRegistration = false,
-    codeActionLiteralSupport = {
-      codeActionKind = {
-        valueSet = {
-          "",
-          "quickfix",
-          "refactor",
-          "refactor.extract",
-          "refactor.inline",
-          "refactor.rewrite",
-          "source",
-          "source.organizeImports",
-        },
+--lsp_config.capabilities = capabilities
+local lsp_handlers = function()
+  local opts = {
+    diagnostics = {
+      virtual_text = {
+        spacing = 4,
+        source = "if_many",
+        prefix = "●",
+        -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+        -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+        -- prefix = "icons",
+      },
+      signs = true,
+      severity_sort = true,
+      underline = true,
+      update_in_insert = false, -- update diagnostics insert mode
+      float = {
+        --  focused = false,
+        --  style = "minimal",
+        border = "rounded",
+        --  source = "always",
+        --  header = "",
+        --  prefix = "",
       },
     },
   }
-  capabilities.textDocument.foldingRange = {
-    dynamicRegistration = false,
-    lineFoldingOnly = true
-  }
 
-end
+  -- setup autoformat, default is true
+  --require("lazyvim.plugins.lsp.format").autoformat = opts.autoformat
 
---lsp_config.capabilities = capabilities
+  -- setup formatting and keymaps
+  require("utils").on_attach(function(client, buffer)
+    require("lsp.format").on_attach(client, buffer)
+    Lsp_keymaps(client, buffer)
 
-local lsp_handlers = function()
-  local function lspSymbol(name, icon)
-    --vim.fn.sign_define("LspDiagnosticsSign" .. name, {text = icon })
-    local hl = "DiagnosticSign" .. name
-    vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
+    vim.api.nvim_buf_set_option(buffer, "omnifunc", "v:lua.vim.lsp.omnifunc")
+    require("lsp_signature").on_attach(require("plugins.configs.others").signature_opt())
+
+    local navic = require("nvim-navic")
+    navic.attach(client, buffer)
+    vim.g.navic_silence = true
+
+  end)
+
+  for name, icon in pairs(require("plugins.configs.lspkind_icons").diagnostics) do
+    name = "DiagnosticSign" .. name
+    vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
   end
 
-  lspSymbol("Error", "")
-  lspSymbol("Info", "")
-  lspSymbol("Hint", "")
-  lspSymbol("Warn", "")
+  if opts.diagnostics.virtual_text.prefix == "icons" then
+    opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
+        or function(diagnostic)
+          local icons = require("plugins.configs.lspkind_icons").icons.diagnostics
+          for d, icon in pairs(icons) do
+            if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+              return icon
+            end
+          end
+        end
+  end
 
-  --lspSymbol("Error", "")
-  --lspSymbol("Info", "")
-  --lspSymbol("Hint", "")
-  --lspSymbol("Warn", "")
+  vim.diagnostic.config(opts.diagnostics)
 
-  vim.diagnostic.config({
-    --virtual_text = {
-    --    prefix = "",
-    --},
-    --virtual_text = { spacing = 4, prefix = '●' },
-    virtual_text = false,
-    --virtual_text = {
-    --  spacing = 4,
-    --  prefix = '●',
-    --  source = 'always',
-    --  severity = {
-    --    min = vim.diagnostic.severity.HINT,
-    --  },
-    --},
-    signs = true,
-    severity_sort = true,
-    --underline = true,
-    update_in_insert = false, -- update diagnostics insert mode
-    --float = {
-    --  show_header = false,
-    --  source = 'always',
-    --  border = 'rounded',
-    --},
-    float = {
-      focused = false,
-      style = "minimal",
-      border = "rounded",
-      source = "always",
-      header = "",
-      prefix = "",
-    },
-  })
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = "single",
   })
@@ -220,24 +191,8 @@ local lsp_handlers = function()
     border = "single",
   })
 
-  --vim.lsp.handlers['textDocument/references'] = function(_, _, _)
-  --  require('telescope.builtin').lsp_references()
-  --end
-
-  -- suppress error messages from lang servers
-  --vim.notify = function(msg, log_level)
-  --  if msg:match("exit code") then
-  --    return
-  --  end
-  --  if log_level == vim.log.levels.ERROR then
-  --    vim.api.nvim_err_writeln(msg)
-  --  else
-  --    vim.api.nvim_echo({ { msg } }, true, {})
-  --  end
-  --end
 end
 
-lsp_handlers()
 
 local lspbufformat = vim.api.nvim_create_augroup("lsp_buf_format", { clear = true })
 local format_acmd = function()
@@ -249,99 +204,6 @@ local format_acmd = function()
       vim.lsp.buf.format()
     end,
   })
-end
-
-local format_acmd_go = function()
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    group = lspbufformat,
-    callback = function()
-      --vim.lsp.buf.formatting_sync()
-      vim.lsp.buf.format({ async = true })
-
-    end,
-  })
-
-  -- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-866632451
-  -- organize imports aka goimports
-  vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = { "*.go" },
-    group = lspbufformat,
-    callback = function()
-      --local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
-      local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
-      params.context = { only = { "source.organizeImports" } }
-
-      local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
-      for _, res in pairs(result or {}) do
-        for _, r in pairs(res.result or {}) do
-          if r.edit then
-            vim.lsp.util.apply_workspace_edit(r.edit, vim.lsp.util._get_offset_encoding())
-          else
-            vim.lsp.buf.execute_command(r.command)
-          end
-        end
-      end
-    end,
-  })
-end
-
-
-
--- Default lsp config for filetypes
-local filetype_attach = setmetatable({
-  -- v0.7
-  --go = require('lsp.format').OrgImports(1000),
-  -- v0.8
-  go = format_acmd_go,
-  lua = format_acmd,
-  javascript = format_acmd,
-  --yaml = format_acmd,
-  json = format_acmd,
-  py = format_acmd,
-}, {
-  __index = function()
-    return function() end
-  end,
-})
-
-local custom_init = function(client)
-  client.config.flags = client.config.flags or {}
-  client.config.flags.allow_incremental_sync = true
-end
-
-local custom_attach = function(client, bufnr)
-  if client.config
-      and client.config.capabilities
-      and client.config.capabilities.documentFormattingProvider == false
-  then
-    -- dont format if client disabled it
-  else
-    local filetype = vim.api.nvim_buf_get_option(0, "filetype")
-    --filetype_attach[filetype](client)
-    local plg = filetype_attach[filetype]
-    if plg == nil then
-      format_acmd()
-    else
-      plg(client)
-    end
-  end
-
-  Lsp_keymaps(client, bufnr)
-
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-
-  --if client.server_capabilities.signatureHelpProvider then
-  --  require("lsp.signature").setup(client)
-  --end
-  --lsp_highlight_document(client)
-
-  require("lsp_signature").on_attach(require("plugins.configs.others").signature_opt())
-
-  local navic = require("nvim-navic")
-  navic.attach(client, bufnr)
-  vim.g.navic_silence = true
-  --lsp_highlight_document(client)
 end
 
 -- Manage server with custom setup
@@ -427,43 +289,19 @@ local setup_server = function(server, config)
   end
 
   config = vim.tbl_deep_extend("force", {
-    on_init = custom_init,
-    on_attach = custom_attach,
+    --on_init = custom_init,
+    --on_attach = custom_attach,
     --capabilities = updated_capabilities,
     capabilities = make_capabilities(),
     flags = {
       debounce_text_changes = nil,
     },
   }, config)
-  if server == "tsserver" then
-    --config.settings = require('lsp.servers.tsserver')
-    config.capabilities = make_ts_capabilities()
-    require("typescript").setup({
-      disable_commands = false, -- prevent the plugin from creating Vim commands
-      debug = false, -- enable debug logging for commands
-      go_to_source_definition = {
-        fallback = true, -- fall back to standard LSP definition on failure
-      },
-
-      server = config })
-  else
-    lspconfig[server].setup(config)
-  end
+  lspconfig[server].setup(config)
 end
+
+lsp_handlers()
 
 for server, config in pairs(servers) do
-  --    local ok, lsp_installer = pcall(require, "nvim-lsp-installer")
-  --	local server_is_found, theserver = lsp_installer.get_server(server)
-  --	if server_is_found and not theserver:is_installed() then
-  --		print("Installing " .. server)
-  --		--server:install()
-  --	end
   setup_server(server, config)
 end
-
---return lsp_config
-return {
-  on_init = custom_init,
-  on_attach = custom_attach,
-  capabilities = make_capabilities(),
-}

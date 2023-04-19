@@ -1,8 +1,12 @@
 local icons = {
   diagnostics = {
+    --lspSymbol("Error", "")
+    --lspSymbol("Info", "")
+    --lspSymbol("Hint", "")
+    --lspSymbol("Warn", "")
     Error = " ",
     Warn = " ",
-    Hint = " ",
+    Hint = " ",
     Info = " ",
   },
   dap = {

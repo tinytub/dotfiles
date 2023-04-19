@@ -22,6 +22,7 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 local opts = {
   spec = {
     { import = "plugins.lazy_plugins" },
+    { import = "plugins.extras.dap" },
     -- add LazyVim and import its plugins
     -- { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- import any extras modules here

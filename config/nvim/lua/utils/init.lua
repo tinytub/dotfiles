@@ -1,4 +1,5 @@
 local M = {}
+-- from https://github.com/LazyVim/LazyVim
 
 M.root_patterns = { ".git", "lua" }
 ---@param plugin string
@@ -69,6 +70,16 @@ function M.float_term(cmd, opts)
   if opts.esc_esc == false then
     vim.keymap.set("t", "<esc>", "<esc>", { buffer = float.buf, nowait = true })
   end
+end
+
+---@param name string
+function M.opts(name)
+  local plugin = require("lazy.core.config").plugins[name]
+  if not plugin then
+    return {}
+  end
+  local Plugin = require("lazy.core.plugin")
+  return Plugin.values(plugin, "opts", false)
 end
 
 ---@param fn fun()
