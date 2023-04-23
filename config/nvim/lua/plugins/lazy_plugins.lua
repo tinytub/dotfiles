@@ -286,13 +286,14 @@ local plugins = {
     event = "VeryLazy",
   },
 
-  {
-    "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("plugins.configs.nvim-lualine")
-    end,
-  },
+  --{
+  --  "nvim-lualine/lualine.nvim",
+  --  event = "VeryLazy",
+  --  config = function()
+  --    require("plugins.configs.nvim-lualine")
+  --  end,
+  --},
+
   {
     'kdheepak/tabline.nvim',
     enabled = false,
@@ -436,68 +437,17 @@ local plugins = {
   },
 
   {
-    "hrsh7th/nvim-cmp",
-    version = false,
-    event = "InsertEnter",
-    dependencies = {
-      {
-        "zbirenbaum/copilot-cmp",
-        dependencies = "copilot.lua",
-        opts = {},
-        config = function(_, opts)
-          local copilot_cmp = require("copilot_cmp")
-          --opts.formatters = {
-          --  insert_text = require("copilot_cmp.format").remove_existing
-          --}
-          copilot_cmp.setup(opts)
-          -- attach cmp source whenever copilot attaches
-          -- fixes lazy-loading issues with the copilot cmp source
-          require("utils").on_attach(function(client)
-            if client.name == "copilot" then
-              copilot_cmp._on_insert_enter()
-            end
-          end)
-        end,
-      },
-
-      {
-        -- snippet plugin
-        "L3MON4D3/LuaSnip",
-        build = (not jit.os:find("Windows"))
-            and "echo -e 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
-            or nil,
-        dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
-        config = function()
-          require("plugins.configs.others").luasnip()
-        end,
-      },
-
-      -- autopairing of (){}[] etc
-      --{
-      --  enabled = false,
-      --  "windwp/nvim-autopairs",
-      --  config = function()
-      --    require("plugins.configs.autopairs")
-      --  end,
-      --},
-      -- cmp sources plugins
-      {
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
-        'hrsh7th/cmp-cmdline',
-        "saadparwaiz1/cmp_luasnip",
-
-        --"saadparwaiz1/cmp_luasnip",
-        --"hrsh7th/cmp-nvim-lua",
-        --"hrsh7th/cmp-nvim-lsp",
-        --"hrsh7th/cmp-buffer",
-        --"hrsh7th/cmp-path",
-      },
-    },
+    "jackMort/ChatGPT.nvim",
+    enabled = false,
+    event = "VeryLazy",
     config = function()
-      require "plugins.configs.nvim-cmp"
+      require("chatgpt").setup()
     end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
   },
 
 

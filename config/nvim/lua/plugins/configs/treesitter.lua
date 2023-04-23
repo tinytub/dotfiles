@@ -40,8 +40,7 @@ if lines > 7000 then
   print("disable ts txtobj")
 end
 
-
-ts_config.setup {
+local opts = {
   ensure_installed = {
     "go", "gomod", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx",
     "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "vue", "bash", "vim", "vimdoc", "luadoc",
@@ -72,8 +71,28 @@ ts_config.setup {
   incremental_selection = {
     enable = enable,
     -- disable = {"elm"},
+    keymaps = {
+      init_selection = "<C-space>",
+      node_incremental = "<C-space>",
+      scope_incremental = false,
+      node_decremental = "<bs>",
+    },
   }
 }
+
+if type(opts.ensure_installed) == "table" then
+  ---@type table<string, boolean>
+  local added = {}
+  opts.ensure_installed = vim.tbl_filter(function(lang)
+    if added[lang] then
+      return false
+    end
+    added[lang] = true
+    return true
+  end, opts.ensure_installed)
+end
+
+ts_config.setup(opts)
 
 --M.textsubjects = function()
 --  require 'nvim-treesitter.configs'.setup {

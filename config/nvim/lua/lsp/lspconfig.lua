@@ -210,7 +210,7 @@ local lsp_handlers = function()
     vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
   end
 
-  if opts.diagnostics.virtual_text.prefix == "icons" then
+  if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
     opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
         or function(diagnostic)
           local icons = require("plugins.configs.lspkind_icons").icons.diagnostics
@@ -222,7 +222,7 @@ local lsp_handlers = function()
         end
   end
 
-  vim.diagnostic.config(opts.diagnostics)
+  vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = "single",
