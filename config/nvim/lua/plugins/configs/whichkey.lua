@@ -88,7 +88,10 @@ local mappings = {
 
   f = {
     name = "+Finder",
-    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
+    r = { "<cmd>Telescope oldfiles<cr>", "Recent" },
+    -- R = { function()
+    --   Utils.telescope("oldfiles", { cwd = vim.loop.cwd() })
+    -- end, desc = "Recent (cwd)" },
     n = { "<cmd>enew<cr>", "New File" },
     --. = {"<cmd>Telescope filetypes<cr>"                   , "filetypes"},
     D = { "<cmd>Telescope diagnostics bufnr=0<cr>", "document_diagnostics" },
@@ -100,7 +103,6 @@ local mappings = {
     b = { "<cmd>Telescope file_browser<cr>", "file browser" },
     u = { "<cmd>Telescope colorscheme<cr>", "colorschemes" },
     w = { "<cmd>Telescope grep_string<cr>", "grep_string" },
-    o = { "<cmd>Telescope oldfiles<cr>", "oldfiles" },
     s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
     S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols" },
     --        ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "   pick hidden term" },
@@ -116,7 +118,7 @@ local mappings = {
     [">"] = { "<cmd>BufferMoveNext<cr>", "move next" },
     ["<"] = { "<cmd>BufferMovePrevious<cr>", "move prev" },
     ["P"] = { "<cmd>BufferPick<cr>", "pick buffer" },
-    ["d"] = { "<cmd>BufferClose<cr>", "delete-buffer" },
+    --["d"] = { "<cmd>BufferClose<cr>", "delete-buffer" },
     ["n"] = { "bnext", "next-buffer" },
     ["p"] = { "bprevious", "previous-buffer" },
     ["?"] = { "Buffers", "fzf-buffer" },
@@ -128,7 +130,6 @@ local mappings = {
           vim.g.indent_blankline_context_patterns,
           vim.g.indent_blankline_use_treesitter_scope
         )
-
         if ok then
           vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
           vim.cmd [[normal! _]]
@@ -220,7 +221,8 @@ local misc_n_opts = {
 
 local misc_n_mapping = {
   -- close buffer + hide terminal buffer
-  ["<C-x>"] = { "<cmd>Bdelete<cr>", "close buffer" },
+  --["<C-x>"] = { "<cmd>Bdelete<cr>", "close buffer" },
+  ["<C-x>"] = { function() require("mini.bufremove").delete(0, false) end, "Delete Buffer" },
   ["<ESC>"] = { "<cmd> noh <CR>", "no highlight" },
   --["<M-[>"] = { "<cmd>vertical resize -2<CR>", "vertical resize -2" },
   --["<M-]>"] = { "<cmd>vertical resize +2<CR>", "vertical resize +2" },

@@ -370,12 +370,12 @@ local plugins = {
     end,
   },
 
-  -- Better buffer closing
-  {
-    "famiu/bufdelete.nvim",
-    module = "bufdelete",
-    cmd = { "Bdelete", "Bwipeout" },
-  },
+  ---- Better buffer closing
+  --{
+  --  "famiu/bufdelete.nvim",
+  --  module = "bufdelete",
+  --  cmd = { "Bdelete", "Bwipeout" },
+  --},
 
   -- Telescope
   {
@@ -551,6 +551,16 @@ local plugins = {
       local ai = require("mini.ai")
       ai.setup(opts)
     end,
+  },
+
+  -- buffer remove
+  {
+    "echasnovski/mini.bufremove",
+    -- stylua: ignore
+    keys = {
+      { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
+      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+    },
   },
 
   {
