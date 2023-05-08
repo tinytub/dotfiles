@@ -30,6 +30,7 @@ M.blankline = function()
       "lazy",
       "noice",
       "nui",
+      "mason",
     },
 
     buftype_exclude = { "terminal" },
