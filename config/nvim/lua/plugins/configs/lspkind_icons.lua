@@ -10,7 +10,8 @@ local icons = {
     Info = " ",
   },
   dap = {
-    Stopped = { " ", "DiagnosticWarn", "DapStoppedLine" },
+
+    Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
     Breakpoint = " ",
     BreakpointCondition = " ",
     BreakpointRejected = { " ", "DiagnosticError" },
@@ -64,4 +65,5 @@ local icons = {
     Watch = " ",
   },
 }
+
 return icons

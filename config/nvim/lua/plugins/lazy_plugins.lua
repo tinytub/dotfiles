@@ -9,9 +9,35 @@ local plugins = {
   -- Package Manager
   {
     "williamboman/mason.nvim",
-    cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
-    config = function()
-      require "plugins.configs.mason"
+    cmd = { "Mason" },
+    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+    opts = {
+      ensure_installed = {
+        "stylua",
+        "shfmt",
+        "gopls",
+        -- "flake8",
+      },
+    },
+    --config = function(_,opts)
+    --  require "plugins.configs.mason"
+    --end,
+    ---@param opts MasonSettings | {ensure_installed: string[]}
+    config = function(_, opts)
+      require("mason").setup(opts)
+      local mr = require "mason-registry"
+      local function ensure_installed()
+        for _, tool in ipairs(opts.ensure_installed) do
+          local p = mr.get_package(tool)
+          if not p:is_installed() then p:install() end
+        end
+      end
+
+      if mr.refresh then
+        mr.refresh(ensure_installed)
+      else
+        ensure_installed()
+      end
     end,
     enabled = true,
   },
@@ -21,16 +47,15 @@ local plugins = {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "b0o/SchemaStore.nvim", -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
+
+      "mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
       {
         "hrsh7th/cmp-nvim-lsp",
-        cond = function()
-          return require("utils").has("nvim-cmp")
-        end,
-      }
+        cond = function() return require("utils").has "nvim-cmp" end,
+      },
     },
-    config = function()
-      require("lsp.lspconfig")
-    end,
+    config = function() require "lsp.lspconfig" end,
   },
 
   -- lsp signature 展示
@@ -39,9 +64,7 @@ local plugins = {
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
     dependencies = "nvim-lspconfig",
-    config = function()
-      require("plugins.configs.others").signature()
-    end,
+    config = function() require("plugins.configs.others").signature() end,
   },
 
   -- lsp_lines 可以分层显示 lsp 弹出的行内错误
@@ -49,33 +72,26 @@ local plugins = {
     enabled = false,
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     dependencies = { "nvim-lspconfig" },
-    config = function()
-      require("plugins.configs.lsp-line").setup()
-    end,
+    config = function() require("plugins.configs.lsp-line").setup() end,
     event = { "BufAdd", "BufRead", "BufNewFile", "InsertEnter" },
   },
-
 
   -- lspserver 状态插件, 停用了 statuslines 中的状态。
   {
     "j-hui/fidget.nvim",
     dependencies = { "nvim-lspconfig" },
     enabled = false,
-    config = function()
-      require("plugins.configs.fidget-nvim")
-    end,
+    config = function() require "plugins.configs.fidget-nvim" end,
     event = { "BufAdd", "BufRead", "BufNewFile", "InsertEnter" },
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("utils")
-      if not Util.has("noice.nvim") then
-        print("noice not found, use fidget")
+      local Util = require "utils"
+      if not Util.has "noice.nvim" then
+        print "noice not found, use fidget"
 
-        Util.on_very_lazy(function()
-          vim.notify = require("fidget")
-        end)
+        Util.on_very_lazy(function() vim.notify = require "fidget" end)
       end
-    end
+    end,
   },
 
   {
@@ -83,10 +99,29 @@ local plugins = {
     event = { "BufReadPre", "BufNewFile" },
     --ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css',
     --  'javascript', 'javascriptreact', 'python' },
-    dependencies = { "nvim-lspconfig" },
-    config = function()
-      require("lsp.null-ls")
+    dependencies = { "nvim-lspconfig", "mason.nvim" },
+    opts = function()
+      local nls = require "null-ls"
+      return {
+        root_dir = require("null-ls.utils").root_pattern(
+          ".null-ls-root",
+          ".neoconf.json",
+          "Makefile",
+          ".git",
+          "go.mod"
+        ),
+        sources = {
+          nls.builtins.formatting.fish_indent,
+          nls.builtins.diagnostics.fish,
+          nls.builtins.formatting.stylua,
+          nls.builtins.formatting.shfmt,
+          -- nls.builtins.diagnostics.flake8,
+        },
+      }
     end,
+    --config = function()
+    --  require("lsp.null-ls")
+    --end,
     enabled = true,
   },
 
@@ -96,11 +131,8 @@ local plugins = {
     "nvim-tree/nvim-web-devicons",
     --name = "nvim-web-devicons",
     --after = "base46",
-    config = function()
-      require("plugins.configs.icons")
-    end,
+    config = function() require "plugins.configs.icons" end,
     lazy = true,
-
   },
 
   -- ui components
@@ -109,21 +141,17 @@ local plugins = {
   -- Notification Enhancer
   {
     "rcarriga/nvim-notify",
-    config = function()
-      require("plugins.configs.nvim-notify").config()
-    end,
+    config = function() require("plugins.configs.nvim-notify").config() end,
     --event = "VeryLazy",
     enabled = false,
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("utils")
-      if not Util.has("noice.nvim") then
-        print("noice not found, use notify")
-        Util.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
+      local Util = require "utils"
+      if not Util.has "noice.nvim" then
+        print "noice not found, use notify"
+        Util.on_very_lazy(function() vim.notify = require "notify" end)
       end
-    end
+    end,
   },
 
   -- noicer ui
@@ -132,14 +160,17 @@ local plugins = {
     "folke/noice.nvim",
     event = "VeryLazy",
     enabled = true,
-    config = function()
-      require("plugins.configs.nvim-noice")
-    end,
+    config = function() require "plugins.configs.nvim-noice" end,
     keys = {
-      { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-      { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
+      {
+        "<S-Enter>",
+        function() require("noice").redirect(vim.fn.getcmdline()) end,
+        mode = "c",
+        desc = "Redirect Cmdline",
+      },
+      { "<leader>snl", function() require("noice").cmd "last" end, desc = "Noice Last Message" },
+      { "<leader>snh", function() require("noice").cmd "history" end, desc = "Noice History" },
+      { "<leader>sna", function() require("noice").cmd "all" end, desc = "Noice All" },
       --{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = { "i", "n", "s" } },
       --{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = { "i", "n", "s" } },
     },
@@ -152,27 +183,23 @@ local plugins = {
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.select = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
+        require("lazy").load { plugins = { "dressing.nvim" } }
         return vim.ui.select(...)
       end
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.input = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
+        require("lazy").load { plugins = { "dressing.nvim" } }
         return vim.ui.input(...)
       end
     end,
-    config = function()
-      require("plugins.configs.dressing").config()
-    end,
+    config = function() require("plugins.configs.dressing").config() end,
   },
 
   -- Smarter Splits
   {
     "mrjones2014/smart-splits.nvim",
     module = "smart-splits",
-    config = function()
-      require("plugins.configs.smart-splits")
-    end
+    config = function() require "plugins.configs.smart-splits" end,
   },
 
   {
@@ -181,38 +208,30 @@ local plugins = {
     -- "jayden-chan/base46.nvim",
     "tinytub/base46",
     dependencies = "plenary.nvim",
-    config = function()
-      require("plugins.configs.others").base46()
-    end,
+    config = function() require("plugins.configs.others").base46() end,
     enabled = false,
   },
 
   {
     "catppuccin/nvim",
-    name    = "catppuccin",
+    name = "catppuccin",
     --dependencies = "bufferline.nvim",
     --    run = ":CatppuccinCompile",
-    config  = function()
-      require("colors.catppuccin")
-    end,
+    config = function() require "colors.catppuccin" end,
     enabled = true,
-    lazy    = false,
+    lazy = false,
     --event = "VeryLazy",
   },
 
   {
     "sainnhe/everforest",
-    config = function()
-      require("colors").init()
-    end,
+    config = function() require("colors").init() end,
     enabled = false,
   },
 
   {
     "rebelot/kanagawa.nvim",
-    config = function()
-      require("colors").init()
-    end,
+    config = function() require("colors").init() end,
     enabled = false,
   },
 
@@ -223,7 +242,6 @@ local plugins = {
   --	end,
   --	enabled = false,
   --},
-
 
   -- automatically highlighting other uses of the word under the cursor
   {
@@ -251,9 +269,12 @@ local plugins = {
       --vim.api.nvim_set_hl(0, "IlluminatedWordWrite", ILLUMINATION)
       --vim.api.nvim_set_hl(0, "@illuminate", ILLUMINATION)
       local function map(key, dir, buffer)
-        vim.keymap.set("n", key, function()
-          require("illuminate")["goto_" .. dir .. "_reference"](false)
-        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+        vim.keymap.set(
+          "n",
+          key,
+          function() require("illuminate")["goto_" .. dir .. "_reference"](false) end,
+          { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer }
+        )
       end
 
       map("]]", "next")
@@ -281,7 +302,7 @@ local plugins = {
     dependencies = { "catppuccin", "nvim-web-devicons" },
     config = function()
       --require("plugins.configs.heirline").setup()
-      require("plugins.configs.heirline")
+      require "plugins.configs.heirline"
     end,
     event = "VeryLazy",
   },
@@ -295,17 +316,17 @@ local plugins = {
   --},
 
   {
-    'kdheepak/tabline.nvim',
+    "kdheepak/tabline.nvim",
     enabled = false,
     config = function()
-      require 'tabline'.setup {
+      require("tabline").setup {
         -- Defaults configuration options
         enable = true,
         options = {
           -- If lualine is installed tabline will use separators configured in lualine by default.
           -- These options can be used to override those settings.
-          component_separators = { '', '' },
-          section_separators = { '', '' },
+          component_separators = { "", "" },
+          section_separators = { "", "" },
           max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
           show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
           show_devicons = true, -- this shows devicons in buffer section
@@ -316,7 +337,7 @@ local plugins = {
           modified_icon = "+ ", -- change the default modified icon
           modified_italic = true, -- set to true by default; this determines whether the filename turns italic if modified
           show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
-        }
+        },
       }
       vim.cmd [[
       set guioptions-=e " Use showtabline in gui vim
@@ -324,9 +345,8 @@ local plugins = {
     ]]
     end,
     --dependencies = { 'hoob3rt/lualine.nvim', 'kyazdani42/nvim-web-devicons' }
-    dependencies = { 'lualine.nvim', 'nvim-web-devicons' }
+    dependencies = { "lualine.nvim", "nvim-web-devicons" },
   },
-
 
   -- Simple statusline component that shows what scope you are working inside
   {
@@ -340,9 +360,7 @@ local plugins = {
     init = function()
       vim.g.navic_silence = true
       require("utils").on_attach(function(client, buffer)
-        if client.server_capabilities.documentSymbolProvider then
-          require("nvim-navic").attach(client, buffer)
-        end
+        if client.server_capabilities.documentSymbolProvider then require("nvim-navic").attach(client, buffer) end
       end)
     end,
     opts = function()
@@ -354,20 +372,17 @@ local plugins = {
         highlight = true,
         -- indicator used when context hits depth limit
         depth_limit_indicator = "..",
-        icons = require("plugins.configs.lspkind_icons").kinds
+        icons = require("plugins.configs.lspkind_icons").kinds,
       }
     end,
   },
 
-
   {
     "akinsho/bufferline.nvim",
-    lazy         = false,
+    lazy = false,
     dependencies = { "catppuccin", "nvim-web-devicons" },
     --event = "VeryLazy",
-    config       = function()
-      require("plugins.configs.bufferline")
-    end,
+    config = function() require "plugins.configs.bufferline" end,
   },
 
   ---- Better buffer closing
@@ -388,18 +403,14 @@ local plugins = {
         enabled = false,
       },
     },
-    config = function()
-      require("plugins.configs.telescope")
-    end,
+    config = function() require "plugins.configs.telescope" end,
   },
 
   -- Smooth escaping
   {
     "max397574/better-escape.nvim",
     event = "InsertCharPre",
-    config = function()
-      require("plugins.configs.others").better_escape()
-    end,
+    config = function() require("plugins.configs.others").better_escape() end,
   },
 
   -- auto pairs
@@ -407,9 +418,7 @@ local plugins = {
     enabled = true,
     "echasnovski/mini.pairs",
     event = "VeryLazy",
-    config = function(_, opts)
-      require("mini.pairs").setup(opts)
-    end,
+    config = function(_, opts) require("mini.pairs").setup(opts) end,
   },
 
   -- copilot
@@ -440,17 +449,13 @@ local plugins = {
     "jackMort/ChatGPT.nvim",
     enabled = false,
     event = "VeryLazy",
-    config = function()
-      require("chatgpt").setup()
-    end,
+    config = function() require("chatgpt").setup() end,
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
+      "nvim-telescope/telescope.nvim",
+    },
   },
-
-
 
   --syntax highlighting
   {
@@ -468,25 +473,21 @@ local plugins = {
           local opts = require("lazy.core.plugin").values(plugin, "opts", false)
           local enabled = false
           if opts.textobjects then
-            for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
+            for _, mod in ipairs { "move", "select", "swap", "lsp_interop" } do
               if opts.textobjects[mod] and opts.textobjects[mod].enable then
                 enabled = true
                 break
               end
             end
           end
-          if not enabled then
-            require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
-          end
+          if not enabled then require("lazy.core.loader").disable_rtp_plugin "nvim-treesitter-textobjects" end
         end,
       },
     },
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" },
-    config = function()
-      require("plugins.configs.treesitter")
-    end,
+    config = function() require "plugins.configs.treesitter" end,
     --run = ":TSUpdate",
-    run = function() require("nvim-treesitter.install").update { with_sync = true } () end,
+    run = function() require("nvim-treesitter.install").update { with_sync = true }() end,
     --config = function ()
     --   require "plugins.configs.treesitter"
     --end
@@ -494,9 +495,7 @@ local plugins = {
   {
     "nvim-treesitter/nvim-treesitter-context",
     dependencies = "nvim-treesitter",
-    config = function()
-      require("treesitter-context").setup()
-    end,
+    config = function() require("treesitter-context").setup() end,
     enabled = false,
   },
 
@@ -526,7 +525,6 @@ local plugins = {
   --  enabled = false,
   --},
 
-
   -- better text-objects
   {
     "echasnovski/mini.ai",
@@ -534,7 +532,7 @@ local plugins = {
     event = "VeryLazy",
     dependencies = { "nvim-treesitter-textobjects" },
     opts = function()
-      local ai = require("mini.ai")
+      local ai = require "mini.ai"
       return {
         n_lines = 500,
         custom_textobjects = {
@@ -548,7 +546,7 @@ local plugins = {
       }
     end,
     config = function(_, opts)
-      local ai = require("mini.ai")
+      local ai = require "mini.ai"
       ai.setup(opts)
     end,
   },
@@ -559,7 +557,7 @@ local plugins = {
     -- stylua: ignore
     keys = {
       { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
-      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end,  desc = "Delete Buffer (Force)" },
     },
   },
 
@@ -570,7 +568,7 @@ local plugins = {
     opts = function()
       -- don't use animate when scrolling with the mouse
       local mouse_scrolled = false
-      for _, scroll in ipairs({ "Up", "Down" }) do
+      for _, scroll in ipairs { "Up", "Down" } do
         local key = "<ScrollWheel" .. scroll .. ">"
         vim.keymap.set({ "", "i" }, key, function()
           mouse_scrolled = true
@@ -578,14 +576,14 @@ local plugins = {
         end, { expr = true })
       end
 
-      local animate = require("mini.animate")
+      local animate = require "mini.animate"
       return {
         resize = {
-          timing = animate.gen_timing.linear({ duration = 100, unit = "total" }),
+          timing = animate.gen_timing.linear { duration = 100, unit = "total" },
         },
         scroll = {
-          timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
-          subscroll = animate.gen_subscroll.equal({
+          timing = animate.gen_timing.linear { duration = 150, unit = "total" },
+          subscroll = animate.gen_subscroll.equal {
             predicate = function(total_scroll)
               if mouse_scrolled then
                 mouse_scrolled = false
@@ -593,13 +591,11 @@ local plugins = {
               end
               return total_scroll > 1
             end,
-          }),
+          },
         },
       }
     end,
-    config = function(_, opts)
-      require("mini.animate").setup(opts)
-    end,
+    config = function(_, opts) require("mini.animate").setup(opts) end,
   },
 
   {
@@ -607,12 +603,11 @@ local plugins = {
     --after = "nvim-web-devicons",
     ft = "alpha",
     event = "VimEnter",
-
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     --cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     config = function()
       --require("plugins.configs.nvimtree").config()
-      require("plugins.configs.nvimtree")
+      require "plugins.configs.nvimtree"
     end,
     enabled = false,
   },
@@ -640,21 +635,15 @@ local plugins = {
         },
       },
     },
-    deactivate = function()
-      vim.cmd([[Neotree close]])
-    end,
+    deactivate = function() vim.cmd [[Neotree close]] end,
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1
       if vim.fn.argc() == 1 then
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == "directory" then
-          require("neo-tree")
-        end
+        if stat and stat.type == "directory" then require "neo-tree" end
       end
     end,
-    config = function()
-      require("plugins.configs.neotree")
-    end,
+    config = function() require "plugins.configs.neotree" end,
   },
 
   {
@@ -664,9 +653,7 @@ local plugins = {
     --cond = function()
     --   return vim.fn.isdirectory ".git" == 1
     --end,
-    config = function()
-      require("plugins.configs.gitsigns").config()
-    end,
+    config = function() require("plugins.configs.gitsigns").config() end,
     init = function()
       -- load gitsigns only when a git file is opened
       vim.api.nvim_create_autocmd({ "BufRead" }, {
@@ -675,9 +662,7 @@ local plugins = {
           vim.fn.system("git -C " .. '"' .. vim.fn.expand "%:p:h" .. '"' .. " rev-parse")
           if vim.v.shell_error == 0 then
             vim.api.nvim_del_augroup_by_name "GitSignslazy_load"
-            vim.schedule(function()
-              require("lazy").load { plugins = "gitsigns.nvim" }
-            end)
+            vim.schedule(function() require("lazy").load { plugins = "gitsigns.nvim" } end)
           end
         end,
       })
@@ -690,12 +675,8 @@ local plugins = {
     event = "VeryLazy",
     keys = { "<leader>", '"', "'", "`", "c", "v" },
     --module = "which-key",
-    config = function()
-      require("plugins.configs.whichkey")
-    end,
-    cond = function()
-      return not vim.g.vscode
-    end,
+    config = function() require "plugins.configs.whichkey" end,
+    cond = function() return not vim.g.vscode end,
   },
 
   -- Dashboard
@@ -704,9 +685,7 @@ local plugins = {
     enabled = true,
     event = "VimEnter",
     --after = "base46",
-    config = function()
-      require("plugins.configs.dashboard").setup()
-    end,
+    config = function() require("plugins.configs.dashboard").setup() end,
   },
 
   -- matchup 高亮显示光标所在位置对应的括号,函数等
@@ -736,9 +715,7 @@ local plugins = {
         { opts.mappings.replace, desc = "Replace surrounding" },
         { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
       }
-      mappings = vim.tbl_filter(function(m)
-        return m[1] and #m[1] > 0
-      end, mappings)
+      mappings = vim.tbl_filter(function(m) return m[1] and #m[1] > 0 end, mappings)
       return vim.list_extend(mappings, keys)
     end,
     opts = {
@@ -761,9 +738,7 @@ local plugins = {
   {
     --"norcalli/nvim-colorizer.lua",
     "NvChad/nvim-colorizer.lua",
-    config = function()
-      require("plugins.configs.others").colorizer()
-    end,
+    config = function() require("plugins.configs.others").colorizer() end,
     enabled = true,
   },
 
@@ -772,22 +747,20 @@ local plugins = {
     "nacro90/numb.nvim",
     --event = "BufRead",
     config = function()
-      require("numb").setup({
+      require("numb").setup {
         show_numbers = true, -- Enable 'number' for the window while peeking
         show_cursorline = true, -- Enable 'cursorline' for the window while peeking
-      })
+      }
     end,
     enabled = true,
   },
   -- Better quickfix
   {
     "kevinhwang91/nvim-bqf",
-    ft = 'qf',
-    cmd = 'BqfAutoToggle',
-    event = 'QuickFixCmdPost',
-    config = function()
-      require("plugins.configs.nvim-bqf")
-    end,
+    ft = "qf",
+    cmd = "BqfAutoToggle",
+    event = "QuickFixCmdPost",
+    config = function() require "plugins.configs.nvim-bqf" end,
     enabled = true,
   },
 
@@ -796,18 +769,14 @@ local plugins = {
     "akinsho/toggleterm.nvim",
     --commit = commit.toggleterm,
     event = "BufWinEnter",
-    config = function()
-      require("plugins.configs.toggleterm")
-    end,
+    config = function() require "plugins.configs.toggleterm" end,
     --disable = not lvim.builtin.terminal.active,
   },
 
   -- Markdown preview
   {
     "iamcco/markdown-preview.nvim",
-    run = function()
-      vim.fn["mkdp#util#install"]()
-    end,
+    run = function() vim.fn["mkdp#util#install"]() end,
     ft = "markdown",
     event = "BufRead",
   },
@@ -834,14 +803,12 @@ local plugins = {
       "nvim-treesitter/nvim-treesitter",
     },
     event = { "CmdlineEnter" },
-    ft = { "go", 'gomod' },
-    config = function()
-      require("plugins.configs.go-nvim")
-    end,
+    ft = { "go", "gomod" },
+    config = function() require "plugins.configs.go-nvim" end,
   },
 
   {
-    "jose-elias-alvarez/typescript.nvim"
+    "jose-elias-alvarez/typescript.nvim",
   },
 
   -- smooth scroll
@@ -854,9 +821,7 @@ local plugins = {
     "karb94/neoscroll.nvim",
     enabled = true,
     --        event = "WinScrolled",
-    config = function()
-      require("neoscroll").setup()
-    end,
+    config = function() require("neoscroll").setup() end,
     event = "VeryLazy",
   },
 
@@ -866,7 +831,7 @@ local plugins = {
     keys = function()
       ---@type LazyKeys[]
       local ret = {}
-      for _, key in ipairs({ "f", "F", "t", "T" }) do
+      for _, key in ipairs { "f", "F", "t", "T" } do
         ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
       end
       return ret
@@ -882,7 +847,7 @@ local plugins = {
       { "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
     },
     config = function(_, opts)
-      local leap = require("leap")
+      local leap = require "leap"
       for k, v in pairs(opts) do
         leap.opts[k] = v
       end
@@ -895,9 +860,7 @@ local plugins = {
   {
     enabled = false,
     "unblevable/quick-scope",
-    config = function()
-      require("plugins.configs.others").quickscope()
-    end,
+    config = function() require("plugins.configs.others").quickscope() end,
   },
 
   -- Git
@@ -918,13 +881,13 @@ local plugins = {
     "vim-test/vim-test",
     event = "BufRead",
     config = function()
-      vim.cmd([[
+      vim.cmd [[
               function! ToggleTermStrategy(cmd) abort
                 call luaeval("require('toggleterm').exec(_A[1], _A[2])", [a:cmd, 0])
               endfunction
 
               let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
-            ]])
+            ]]
 
       vim.g["test#strategy"] = "toggleterm"
       --vim.g["test#strategy"] = "neovim"
@@ -943,29 +906,24 @@ local plugins = {
   },
 
   {
-    'nvim-neotest/neotest',
+    "nvim-neotest/neotest",
     enabled = true,
     ft = { "go", "rust", "python" },
     dependencies = {
-      'nvim-lua/plenary.nvim',
+      "nvim-lua/plenary.nvim",
       --'nvim-treesitter/nvim-treesitter',
       --'antoinemadec/FixCursorHold.nvim',
       "rcarriga/neotest-plenary",
       "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-go",
-
     },
-    config = function()
-      require("plugins.configs.neotest")
-    end,
+    config = function() require "plugins.configs.neotest" end,
   },
 
   {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("plugins.configs.others").blankline()
-    end,
+    config = function() require("plugins.configs.others").blankline() end,
   },
 
   -- active indent guide and indent text objects
@@ -979,30 +937,22 @@ local plugins = {
       options = { try_as_border = true },
       draw = {
         delay = 50,
-        animation = function()
-          return 10
-        end,
+        animation = function() return 10 end,
       },
     },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
+        callback = function() vim.b.miniindentscope_disable = true end,
       })
     end,
-    config = function(_, opts)
-      require("mini.indentscope").setup(opts)
-    end,
+    config = function(_, opts) require("mini.indentscope").setup(opts) end,
   },
 
   {
     "folke/trouble.nvim",
     cmd = { "Trouble", "TroubleToggle" },
-    config = function()
-      require("plugins.configs.nvim-trouble")
-    end,
+    config = function() require "plugins.configs.nvim-trouble" end,
     enabled = true,
   },
 
@@ -1011,9 +961,7 @@ local plugins = {
     "folke/todo-comments.nvim",
     event = { "BufReadPost", "BufNewFile" },
     --dependencies = "nvim-lua/plenary.nvim",
-    config = function()
-      require("plugins.configs.todo-comments")
-    end,
+    config = function() require "plugins.configs.todo-comments" end,
     -- event = 'BufWinEnter',
     enabled = true,
   },
@@ -1023,9 +971,7 @@ local plugins = {
     "numToStr/Comment.nvim",
     --keys = { "gc", "gb" },
     --config = override_req("nvim_comment", "(plugins.configs.configs.others).comment()"),
-    config = function()
-      require("plugins.configs.others").comment()
-    end,
+    config = function() require("plugins.configs.others").comment() end,
   },
 }
 

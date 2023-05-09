@@ -81,7 +81,7 @@ require("null-ls").setup({
     --}),
 
     -- Lua
-    builtins.formatting.stylua,
+--    builtins.formatting.stylua,
 
     -- SQL
     builtins.formatting.sqlformat,

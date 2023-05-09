@@ -22,6 +22,7 @@ return {
         callSnippet = "Replace",
       },
       workspace = {
+        checkThirdParty = false,
         --                library = {
         --                    [vim.fn.expand('$VIMRUNTIME/lua')] = true,
         --                    [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true },

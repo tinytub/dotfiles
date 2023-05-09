@@ -38,7 +38,6 @@ local format_acmd_go = function()
       --local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
       local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
       params.context = { only = { "source.organizeImports" } }
-
       local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
       for _, res in pairs(result or {}) do
         for _, r in pairs(res.result or {}) do
@@ -85,7 +84,7 @@ function M.format(opts)
       end
       return client.name ~= "null-ls"
     end,
-  }, require("lazyvim.util").opts("nvim-lspconfig").format or {}))
+  }, require("utils").opts("nvim-lspconfig").format or {}))
 end
 
 function M.on_attach(client, buf)
@@ -104,10 +103,10 @@ function M.on_attach(client, buf)
       callback = function()
         local filetype = vim.api.nvim_buf_get_option(0, "filetype")
         --local plg = filetypes_attach[filetype]
-        if filetype == "go" then
-          format_acmd_go()
-          return
-        end
+        --if filetype == "go" then
+        --  format_acmd_go()
+        --  return
+        --end
         if M.autoformat then
           M.format()
           return

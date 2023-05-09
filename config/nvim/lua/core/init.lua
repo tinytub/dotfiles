@@ -27,6 +27,7 @@ local opts = {
 
     { import = "plugins.extras.copilot" },
     { import = "plugins.extras.dap" },
+    { import = "plugins.extras.formatting" },
 
     -- add LazyVim and import its plugins
     -- { "LazyVim/LazyVim", import = "lazyvim.plugins" },
