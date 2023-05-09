@@ -1,7 +1,7 @@
-local lspconfig = require 'lspconfig'
+local lspconfig = require "lspconfig"
 
 -- Borders for LspInfo winodw
-local win = require("lspconfig.ui.windows")
+local win = require "lspconfig.ui.windows"
 local _default_opts = win.default_opts
 
 win.default_opts = function(options)
@@ -54,8 +54,6 @@ local opts = {
   },
 }
 
-
-
 -- some from https://github.com/ibhagwan/nvim-lua
 
 -- Create custom keymaps for useful
@@ -65,9 +63,9 @@ local opts = {
 -- null-ls also call this
 local function make_capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  if pcall(require, 'cmp_nvim_lsp') then
+  if pcall(require, "cmp_nvim_lsp") then
     --capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+    capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
   end
   capabilities.textDocument.completion.completionItem = {
     documentationFormat = { "markdown", "plaintext" },
@@ -106,50 +104,23 @@ local function make_capabilities()
 end
 
 -- Manage server with custom setup
-local util = require("lspconfig.util")
+local util = require "lspconfig.util"
 local servers = {
-  lua_ls = require("lsp.servers.sumneko_lua"),
-  pyright = require("lsp.servers.pyright"),
-  jsonls = require("lsp.servers.jsonls"),
+  lua_ls = require "lsp.servers.sumneko_lua",
+  pyright = require "lsp.servers.pyright",
   --emmet_ls = require("user.lsp.settings.emmet_ls"),
-  vimls = require("lsp.servers.vimls"),
-  gopls = require("lsp.servers.gopls"),
+  vimls = require "lsp.servers.vimls",
+  gopls = require "lsp.servers.gopls",
   --yamlls = {},
-  tsserver = require("lsp.servers.tsserver"),
-  tailwindcss = {
-    tailwindCSS = {
-      lint = {
-        cssConflict = "warning",
-        invalidApply = "error",
-        invalidConfigPath = "error",
-        invalidScreen = "error",
-        invalidTailwindDirective = "error",
-        invalidVariant = "error",
-        recommendedVariantOrder = "warning"
-      },
-      experimental = {
-        classRegex = {
-          "tw`([^`]*)",
-          "tw=\"([^\"]*)",
-          "tw={\"([^\"}]*)",
-          "tw\\.\\w+`([^`]*)",
-          "tw\\(.*?\\)`([^`]*)",
-          { "clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
-          { "classnames\\(([^)]*)\\)", "'([^']*)'" }
-        }
-      },
-      validate = true
-    }
-  },
   cssls = {
     css = {
       lint = {
-        unknownAtRules = 'ignore',
+        unknownAtRules = "ignore",
       },
     },
     scss = {
       lint = {
-        unknownAtRules = 'ignore',
+        unknownAtRules = "ignore",
       },
     },
   },
@@ -174,9 +145,7 @@ local setup_server = function(server, config)
     return
   end
 
-  if type(config) ~= "table" then
-    config = {}
-  end
+  if type(config) ~= "table" then config = {} end
 
   --local server_opts = vim.tbl_deep_extend("force", {
   --  capabilities = vim.deepcopy(capabilities),
@@ -194,7 +163,6 @@ local setup_server = function(server, config)
   }, config)
 
   lspconfig[server].setup(server_opts)
-
 end
 
 local function setup(server)
@@ -205,13 +173,9 @@ local function setup(server)
   }, servers[server] or {})
 
   if opts.setup[server] then
-    if opts.setup[server](server, server_opts) then
-      return
-    end
+    if opts.setup[server](server, server_opts) then return end
   elseif opts.setup["*"] then
-    if opts.setup["*"](server, server_opts) then
-      return
-    end
+    if opts.setup["*"](server, server_opts) then return end
   end
   require("lspconfig")[server].setup(server_opts)
 end
@@ -230,10 +194,9 @@ local lsp_handlers = function()
     vim.api.nvim_buf_set_option(buffer, "omnifunc", "v:lua.vim.lsp.omnifunc")
     require("lsp_signature").on_attach(require("plugins.configs.others").signature_opt())
 
-    local navic = require("nvim-navic")
+    local navic = require "nvim-navic"
     navic.attach(client, buffer)
     vim.g.navic_silence = true
-
   end)
 
   for name, icon in pairs(require("plugins.configs.lspkind_icons").diagnostics) do
@@ -242,15 +205,13 @@ local lsp_handlers = function()
   end
 
   if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
-    opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
-        or function(diagnostic)
-          local icons = require("plugins.configs.lspkind_icons").icons.diagnostics
-          for d, icon in pairs(icons) do
-            if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
-              return icon
-            end
-          end
+    opts.diagnostics.virtual_text.prefix = vim.fn.has "nvim-0.10.0" == 0 and "●"
+      or function(diagnostic)
+        local icons = require("plugins.configs.lspkind_icons").icons.diagnostics
+        for d, icon in pairs(icons) do
+          if diagnostic.severity == vim.diagnostic.severity[d:upper()] then return icon end
         end
+      end
   end
 
   vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
@@ -283,22 +244,19 @@ local lsp_handlers = function()
   end
 
   if have_mason then
-    mlsp.setup({ ensure_installed = ensure_installed })
-    mlsp.setup_handlers({ setup })
+    mlsp.setup { ensure_installed = ensure_installed }
+    mlsp.setup_handlers { setup }
   end
 
-  if require("utils").lsp_get_config("denols") and require("utils").lsp_get_config("tsserver") then
+  if require("utils").lsp_get_config "denols" and require("utils").lsp_get_config "tsserver" then
     local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
     require("utils").lsp_disable("tsserver", is_deno)
-    require("utils").lsp_disable("denols", function(root_dir)
-      return not is_deno(root_dir)
-    end)
+    require("utils").lsp_disable("denols", function(root_dir) return not is_deno(root_dir) end)
   end
 
   --for server, config in pairs(servers) do
   --  setup_server(server, config)
   --end
 end
-
 
 lsp_handlers()

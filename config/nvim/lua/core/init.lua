@@ -1,4 +1,4 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
   -- bootstrap lazy.nvim
@@ -28,6 +28,7 @@ local opts = {
     { import = "plugins.extras.copilot" },
     { import = "plugins.extras.dap" },
     { import = "plugins.extras.formatting" },
+    { import = "plugins.extras.lang.json" },
 
     -- add LazyVim and import its plugins
     -- { "LazyVim/LazyVim", import = "lazyvim.plugins" },
@@ -47,7 +48,7 @@ local opts = {
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
   ui = {
-    border = 'rounded',
+    border = "rounded",
     --icons = {
     --  ft = "",
     --  lazy = "鈴 ",
