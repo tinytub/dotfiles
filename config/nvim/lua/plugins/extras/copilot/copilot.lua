@@ -14,12 +14,12 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function(_, opts)
-      local Util = require("utils")
+      local Util = require "utils"
       local colors = {
-        [""] = Util.fg("Special"),
-        ["Normal"] = Util.fg("Special"),
-        ["Warning"] = Util.fg("DiagnosticError"),
-        ["InProgress"] = Util.fg("DiagnosticWarn"),
+        [""] = Util.fg "Special",
+        ["Normal"] = Util.fg "Special",
+        ["Warning"] = Util.fg "DiagnosticError",
+        ["InProgress"] = Util.fg "DiagnosticWarn",
       }
       table.insert(opts.sections.lualine_x, 2, {
         function()
@@ -49,33 +49,29 @@ return {
         dependencies = "copilot.lua",
         opts = {},
         config = function(_, opts)
-          local copilot_cmp = require("copilot_cmp")
+          local copilot_cmp = require "copilot_cmp"
           copilot_cmp.setup(opts)
           -- attach cmp source whenever copilot attaches
           -- fixes lazy-loading issues with the copilot cmp source
           require("utils").on_attach(function(client)
-            if client.name == "copilot" then
-              copilot_cmp._on_insert_enter()
-            end
+            if client.name == "copilot" then copilot_cmp._on_insert_enter(opts) end
           end)
         end,
       },
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
-      local cmp = require("cmp")
+      local cmp = require "cmp"
       table.insert(opts.sources, 1, { name = "copilot", group_index = 2 })
       local confirm = opts.mapping["<CR>"]
-      local confirm_copilot = cmp.mapping.confirm({
+      local confirm_copilot = cmp.mapping.confirm {
         select = true,
         behavior = cmp.ConfirmBehavior.Replace,
-      })
+      }
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
         ["<CR>"] = function(...)
           local entry = cmp.get_selected_entry()
-          if entry and entry.source.name == "copilot" then
-            return confirm_copilot(...)
-          end
+          if entry and entry.source.name == "copilot" then return confirm_copilot(...) end
           return confirm(...)
         end,
       })
