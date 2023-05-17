@@ -418,7 +418,7 @@ local plugins = {
     enabled = true,
     "echasnovski/mini.pairs",
     event = "VeryLazy",
-    config = function(_, opts) require("mini.pairs").setup(opts) end,
+    opts = {},
   },
 
   -- copilot
@@ -595,7 +595,6 @@ local plugins = {
         },
       }
     end,
-    config = function(_, opts) require("mini.animate").setup(opts) end,
   },
 
   {
@@ -729,10 +728,6 @@ local plugins = {
         update_n_lines = "gzn", -- Update `n_lines`
       },
     },
-    config = function(_, opts)
-      -- use gz mappings instead of s to prevent conflict with leap
-      require("mini.surround").setup(opts)
-    end,
   },
 
   {
@@ -946,7 +941,6 @@ local plugins = {
         callback = function() vim.b.miniindentscope_disable = true end,
       })
     end,
-    config = function(_, opts) require("mini.indentscope").setup(opts) end,
   },
 
   {

@@ -1,48 +1,49 @@
-local noice_status, noice = pcall(require, 'noice')
-if not noice_status then
-  return
-end
+local noice_status, noice = pcall(require, "noice")
+if not noice_status then return end
 --https://github.com/LazyVim/LazyVim
 local opts = {
   lsp = {
     override = {
-      ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-      ['vim.lsp.util.stylize_markdown'] = true,
-      --['cmp.entry.get_documentation'] = true,
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true,
     },
-    signature = { enabled = false }
+    signature = { enabled = false },
   },
   messages = {
     view_search = false,
   },
   routes = {
     {
-      filter = { event = 'msg_show', find = '%d+L, %d+B' },
-      view = 'mini',
+      filter = {
+        event = "msg_show",
+        find = "%d+L, %d+B",
+      },
+      view = "mini",
     },
     {
-      filter = { event = 'msg_show', find = 'Hunk %d+ of %d+' },
-      view = 'mini',
+      filter = { event = "msg_show", find = "Hunk %d+ of %d+" },
+      view = "mini",
     },
     {
-      filter = { event = 'msg_show', find = '%d+ more lines' },
+      filter = { event = "msg_show", find = "%d+ more lines" },
       opts = { skip = true },
     },
     {
-      filter = { event = 'msg_show', find = '%d+ lines yanked' },
+      filter = { event = "msg_show", find = "%d+ lines yanked" },
       opts = { skip = true },
     },
     {
-      filter = { event = 'msg_show', kind = 'quickfix' },
-      view = 'mini',
+      filter = { event = "msg_show", kind = "quickfix" },
+      view = "mini",
     },
     {
-      filter = { event = 'msg_show', kind = 'search_count' },
-      view = 'mini',
+      filter = { event = "msg_show", kind = "search_count" },
+      view = "mini",
     },
     {
-      filter = { event = 'msg_show', kind = 'wmsg' },
-      view = 'mini',
+      filter = { event = "msg_show", kind = "wmsg" },
+      view = "mini",
     },
     {
       --- hide written messages
@@ -70,7 +71,7 @@ local opts = {
         find = " more line",
       },
       opts = { skip = true },
-    }
+    },
   },
   presets = {
     bottom_search = true,
@@ -80,8 +81,8 @@ local opts = {
   },
   commands = {
     all = {
-      view = 'split',
-      opts = { enter = true, format = 'details' },
+      view = "split",
+      opts = { enter = true, format = "details" },
       filter = {},
     },
   },
