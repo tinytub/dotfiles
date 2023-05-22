@@ -1,8 +1,6 @@
 local M = {}
 function M.Lsp_keymaps(client, bufnr)
-  local function buf_set_keymap(...)
-    vim.api.nvim_buf_set_keymap(bufnr, ...)
-  end
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 
   -- Mappings.
   local opts = { noremap = true, silent = true }
@@ -25,11 +23,16 @@ function M.Lsp_keymaps(client, bufnr)
   buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
   --buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references({includeDeclaration = false} )<CR>", opts)
   buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
-  buf_set_keymap("n", "ge", '<cmd>lua vim.diagnostic.open_float(0, { scope = "line", header = false, focus = false })<CR>', opts)
+  buf_set_keymap(
+    "n",
+    "ge",
+    '<cmd>lua vim.diagnostic.open_float(0, { scope = "line", header = false, focus = false })<CR>',
+    opts
+  )
   --buf_set_keymap("n", "[e", '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})<CR>', opts)
   --buf_set_keymap("n", "]e", '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})<CR>', opts)
-  buf_set_keymap("n", "[e", '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap("n", "]e", '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap("n", "[e", '<cmd>lua vim.diagnostic.goto_prev({ float = { border = "rounded" } })<CR>', opts)
+  buf_set_keymap("n", "]e", '<cmd>lua vim.diagnostic.goto_next({ float = { border = "rounded" } })<CR>', opts)
   buf_set_keymap("n", "<space>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
   buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.format()<cr>", opts)
   buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
@@ -58,7 +61,6 @@ function M.Lsp_keymaps(client, bufnr)
   --    { range = true, desc = "LSP range format" }
   --  )
   --end
-
 end
 
 return M

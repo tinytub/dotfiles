@@ -1,5 +1,5 @@
-local which_key = require("which-key")
-local Utils = require("utils")
+local which_key = require "which-key"
+local Utils = require "utils"
 
 local function map(mode, lhs, rhs, opts)
   local keys = require("lazy.core.handler").handlers.keys
@@ -60,16 +60,14 @@ local mappings = {
   --["/"] = "Comment",
   --["e"] = { "<cmd>NvimTreeToggle<cr>", "Explorer" },
   ["e"] = {
-    function()
-      require("neo-tree.command").execute({ toggle = true, dir = Utils.get_root() })
-    end,
-    "Explorer" },
+    function() require("neo-tree.command").execute { toggle = true, dir = Utils.get_root() } end,
+    "Explorer",
+  },
   --["F"] = { "<cmd>NvimTreeFindFile<cr>", "Find Current File" },
   ["F"] = {
-    function()
-      require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
-    end,
-    "Find Current File" },
+    function() require("neo-tree.command").execute { toggle = true, dir = vim.loop.cwd() } end,
+    "Find Current File",
+  },
   --["V"] = {"<cmd>Vista<cr>"                                          ,"Vista"},
   [";"] = { "<cmd>Dashboard<cr>", "home screen" },
   ["M"] = { "<cmd>MarkdownPreviewToggle<cr>", "markdown preview" },
@@ -97,7 +95,16 @@ local mappings = {
     D = { "<cmd>Telescope diagnostics bufnr=0<cr>", "document_diagnostics" },
     d = { "<cmd>Telescope diagnostics<cr>", "workspace_diagnostics" },
     --f = {"<cmd>Telescope find_files <cr>"                 , "files"},
-    f = { "<cmd>Telescope find_files follow=true no_ignore=true hidden=true <cr>", "files" },
+    f = {
+      function()
+        local action_state = require "telescope.actions.state"
+        local line = action_state.get_current_line()
+        Utils.telescope("find_files", { no_ignore = true, hidden = true, default_text = line })()
+      end,
+      "files",
+    },
+    --f = { "<cmd>Telescope find_files follow=true no_ignore=true hidden=true <cr>", "files" },
+
     h = { "<cmd>Telescope command_history<cr>", "history" },
     a = { "<cmd>Telescope live_grep<cr>", "live grep" },
     b = { "<cmd>Telescope file_browser<cr>", "file browser" },
@@ -151,23 +158,30 @@ local mappings = {
     c = { "<cmd>Telescope git_commits<cr>", "Checkout commit" },
     f = { "<cmd>Telescope git_files<cr>", "git_files" },
 
-    g = { function() Utils.float_term({ "lazygit" }, { cwd = Utils.get_root(), esc_esc = false }) end, "Lazygit (root dir)" },
+    g = {
+      function() Utils.float_term({ "lazygit" }, { cwd = Utils.get_root(), esc_esc = false }) end,
+      "Lazygit (root dir)",
+    },
     G = { function() Utils.float_term({ "lazygit" }, { esc_esc = false }) end, "Lazygit (cwd)" },
 
     C = {
       "<cmd>Telescope git_bcommits<cr>",
       "Checkout commit(for current file)",
     },
-
-
   },
   l = {
     name = "+LSP",
     a = { "<cmd>lua vim.lsp.buf.range_code_action()<CR>", "Code Action" },
     i = { "<cmd>LspInfo<cr>", "Info" },
     f = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" },
-    j = { "<cmd>lua vim.diagnostic.goto_next({popup_opts = {border = 'single'}})<cr>", "Next Diagnostic" },
-    k = { "<cmd>lua vim.diagnostic.goto_prev({popup_opts = {border = 'single'}})<cr>", "Prev Diagnostic" },
+    j = {
+      function() vim.diagnostic.goto_next { float = { border = "rounded" } } end,
+      "Next Diagnostic",
+    },
+    k = {
+      function() vim.diagnostic.goto_prev { float = { border = "rounded" } } end,
+      "Prev Diagnostic",
+    },
     l = { "<cmd>ToggleLspVirtualLine<cr>", "Lsp Lines" },
     --r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
     q = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", "Quickfix" },
@@ -239,9 +253,7 @@ local misc_n_mapping = {
   ["<F11>"] = { "<cmd>lua require'dap'.step_into()<CR>", "dap step into" },
   ["<F12>"] = { "<cmd>lua require'dap'.step_out()<CR>", "dap step out" },
   ["<leader>/"] = {
-    function()
-      require("Comment.api").toggle.linewise.current()
-    end,
+    function() require("Comment.api").toggle.linewise.current() end,
 
     "toggle comment",
   },
@@ -263,7 +275,7 @@ local misc_v_mapping = {
 
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
 
-local wk = require("which-key")
+local wk = require "which-key"
 
 wk.register(misc_n_mapping, misc_n_opts)
 wk.register(misc_v_mapping, misc_v_opts)

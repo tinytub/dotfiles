@@ -3,9 +3,7 @@ local M = {}
 
 M.root_patterns = { ".git", "lua" }
 ---@param plugin string
-function M.has(plugin)
-  return require("lazy.core.config").plugins[plugin] ~= nil
-end
+function M.has(plugin) return require("lazy.core.config").plugins[plugin] ~= nil end
 
 ---@param on_attach fun(client, buffer)
 function M.on_attach(on_attach)
@@ -31,22 +29,18 @@ function M.get_root()
   ---@type string[]
   local roots = {}
   if path then
-    for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
+    for _, client in pairs(vim.lsp.get_active_clients { bufnr = 0 }) do
       local workspace = client.config.workspace_folders
-      local paths = workspace and vim.tbl_map(function(ws)
-        return vim.uri_to_fname(ws.uri)
-      end, workspace) or client.config.root_dir and { client.config.root_dir } or {}
+      local paths = workspace and vim.tbl_map(function(ws) return vim.uri_to_fname(ws.uri) end, workspace)
+        or client.config.root_dir and { client.config.root_dir }
+        or {}
       for _, p in ipairs(paths) do
         local r = vim.loop.fs_realpath(p)
-        if path:find(r, 1, true) then
-          roots[#roots + 1] = r
-        end
+        if path:find(r, 1, true) then roots[#roots + 1] = r end
       end
     end
   end
-  table.sort(roots, function(a, b)
-    return #a > #b
-  end)
+  table.sort(roots, function(a, b) return #a > #b end)
   ---@type string?
   local root = roots[1]
   if not root then
@@ -76,6 +70,21 @@ function M.telescope(builtin, opts)
         builtin = "find_files"
       end
     end
+
+    if opts.cwd and opts.cwd ~= vim.loop.cwd() then
+      opts.attach_mappings = function(_, map)
+        map("i", "<a-c>", function()
+          local action_state = require "telescope.actions.state"
+          local line = action_state.get_current_line()
+          M.telescope(
+            params.builtin,
+            vim.tbl_deep_extend("force", {}, params.opts or {}, { cwd = false, default_text = line })
+          )()
+        end)
+        return true
+      end
+    end
+
     require("telescope.builtin")[builtin](opts)
   end
 end
@@ -88,18 +97,14 @@ function M.float_term(cmd, opts)
     size = { width = 0.9, height = 0.9 },
   }, opts or {})
   local float = require("lazy.util").float_term(cmd, opts)
-  if opts.esc_esc == false then
-    vim.keymap.set("t", "<esc>", "<esc>", { buffer = float.buf, nowait = true })
-  end
+  if opts.esc_esc == false then vim.keymap.set("t", "<esc>", "<esc>", { buffer = float.buf, nowait = true }) end
 end
 
 ---@param name string
 function M.opts(name)
   local plugin = require("lazy.core.config").plugins[name]
-  if not plugin then
-    return {}
-  end
-  local Plugin = require("lazy.core.plugin")
+  if not plugin then return {} end
+  local Plugin = require "lazy.core.plugin"
   return Plugin.values(plugin, "opts", false)
 end
 
@@ -107,17 +112,13 @@ end
 function M.on_very_lazy(fn)
   vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
-    callback = function()
-      fn()
-    end,
+    callback = function() fn() end,
   })
 end
 
 function M.lazy_notify()
   local notifs = {}
-  local function temp(...)
-    table.insert(notifs, vim.F.pack_len(...))
-  end
+  local function temp(...) table.insert(notifs, vim.F.pack_len(...)) end
 
   local orig = vim.notify
   vim.notify = temp
@@ -141,9 +142,7 @@ function M.lazy_notify()
 
   -- wait till vim.notify has been replaced
   check:start(function()
-    if vim.notify ~= temp then
-      replay()
-    end
+    if vim.notify ~= temp then replay() end
   end)
   -- or if it took more than 500ms, then something went wrong
   timer:start(500, 0, replay)
@@ -157,19 +156,17 @@ function M.fg(name)
 end
 
 function M.lsp_get_config(server)
-  local configs = require("lspconfig.configs")
+  local configs = require "lspconfig.configs"
   return rawget(configs, server)
 end
 
 ---@param server string
 ---@param cond fun( root_dir, config): boolean
 function M.lsp_disable(server, cond)
-  local util = require("lspconfig.util")
+  local util = require "lspconfig.util"
   local def = M.lsp_get_config(server)
   def.document_config.on_new_config = util.add_hook_before(def.document_config.on_new_config, function(config, root_dir)
-    if cond(root_dir, config) then
-      config.enabled = false
-    end
+    if cond(root_dir, config) then config.enabled = false end
   end)
 end
 
