@@ -76,6 +76,8 @@ return {
       --hoverKind = "Structured",
       staticcheck = true,
 
+      semanticTokens = true,
+
       matcher = "Fuzzy",
       diagnosticsDelay = "500ms",
       --experimentalWatchedFileDelay = "100ms",

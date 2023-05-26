@@ -1,10 +1,8 @@
-local Utils = require("utils")
+local Utils = require "utils"
 
 local map = function(mode, keys, command, opts)
   local options = { noremap = true, silent = true }
-  if opts then
-    options = vim.tbl_extend("force", options, opts)
-  end
+  if opts then options = vim.tbl_extend("force", options, opts) end
   if type(keys) == "table" then
     for _, keymap in ipairs(keys) do
       M.map(mode, keymap, command, opts)
@@ -18,17 +16,15 @@ end
 
 local opt = {}
 
-
-
 -- better up/down
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 
 -- Move to window using the <ctrl> hjkl keys
-map("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
-map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
-map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
-map("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
+map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
+map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
+map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
+map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
 -- move cursor within insert mode
 map("i", "<C-h>", "<Left>")
@@ -39,14 +35,14 @@ map("i", "<C-a>", "<ESC>^i")
 map("i", "<C-e>", "<End>")
 
 -- command line Mode 移动光标
-map('c', '<C-h>', '<Left>', opt)
-map('c', '<C-l>', '<Right>', opt)
-map('c', '<C-j>', '<Down>', opt)
-map('c', '<C-k>', '<Up>', opt)
-map('c', '<C-t>', '[[<C-R>=expand("%:p:h") . "/" <CR>]]', opt)
+map("c", "<C-h>", "<Left>", opt)
+map("c", "<C-l>", "<Right>", opt)
+map("c", "<C-j>", "<Down>", opt)
+map("c", "<C-k>", "<Up>", opt)
+map("c", "<C-t>", '[[<C-R>=expand("%:p:h") . "/" <CR>]]', opt)
 
-vim.cmd('vnoremap p "0p')
-vim.cmd('vnoremap P "0P')
+vim.cmd 'vnoremap p "0p'
+vim.cmd 'vnoremap P "0P'
 
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
@@ -65,7 +61,7 @@ map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window w
 -- map('n', '<C-x>', ':lua require(\'core.utils\').close_buffer() <CR>', {noremap = true, silent = true})
 
 -- buffers
-if Utils.has("bufferline.nvim") then
+if Utils.has "bufferline.nvim" then
   map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
   map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
   map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
@@ -100,7 +96,6 @@ map(
   { desc = "Redraw / clear hlsearch / diff update" }
 )
 
-
 map({ "n", "x" }, "gw", "*N", { desc = "Search word under cursor" })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
@@ -132,6 +127,11 @@ map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 
-map("n", "<leader>ft", function() Utils.float_term(nil, { cwd = Utils.get_root() }) end, { desc = "Terminal (root dir)" })
+map(
+  "n",
+  "<leader>ft",
+  function() Utils.float_term(nil, { cwd = Utils.get_root() }) end,
+  { desc = "Terminal (root dir)" }
+)
 map("n", "<leader>fT", function() Utils.float_term() end, { desc = "Terminal (cwd)" })
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })

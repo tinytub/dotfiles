@@ -8,6 +8,9 @@ local function map(mode, lhs, rhs, opts)
   if not keys.active[keys.parse({ lhs, mode = mode }).id] then
     opts = opts or {}
     opts.silent = opts.silent ~= false
+    if opts.remap and not vim.g.vscode then
+      opts.remap = nil
+    end
     vim.keymap.set(mode, lhs, rhs, opts)
   end
 end
@@ -97,9 +100,10 @@ local mappings = {
     --f = {"<cmd>Telescope find_files <cr>"                 , "files"},
     f = {
       function()
-        local action_state = require "telescope.actions.state"
-        local line = action_state.get_current_line()
-        Utils.telescope("find_files", { no_ignore = true, hidden = true, default_text = line })()
+        --local action_state = require "telescope.actions.state"
+        --local line = action_state.get_current_line()
+        --Utils.telescope("find_files", { no_ignore = true, hidden = true, default_text = line })()
+        Utils.telescope("find_files", { no_ignore = true, hidden = true })()
       end,
       "files",
     },

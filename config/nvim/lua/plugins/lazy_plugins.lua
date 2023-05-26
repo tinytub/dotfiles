@@ -395,6 +395,7 @@ local plugins = {
   -- Telescope
   {
     "nvim-telescope/telescope.nvim",
+    commit = vim.fn.has "nvim-0.9.0" == 0 and "057ee0f8783" or nil,
     cmd = "Telescope",
     version = false,
     dependencies = {
@@ -682,9 +683,24 @@ local plugins = {
   {
     "goolord/alpha-nvim",
     enabled = true,
+    optional = true,
     event = "VimEnter",
     --after = "base46",
     config = function() require("plugins.configs.dashboard").setup() end,
+  },
+  {
+    "echasnovski/mini.starter",
+    --optional = false,
+    opts = function(_, opts)
+      local items = {
+        {
+          name = "Projects",
+          action = "Telescope projects",
+          section = string.rep(" ", 22) .. "Telescope",
+        },
+      }
+      vim.list_extend(opts.items, items)
+    end,
   },
 
   -- matchup 高亮显示光标所在位置对应的括号,函数等
@@ -728,13 +744,6 @@ local plugins = {
         update_n_lines = "gzn", -- Update `n_lines`
       },
     },
-  },
-
-  {
-    --"norcalli/nvim-colorizer.lua",
-    "NvChad/nvim-colorizer.lua",
-    config = function() require("plugins.configs.others").colorizer() end,
-    enabled = true,
   },
 
   -- 直接跳到数字
@@ -901,21 +910,6 @@ local plugins = {
   },
 
   {
-    "nvim-neotest/neotest",
-    enabled = true,
-    ft = { "go", "rust", "python" },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      --'nvim-treesitter/nvim-treesitter',
-      --'antoinemadec/FixCursorHold.nvim',
-      "rcarriga/neotest-plenary",
-      "nvim-neotest/neotest-python",
-      "nvim-neotest/neotest-go",
-    },
-    config = function() require "plugins.configs.neotest" end,
-  },
-
-  {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
     config = function() require("plugins.configs.others").blankline() end,
@@ -966,6 +960,20 @@ local plugins = {
     --keys = { "gc", "gb" },
     --config = override_req("nvim_comment", "(plugins.configs.configs.others).comment()"),
     config = function() require("plugins.configs.others").comment() end,
+    enabled = false,
+  },
+  -- comments
+  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
+  {
+    "echasnovski/mini.comment",
+    event = "VeryLazy",
+    opts = {
+      options = {
+        custom_commentstring = function()
+          return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
+        end,
+      },
+    },
   },
 }
 

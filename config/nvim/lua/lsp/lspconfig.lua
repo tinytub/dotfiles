@@ -135,39 +135,9 @@ local servers = {
 }
 
 -- LSP: Servers Configuration
-local setup_server = function(server, config)
-  if not config then
-    vim.notify(
-      " No configuration passed to server < " .. server .. " >",
-      "Warn",
-      { title = "LSP: Servers Configuration" }
-    )
-    return
-  end
-
-  if type(config) ~= "table" then config = {} end
-
-  --local server_opts = vim.tbl_deep_extend("force", {
-  --  capabilities = vim.deepcopy(capabilities),
-  --}, servers[server] or {})
-
-  local capabilities = make_capabilities()
-  local server_opts = vim.tbl_deep_extend("force", {
-    --on_init = custom_init,
-    --on_attach = custom_attach,
-    --capabilities = updated_capabilities,
-    capabilities = vim.deepcopy(capabilities),
-    flags = {
-      debounce_text_changes = nil,
-    },
-  }, config)
-
-  lspconfig[server].setup(server_opts)
-end
-
 local function setup(server)
+  local cap = make_capabilities()
   local server_opts = vim.tbl_deep_extend("force", {
-    cap = make_capabilities(),
     --capabilities = vim.deepcopy(capabilities),
     capabilities = vim.deepcopy(cap),
   }, servers[server] or {})
@@ -197,6 +167,21 @@ local lsp_handlers = function()
     local navic = require "nvim-navic"
     navic.attach(client, buffer)
     vim.g.navic_silence = true
+
+    -- only for go
+    if client.name == "gopls" then
+      if not client.server_capabilities.semanticTokensProvider then
+        local semantic = client.config.capabilities.textDocument.semanticTokens
+        client.server_capabilities.semanticTokensProvider = {
+          full = true,
+          legend = {
+            tokenTypes = semantic.tokenTypes,
+            tokenModifiers = semantic.tokenModifiers,
+          },
+          range = true,
+        }
+      end
+    end
   end)
 
   for name, icon in pairs(require("plugins.configs.lspkind_icons").diagnostics) do
@@ -243,20 +228,13 @@ local lsp_handlers = function()
     end
   end
 
-  if have_mason then
-    mlsp.setup { ensure_installed = ensure_installed }
-    mlsp.setup_handlers { setup }
-  end
+  if have_mason then mlsp.setup { ensure_installed = ensure_installed, handlers = { setup } } end
 
   if require("utils").lsp_get_config "denols" and require("utils").lsp_get_config "tsserver" then
     local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
     require("utils").lsp_disable("tsserver", is_deno)
     require("utils").lsp_disable("denols", function(root_dir) return not is_deno(root_dir) end)
   end
-
-  --for server, config in pairs(servers) do
-  --  setup_server(server, config)
-  --end
 end
 
 lsp_handlers()
