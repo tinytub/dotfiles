@@ -1,17 +1,8 @@
 local M = {}
 
-M.colorizer = function()
-  local options = {}
-  require("colorizer").setup(options)
-  vim.defer_fn(function()
-    require("colorizer").attach_to_buffer(0)
-  end, 0)
-  --vim.cmd "ColorizerAttachToBuffer"
-end
-
 M.blankline = function()
   --    require("base46").load_highlight "blankline"
-  require("indent_blankline").setup({
+  require("indent_blankline").setup {
     indentLine_enabled = 1,
     char = "▏",
 
@@ -38,32 +29,32 @@ M.blankline = function()
     show_first_indent_level = false,
     show_current_context = false,
     --show_current_context_start = true,
-  })
+  }
 end
 
 M.better_escape = function()
-  require("better_escape").setup({
+  require("better_escape").setup {
     mapping = { "jk" },
     timeout = 300,
     clear_empty_lines = false, -- clear line after escaping if there is only whitespace
     keys = "<Esc>",
-  })
+  }
 end
 
 M.luasnip = function()
   -- configs from https://github.com/arsham/shark/blob/master/lua/settings/luasnip/init.lua
-  local luasnip = require("luasnip")
+  local luasnip = require "luasnip"
 
-  luasnip.config.set_config({
+  luasnip.config.set_config {
     history = true,
     delete_check_events = "TextChanged",
-  })
+  }
   luasnip.snippets = {
-    all = require("plugins.luasnips.all"),
-    go = require("plugins.luasnips.golang"),
-    lua = require("plugins.luasnips.lua"),
-    gitcommit = require("plugins.luasnips.gitcommit"),
-    markdown = require("plugins.luasnips.markdown"),
+    all = require "plugins.luasnips.all",
+    go = require "plugins.luasnips.golang",
+    lua = require "plugins.luasnips.lua",
+    gitcommit = require "plugins.luasnips.gitcommit",
+    markdown = require "plugins.luasnips.markdown",
   }
 
   require("luasnip.loaders.from_vscode").lazy_load()
@@ -96,7 +87,7 @@ M.signature_opt = function()
 end
 
 M.comment = function()
-  require("Comment").setup({
+  require("Comment").setup {
     padding = true, -- Add a space b/w comment and the line
     sticky = true, -- Whether the cursor should stay at its position
 
@@ -106,13 +97,13 @@ M.comment = function()
       extra = false, -- Includes `gco`, `gcO`, `gcA`
       extended = false, -- Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
     },
-  })
+  }
 end
 
 M.base46 = function()
-  local base46 = require("base46")
+  local base46 = require "base46"
   --base46.setup({ theme = "everforest", custom_highlights = "colors.themes.everforest" })
-  base46.setup({ theme = "everforest" })
+  base46.setup { theme = "everforest" }
   --base46.setup({ theme = "onedark" })
   --base46.setup({ theme = "gruvbox" })
 

@@ -61,6 +61,17 @@ return {
         unknown = "",
       },
     },
+    status = { virtual_text = true },
+    output = { open_on_run = true },
+    quickfix = {
+      open = function()
+        if require("lazyvim.util").has "trouble.nvim" then
+          vim.cmd "Trouble quickfix"
+        else
+          vim.cmd "copen"
+        end
+      end,
+    },
     config = function(_, opts)
       local neotest_ns = vim.api.nvim_create_namespace "neotest"
       vim.diagnostic.config({
@@ -77,10 +88,20 @@ return {
       if opts.adapters then
         for name, config in pairs(opts.adapters or {}) do
           if type(name) == "number" then
+            if type(config) == "string" then config = require(config) end
             adapters[#adapters + 1] = config
           elseif config ~= false then
             local adapter = require(name)
-            if type(config) == "table" and not vim.tbl_isempty(config) then adapter = adapter(config) end
+            if type(config) == "table" and not vim.tbl_isempty(config) then
+              local meta = getmetatable(adapter)
+              if adapter.setup then
+                adapter.setup(config)
+              elseif meta and meta.__call then
+                adapter(config)
+              else
+                error("Adapter " .. name .. " does not support setup")
+              end
+            end
             adapters[#adapters + 1] = adapter
           end
         end
@@ -93,8 +114,9 @@ return {
     end,
     -- stylua: ignore
     keys = {
+      { "<leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run File" },
+      { "<leader>tT", function() require("neotest").run.run(vim.loop.cwd()) end, desc = "Run All Test Files" },
       { "<leader>tr", function() require("neotest").run.run() end, desc = "Run Nearest" },
-      { "<leader>tR", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run File" },
       { "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
       { "<leader>to", function() require("neotest").output.open({ enter = true, auto_close = true }) end, desc = "Show Output" },
       { "<leader>tO", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },

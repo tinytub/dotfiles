@@ -249,9 +249,12 @@ local plugins = {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       delay = 200,
-      providers = {
-        "lsp",
-        "treesitter",
+      large_file_cutoff = 2000,
+      large_file_overrides = {
+        providers = {
+          "lsp",
+          --   "treesitter",
+        },
       },
     },
     config = function(_, opts)
@@ -931,7 +934,7 @@ local plugins = {
     },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
+        pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason", "notify" },
         callback = function() vim.b.miniindentscope_disable = true end,
       })
     end,

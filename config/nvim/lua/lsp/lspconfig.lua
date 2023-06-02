@@ -11,6 +11,8 @@ win.default_opts = function(options)
 end
 
 local opts = {
+  autoformat = true,
+  format_notify = false,
   diagnostics = {
     virtual_text = {
       spacing = 4,
@@ -155,9 +157,10 @@ local lsp_handlers = function()
   -- setup autoformat, default is true
   --require("lazyvim.plugins.lsp.format").autoformat = opts.autoformat
 
+  require("lsp.format").setup(opts)
   -- setup formatting and keymaps
   require("utils").on_attach(function(client, buffer)
-    require("lsp.format").on_attach(client, buffer)
+    --require("lsp.format").on_attach(client, buffer)
     require("lsp.keymaps").Lsp_keymaps(client, buffer)
     --Lsp_keymaps(client, buffer)
 
