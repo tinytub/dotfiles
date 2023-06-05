@@ -37,7 +37,7 @@ local go_org_imports = function(wait_ms)
   end
 end
 
-local format_acmd_go = function()
+function M.format_acmd_go()
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = lspbufformat,
     callback = function()
@@ -145,6 +145,7 @@ function M.supports_format(client)
   then
     return false
   end
+
   return client.supports_method "textDocument/formatting" or client.supports_method "textDocument/rangeFormatting"
 
   --if client.supports_method "textDocument/formatting" then
@@ -172,11 +173,11 @@ function M.setup(opts)
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = vim.api.nvim_create_augroup("LazyVimFormat", {}),
     callback = function()
-      local filetype = vim.api.nvim_buf_get_option(0, "filetype")
-      if filetype == "go" then
-        format_acmd_go()
-        return
-      end
+      --local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+      --if filetype == "go" then
+      --  M.format_acmd_go()
+      --  return
+      --end
 
       if M.opts.autoformat then M.format(opts) end
       --M.format(opts)

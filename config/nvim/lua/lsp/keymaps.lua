@@ -37,8 +37,8 @@ function M.Lsp_keymaps(client, bufnr)
   buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.format()<cr>", opts)
   buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
 
-  client.server_capabilities.documentFormattingProvider = true
-  client.server_capabilities.documentRangeFormattingProvider = true
+  --client.server_capabilities.documentFormattingProvider = false
+  --client.server_capabilities.documentRangeFormattingProvider = false
   -- neovim 0.8?
   --if client.server_capabilities.documentFormattingProvider then
   --  --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })

@@ -10,6 +10,7 @@
 --
 --require("core.setup").setup()
 --	--require("core.options")
+
 --	--require("core.autocmds")
 --	--require("core.global")
 --	----require("core.packerInit").bootstrap()
@@ -18,4 +19,4 @@
 --	--require("core.keymappings").misc()
 --end
 
-require("core")
+require "core"

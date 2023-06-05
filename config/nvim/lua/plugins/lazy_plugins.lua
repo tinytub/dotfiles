@@ -55,7 +55,53 @@ local plugins = {
         cond = function() return require("utils").has "nvim-cmp" end,
       },
     },
-    config = function() require "lsp.lspconfig" end,
+    opts = {
+      autoformat = true,
+      format_notify = false,
+      diagnostics = {
+        virtual_text = {
+          spacing = 4,
+          source = "if_many",
+          prefix = "●",
+          -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
+          -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
+          -- prefix = "icons",
+        },
+        signs = true,
+        severity_sort = true,
+        underline = true,
+        update_in_insert = false, -- update diagnostics insert mode
+        float = {
+          --  focused = false,
+          --  style = "minimal",
+          border = "rounded",
+          --  source = "always",
+          --  header = "",
+          --  prefix = "",
+        },
+      },
+      -- options for vim.lsp.buf.format
+      -- `bufnr` and `filter` is handled by the formatter,
+      -- but can be also overridden when specified
+      format = {
+        formatting_options = nil,
+        timeout_ms = nil,
+      },
+      -- you can do any additional lsp server setup here
+      -- return true if you don't want this server to be setup with lspconfig
+      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
+      setup = {
+        -- example to setup with typescript.nvim
+        -- tsserver = function(_, opts)
+        --   require("typescript").setup({ server = opts })
+        --   return true
+        -- end,
+        -- Specify * to use this function as a fallback for any server
+        -- ["*"] = function(server, opts) end,
+      },
+    },
+
+    config = function(_, opts) require("lsp.lspconfig").config(opts) end,
   },
 
   -- lsp signature 展示
@@ -113,9 +159,9 @@ local plugins = {
         sources = {
           nls.builtins.formatting.fish_indent,
           nls.builtins.diagnostics.fish,
+          nls.builtins.diagnostics.zsh,
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
-          -- nls.builtins.diagnostics.flake8,
         },
       }
     end,
@@ -775,6 +821,8 @@ local plugins = {
   {
     "akinsho/toggleterm.nvim",
     --commit = commit.toggleterm,
+
+    optional = true,
     event = "BufWinEnter",
     config = function() require "plugins.configs.toggleterm" end,
     --disable = not lvim.builtin.terminal.active,

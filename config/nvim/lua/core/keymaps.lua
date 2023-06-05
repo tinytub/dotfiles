@@ -127,11 +127,18 @@ map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 
-map(
-  "n",
-  "<leader>ft",
-  function() Utils.float_term(nil, { cwd = Utils.get_root() }) end,
-  { desc = "Terminal (root dir)" }
-)
+local lazyterm = function() Utils.float_term(nil, { cwd = Utils.get_root() }) end
+
+-- floating terminal
+map("n", "<leader>ft", lazyterm, { desc = "Terminal (root dir)" })
 map("n", "<leader>fT", function() Utils.float_term() end, { desc = "Terminal (cwd)" })
+map("n", "<c-\\>", lazyterm, { desc = "Terminal (root dir)" })
+
+-- Terminal Mappings
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
+map("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
+map("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
+map("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
+map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
+map("t", "<C-w>", [[<C-\><C-n><C-w>]], { desc = "Terminal Window Mappings" })
+map("t", "<C-\\>", "<cmd>close<cr>", { desc = "Hide Terminal" })

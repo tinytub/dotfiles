@@ -1,4 +1,5 @@
-local lspconfig = require "lspconfig"
+local M = {}
+M.opts = nil
 
 -- Borders for LspInfo winodw
 local win = require "lspconfig.ui.windows"
@@ -9,52 +10,6 @@ win.default_opts = function(options)
   opts.border = "single"
   return opts
 end
-
-local opts = {
-  autoformat = true,
-  format_notify = false,
-  diagnostics = {
-    virtual_text = {
-      spacing = 4,
-      source = "if_many",
-      prefix = "●",
-      -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-      -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-      -- prefix = "icons",
-    },
-    signs = true,
-    severity_sort = true,
-    underline = true,
-    update_in_insert = false, -- update diagnostics insert mode
-    float = {
-      --  focused = false,
-      --  style = "minimal",
-      border = "rounded",
-      --  source = "always",
-      --  header = "",
-      --  prefix = "",
-    },
-  },
-  -- options for vim.lsp.buf.format
-  -- `bufnr` and `filter` is handled by the formatter,
-  -- but can be also overridden when specified
-  format = {
-    formatting_options = nil,
-    timeout_ms = nil,
-  },
-  -- you can do any additional lsp server setup here
-  -- return true if you don't want this server to be setup with lspconfig
-  ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-  setup = {
-    -- example to setup with typescript.nvim
-    -- tsserver = function(_, opts)
-    --   require("typescript").setup({ server = opts })
-    --   return true
-    -- end,
-    -- Specify * to use this function as a fallback for any server
-    -- ["*"] = function(server, opts) end,
-  },
-}
 
 -- some from https://github.com/ibhagwan/nvim-lua
 
@@ -112,8 +67,6 @@ local servers = {
   pyright = require "lsp.servers.pyright",
   --emmet_ls = require("user.lsp.settings.emmet_ls"),
   vimls = require "lsp.servers.vimls",
-  gopls = require "lsp.servers.gopls",
-  --yamlls = {},
   cssls = {
     css = {
       lint = {
@@ -144,10 +97,10 @@ local function setup(server)
     capabilities = vim.deepcopy(cap),
   }, servers[server] or {})
 
-  if opts.setup[server] then
-    if opts.setup[server](server, server_opts) then return end
-  elseif opts.setup["*"] then
-    if opts.setup["*"](server, server_opts) then return end
+  if M.opts.setup[server] then
+    if M.opts.setup[server](server, server_opts) then return end
+  elseif M.opts.setup["*"] then
+    if M.opts.setup["*"](server, server_opts) then return end
   end
   require("lspconfig")[server].setup(server_opts)
 end
@@ -155,7 +108,7 @@ end
 --lsp_config.capabilities = capabilities
 local lsp_handlers = function()
   -- setup autoformat, default is true
-  --require("lazyvim.plugins.lsp.format").autoformat = opts.autoformat
+  local opts = M.opts
 
   require("lsp.format").setup(opts)
   -- setup formatting and keymaps
@@ -170,21 +123,6 @@ local lsp_handlers = function()
     local navic = require "nvim-navic"
     navic.attach(client, buffer)
     vim.g.navic_silence = true
-
-    -- only for go
-    if client.name == "gopls" then
-      if not client.server_capabilities.semanticTokensProvider then
-        local semantic = client.config.capabilities.textDocument.semanticTokens
-        client.server_capabilities.semanticTokensProvider = {
-          full = true,
-          legend = {
-            tokenTypes = semantic.tokenTypes,
-            tokenModifiers = semantic.tokenModifiers,
-          },
-          range = true,
-        }
-      end
-    end
   end)
 
   for name, icon in pairs(require("plugins.configs.lspkind_icons").diagnostics) do
@@ -219,6 +157,10 @@ local lsp_handlers = function()
   end
 
   local ensure_installed = {} ---@type string[]
+
+  -- merge opts servers and local servers define
+  servers = vim.tbl_deep_extend("force", opts.servers, servers or {})
+
   for server, server_opts in pairs(servers) do
     if server_opts then
       server_opts = server_opts == true and {} or server_opts
@@ -240,4 +182,8 @@ local lsp_handlers = function()
   end
 end
 
-lsp_handlers()
+function M.config(opts)
+  M.opts = opts
+  lsp_handlers()
+end
+return M

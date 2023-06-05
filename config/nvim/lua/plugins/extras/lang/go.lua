@@ -1,25 +1,4 @@
 return {
-  --  {
-  --    "nvim-treesitter/nvim-treesitter",
-  --    opts = function(_, opts)
-  --      vim.list_extend(opts.ensure_installed, {
-  --        "go",
-  --        "gomod",
-  --        "gowork",
-  --        "gosum",
-  --      })
-  --    end,
-  --  },
-  --  {
-  --    "neovim/nvim-lspconfig",
-  --    opts = {
-  --      servers = {
-  --        gopls = {
-  --          semanticTokens = true,
-  --        },
-  --      },
-  --    },
-  --  },
   {
     "mfussenegger/nvim-dap",
     optional = true,
@@ -29,6 +8,40 @@ return {
         opts = function(_, opts)
           opts.ensure_installed = opts.ensure_installed or {}
           table.insert(opts.ensure_installed, "delve")
+        end,
+      },
+    },
+  },
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        gopls = require "lsp.servers.gopls",
+      },
+      setup = {
+        gopls = function()
+          -- workaround for gopls not supporting semantictokensprovider
+          -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
+          require("utils").on_attach(function(client, _)
+            client.server_capabilities.documentFormattingProvider = true
+            client.server_capabilities.documentRangeFormattingProvider = true
+            if client.name == "gopls" then
+              if not client.server_capabilities.semanticTokensProvider then
+                local semantic = client.config.capabilities.textDocument.semanticTokens
+                client.server_capabilities.semanticTokensProvider = {
+                  full = true,
+                  legend = {
+                    tokenTypes = semantic.tokenTypes,
+                    tokenModifiers = semantic.tokenModifiers,
+                  },
+                  range = true,
+                }
+              end
+
+              require("lsp.format").format_acmd_go()
+            end
+          end)
+          -- end workaround
         end,
       },
     },
