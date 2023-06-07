@@ -421,51 +421,46 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function()
-      local navic = require('nvim-navic')
+      local navic = require "nvim-navic"
 
-      local icons = require("plugins.configs.lspkind_icons")
-      local Utils = require("utils")
+      local icons = require "plugins.configs.lspkind_icons"
+      local Utils = require "utils"
 
       -- https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
       -- https://github.com/LazyVim/LazyVim
 
       local colors = {
-        red = '#cdd6f4',
-        grey = '#181825',
-        black = '#1e1e2e',
-        white = '#313244',
+        red = "#cdd6f4",
+        grey = "#181825",
+        black = "#1e1e2e",
+        white = "#313244",
         base = "#24273A", -- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/palettes/macchiato.lua
-        light_green = '#6c7086',
-        orange = '#fab387',
-        green = '#a6e3a1',
-        blue = '#80A7EA',
+        light_green = "#6c7086",
+        orange = "#fab387",
+        green = "#a6e3a1",
+        blue = "#80A7EA",
       }
       -- is e0bc, nf-ple-upper_left_triangle
       -- is e0ba, nf-ple-lower_right_triangle
-
 
       local vim_icons = {
         function()
           --return " "
           return " "
-
         end,
         separator = { left = "", right = "" },
         color = { bg = "#313244", fg = "#80A7EA" },
-        padding = { left = 1, right = 0 }
+        padding = { left = 1, right = 0 },
       }
 
       local space = {
-        function()
-          return " "
-        end,
+        function() return " " end,
         color = { bg = colors.base, fg = "#80A7EA" },
-        padding = { left = 0, right = 0 }
+        padding = { left = 0, right = 0 },
       }
 
       local dir = {
         function()
-
           local dir_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
 
           return dir_name
@@ -492,7 +487,7 @@ return {
       --end
 
       local filename = {
-        'filename',
+        "filename",
         color = { bg = "#80A7EA", fg = "#242735" },
         path = 1,
         separator = { left = "", right = "" },
@@ -524,19 +519,19 @@ return {
       --}
 
       local fileformat = {
-        'fileformat',
+        "fileformat",
         color = { bg = "#b4befe", fg = "#313244" },
         separator = { left = "", right = "" },
       }
 
       local encoding = {
-        'encoding',
+        "encoding",
         color = { bg = "#313244", fg = "#80A7EA" },
         separator = { left = "", right = "" },
       }
 
       local branch = {
-        'branch',
+        "branch",
         color = { bg = "#a6e3a1", fg = "#313244" },
         separator = { left = "", right = "" },
       }
@@ -551,9 +546,7 @@ return {
         end
       end
 
-      local function buffer_not_empty()
-        return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
-      end
+      local function buffer_not_empty() return vim.fn.empty(vim.fn.expand "%:t") ~= 1 end
 
       local diff = {
         "diff",
@@ -571,18 +564,17 @@ return {
       }
 
       local modes = {
-        'mode', fmt = function(str) return str:sub(1, 1) end,
+        "mode",
+        fmt = function(str) return str:sub(1, 1) end,
         --color = { bg = "#fab387		", fg = "#1e1e2e" },
         separator = { left = "", right = "" },
       }
 
       local function getLspName()
-        local msg = 'No Active Lsp'
-        local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+        local msg = "No Active Lsp"
+        local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
         local clients = vim.lsp.get_active_clients()
-        if next(clients) == nil then
-          return msg
-        end
+        if next(clients) == nil then return msg end
         for _, client in ipairs(clients) do
           local filetypes = client.config.filetypes
           if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
@@ -594,7 +586,7 @@ return {
       end
 
       local dia = {
-        'diagnostics',
+        "diagnostics",
         cond = buffer_not_empty,
         color = { bg = "#313244", fg = "#80A7EA" },
         separator = { left = "", right = "" },
@@ -607,9 +599,7 @@ return {
       }
 
       local lsp = {
-        function()
-          return getLspName()
-        end,
+        function() return getLspName() end,
 
         cond = buffer_not_empty,
         separator = { left = "", right = "" },
@@ -630,8 +620,8 @@ return {
           --section_separators = { left = "", right = "" },
           --component_separators = { left = '', right = '' },
           --section_separators = { left = '', right = '' },
-          component_separators = { left = '', right = '' },
-          section_separators = { left = '', right = '' },
+          component_separators = { left = "", right = "" },
+          section_separators = { left = "", right = "" },
 
           ignore_focus = {},
           always_divide_middle = true,
@@ -639,7 +629,7 @@ return {
             statusline = 1000,
             --tabline = 1000,
             winbar = 1000,
-          }
+          },
         },
         sections = {
           lualine_a = {
@@ -705,7 +695,7 @@ return {
               cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
               color = Utils.fg("Debug"),
             },
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg("Special") },
+            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg "Special" },
             {
               "diff",
               symbols = {
@@ -714,7 +704,6 @@ return {
                 removed = icons.git.removed,
               },
             },
-
           },
           lualine_y = {
             encoding,
@@ -741,11 +730,10 @@ return {
             --   end,
             --   icon = " ",
             -- }
-
           },
           lualine_z = {
             dia,
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg("Special") },
+            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg "Special" },
             lsp,
             ---- { "progress", separator = "", padding = { left = 1, right = 0 } },
             --{ "location", padding = { left = 1, right = 1 } },
@@ -761,15 +749,14 @@ return {
             --  return fmt:upper()
             --end,
           },
-
         },
         inactive_sections = {
           lualine_a = {},
           lualine_b = {},
-          lualine_c = { 'filename' },
-          lualine_x = { 'location' },
+          lualine_c = { "filename" },
+          lualine_x = { "location" },
           lualine_y = {},
-          lualine_z = {}
+          lualine_z = {},
         },
         --tabline = {
         --  lualine_a = {
@@ -800,23 +787,28 @@ return {
             --  symbols = { modified = "", readonly = "", unnamed = "" },
 
             --},
-            { navic.get_location, cond = navic.is_available },
+            {
+              function() return navic.get_location() end,
+              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
+            },
           },
-          lualine_c = {
-          },
+          lualine_c = {},
           lualine_x = {},
           lualine_y = {
             --{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { "filetype", icon_only = true,
+            {
+              "filetype",
+              icon_only = true,
               separator = { left = "", right = "" },
+              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
               --separator = "",
-              padding = { left = 1, right = 0 }
+              padding = { left = 1, right = 0 },
             },
             {
-              'filename',
+              "filename",
               path = 0,
-              cond = navic.is_available,
-              color = { gui = 'italic,bold' },
+              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
+              color = { gui = "italic,bold" },
               symbols = { modified = "", readonly = "", unnamed = "" },
             },
           },
@@ -825,22 +817,28 @@ return {
         inactive_winbar = {
           lualine_a = {},
           lualine_b = {},
-          lualine_c = {
-          },
+          lualine_c = {},
           lualine_x = {},
           lualine_y = {
-            { "filetype", icon_only = true,
+            {
+              "filetype",
+              icon_only = true,
+              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
               separator = { left = "", right = "" },
               --separator = "",
-              padding = { left = 1, right = 0 }
+              padding = { left = 1, right = 0 },
             },
             --{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { 'filename', path = 0, cond = navic.is_available, symbols = { modified = "", readonly = "", unnamed = "" }, },
+            {
+              "filename",
+              path = 0,
+              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
+              symbols = { modified = "", readonly = "", unnamed = "" },
+            },
           },
-          lualine_z = {}
-        }
+          lualine_z = {},
+        },
       }
     end,
   },
-
 }

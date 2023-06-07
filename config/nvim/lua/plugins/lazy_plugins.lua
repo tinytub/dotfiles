@@ -431,7 +431,32 @@ local plugins = {
     lazy = false,
     dependencies = { "catppuccin", "nvim-web-devicons" },
     --event = "VeryLazy",
-    config = function() require "plugins.configs.bufferline" end,
+    opts = {
+      options = {
+        diagnostics = "nvim_lsp",
+        show_buffer_close_icons = false,
+        diagnostics_indicator = function(_, _, diag)
+          --      local icons = require("lazyvim.config").icons.diagnostics
+          local icons = require("plugins.configs.lspkind_icons").diagnostics
+          local ret = (diag.error and icons.Error .. diag.error .. " " or "")
+            .. (diag.warning and icons.Warn .. diag.warning or "")
+          return vim.trim(ret)
+        end,
+        offsets = {
+          {
+            filetype = "neo-tree",
+            text = "Neo-tree",
+            highlight = "Directory",
+            text_align = "left",
+          },
+        },
+      },
+    },
+
+    config = function(_, opts)
+      opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
+      require("bufferline").setup(opts)
+    end,
   },
 
   ---- Better buffer closing
@@ -663,7 +688,6 @@ local plugins = {
   {
     "nvim-neo-tree/neo-tree.nvim",
     cmd = { "Neotree", "NeotreeLogs" },
-    branch = "v2.x",
     enabled = true,
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -671,7 +695,7 @@ local plugins = {
       "MunifTanjim/nui.nvim",
       {
         "s1n7ax/nvim-window-picker",
-        version = "v1.*",
+        --       version = "v1.*",
         opts = {
           autoselect_one = true,
           include_current = false,
@@ -692,7 +716,39 @@ local plugins = {
         if stat and stat.type == "directory" then require "neo-tree" end
       end
     end,
-    config = function() require "plugins.configs.neotree" end,
+    opts = {
+      sources = { "filesystem", "buffers", "git_status", "document_symbols" },
+      open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline" },
+      filesystem = {
+        bind_to_cwd = false,
+        follow_current_file = true,
+        use_libuv_file_watcher = true,
+      },
+      window = {
+        mappings = {
+          ["<space>"] = "none",
+        },
+      },
+      default_component_configs = {
+        indent = {
+          with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
+          expander_collapsed = "",
+          expander_expanded = "",
+          expander_highlight = "NeoTreeExpander",
+        },
+      },
+    },
+    config = function(_, opts)
+      --require("neo-tree").setup(opts)
+      require("plugins.configs.neotree").setup(opts)
+
+      vim.api.nvim_create_autocmd("TermClose", {
+        pattern = "*lazygit",
+        callback = function()
+          if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
+        end,
+      })
+    end,
   },
 
   {
@@ -822,7 +878,7 @@ local plugins = {
     "akinsho/toggleterm.nvim",
     --commit = commit.toggleterm,
 
-    optional = true,
+    optional = false,
     event = "BufWinEnter",
     config = function() require "plugins.configs.toggleterm" end,
     --disable = not lvim.builtin.terminal.active,

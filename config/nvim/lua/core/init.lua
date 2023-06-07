@@ -31,6 +31,7 @@ local opts = {
     { import = "plugins.extras.formatting" },
     { import = "plugins.extras.lang.json" },
     { import = "plugins.extras.lang.go" },
+    { import = "plugins.extras.ui.edgy" },
     --    { import = "plugins.extras.util.mini-hipatterns" }, twinlandcss
 
     -- add LazyVim and import its plugins
