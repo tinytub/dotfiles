@@ -219,4 +219,6 @@ function M.notify(formatters)
   })
 end
 
+function M.enabled() return M.opts.autoformat end
+
 return M

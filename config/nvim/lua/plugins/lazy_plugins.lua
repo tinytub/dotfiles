@@ -160,7 +160,7 @@ local plugins = {
           nls.builtins.formatting.fish_indent,
           nls.builtins.diagnostics.fish,
           nls.builtins.diagnostics.zsh,
-          nls.builtins.formatting.stylua,
+          --nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
         },
       }
@@ -182,7 +182,10 @@ local plugins = {
   },
 
   -- ui components
-  { "MunifTanjim/nui.nvim", lazy = true },
+  {
+    "MunifTanjim/nui.nvim",
+    lazy = true
+  },
 
   -- Notification Enhancer
   {
@@ -214,9 +217,9 @@ local plugins = {
         mode = "c",
         desc = "Redirect Cmdline",
       },
-      { "<leader>snl", function() require("noice").cmd "last" end, desc = "Noice Last Message" },
+      { "<leader>snl", function() require("noice").cmd "last" end,    desc = "Noice Last Message" },
       { "<leader>snh", function() require("noice").cmd "history" end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd "all" end, desc = "Noice All" },
+      { "<leader>sna", function() require("noice").cmd "all" end,     desc = "Noice All" },
       --{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = { "i", "n", "s" } },
       --{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = { "i", "n", "s" } },
     },
@@ -377,15 +380,15 @@ local plugins = {
           component_separators = { "", "" },
           section_separators = { "", "" },
           max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
-          show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
-          show_devicons = true, -- this shows devicons in buffer section
+          show_tabs_always = true,     -- this shows tabs only when there are more than one tab or if the first tab is named
+          show_devicons = true,        -- this shows devicons in buffer section
           colored = true,
-          show_bufnr = false, -- this appends [bufnr] to buffer section,
+          show_bufnr = false,          -- this appends [bufnr] to buffer section,
           tabline_show_last_separator = true,
-          show_filename_only = true, -- shows base filename only instead of relative path in filename
-          modified_icon = "+ ", -- change the default modified icon
-          modified_italic = true, -- set to true by default; this determines whether the filename turns italic if modified
-          show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
+          show_filename_only = true,   -- shows base filename only instead of relative path in filename
+          modified_icon = "+ ",        -- change the default modified icon
+          modified_italic = true,      -- set to true by default; this determines whether the filename turns italic if modified
+          show_tabs_only = false,      -- this shows only tabs instead of tabs + buffers
         },
       }
       vim.cmd [[
@@ -439,7 +442,7 @@ local plugins = {
           --      local icons = require("lazyvim.config").icons.diagnostics
           local icons = require("plugins.configs.lspkind_icons").diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-            .. (diag.warning and icons.Warn .. diag.warning or "")
+              .. (diag.warning and icons.Warn .. diag.warning or "")
           return vim.trim(ret)
         end,
         offsets = {
@@ -562,7 +565,7 @@ local plugins = {
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" },
     config = function() require "plugins.configs.treesitter" end,
     --run = ":TSUpdate",
-    run = function() require("nvim-treesitter.install").update { with_sync = true }() end,
+    run = function() require("nvim-treesitter.install").update { with_sync = true } () end,
     --config = function ()
     --   require "plugins.configs.treesitter"
     --end
@@ -694,18 +697,25 @@ local plugins = {
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
       {
-        "s1n7ax/nvim-window-picker",
-        --       version = "v1.*",
+        --"s1n7ax/nvim-window-picker",
+        "tinytub/nvim-window-picker",
+        version = "v2.*",
         opts = {
-          autoselect_one = true,
-          include_current = false,
+          --hint = "floating-big-letter",
+          statusline_winbar_picker = {
+            use_winbar = "smart",
+          },
           filter_rules = {
+            autoselect_one = true,
+            include_current_win = false,
             bo = {
               filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix" },
-              buftype = { "terminal" },
+              buftype = { "terminal", "quickfix" },
             },
           },
+          --         other_win_hl_color = "#e35e4f",
         },
+        config = function(_, opts) require("window-picker").setup(opts) end,
       },
     },
     deactivate = function() vim.cmd [[Neotree close]] end,
@@ -827,12 +837,12 @@ local plugins = {
       local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
       local opts = require("lazy.core.plugin").values(plugin, "opts", false)
       local mappings = {
-        { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
-        { opts.mappings.delete, desc = "Delete surrounding" },
-        { opts.mappings.find, desc = "Find right surrounding" },
-        { opts.mappings.find_left, desc = "Find left surrounding" },
-        { opts.mappings.highlight, desc = "Highlight surrounding" },
-        { opts.mappings.replace, desc = "Replace surrounding" },
+        { opts.mappings.add,            desc = "Add surrounding",                     mode = { "n", "v" } },
+        { opts.mappings.delete,         desc = "Delete surrounding" },
+        { opts.mappings.find,           desc = "Find right surrounding" },
+        { opts.mappings.find_left,      desc = "Find left surrounding" },
+        { opts.mappings.highlight,      desc = "Highlight surrounding" },
+        { opts.mappings.replace,        desc = "Replace surrounding" },
         { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
       }
       mappings = vim.tbl_filter(function(m) return m[1] and #m[1] > 0 end, mappings)
@@ -840,12 +850,12 @@ local plugins = {
     end,
     opts = {
       mappings = {
-        add = "gza", -- Add surrounding in Normal and Visual modes
-        delete = "gzd", -- Delete surrounding
-        find = "gzf", -- Find surrounding (to the right)
-        find_left = "gzF", -- Find surrounding (to the left)
-        highlight = "gzh", -- Highlight surrounding
-        replace = "gzr", -- Replace surrounding
+        add = "gza",            -- Add surrounding in Normal and Visual modes
+        delete = "gzd",         -- Delete surrounding
+        find = "gzf",           -- Find surrounding (to the right)
+        find_left = "gzF",      -- Find surrounding (to the left)
+        highlight = "gzh",      -- Highlight surrounding
+        replace = "gzr",        -- Replace surrounding
         update_n_lines = "gzn", -- Update `n_lines`
       },
     },
@@ -857,7 +867,7 @@ local plugins = {
     --event = "BufRead",
     config = function()
       require("numb").setup {
-        show_numbers = true, -- Enable 'number' for the window while peeking
+        show_numbers = true,    -- Enable 'number' for the window while peeking
         show_cursorline = true, -- Enable 'cursorline' for the window while peeking
       }
     end,
@@ -953,8 +963,8 @@ local plugins = {
     -- flit dependence
     "ggandor/leap.nvim",
     keys = {
-      { "s", mode = { "n", "x", "o" }, desc = "Leap forward to" },
-      { "S", mode = { "n", "x", "o" }, desc = "Leap backward to" },
+      { "s",  mode = { "n", "x", "o" }, desc = "Leap forward to" },
+      { "S",  mode = { "n", "x", "o" }, desc = "Leap backward to" },
       { "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
     },
     config = function(_, opts)
@@ -1047,6 +1057,36 @@ local plugins = {
   {
     "folke/trouble.nvim",
     cmd = { "Trouble", "TroubleToggle" },
+    keys = {
+      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
+      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>",               desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>",              desc = "Quickfix List (Trouble)" },
+      {
+        "[q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").previous { skip_groups = true, jump = true }
+          else
+            local ok, err = pcall(vim.cmd.cprev)
+            if not ok then vim.notify(err, vim.log.levels.ERROR) end
+          end
+        end,
+        desc = "Previous trouble/quickfix item",
+      },
+      {
+        "]q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").next { skip_groups = true, jump = true }
+          else
+            local ok, err = pcall(vim.cmd.cnext)
+            if not ok then vim.notify(err, vim.log.levels.ERROR) end
+          end
+        end,
+        desc = "Next trouble/quickfix item",
+      },
+    },
     config = function() require "plugins.configs.nvim-trouble" end,
     enabled = true,
   },

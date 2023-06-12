@@ -789,7 +789,7 @@ return {
             --},
             {
               function() return navic.get_location() end,
-              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
+              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
             },
           },
           lualine_c = {},
@@ -800,14 +800,14 @@ return {
               "filetype",
               icon_only = true,
               separator = { left = "", right = "" },
-              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
+              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
               --separator = "",
               padding = { left = 1, right = 0 },
             },
             {
               "filename",
               path = 0,
-              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
+              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
               color = { gui = "italic,bold" },
               symbols = { modified = "", readonly = "", unnamed = "" },
             },
@@ -823,7 +823,7 @@ return {
             {
               "filetype",
               icon_only = true,
-              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
+              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
               separator = { left = "", right = "" },
               --separator = "",
               padding = { left = 1, right = 0 },
@@ -832,7 +832,7 @@ return {
             {
               "filename",
               path = 0,
-              cond = function() return vim.fn.winwidth(0) > 50 and navic.is_available() end,
+              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
               symbols = { modified = "", readonly = "", unnamed = "" },
             },
           },

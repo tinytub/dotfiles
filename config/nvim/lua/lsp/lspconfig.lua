@@ -186,4 +186,5 @@ function M.config(opts)
   M.opts = opts
   lsp_handlers()
 end
+
 return M
