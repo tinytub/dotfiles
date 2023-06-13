@@ -615,7 +615,10 @@ return {
           close_command = function(n) require("mini.bufremove").delete(n, false) end,
           -- stylua: ignore
           right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
-          disabled_filetypes = { statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal" } },
+          disabled_filetypes = {
+            statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal", },
+            winbar = { "neo-tree", "edgy" }
+          },
           --component_separators = { left = "", right = "" },
           --section_separators = { left = "", right = "" },
           --component_separators = { left = '', right = '' },

@@ -57,7 +57,7 @@ local plugins = {
     },
     opts = {
       autoformat = true,
-      format_notify = false,
+      format_notify = true,
       diagnostics = {
         virtual_text = {
           spacing = 4,
@@ -697,8 +697,8 @@ local plugins = {
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
       {
-        --"s1n7ax/nvim-window-picker",
-        "tinytub/nvim-window-picker",
+        "s1n7ax/nvim-window-picker",
+        --"tinytub/nvim-window-picker",
         version = "v2.*",
         opts = {
           --hint = "floating-big-letter",
@@ -709,7 +709,7 @@ local plugins = {
             autoselect_one = true,
             include_current_win = false,
             bo = {
-              filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix" },
+              filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix", "edgy" },
               buftype = { "terminal", "quickfix" },
             },
           },
@@ -728,6 +728,10 @@ local plugins = {
     end,
     opts = {
       sources = { "filesystem", "buffers", "git_status", "document_symbols" },
+      --source_selector = {
+      --  winbar = true,
+      --  content_layout = "center",
+      --},
       open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline" },
       filesystem = {
         bind_to_cwd = false,
