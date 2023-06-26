@@ -57,7 +57,11 @@ local plugins = {
     },
     opts = {
       autoformat = true,
-      format_notify = true,
+      format_notify = false,
+      inlay_hints = {
+        enabled = false,
+      },
+
       diagnostics = {
         virtual_text = {
           spacing = 4,
@@ -69,6 +73,9 @@ local plugins = {
         },
         signs = true,
         severity_sort = true,
+        -- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
+        -- Be aware that you also will need to properly configure your LSP server to
+        -- provide the inlay hints.
         underline = true,
         update_in_insert = false, -- update diagnostics insert mode
         float = {
@@ -542,6 +549,7 @@ local plugins = {
     version = false,
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
+    cmd = { "TSUpdateSync" },
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
@@ -562,7 +570,7 @@ local plugins = {
         end,
       },
     },
-    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" },
+    --    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" },
     config = function() require "plugins.configs.treesitter" end,
     --run = ":TSUpdate",
     run = function() require("nvim-treesitter.install").update { with_sync = true } () end,
@@ -750,6 +758,16 @@ local plugins = {
           expander_expanded = "",
           expander_highlight = "NeoTreeExpander",
         },
+        icon = {
+          folder_empty = "󰜌",
+          folder_empty_open = "󰜌",
+        },
+        git_status = {
+          symbols = {
+            renamed = "󰁕",
+            unstaged = "󰄱",
+          },
+        },
       },
     },
     config = function(_, opts)
@@ -802,10 +820,10 @@ local plugins = {
   {
     "goolord/alpha-nvim",
     enabled = true,
-    optional = true,
+    optional = false,
     event = "VimEnter",
     --after = "base46",
-    config = function() require("plugins.configs.dashboard").setup() end,
+    config = function() require("plugins.configs.dashboard") end,
   },
   {
     "echasnovski/mini.starter",

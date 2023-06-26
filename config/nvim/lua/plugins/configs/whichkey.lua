@@ -21,11 +21,11 @@ local options = {
   icons = {
     breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
     separator = "  ", -- symbol used between a key and it's label
-    group = "+", -- symbol prepended to a group
+    group = "+",       -- symbol prepended to a group
   },
   popup_mappings = {
     scroll_down = "<c-d>", -- binding to scroll down inside the popup
-    scroll_up = "<c-u>", -- binding to scroll up inside the popup
+    scroll_up = "<c-u>",   -- binding to scroll up inside the popup
   },
   window = {
     border = "none", -- none/single/double/shadow
@@ -53,10 +53,10 @@ which_key.setup(options)
 local opts = {
   mode = { "n", "v" }, -- NORMAL mode
   prefix = "<leader>",
-  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
-  noremap = true, -- use `noremap` when creating keymaps
-  nowait = false, -- use `nowait` when creating keymaps
+  buffer = nil,        -- Global mappings. Specify a buffer number for buffer local mappings
+  silent = true,       -- use `silent` when creating keymaps
+  noremap = true,      -- use `noremap` when creating keymaps
+  nowait = false,      -- use `nowait` when creating keymaps
 }
 
 local mappings = {
@@ -163,10 +163,10 @@ local mappings = {
     f = { "<cmd>Telescope git_files<cr>", "git_files" },
 
     g = {
-      function() Utils.float_term({ "lazygit" }, { cwd = Utils.get_root(), esc_esc = false }) end,
+      function() Utils.float_term({ "lazygit" }, { cwd = Utils.get_root(), esc_esc = false, ctrl_hjkl = false }) end,
       "Lazygit (root dir)",
     },
-    G = { function() Utils.float_term({ "lazygit" }, { esc_esc = false }) end, "Lazygit (cwd)" },
+    G = { function() Utils.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end, "Lazygit (cwd)" },
 
     C = {
       "<cmd>Telescope git_bcommits<cr>",
@@ -230,9 +230,9 @@ local mappings = {
 }
 
 local misc_n_opts = {
-  mode = "n", -- NORMAL mode
-  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
+  mode = "n",     -- NORMAL mode
+  buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
+  silent = true,  -- use `silent` when creating keymaps
   noremap = true, -- use `noremap` when creating keymaps
   nowait = false, -- use `nowait` when creating keymaps
 }
@@ -264,9 +264,9 @@ local misc_n_mapping = {
 }
 
 local misc_v_opts = {
-  mode = "v", -- NORMAL mode
-  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
+  mode = "v",     -- NORMAL mode
+  buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
+  silent = true,  -- use `silent` when creating keymaps
   -- noremap = true, -- use `noremap` when creating keymaps
   nowait = false, -- use `nowait` when creating keymaps
 }

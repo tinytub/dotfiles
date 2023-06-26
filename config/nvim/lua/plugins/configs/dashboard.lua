@@ -1,107 +1,59 @@
-local alpha = require("alpha")
+local dashboard = require("alpha.themes.dashboard")
+--local logo = [[
+--           ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z
+--           ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z
+--           ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║   z
+--           ██║     ██╔══██║ ███╔╝    ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║ z
+--           ███████╗██║  ██║███████╗   ██║    ╚████╔╝ ██║██║ ╚═╝ ██║
+--           ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝     ╚═══╝  ╚═╝╚═╝     ╚═╝
+--      ]]
+local logo = [[
+       ███    ██ ██    ██ ██ ███    ███
+       ████   ██ ██    ██ ██ ████  ████
+       ██ ██  ██ ██    ██ ██ ██ ████ ██
+       ██  ██ ██  ██  ██  ██ ██  ██  ██
+       ██   ████   ████   ██ ██      ██
+]]
 
+dashboard.section.header.val = vim.split(logo, "\n")
+dashboard.section.buttons.val = {
+  dashboard.button("f", " " .. " Find file", ":Telescope find_files <CR>"),
+  dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
+  dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
+  dashboard.button("g", " " .. " Find text", ":Telescope live_grep <CR>"),
+  dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
+  dashboard.button("s", " " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
+  dashboard.button("l", "󰒲 " .. " Lazy", ":Lazy<CR>"),
+  dashboard.button("q", " " .. " Quit", ":qa<CR>"),
+}
+for _, button in ipairs(dashboard.section.buttons.val) do
+  button.opts.hl = "AlphaButtons"
+  button.opts.hl_shortcut = "AlphaShortcut"
+end
+dashboard.section.header.opts.hl = "AlphaHeader"
+dashboard.section.buttons.opts.hl = "AlphaButtons"
+dashboard.section.footer.opts.hl = "AlphaFooter"
+dashboard.opts.layout[1].val = 8
 
-local function button(sc, txt, keybind)
-  local sc_ = sc:gsub("%s", ""):gsub("SPC", "<leader>")
-
-  local opts = {
-    position = "center",
-    text = txt,
-    shortcut = sc,
-    cursor = 5,
-    width = 36,
-    align_shortcut = "right",
-    hl = "AlphaButtons",
-  }
-
-  if keybind then
-    opts.keymap = { "n", sc_, keybind, { noremap = true, silent = true } }
-  end
-
-  return {
-    type = "button",
-    val = txt,
-    on_press = function()
-      local key = vim.api.nvim_replace_termcodes(sc_, true, false, true) or ""
-      vim.api.nvim_feedkeys(key, "normal", false)
+-- close Lazy and re-open when the dashboard is ready
+if vim.o.filetype == "lazy" then
+  vim.cmd.close()
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "AlphaReady",
+    callback = function()
+      require("lazy").show()
     end,
-    opts = opts,
-  }
+  })
 end
 
--- dynamic header padding
-local fn = vim.fn
-local marginTopPercent = 0.3
-local headerPadding = fn.max { 2, fn.floor(fn.winheight(0) * marginTopPercent) }
+require("alpha").setup(dashboard.opts)
 
-local options = {
-  headerPaddingTop = { type = "padding", val = headerPadding },
-  headerPaddingBottom = { type = "padding", val = 2 },
-}
-
---local ascii = {
---  "   ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆          ",
---  "    ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦       ",
---  "          ⠈⢿⣿⣟⠦ ⣾⣿⣿⣷    ⠻⠿⢿⣿⣧⣄     ",
---  "           ⣸⣿⣿⢧ ⢻⠻⣿⣿⣷⣄⣀⠄⠢⣀⡀⠈⠙⠿⠄    ",
---  "          ⢠⣿⣿⣿⠈    ⣻⣿⣿⣿⣿⣿⣿⣿⣛⣳⣤⣀⣀   ",
---  "   ⢠⣧⣶⣥⡤⢄ ⣸⣿⣿⠘  ⢀⣴⣿⣿⡿⠛⣿⣿⣧⠈⢿⠿⠟⠛⠻⠿⠄  ",
---  "  ⣰⣿⣿⠛⠻⣿⣿⡦⢹⣿⣷   ⢊⣿⣿⡏  ⢸⣿⣿⡇ ⢀⣠⣄⣾⠄   ",
---  " ⣠⣿⠿⠛ ⢀⣿⣿⣷⠘⢿⣿⣦⡀ ⢸⢿⣿⣿⣄ ⣸⣿⣿⡇⣪⣿⡿⠿⣿⣷⡄  ",
---  " ⠙⠃   ⣼⣿⡟  ⠈⠻⣿⣿⣦⣌⡇⠻⣿⣿⣷⣿⣿⣿ ⣿⣿⡇ ⠛⠻⢷⣄ ",
---  "      ⢻⣿⣿⣄   ⠈⠻⣿⣿⣿⣷⣿⣿⣿⣿⣿⡟ ⠫⢿⣿⡆     ",
---  "       ⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃     ",
---}
-
-local ascii = {
-  " ",
-  "    ███    ██ ██    ██ ██ ███    ███",
-  "    ████   ██ ██    ██ ██ ████  ████",
-  "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
-  "    ██  ██ ██  ██  ██  ██ ██  ██  ██",
-  "    ██   ████   ████   ██ ██      ██",
-}
-
-
-options.header = {
-  type = "text",
-  --val = ascii,
-  val = ascii,
-  opts = {
-    position = "center",
-    hl = "AlphaHeader",
-  },
-}
-
---require("base46").load_highlight "alpha"
-options.buttons = {
-  type = "group",
-  val = {
-    button("N", "  New file", ":ene <BAR> startinsert <CR>"),
-    button("SPC F F", "  Find File  ", ":Telescope find_files<CR>"),
-    button("SPC F A", "  Find text", ":FzfLua live_grep <CR>"),
-    button("SPC F W", "  Find Word  ", ":Telescope live_grep<CR>"),
-    button("SPC F O", "  Recent File  ", ":Telescope oldfiles<CR>"),
-    button("SPC E S", "  Settings", ":e $MYVIMRC | :cd %:p:h <CR>"),
-    button("SPC P S", "  Update plugins", ":Lazy<CR>"),
-  },
-  opts = {
-    spacing = 1,
-  },
-}
-
-local M = {}
-
-M.setup = function()
-  alpha.setup {
-    layout = {
-      options.headerPaddingTop,
-      options.header,
-      options.headerPaddingBottom,
-      options.buttons,
-    },
-    opts = {},
-  }
-end
-
-return M
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LazyVimStarted",
+  callback = function()
+    local stats = require("lazy").stats()
+    local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+    dashboard.section.footer.val = "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms"
+    pcall(vim.cmd.AlphaRedraw)
+  end,
+})

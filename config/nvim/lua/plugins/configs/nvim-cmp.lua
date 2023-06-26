@@ -40,6 +40,7 @@ return {
       },
     },
     opts = function()
+      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require 'cmp'
       local function border(hl_name)
         return {
@@ -109,7 +110,7 @@ return {
         },
         experimental = {
           ghost_text = {
-            hl_group = "LspCodeLens",
+            hl_group = "CmpGhostText",
           },
         },
 
@@ -126,7 +127,6 @@ return {
           select = false,
         },
         window = {
-
           completion = {
             border = border("CmpBorder"),
             side_padding = 1,
@@ -189,11 +189,11 @@ return {
           end, { "i", "s" }),
         },
         sources = {
-          { name = "nvim_lsp", priority = 80 },
-          { name = "luasnip", priority = 80 },
-          { name = "buffer", priority = 80 },
-          { name = "nvim_lua", priority = 60 },
-          { name = "path", priority = 40, max_item_count = 4 },
+          { name = "nvim_lsp",               priority = 80 },
+          { name = "luasnip",                priority = 80 },
+          { name = "buffer",                 priority = 80 },
+          { name = "nvim_lua",               priority = 60 },
+          { name = "path",                   priority = 40,      max_item_count = 4 },
           { name = "calc" },
           { name = "nvim_lsp_signature_help" },
 
@@ -208,7 +208,7 @@ return {
           --    end,
           --  },
           --},
-          { name = "rg", keyword_length = 3, max_item_count = 10, priority = 1 },
+          { name = "rg",                     keyword_length = 3, max_item_count = 10, priority = 1 },
         },
       }
     end,
@@ -231,7 +231,6 @@ return {
           { name = 'cmdline' }
         })
       })
-
     end
   },
 }
