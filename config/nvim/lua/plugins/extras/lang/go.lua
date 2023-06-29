@@ -15,6 +15,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = {
+      --      autoformat = false,
       servers = {
         gopls = require "lsp.servers.gopls",
       },
@@ -37,6 +38,8 @@ return {
                   range = true,
                 }
               end
+
+              vim.b.autoformat = false
 
               require("lsp.format").format_acmd_go()
             end

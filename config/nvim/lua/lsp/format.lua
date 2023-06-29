@@ -124,6 +124,8 @@ function M.get_formatters(bufnr)
     if M.supports_format(client) then
       if (#null_ls > 0 and client.name == "null-ls") or #null_ls == 0 then
         table.insert(ret.active, client)
+      elseif client.name == "copilot" then
+        table.insert(ret.available, client)
       else
         table.insert(ret.available, client)
       end
@@ -132,6 +134,7 @@ function M.get_formatters(bufnr)
 
   return ret
 end
+
 -- Gets all lsp clients that support formatting
 -- and have not disabled it in their client config
 ---@param client lsp.Client
@@ -139,9 +142,9 @@ function M.supports_format(client)
   --function M.on_attach(client, buf)
   -- dont format if client disabled it
   if
-    client.config
-    and client.config.capabilities
-    and client.config.capabilities.documentFormattingProvider == false
+      client.config
+      and client.config.capabilities
+      and client.config.capabilities.documentFormattingProvider == false
   then
     return false
   end
@@ -193,9 +196,9 @@ function M.notify(formatters)
     local line = "- **" .. client.name .. "**"
     if client.name == "null-ls" then
       line = line
-        .. " ("
-        .. table.concat(vim.tbl_map(function(f) return "`" .. f.name .. "`" end, formatters.null_ls), ", ")
-        .. ")"
+          .. " ("
+          .. table.concat(vim.tbl_map(function(f) return "`" .. f.name .. "`" end, formatters.null_ls), ", ")
+          .. ")"
     end
     table.insert(lines, line)
   end

@@ -57,7 +57,7 @@ local plugins = {
     },
     opts = {
       autoformat = true,
-      format_notify = false,
+      format_notify = true,
       inlay_hints = {
         enabled = false,
       },

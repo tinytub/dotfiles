@@ -611,10 +611,10 @@ return {
           icons_enabled = true,
           theme = "auto",
           globalstatus = true,
-          -- stylua: ignore
-          close_command = function(n) require("mini.bufremove").delete(n, false) end,
-          -- stylua: ignore
-          right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
+          ---- stylua: ignore
+          --close_command = function(n) require("mini.bufremove").delete(n, false) end,
+          ---- stylua: ignore
+          --right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
           disabled_filetypes = {
             statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal", },
             winbar = { "neo-tree", "edgy" }
@@ -627,12 +627,12 @@ return {
           section_separators = { left = "", right = "" },
 
           ignore_focus = {},
-          always_divide_middle = true,
-          refresh = {
-            statusline = 1000,
-            --tabline = 1000,
-            winbar = 1000,
-          },
+          --always_divide_middle = true,
+          --refresh = {
+          --  statusline = 1000,
+          --  --tabline = 1000,
+          --  winbar = 1000,
+          --},
         },
         sections = {
           lualine_a = {
@@ -653,30 +653,6 @@ return {
             space,
             branch,
             diff,
-            --{
-            --  function() return require("nvim-navic").get_location() end,
-            --  cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
-            --},
-            --{
-            --  "diagnostics",
-            --  symbols = {
-            --    error = icons.diagnostics.Error,
-            --    warn = icons.diagnostics.Warn,
-            --    info = icons.diagnostics.Info,
-            --    hint = icons.diagnostics.Hint,
-            --  },
-            --},
-            --{ "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            --{ "filename",
-            --  path = 1,
-            --  symbols = { modified = "  ", readonly = "", unnamed = "" },
-            --  shorting_target = 30, -- Shortens path to leave 40 space in the window
-            --},
-            ---- stylua: ignore
-            --{
-            --  function() return require("nvim-navic").get_location() end,
-            --  cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
-            --},
           },
           lualine_x = {
             space,
@@ -699,14 +675,14 @@ return {
               color = Utils.fg("Debug"),
             },
             { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg "Special" },
-            {
-              "diff",
-              symbols = {
-                added = icons.git.added,
-                modified = icons.git.modified,
-                removed = icons.git.removed,
-              },
-            },
+            --{
+            --  "diff",
+            --  symbols = {
+            --    added = icons.git.added,
+            --    modified = icons.git.modified,
+            --    removed = icons.git.removed,
+            --  },
+            --},
           },
           lualine_y = {
             encoding,

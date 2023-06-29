@@ -27,12 +27,13 @@ local opts = {
 
     { import = "plugins.extras.test" },
     { import = "plugins.extras.copilot" },
+    { import = "plugins.extras.coding" },
     { import = "plugins.extras.dap" },
     { import = "plugins.extras.formatting" },
     { import = "plugins.extras.lang.json" },
     { import = "plugins.extras.lang.go" },
     { import = "plugins.extras.editor.flash" }, --coflict with  flit
-  { import = "plugins.extras.editor.mini-files" },
+    { import = "plugins.extras.editor.mini-files" },
     { import = "plugins.extras.ui.edgy" },
     --    { import = "plugins.extras.util.mini-hipatterns" }, twinlandcss
 
