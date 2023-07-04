@@ -57,7 +57,7 @@ local plugins = {
     },
     opts = {
       autoformat = true,
-      format_notify = true,
+      format_notify = false,
       inlay_hints = {
         enabled = false,
       },
@@ -66,10 +66,10 @@ local plugins = {
         virtual_text = {
           spacing = 4,
           source = "if_many",
-          prefix = "●",
+          --prefix = "●",
           -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
           -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-          -- prefix = "icons",
+          prefix = "icons",
         },
         signs = true,
         severity_sort = true,
@@ -271,11 +271,12 @@ local plugins = {
   {
     "catppuccin/nvim",
     name = "catppuccin",
+    --dependencies = "nvim-treesitter",
     --dependencies = "bufferline.nvim",
     --    run = ":CatppuccinCompile",
     config = function() require "colors.catppuccin" end,
     enabled = true,
-    lazy = false,
+    lazy = true,
     --event = "VeryLazy",
   },
 
@@ -355,16 +356,16 @@ local plugins = {
     enabled = true,
   },
 
-  {
-    "rebelot/heirline.nvim",
-    enabled = false,
-    dependencies = { "catppuccin", "nvim-web-devicons" },
-    config = function()
-      --require("plugins.configs.heirline").setup()
-      require "plugins.configs.heirline"
-    end,
-    event = "VeryLazy",
-  },
+  --{
+  --  "rebelot/heirline.nvim",
+  --  enabled = false,
+  --  dependencies = { "catppuccin", "nvim-web-devicons" },
+  --  config = function()
+  --    --require("plugins.configs.heirline").setup()
+  --    require "plugins.configs.heirline"
+  --  end,
+  --  event = "VeryLazy",
+  --},
 
   --{
   --  "nvim-lualine/lualine.nvim",
@@ -1045,6 +1046,9 @@ local plugins = {
   -- F 键查询增强
   {
     "ggandor/flit.nvim",
+    enabled = function()
+      return require("lazyvim.util").has("leap")
+    end,
     keys = function()
       ---@type LazyKeys[]
       local ret = {}
@@ -1152,6 +1156,7 @@ local plugins = {
 
   {
     "folke/trouble.nvim",
+
     cmd = { "Trouble", "TroubleToggle" },
     keys = {
       { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },

@@ -655,7 +655,7 @@ return {
             diff,
           },
           lualine_x = {
-            space,
+            -- space,
             -- stylua: ignore
             {
               function() return require("noice").api.status.command.get() end,
@@ -769,6 +769,7 @@ return {
             {
               function() return navic.get_location() end,
               cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              separator = { left = "", right = "" },
             },
           },
           lualine_c = {},
