@@ -36,31 +36,6 @@ function M.Lsp_keymaps(client, bufnr)
   buf_set_keymap("n", "<space>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
   buf_set_keymap("n", "<space>lf", "<cmd>lua vim.lsp.buf.format()<cr>", opts)
   buf_set_keymap("v", "<space>la", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
-
-  --client.server_capabilities.documentFormattingProvider = false
-  --client.server_capabilities.documentRangeFormattingProvider = false
-  -- neovim 0.8?
-  --if client.server_capabilities.documentFormattingProvider then
-  --  --vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format, { unpack(opts), desc = "LSP format" })
-  --  vim.api.nvim_buf_create_user_command(
-  --    bufnr,
-  --    "LspFormat",
-  --    vim.lsp.buf.format,
-  --    { range = false, desc = "LSP format" }
-  --  )
-  --end
-
-  --if client.server_capabilities.documentRangeFormattingProvider then
-  --  vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr(#{timeout_ms:250})")
-  --  --vim.keymap.set("x", "<leader>lf", vim.lsp.buf.range_formatting, { unpack(opts), desc = "LSP range format" })
-  --  vim.api.nvim_buf_create_user_command(
-  --    bufnr,
-  --    "LspRangeFormat",
-  --    --vim.lsp.buf.range_formatting,
-  --    vim.lsp.buf.format,
-  --    { range = true, desc = "LSP range format" }
-  --  )
-  --end
 end
 
 return M

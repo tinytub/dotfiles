@@ -19,6 +19,10 @@ return {
       servers = {
         --  gopls = require "lsp.servers.gopls",
         gopls = {
+          cmd = {
+            "gopls", -- share the gopls instance if there is one already
+            "-remote.debug=:0",
+          },
           settings = {
             gopls = {
               gofumpt = true,

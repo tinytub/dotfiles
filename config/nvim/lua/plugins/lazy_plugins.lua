@@ -59,9 +59,8 @@ local plugins = {
       autoformat = true,
       format_notify = false,
       inlay_hints = {
-        enabled = false,
+        enabled = true,
       },
-
       diagnostics = {
         virtual_text = {
           spacing = 4,
@@ -1016,7 +1015,7 @@ local plugins = {
   {
     "ray-x/go.nvim",
     dependencies = { -- optional packages
-      --   "ray-x/guihua.lua",
+      "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
     },
@@ -1046,9 +1045,6 @@ local plugins = {
   -- F 键查询增强
   {
     "ggandor/flit.nvim",
-    enabled = function()
-      return require("lazyvim.util").has("leap")
-    end,
     keys = function()
       ---@type LazyKeys[]
       local ret = {}

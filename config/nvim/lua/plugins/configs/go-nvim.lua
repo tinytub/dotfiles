@@ -1,4 +1,5 @@
 require('go').setup({
+  disable_defaults = false,
   --verbose = plugin_debug(),
   -- goimport = 'goimports', -- 'gopls'
   goimport = 'gopls',
@@ -11,13 +12,14 @@ require('go').setup({
   lsp_keymaps = false, -- set to false to disable gopls/lsp keymap
   lsp_codelens = false,
 
-  dap_debug = true,
+  dap_debug = false,
   --goimport = "goimports",
   dap_debug_vt = "true",
-  dap_debug_gui = true,
+  dap_debug_gui = false,
   --test_runner = "go", -- richgo, go test, richgo, dlv, ginkgo
   -- run_in_floaterm = true, -- set to true to run in float window.
   --lsp_document_formatting = false,
   -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
   -- lsp_cfg = true,
+  lsp_inlay_hints = { enable = false }
 })
