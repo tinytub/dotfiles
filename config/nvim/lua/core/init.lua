@@ -26,13 +26,13 @@ local opts = {
     { import = "plugins.configs.nvim-cmp" },
 
     { import = "plugins.extras.test" },
-    --{ import = "plugins.extras.copilot" },
     { import = "plugins.extras.coding.copilot" },
     { import = "plugins.extras.coding.yanky" },
     { import = "plugins.extras.dap" },
     { import = "plugins.extras.formatting" },
     { import = "plugins.extras.lang.json" },
     { import = "plugins.extras.lang.go" },
+    --{ import = "plugins.extras.lang.python" },
     { import = "plugins.extras.editor.flash" }, --coflict with  flit
     { import = "plugins.extras.editor.mini-files" },
     { import = "plugins.extras.ui.edgy" },

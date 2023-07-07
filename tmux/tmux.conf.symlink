@@ -21,7 +21,6 @@ set -s focus-events on
 
 # Disable escape time
 set -s escape-time 0
-set -g status-interval 1     # redraw status line every 10 seconds
 
 set -g history-limit 102400    #  scrollback buffer n lines
 
@@ -30,7 +29,10 @@ set -g repeat-time 600
 
 set -g mouse on
 # bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e'"
-setw -g mode-keys vi
+#setw -g mode-keys vi
+set-option -g mode-keys vi
+#set-option -g status-keys vi
+
 set -g set-clipboard off # race with alacritty
 
 setw -q -g utf8 on
@@ -59,12 +61,19 @@ setw -g automatic-rename on   # rename window to reflect current program
 set -g renumber-windows on    # renumber windows when a window is closed
 set -g set-titles on          # set terminal title
 set -g set-titles-string '#h ❐ #S ● #I #W #T'
-set -g display-panes-time 800 # slightly longer pane indicators display time
-set -g display-time 1000      # slightly longer status messages display time
+# slightly longer pane indicators display time
+set-option -g display-panes-time 1000
+# slightly longer status messages display time
+set-option -g display-time 1500
+# redraw status line every 10 seconds
+set-option -g status-interval 10
+
+# if you destroy|exit the session while attched to it it will attach you to the next session
+set-option -g detach-on-destroy off
 
 
 # clear both screen and history
-bind -n C-l send-keys C-l \; run 'sleep 0.1' \; clear-history
+#bind -n C-l send-keys C-l \; run 'sleep 0.1' \; clear-history
 
 # activity
 setw -g monitor-activity on
@@ -120,10 +129,6 @@ set -g set-clipboard off
 
 # -- buffers -------------------------------------------------------------------
 
-bind b list-buffers  # list paste buffers
-bind p paste-buffer  # paste from the top paste buffer
-bind P choose-buffer # choose which buffer to paste from
-
 
 # -- user defined overrides ----------------------------------------------------
 
@@ -143,8 +148,26 @@ unbind C-b
 unbind '"'
 unbind %
 
+
+unbind-key [
+unbind-key n
+
 set -g prefix C-a
 bind C-a send-prefix
+
+bind-key n command-prompt -p 'New Window Name:' 'new-window -c "#{pane_current_path}" -n %1'
+
+# vim like mappingn for copy and pasting
+#bind-key C-[ copy-mode
+bind-key [ copy-mode
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'Y' send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
+bind-key C-p paste-buffer
+
+bind b list-buffers  # list paste buffers
+bind P choose-buffer # choose which buffer to paste from
+
 
 
 # ==========================
@@ -164,9 +187,10 @@ if "test ! -d ~/.tmux/plugins/tpm" \
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
 
-set -g default-terminal "tmux-256color"
-set -ag terminal-overrides ",xterm-256color:RGB"
-set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
-set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
+set-option -g default-terminal "tmux-256color"
+#set-option -ga terminal-overrides ",xterm-256color:Tc"
+set-option -ag terminal-overrides ",xterm-256color:RGB"
+set-option -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
+set-option -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 
 

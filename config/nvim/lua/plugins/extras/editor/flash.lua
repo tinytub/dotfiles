@@ -40,6 +40,14 @@ return {
         end,
         desc = "Treesitter Search",
       },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
     },
   },
   {
@@ -49,7 +57,7 @@ return {
       local function flash(prompt_bufnr)
         require("flash").jump({
           pattern = "^",
-          highlight = { label = { after = { 0, 0 } } },
+          label = { after = { 0, 0 } },
           search = {
             mode = "search",
             exclude = {

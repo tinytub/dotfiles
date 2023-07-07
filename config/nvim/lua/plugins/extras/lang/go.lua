@@ -19,25 +19,22 @@ return {
       servers = {
         --  gopls = require "lsp.servers.gopls",
         gopls = {
-          cmd = {
-            "gopls", -- share the gopls instance if there is one already
-            "-remote.debug=:0",
-          },
+          --cmd = {
+          --  "gopls", -- share the gopls instance if there is one already
+          --  "-remote.debug=:0",
+          --},
           settings = {
             gopls = {
-              gofumpt = true,
+              gofumpt = false,
               codelenses = {
                 gc_details = false,
                 generate = true,
                 regenerate_cgo = true,
-                run_govulncheck = true,
-                test = true,
+                run_govulncheck = false,
+                test = false,
                 tidy = true,
                 upgrade_dependency = true,
                 vendor = true,
-                --generate = true, -- show the `go generate` lens.
-                --gc_details = true, --  // Show a code lens toggling the display of gc's choices.
-                --test = true,
               },
               -- 这几个是干啥的
               hints = {
@@ -89,8 +86,8 @@ return {
                 }
               end
 
+              -- stop autoformat and use format_acmd_go instead
               vim.b.autoformat = false
-
               require("lsp.format").format_acmd_go()
             end
           end)

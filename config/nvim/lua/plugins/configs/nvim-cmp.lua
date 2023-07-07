@@ -200,10 +200,13 @@ return {
           end, { "i", "s" }),
         },
         sources = {
-          { name = "nvim_lsp", priority = 80 },
-          { name = "luasnip",  priority = 80 },
-          { name = "buffer",   priority = 80 },
-          { name = "path",     priority = 40,      max_item_count = 4 },
+          { name = "nvim_lsp", },
+          { name = "luasnip", },
+          { name = "buffer", },
+          {
+            name = "path",
+            max_item_count = 4
+          },
           -- { name = "nvim_lua",               priority = 60 },
           -- { name = "calc" },
           -- { name = "nvim_lsp_signature_help" },
@@ -219,7 +222,7 @@ return {
           --    end,
           --  },
           --},
-          { name = "rg",       keyword_length = 3, max_item_count = 10, priority = 1 },
+          { name = "rg", keyword_length = 3, max_item_count = 10, priority = 1 },
         },
       }
     end,
