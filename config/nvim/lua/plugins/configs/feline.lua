@@ -2,6 +2,7 @@
 local lsp = require("feline.providers.lsp")
 local lsp_severity = vim.diagnostic.severity
 local b = vim.b
+print("should not be here")
 
 local assets = {
   left_semicircle = "",

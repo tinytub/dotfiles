@@ -69,7 +69,6 @@ return {
     },
 
     config = function(_, opts)
-      print("im in lspconfig")
       if require("utils").has("neoconf.nvim") then
         local plugin = require("lazy.core.config").spec.plugins["neoconf.nvim"]
         require("neoconf").setup(require("lazy.core.plugin").values(plugin, "opts", false))

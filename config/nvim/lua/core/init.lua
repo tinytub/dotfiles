@@ -23,7 +23,7 @@ local opts = {
   spec = {
     { import = "plugins" },
     { import = "plugins.configs.nvim-lualine" },
-    { import = "plugins.configs.nvim-cmp" },
+    --{ import = "plugins.configs.nvim-cmp" },
 
     { import = "plugins.extras.test" },
     { import = "plugins.extras.coding.copilot" },
