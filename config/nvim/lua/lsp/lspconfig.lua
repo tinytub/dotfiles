@@ -19,11 +19,15 @@ end
 -- the `hover()` -> covers even signature_help on functions/methods
 -- null-ls also call this
 local function make_capabilities()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  if pcall(require, "cmp_nvim_lsp") then
-    --capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-    capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-  end
+  local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+  local capabilities = vim.tbl_deep_extend(
+    "force",
+    {},
+    vim.lsp.protocol.make_client_capabilities(),
+    has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+    M.opts.capabilities or {}
+  )
+
   capabilities.textDocument.completion.completionItem = {
     documentationFormat = { "markdown", "plaintext" },
     snippetSupport = true,
@@ -122,7 +126,7 @@ local lsp_handlers = function()
     --Lsp_keymaps(client, buffer)
 
     vim.api.nvim_buf_set_option(buffer, "omnifunc", "v:lua.vim.lsp.omnifunc")
-    require("lsp_signature").on_attach(require("plugins.configs.others").signature_opt())
+    --require("lsp_signature").on_attach(require("plugins.configs.others").signature_opt())
 
     local navic = require "nvim-navic"
     navic.attach(client, buffer)

@@ -2,6 +2,7 @@ local M = {}
 -- from https://github.com/LazyVim/LazyVim
 
 M.root_patterns = { ".git", "lua" }
+
 ---@param plugin string
 function M.has(plugin) return require("lazy.core.config").plugins[plugin] ~= nil end
 
@@ -227,6 +228,27 @@ function M.lsp_disable(server, cond)
   def.document_config.on_new_config = util.add_hook_before(def.document_config.on_new_config, function(config, root_dir)
     if cond(root_dir, config) then config.enabled = false end
   end)
+end
+
+---@param name string
+---@param fn fun(name:string)
+function M.on_load(name, fn)
+  local Config = require("lazy.core.config")
+  if Config.plugins[name] and Config.plugins[name]._.loaded then
+    vim.schedule(function()
+      fn(name)
+    end)
+  else
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "LazyLoad",
+      callback = function(event)
+        if event.data == name then
+          fn(name)
+          return true
+        end
+      end,
+    })
+  end
 end
 
 return M

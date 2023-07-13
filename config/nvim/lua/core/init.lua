@@ -21,7 +21,7 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 -- use to start up lazy
 local opts = {
   spec = {
-    { import = "plugins.lazy_plugins" },
+    { import = "plugins" },
     { import = "plugins.configs.nvim-lualine" },
     { import = "plugins.configs.nvim-cmp" },
 

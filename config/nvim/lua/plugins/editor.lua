@@ -6,117 +6,30 @@ local plugins = {
   -- Lua functions
   "nvim-lua/plenary.nvim",
 
-  -- Package Manager
-  {
-    "williamboman/mason.nvim",
-    cmd = { "Mason" },
-    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-    opts = {
-      ensure_installed = {
-        "stylua",
-        "shfmt",
-        "gopls",
-        -- "flake8",
-      },
-    },
-    --config = function(_,opts)
-    --  require "plugins.configs.mason"
-    --end,
-    ---@param opts MasonSettings | {ensure_installed: string[]}
-    config = function(_, opts)
-      require("mason").setup(opts)
-      local mr = require "mason-registry"
-      local function ensure_installed()
-        for _, tool in ipairs(opts.ensure_installed) do
-          local p = mr.get_package(tool)
-          if not p:is_installed() then p:install() end
-        end
-      end
-
-      if mr.refresh then
-        mr.refresh(ensure_installed)
-      else
-        ensure_installed()
-      end
-    end,
-    enabled = true,
-  },
-
-  {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "b0o/SchemaStore.nvim", -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
-
-      "mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-      {
-        "hrsh7th/cmp-nvim-lsp",
-        cond = function() return require("utils").has "nvim-cmp" end,
-      },
-    },
-    opts = {
-      autoformat = true,
-      format_notify = true,
-      inlay_hints = {
-        enabled = false,
-      },
-      diagnostics = {
-        virtual_text = {
-          spacing = 4,
-          source = "if_many",
-          --prefix = "●",
-          -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-          -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-          prefix = "icons",
-        },
-        signs = true,
-        severity_sort = true,
-        -- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
-        -- Be aware that you also will need to properly configure your LSP server to
-        -- provide the inlay hints.
-        underline = true,
-        update_in_insert = false, -- update diagnostics insert mode
-        float = {
-          --  focused = false,
-          --  style = "minimal",
-          border = "rounded",
-          --  source = "always",
-          --  header = "",
-          --  prefix = "",
-        },
-      },
-      -- options for vim.lsp.buf.format
-      -- `bufnr` and `filter` is handled by the formatter,
-      -- but can be also overridden when specified
-      format = {
-        formatting_options = nil,
-        timeout_ms = nil,
-      },
-      -- you can do any additional lsp server setup here
-      -- return true if you don't want this server to be setup with lspconfig
-      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-      setup = {
-        -- example to setup with typescript.nvim
-        -- tsserver = function(_, opts)
-        --   require("typescript").setup({ server = opts })
-        --   return true
-        -- end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
-      },
-    },
-
-    config = function(_, opts) require("lsp.lspconfig").config(opts) end,
-  },
-
   -- lsp signature 展示
   -- 或者试试 nvim_lsp_signature_help
   {
     "ray-x/lsp_signature.nvim",
     event = "VeryLazy",
+    enabled = true,
     dependencies = "nvim-lspconfig",
-    config = function() require("plugins.configs.others").signature() end,
+    opts = {
+      bind = true,
+      doc_lines = 0,
+      floating_window = true,
+      fix_pos = true,
+      hint_enable = false,
+      hint_prefix = " ",
+      hint_scheme = "String",
+      hi_parameter = "Search",
+      max_height = 22,
+      max_width = 10,      -- max_width of signature floating_window, line will be wrapped if exceed max_width
+      handler_opts = {
+        border = "single", -- double, single, shadow, none
+      },
+      zindex = 200,        -- by default it will be on top of all floating windows, set to 50 send it to bottom
+      padding = "",        -- character to pad on left and right of signature can be ' ', or '|'  etc
+    },
   },
 
   -- lsp_lines 可以分层显示 lsp 弹出的行内错误
@@ -144,37 +57,6 @@ local plugins = {
         Util.on_very_lazy(function() vim.notify = require "fidget" end)
       end
     end,
-  },
-
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    --ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css',
-    --  'javascript', 'javascriptreact', 'python' },
-    dependencies = { "nvim-lspconfig", "mason.nvim" },
-    opts = function()
-      local nls = require "null-ls"
-      return {
-        root_dir = require("null-ls.utils").root_pattern(
-          ".null-ls-root",
-          ".neoconf.json",
-          "Makefile",
-          ".git",
-          "go.mod"
-        ),
-        sources = {
-          nls.builtins.formatting.fish_indent,
-          nls.builtins.diagnostics.fish,
-          nls.builtins.diagnostics.zsh,
-          --nls.builtins.formatting.stylua,
-          nls.builtins.formatting.shfmt,
-        },
-      }
-    end,
-    --config = function()
-    --  require("lsp.null-ls")
-    --end,
-    enabled = true,
   },
 
   -- use {"dstein64/vim-startuptime"}
@@ -263,7 +145,11 @@ local plugins = {
     -- "jayden-chan/base46.nvim",
     "tinytub/base46",
     dependencies = "plenary.nvim",
-    config = function() require("plugins.configs.others").base46() end,
+    config = function()
+      local base46 = require "base46"
+      --base46.setup({ theme = "everforest", custom_highlights = "colors.themes.everforest" })
+      base46.setup { theme = "everforest" }
+    end,
     enabled = false,
   },
 
@@ -495,7 +381,12 @@ local plugins = {
   {
     "max397574/better-escape.nvim",
     event = "InsertCharPre",
-    config = function() require("plugins.configs.others").better_escape() end,
+    opts = {
+      mapping = { "jk" },
+      timeout = 300,
+      clear_empty_lines = false, -- clear line after escaping if there is only whitespace
+      keys = "<Esc>",
+    },
   },
 
   -- auto pairs
@@ -706,8 +597,49 @@ local plugins = {
       }
     end,
     config = function(_, opts)
-      local ai = require "mini.ai"
-      ai.setup(opts)
+      require("mini.ai").setup(opts)
+      -- register all text objects with which-key
+      require("utils").on_load("which-key.nvim", function()
+        ---@type table<string, string|table>
+        local i = {
+          [" "] = "Whitespace",
+          ['"'] = 'Balanced "',
+          ["'"] = "Balanced '",
+          ["`"] = "Balanced `",
+          ["("] = "Balanced (",
+          [")"] = "Balanced ) including white-space",
+          [">"] = "Balanced > including white-space",
+          ["<lt>"] = "Balanced <",
+          ["]"] = "Balanced ] including white-space",
+          ["["] = "Balanced [",
+          ["}"] = "Balanced } including white-space",
+          ["{"] = "Balanced {",
+          ["?"] = "User Prompt",
+          _ = "Underscore",
+          a = "Argument",
+          b = "Balanced ), ], }",
+          c = "Class",
+          f = "Function",
+          o = "Block, conditional, loop",
+          q = "Quote `, \", '",
+          t = "Tag",
+        }
+        local a = vim.deepcopy(i)
+        for k, v in pairs(a) do
+          a[k] = v:gsub(" including.*", "")
+        end
+        local ic = vim.deepcopy(i)
+        local ac = vim.deepcopy(a)
+        for key, name in pairs({ n = "Next", l = "Last" }) do
+          i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
+          a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
+        end
+        require("which-key").register({
+          mode = { "o", "x" },
+          i = i,
+          a = a,
+        })
+      end)
     end,
   },
 
@@ -1125,7 +1057,39 @@ local plugins = {
   {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    config = function() require("plugins.configs.others").blankline() end,
+    opts = {
+      indentLine_enabled = 1,
+      char = "▏",
+
+      filetype_exclude = {
+        "help",
+        "terminal",
+        "alpha",
+        "lazy",
+        "lspinfo",
+        "dashboard",
+        "TelescopePrompt",
+        "TelescopeResults",
+        "mason",
+        "neo-tree",
+        "Trouble",
+        "lazy",
+        "noice",
+        "nui",
+        "notify",
+        "mason",
+        "toggleterm",
+        "lazyterm",
+      },
+
+      buftype_exclude = { "terminal" },
+      show_trailing_blankline_indent = false,
+      show_first_indent_level = false,
+      show_current_context = false,
+      --show_current_context_start = true,
+
+    },
+    --    config = function() require("plugins.configs.others").blankline() end,
   },
 
   -- active indent guide and indent text objects
@@ -1203,7 +1167,21 @@ local plugins = {
     "numToStr/Comment.nvim",
     --keys = { "gc", "gb" },
     --config = override_req("nvim_comment", "(plugins.configs.configs.others).comment()"),
-    config = function() require("plugins.configs.others").comment() end,
+    opts = {
+      padding = true, -- Add a space b/w comment and the line
+      sticky = true,  -- Whether the cursor should stay at its position
+
+      -- We define all mappings manually to support neovim < 0.7
+      mappings = {
+        basic = false,    -- Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
+        extra = false,    -- Includes `gco`, `gcO`, `gcA`
+        extended = false, -- Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
+      },
+
+    },
+    --config = function()
+    --  require("plugins.configs.others").comment()
+    --end,
     enabled = false,
   },
   -- comments

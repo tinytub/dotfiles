@@ -12,7 +12,22 @@ return {
             or nil,
         dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
         config = function()
-          require("plugins.configs.others").luasnip()
+          local luasnip = require "luasnip"
+
+          luasnip.config.set_config {
+            history = true,
+            delete_check_events = "TextChanged",
+          }
+          luasnip.snippets = {
+            all = require "plugins.extras.luasnips.all",
+            go = require "plugins.extras.luasnips.golang",
+            lua = require "plugins.extras.luasnips.lua",
+            gitcommit = require "plugins.extras.luasnips.gitcommit",
+            markdown = require "plugins.extras.luasnips.markdown",
+          }
+
+          require("luasnip.loaders.from_vscode").lazy_load()
+          require("luasnip.loaders.from_vscode").lazy_load { paths = vim.g.luasnippets_path or "" }
         end,
       },
 
@@ -140,16 +155,16 @@ return {
         window = {
           completion = {
             border = border("CmpBorder"),
-            side_padding = 1,
+            --side_padding = 1,
             winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-            --scrollbar = false,
-            zindex = 1001,
+            ----scrollbar = false,
+            --zindex = 1001,
           },
           documentation = {
-            side_padding = 1,
             border = border("CmpDocBorder"),
+            --side_padding = 1,
             winhighlight = "Normal:CmpDoc",
-            zindex = 1001,
+            --zindex = 1001,
           },
         },
         mapping = {
@@ -205,7 +220,7 @@ return {
           { name = "buffer", },
           {
             name = "path",
-            max_item_count = 4
+            --            max_item_count = 4
           },
           -- { name = "nvim_lua",               priority = 60 },
           -- { name = "calc" },

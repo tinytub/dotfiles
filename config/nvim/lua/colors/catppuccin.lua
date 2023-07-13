@@ -116,7 +116,7 @@ catppuccin.setup({
         background = true,
       },
     },
-    navic = { enabled = true },
+    navic = { enabled = true, custom_bg = "lualine" },
     neotest = true,
     noice = true,
     notify = true,

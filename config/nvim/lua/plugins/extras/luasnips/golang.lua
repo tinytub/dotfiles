@@ -3,7 +3,7 @@ local ls = require("luasnip")
 local fmt = require("luasnip.extras.fmt").fmt
 local fmta = require("luasnip.extras.fmt").fmta
 local rep = require("luasnip.extras").rep
-local util = require("plugins.luasnips.util")
+local util = require("plugins.extras.luasnips.util")
 local ai = require("luasnip.nodes.absolute_indexer")
 local partial = require("luasnip.extras").partial
 --}}}
@@ -55,14 +55,14 @@ return {
         }}
         {finally}
       ]], {
-      val     = ls.i(1, { "val" }),
-      err1    = ls.i(2, { "err" }),
-      func    = ls.i(3, { "Func" }),
-      args    = ls.i(4),
-      err2    = rep(2),
-      err3    = ls.d(5, util.make_return_nodes, { 2 }),
-      finally = ls.i(0),
-    }),
+        val     = ls.i(1, { "val" }),
+        err1    = ls.i(2, { "err" }),
+        func    = ls.i(3, { "Func" }),
+        args    = ls.i(4),
+        err2    = rep(2),
+        err3    = ls.d(5, util.make_return_nodes, { 2 }),
+        finally = ls.i(0),
+      }),
     in_func
   ), --}}}
 
@@ -76,26 +76,26 @@ return {
           {finally}
         }}
       ]], {
-      name1   = rep(2),
-      desc    = ls.i(5, "description"),
-      rec     = ls.c(1, {
-        ls.t(""),
-        ls.sn(nil, fmt("({} {}) ", {
-          ls.i(1, "r"),
-          ls.i(2, "receiver"),
-        })),
+        name1   = rep(2),
+        desc    = ls.i(5, "description"),
+        rec     = ls.c(1, {
+          ls.t(""),
+          ls.sn(nil, fmt("({} {}) ", {
+            ls.i(1, "r"),
+            ls.i(2, "receiver"),
+          })),
+        }),
+        name2   = ls.i(2, "Name"),
+        args    = ls.i(3),
+        ret     = ls.c(4, {
+          ls.i(1, "error"),
+          ls.sn(nil, fmt("({}, {}) ", {
+            ls.i(1, "ret"),
+            ls.i(2, "error"),
+          })),
+        }),
+        finally = ls.i(0),
       }),
-      name2   = ls.i(2, "Name"),
-      args    = ls.i(3),
-      ret     = ls.c(4, {
-        ls.i(1, "error"),
-        ls.sn(nil, fmt("({}, {}) ", {
-          ls.i(1, "ret"),
-          ls.i(2, "error"),
-        })),
-      }),
-      finally = ls.i(0),
-    }),
     not_in_func
   ), --}}}
 
@@ -149,13 +149,13 @@ return {
           {}
         }}
       ]], {
-      rep(1),
-      rep(2),
-      rep(1),
-      ls.f(function(args) return util.snake_case(args[1][1]) end, { 1 }),
-      ls.i(1, "Client"),
-      ls.i(2, "pkg.Interface"),
-    })
+        rep(1),
+        rep(2),
+        rep(1),
+        ls.f(function(args) return util.snake_case(args[1][1]) end, { 1 }),
+        ls.i(1, "Client"),
+        ls.i(2, "pkg.Interface"),
+      })
   ), --}}}
 
   -- Nolint {{{
@@ -218,9 +218,9 @@ return {
         	t.Errorf("(-want +got):\\n%s", diff)
         }}
       ]], {
-      ls.i(1, "want"),
-      ls.i(2, "got"),
-    }),
+        ls.i(1, "want"),
+        ls.i(2, "got"),
+      }),
     in_test_func
   ), --}}}
 
@@ -297,42 +297,42 @@ return {
       })
       return <ret6>, <err12>
       ]], {
-      query1  = ls.i(1, "query"),
-      query2  = ls.i(2, "SELECT 1"),
-      ret1    = ls.i(3, "ret"),
-      type1   = ls.i(4, "Type"),
-      cap     = ls.i(5, "cap"),
-      err1    = ls.i(6, "err"),
-      retrier = ls.i(7, "retrier"),
-      rows1   = ls.i(8, "rows"),
-      err2    = ls.i(9, "err"),
-      db      = ls.i(10, "db"),
-      ctx     = ls.i(11, "ctx"),
-      query3  = rep(1),
-      args    = ls.i(12, "args"),
-      err3    = rep(9),
-      err4    = rep(9),
-      err5    = rep(9),
-      err6    = ls.d(13, util.go_err_snippet, { 9 }, { user_args = { { "making query" } } }),
-      rows2   = rep(8),
-      ret2    = rep(3),
-      ret3    = rep(3),
-      rows3   = rep(8),
-      doc1    = ls.i(14, "doc"),
-      type2   = rep(4),
-      err7    = ls.i(15, "err"),
-      rows4   = rep(8),
-      vals    = ls.d(16, function(args) return ls.sn(nil, ls.i(1, args[1][1])) end, { 14 }),
-      err8    = rep(15),
-      err9    = ls.d(17, util.go_err_snippet, { 15 }, { user_args = { { "scanning row" } } }),
-      last    = ls.i(0),
-      ret4    = rep(3),
-      ret5    = rep(3),
-      doc2    = rep(14),
-      err11   = ls.d(18, util.go_err_snippet, { 8 }, { user_args = { { "iterating rows", ".Err()" } } }),
-      ret6    = rep(3),
-      err12   = ls.d(19, util.go_err_snippet, { 6 }, { user_args = { { "error in row iteration" } } }),
-    }
+        query1  = ls.i(1, "query"),
+        query2  = ls.i(2, "SELECT 1"),
+        ret1    = ls.i(3, "ret"),
+        type1   = ls.i(4, "Type"),
+        cap     = ls.i(5, "cap"),
+        err1    = ls.i(6, "err"),
+        retrier = ls.i(7, "retrier"),
+        rows1   = ls.i(8, "rows"),
+        err2    = ls.i(9, "err"),
+        db      = ls.i(10, "db"),
+        ctx     = ls.i(11, "ctx"),
+        query3  = rep(1),
+        args    = ls.i(12, "args"),
+        err3    = rep(9),
+        err4    = rep(9),
+        err5    = rep(9),
+        err6    = ls.d(13, util.go_err_snippet, { 9 }, { user_args = { { "making query" } } }),
+        rows2   = rep(8),
+        ret2    = rep(3),
+        ret3    = rep(3),
+        rows3   = rep(8),
+        doc1    = ls.i(14, "doc"),
+        type2   = rep(4),
+        err7    = ls.i(15, "err"),
+        rows4   = rep(8),
+        vals    = ls.d(16, function(args) return ls.sn(nil, ls.i(1, args[1][1])) end, { 14 }),
+        err8    = rep(15),
+        err9    = ls.d(17, util.go_err_snippet, { 15 }, { user_args = { { "scanning row" } } }),
+        last    = ls.i(0),
+        ret4    = rep(3),
+        ret5    = rep(3),
+        doc2    = rep(14),
+        err11   = ls.d(18, util.go_err_snippet, { 8 }, { user_args = { { "iterating rows", ".Err()" } } }),
+        ret6    = rep(3),
+        err12   = ls.d(19, util.go_err_snippet, { 6 }, { user_args = { { "error in row iteration" } } }),
+      }
     )
   ),
   -- }}}

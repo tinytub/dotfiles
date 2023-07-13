@@ -27,11 +27,12 @@ return {
       }
       table.insert(opts.sections.lualine_x, 2, {
         function()
-          --local icon = require("lazyvim.config").icons.kinds.Copilot
-          local icons = require("plugins.configs.lspkind_icons").icons.kinds.Copilot
+          local icons = require("plugins.configs.lspkind_icons").kinds.Copilot
           local status = require("copilot.api").status.data
           return icons .. (status.message or "")
         end,
+
+        separator = { left = "", right = "" },
         cond = function()
           local ok, clients = pcall(vim.lsp.get_active_clients, { name = "copilot", bufnr = 0 })
           return ok and #clients > 0
@@ -39,7 +40,8 @@ return {
         color = function()
           if not package.loaded["copilot"] then return end
           local status = require("copilot.api").status.data
-          return colors[status.status] or colors[""]
+          return { bg = "#313244", fg = "#80A7EA" }
+          --return colors[status.status] or { bg = "#313244", fg = "#80A7EA" }
         end,
       })
     end,
