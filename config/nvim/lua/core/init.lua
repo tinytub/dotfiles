@@ -1,3 +1,4 @@
+local M = {}
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
@@ -104,6 +105,10 @@ end
 
 if vim.g.neovide then neovide_config() end
 
-require("core.setup").init()
-require("lazy").setup(opts)
-require("core.setup").setup(opts)
+function M.global_setup()
+  require("core.setup").init()
+  require("lazy").setup(opts)
+  require("core.setup").setup(opts)
+end
+
+return M

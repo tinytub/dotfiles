@@ -20,6 +20,7 @@ return {
     lazy = true,
     opts = { style = "moon" },
   },
+
   {
     "catppuccin/nvim",
     name = "catppuccin",
