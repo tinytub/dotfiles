@@ -22,11 +22,42 @@ shell = ["zsh"]
 format = "[$output]($style) "
 style = "bold blue"
 
+#[git_status]
+#untracked = '[ $count](bold yellow) '
+#staged = '[ $count](bold green) '
+#stashed = "[ ](cyan) "
+#deleted = '[ $count](bold red) '
+#modified= '[ $count](bold blue) '
+#behind = '[ ](bold purple) '
+#format = '([$all_status$ahead_behind]($style))'
+
+[[battery.display]]
+threshold = 50
+
+[lua]
+detect_folders = []
+symbol = " "
+
+[git_metrics]
+disabled = false
+
+#[aws]
+#symbol = "  "
+
+[buf]
+symbol = " "
+
+[c]
+symbol = " "
+
+#[conda]
+#symbol = " "
+
 [dart]
 symbol = " "
 
 [directory]
-read_only = " "
+read_only = " 󰌾"
 
 [docker_context]
 symbol = " "
@@ -37,14 +68,29 @@ symbol = " "
 [elm]
 symbol = " "
 
+#[fossil_branch]
+#symbol = " "
+
 [git_branch]
 symbol = " "
 
 [golang]
 symbol = " "
 
+#[guix_shell]
+#symbol = " "
+
+[haskell]
+symbol = " "
+
+#[haxe]
+#symbol = "⌘ "
+
 [hg_branch]
 symbol = " "
+
+[hostname]
+ssh_symbol = " "
 
 [java]
 symbol = " "
@@ -52,32 +98,32 @@ symbol = " "
 [julia]
 symbol = " "
 
-[line_break]
-disabled = false
-
 [memory_usage]
-symbol = " "
+symbol = "󰍛 "
+
+#[meson]
+#symbol = "󰔷 "
 
 [nim]
-symbol = " "
+symbol = "󰆥 "
 
 [nix_shell]
-symbol = " "
+symbol = " "
+
+[nodejs]
+symbol = " "
 
 [package]
-symbol = " "
-
-[perl]
-symbol = " "
-
-[php]
-symbol = " "
+symbol = "󰏗 "
 
 [python]
-symbol = " "
+symbol = " "
+
+[rlang]
+symbol = "󰟔 "
 
 [ruby]
-symbol = " "
+symbol = " "
 
 [rust]
 symbol = " "
@@ -85,8 +131,5 @@ symbol = " "
 [scala]
 symbol = " "
 
-[swift]
-symbol = "ﯣ "
-
-[vagrant]
-disabled = true
+[spack]
+symbol = "🅢 "
