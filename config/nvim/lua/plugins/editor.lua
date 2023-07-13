@@ -150,52 +150,6 @@ local plugins = {
     --    config = function() require "plugins.configs.smart-splits" end,
   },
 
-  {
-    -- this repo has break some base46 colors
-    -- "CanKolay3499/base46",
-    -- "jayden-chan/base46.nvim",
-    "tinytub/base46",
-    dependencies = "plenary.nvim",
-    config = function()
-      local base46 = require "base46"
-      --base46.setup({ theme = "everforest", custom_highlights = "colors.themes.everforest" })
-      base46.setup { theme = "everforest" }
-    end,
-    enabled = false,
-  },
-
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    --dependencies = "nvim-treesitter",
-    --dependencies = "bufferline.nvim",
-    --    run = ":CatppuccinCompile",
-    config = function() require "colors.catppuccin" end,
-    enabled = true,
-    lazy = true,
-    --event = "VeryLazy",
-  },
-
-  {
-    "sainnhe/everforest",
-    config = function() require("colors").init() end,
-    enabled = false,
-  },
-
-  {
-    "rebelot/kanagawa.nvim",
-    config = function() require("colors").init() end,
-    enabled = false,
-  },
-
-  --{
-  --	"sainnhe/gruvbox-material",
-  --	config = function()
-  --		require("colors").init()
-  --	end,
-  --	enabled = false,
-  --},
-
   -- automatically highlighting other uses of the word under the cursor
   {
     "rrethy/vim-illuminate",
@@ -391,6 +345,7 @@ local plugins = {
   -- Smooth escaping
   {
     "max397574/better-escape.nvim",
+    enabled = false,
     event = "InsertCharPre",
     opts = {
       mapping = { "jk" },
