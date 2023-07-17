@@ -5,12 +5,14 @@ return {
     dependencies = {
       "b0o/SchemaStore.nvim", -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
       { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
+      { "folke/neodev.nvim",  opts = {} },
+
 
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       {
         "hrsh7th/cmp-nvim-lsp",
-        --     cond = function() return require("utils").has "nvim-cmp" end,
+        --cond = function() return require("utils").has "nvim-cmp" end,
       },
     },
 
@@ -93,8 +95,8 @@ return {
           "go.mod"
         ),
         sources = {
-          nls.builtins.formatting.fish_indent,
-          nls.builtins.diagnostics.fish,
+          --nls.builtins.formatting.fish_indent,
+          --nls.builtins.diagnostics.fish,
           nls.builtins.diagnostics.zsh,
           --nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
@@ -112,6 +114,7 @@ return {
     "williamboman/mason.nvim",
     cmd = { "Mason" },
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+    build = ":MasonUpdate",
     opts = {
       ensure_installed = {
         "stylua",

@@ -2,7 +2,7 @@ return {
   {
     "hrsh7th/nvim-cmp",
     version = false,
-    event = "InsertEnter",
+    --event = "InsertEnter",
     dependencies = {
       {
         -- snippet plugin

@@ -23,7 +23,7 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 local opts = {
   spec = {
     { import = "plugins" },
-    { import = "plugins.configs.nvim-lualine" },
+    --{ import = "plugins.configs.nvim-lualine" },
     --{ import = "plugins.configs.nvim-cmp" },
 
     { import = "plugins.extras.test" },
@@ -34,8 +34,8 @@ local opts = {
     { import = "plugins.extras.lang.json" },
     { import = "plugins.extras.lang.go" },
     --{ import = "plugins.extras.lang.python" },
-    { import = "plugins.extras.editor.flash" }, --coflict with  flit
     { import = "plugins.extras.editor.mini-files" },
+    --    { import = "plugins.extras.editor.leap" },
     { import = "plugins.extras.ui.edgy" },
     --    { import = "plugins.extras.util.mini-hipatterns" }, twinlandcss
 

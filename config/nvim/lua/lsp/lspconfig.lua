@@ -122,7 +122,8 @@ local lsp_handlers = function()
   -- setup formatting and keymaps
   require("utils").on_attach(function(client, buffer)
     --require("lsp.format").on_attach(client, buffer)
-    require("lsp.keymaps").Lsp_keymaps(client, buffer)
+    --require("lsp.keymaps").Lsp_keymaps(client, buffer)
+    require("lsp.keymaps").on_attach(client, buffer)
     --Lsp_keymaps(client, buffer)
 
     vim.api.nvim_buf_set_option(buffer, "omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -141,7 +142,8 @@ local lsp_handlers = function()
     ---@type lsp.Client
     local client = vim.lsp.get_client_by_id(client_id)
     local buffer = vim.api.nvim_get_current_buf()
-    require("lsp.keymaps").Lsp_keymaps(client, buffer)
+    --require("lsp.keymaps").Lsp_keymaps(client, buffer)
+    require("lsp.keymaps").on_attach(client, buffer)
     return ret
   end
 

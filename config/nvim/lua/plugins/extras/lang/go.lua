@@ -7,7 +7,7 @@ return {
         "mason.nvim",
         opts = function(_, opts)
           opts.ensure_installed = opts.ensure_installed or {}
-          table.insert(opts.ensure_installed, "delve")
+          vim.list_extend(opts.ensure_installed, { "gomodifytags", "impl", "gofumpt", "goimports-reviser", "delve" })
         end,
       },
     },
@@ -139,7 +139,7 @@ return {
                 rangeVariableTypes = true,
               },
               analyses = {
-                fieldalignment = true,
+                fieldalignment = false,
                 nilness = true,
                 unusedwrite = true,
                 useany = true,
@@ -203,6 +203,47 @@ return {
   --    end
   --  end,
   --},
+  -- Language
+  -- may be i can try https://github.com/olexsmir/gopher.nvim or https://github.com/crispgm/nvim-go
+  {
+    "ray-x/go.nvim",
+    dependencies = { -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    event = { "CmdlineEnter" },
+    ft = { "go", "gomod" },
+    opts = {
+      disable_defaults = false,
+      --verbose = plugin_debug(),
+      -- goimport = 'goimports', -- 'gopls'
+      goimport = 'gopls',
+      fillstruct = "fillstruct",
+      verbose = false,
+      lsp_cfg = false,
+      textobjects = false,
+      tag_transform = "camelcase", -- can be transform option("snakecase", "camelcase", etc) check gomodifytags for details and more options
+      --log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
+      --lsp_codelens = false, -- use navigator
+      lsp_keymaps = false, -- set to false to disable gopls/lsp keymap
+      lsp_codelens = false,
+
+      dap_debug = false,
+      --goimport = "goimports",
+      dap_debug_vt = "true",
+      dap_debug_gui = false,
+      --test_runner = "go", -- richgo, go test, richgo, dlv, ginkgo
+      -- run_in_floaterm = true, -- set to true to run in float window.
+      --lsp_document_formatting = false,
+      -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
+      -- lsp_cfg = true,
+      lsp_inlay_hints = { enable = false }
+    },
+    --    config = function() require "plugins.configs.go-nvim" end,
+  },
+
+
   {
     "nvim-neotest/neotest",
     optional = true,

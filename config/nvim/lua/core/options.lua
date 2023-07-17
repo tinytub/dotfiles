@@ -21,7 +21,23 @@ opt.expandtab = true
 opt.shiftwidth = 4
 opt.smartindent = true
 
-opt.fillchars = { eob = " " }
+vim.opt.fillchars = {
+  foldopen = "",
+  foldclose = "",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
+}
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+vim.o.foldcolumn = "0"
+
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
 --opt.listchars = "tab:»·,nbsp:+, trail:·, extends:→,precedes:←";
 --opt.listchars = { tab = " " }
 
@@ -37,7 +53,7 @@ opt.number = true
 opt.numberwidth = 2
 opt.relativenumber = false
 opt.ruler = false
-opt.pumblend = 10 -- Popup blend
+opt.pumblend = 10  -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
 
 -- disable nvim intro

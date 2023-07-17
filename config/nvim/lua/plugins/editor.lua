@@ -32,106 +32,6 @@ local plugins = {
     },
   },
 
-  -- lsp_lines 可以分层显示 lsp 弹出的行内错误
-  {
-    enabled = false,
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-    dependencies = { "nvim-lspconfig" },
-    config = function() require("plugins.configs.lsp-line").setup() end,
-    event = { "BufAdd", "BufRead", "BufNewFile", "InsertEnter" },
-  },
-
-  -- lspserver 状态插件, 停用了 statuslines 中的状态。
-  {
-    "j-hui/fidget.nvim",
-    dependencies = { "nvim-lspconfig" },
-    enabled = false,
-    config = function() require "plugins.configs.fidget-nvim" end,
-    event = { "BufAdd", "BufRead", "BufNewFile", "InsertEnter" },
-    init = function()
-      -- when noice is not enabled, install notify on VeryLazy
-      local Util = require "utils"
-      if not Util.has "noice.nvim" then
-        print "noice not found, use fidget"
-
-        Util.on_very_lazy(function() vim.notify = require "fidget" end)
-      end
-    end,
-  },
-
-  -- use {"dstein64/vim-startuptime"}
-  -- Icons
-  {
-    "nvim-tree/nvim-web-devicons",
-    --name = "nvim-web-devicons",
-    --after = "base46",
-    config = function() require "plugins.configs.icons" end,
-    lazy = true,
-  },
-
-  -- ui components
-  {
-    "MunifTanjim/nui.nvim",
-    lazy = true
-  },
-
-  -- Notification Enhancer
-  {
-    "rcarriga/nvim-notify",
-    config = function() require("plugins.configs.nvim-notify").config() end,
-    --event = "VeryLazy",
-    enabled = false,
-    init = function()
-      -- when noice is not enabled, install notify on VeryLazy
-      local Util = require "utils"
-      if not Util.has "noice.nvim" then
-        print "noice not found, use notify"
-        Util.on_very_lazy(function() vim.notify = require "notify" end)
-      end
-    end,
-  },
-
-  -- noicer ui
-  -- 关闭了fidget和notify, 如果手动关闭noice，记得打开fidget和notify
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    enabled = true,
-    config = function() require "plugins.configs.nvim-noice" end,
-    keys = {
-      {
-        "<S-Enter>",
-        function() require("noice").redirect(vim.fn.getcmdline()) end,
-        mode = "c",
-        desc = "Redirect Cmdline",
-      },
-      { "<leader>snl", function() require("noice").cmd "last" end,    desc = "Noice Last Message" },
-      { "<leader>snh", function() require("noice").cmd "history" end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd "all" end,     desc = "Noice All" },
-      --{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = { "i", "n", "s" } },
-      --{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = { "i", "n", "s" } },
-    },
-  },
-
-  -- Neovim UI Enhancer
-  {
-    "stevearc/dressing.nvim",
-    lazy = true,
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require("lazy").load { plugins = { "dressing.nvim" } }
-        return vim.ui.select(...)
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.input = function(...)
-        require("lazy").load { plugins = { "dressing.nvim" } }
-        return vim.ui.input(...)
-      end
-    end,
-    config = function() require("plugins.configs.dressing").config() end,
-  },
-
   -- Smarter Splits
   {
     "mrjones2014/smart-splits.nvim",
@@ -225,100 +125,6 @@ local plugins = {
   --  end,
   --},
 
-  {
-    "kdheepak/tabline.nvim",
-    enabled = false,
-    config = function()
-      require("tabline").setup {
-        -- Defaults configuration options
-        enable = true,
-        options = {
-          -- If lualine is installed tabline will use separators configured in lualine by default.
-          -- These options can be used to override those settings.
-          component_separators = { "", "" },
-          section_separators = { "", "" },
-          max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
-          show_tabs_always = true,     -- this shows tabs only when there are more than one tab or if the first tab is named
-          show_devicons = true,        -- this shows devicons in buffer section
-          colored = true,
-          show_bufnr = false,          -- this appends [bufnr] to buffer section,
-          tabline_show_last_separator = true,
-          show_filename_only = true,   -- shows base filename only instead of relative path in filename
-          modified_icon = "+ ",        -- change the default modified icon
-          modified_italic = true,      -- set to true by default; this determines whether the filename turns italic if modified
-          show_tabs_only = false,      -- this shows only tabs instead of tabs + buffers
-        },
-      }
-      vim.cmd [[
-      set guioptions-=e " Use showtabline in gui vim
-      set sessionoptions+=tabpages,globals " store tabpages and globals in session
-    ]]
-    end,
-    --dependencies = { 'hoob3rt/lualine.nvim', 'kyazdani42/nvim-web-devicons' }
-    dependencies = { "lualine.nvim", "nvim-web-devicons" },
-  },
-
-  -- Simple statusline component that shows what scope you are working inside
-  {
-    "SmiteshP/nvim-navic",
-    --event = "CursorMoved",
-    --config = function()
-    --  require("plugins.configs.navic")
-    --end,
-    enabled = true,
-    lazy = true,
-    init = function()
-      vim.g.navic_silence = true
-      require("utils").on_attach(function(client, buffer)
-        if client.server_capabilities.documentSymbolProvider then require("nvim-navic").attach(client, buffer) end
-      end)
-    end,
-    opts = function()
-      return {
-        separator = "  ",
-        -- limit for amount of context shown
-        -- 0 means no limit
-        depth_limit = 5,
-        highlight = true,
-        -- indicator used when context hits depth limit
-        depth_limit_indicator = "..",
-        icons = require("plugins.configs.lspkind_icons").kinds,
-      }
-    end,
-  },
-
-  {
-    "akinsho/bufferline.nvim",
-    lazy = false,
-    dependencies = { "catppuccin", "nvim-web-devicons" },
-    --event = "VeryLazy",
-    opts = {
-      options = {
-        diagnostics = "nvim_lsp",
-        show_buffer_close_icons = false,
-        diagnostics_indicator = function(_, _, diag)
-          --      local icons = require("lazyvim.config").icons.diagnostics
-          local icons = require("plugins.configs.lspkind_icons").diagnostics
-          local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-              .. (diag.warning and icons.Warn .. diag.warning or "")
-          return vim.trim(ret)
-        end,
-        offsets = {
-          {
-            filetype = "neo-tree",
-            text = "Neo-tree",
-            highlight = "Directory",
-            text_align = "left",
-          },
-        },
-      },
-    },
-
-    config = function(_, opts)
-      opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
-      require("bufferline").setup(opts)
-    end,
-  },
 
   ---- Better buffer closing
   --{
@@ -700,7 +506,6 @@ local plugins = {
     },
     deactivate = function() vim.cmd [[Neotree close]] end,
     init = function()
-      vim.g.neo_tree_remove_legacy_commands = 1
       if vim.fn.argc() == 1 then
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
         if stat and stat.type == "directory" then require "neo-tree" end
@@ -715,7 +520,7 @@ local plugins = {
       open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline" },
       filesystem = {
         bind_to_cwd = false,
-        follow_current_file = true,
+        follow_current_file = { enabled = true },
         use_libuv_file_watcher = true,
       },
       window = {
@@ -729,16 +534,6 @@ local plugins = {
           expander_collapsed = "",
           expander_expanded = "",
           expander_highlight = "NeoTreeExpander",
-        },
-        icon = {
-          folder_empty = "󰜌",
-          folder_empty_open = "󰜌",
-        },
-        git_status = {
-          symbols = {
-            renamed = "󰁕",
-            unstaged = "󰄱",
-          },
         },
       },
     },
@@ -778,25 +573,6 @@ local plugins = {
     end,
   },
 
-  -- whichkey
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    keys = { "<leader>", '"', "'", "`", "c", "v" },
-    --module = "which-key",
-    config = function() require "plugins.configs.whichkey" end,
-    cond = function() return not vim.g.vscode end,
-  },
-
-  -- Dashboard
-  {
-    "goolord/alpha-nvim",
-    enabled = true,
-    optional = false,
-    event = "VimEnter",
-    --after = "base46",
-    config = function() require("plugins.configs.dashboard") end,
-  },
   {
     "echasnovski/mini.starter",
     --optional = false,
@@ -908,45 +684,6 @@ local plugins = {
     cmd = "LazyGit",
     enabled = false,
   },
-  -- Language
-  -- may be i can try https://github.com/olexsmir/gopher.nvim or https://github.com/crispgm/nvim-go
-  {
-    "ray-x/go.nvim",
-    dependencies = { -- optional packages
-      "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    event = { "CmdlineEnter" },
-    ft = { "go", "gomod" },
-    opts = {
-      disable_defaults = false,
-      --verbose = plugin_debug(),
-      -- goimport = 'goimports', -- 'gopls'
-      goimport = 'gopls',
-      filstruct = "gopls",
-      lsp_cfg = false,
-      textobjects = false,
-      tag_transform = "camelcase", -- can be transform option("snakecase", "camelcase", etc) check gomodifytags for details and more options
-      --log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
-      --lsp_codelens = false, -- use navigator
-      lsp_keymaps = false, -- set to false to disable gopls/lsp keymap
-      lsp_codelens = false,
-
-      dap_debug = false,
-      --goimport = "goimports",
-      dap_debug_vt = "true",
-      dap_debug_gui = false,
-      --test_runner = "go", -- richgo, go test, richgo, dlv, ginkgo
-      -- run_in_floaterm = true, -- set to true to run in float window.
-      --lsp_document_formatting = false,
-      -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
-      -- lsp_cfg = true,
-      lsp_inlay_hints = { enable = false }
-    },
-    --    config = function() require "plugins.configs.go-nvim" end,
-  },
-
   {
     "jose-elias-alvarez/typescript.nvim",
   },
@@ -966,36 +703,82 @@ local plugins = {
   },
 
   -- F 键查询增强
+  -- disable old installations of leap and flit. Optional so it doesn't appear under disabled plugins
   {
-    "ggandor/flit.nvim",
-    keys = function()
-      ---@type LazyKeys[]
-      local ret = {}
-      for _, key in ipairs { "f", "F", "t", "T" } do
-        ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
-      end
-      return ret
-    end,
-    opts = { labeled_modes = "nx" },
-  },
-  {
-    -- flit dependence
     "ggandor/leap.nvim",
-    keys = {
-      { "s",  mode = { "n", "x", "o" }, desc = "Leap forward to" },
-      { "S",  mode = { "n", "x", "o" }, desc = "Leap backward to" },
-      { "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
-    },
-    config = function(_, opts)
-      local leap = require "leap"
-      for k, v in pairs(opts) do
-        leap.opts[k] = v
-      end
-      leap.add_default_mappings(true)
-      vim.keymap.del({ "x", "o" }, "x")
-      vim.keymap.del({ "x", "o" }, "X")
+    enabled = function()
+      vim.schedule(function()
+        local Config = require("lazy.core.config")
+        if Config.spec.disabled["leap.nvim"] or Config.spec.disabled["flit.nvim"] then
+          require("lazy.core.util").warn(
+            [[`flash.nvim` is now the default **LazyVim** jump plugin.
+**leap.nvim** and **flit.nvim** have been disabled.
+Please remove the plugins from your config.
+If you rather use leap/flit instead, you can add the leap extra:
+`lazyvim.plugins.extras.editor.leap`
+]],
+            { title = "LazyVim" }
+          )
+        end
+      end)
+      return false
     end,
+    optional = true,
   },
+  { "ggandor/flit.nvim",                           enabled = false, optional = true },
+
+  -- Add Flash
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    vscode = true,
+    ---@type Flash.Config
+    opts = {
+      search = {
+        -- search/jump in all windows
+        multi_window = false,
+        -- search direction
+        forward = true,
+        warp = false,
+      },
+      modes = {
+        -- treesitter = {
+        --   label = {
+        --     rainbow = { enabled = true },
+        --   },
+        -- },
+        char = {
+          jump_labels = false
+        },
+        treesitter_search = {
+          label = {
+            rainbow = { enabled = true },
+          }
+        }
+      }
+    },
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end,       desc = "Flash" },
+      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o",               function() require("flash").remote() end,     desc = "Remote Flash" },
+      {
+        "R",
+        mode = { "o", "x" },
+        function() require("flash").treesitter_search() end,
+        desc =
+        "Treesitter Search"
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function() require("flash").toggle() end,
+        desc =
+        "Toggle Flash Search"
+      },
+    },
+  },
+
 
   {
     enabled = false,
@@ -1045,65 +828,6 @@ local plugins = {
     enabled = true,
   },
 
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      indentLine_enabled = 1,
-      char = "▏",
-
-      filetype_exclude = {
-        "help",
-        "terminal",
-        "alpha",
-        "lazy",
-        "lspinfo",
-        "dashboard",
-        "TelescopePrompt",
-        "TelescopeResults",
-        "mason",
-        "neo-tree",
-        "Trouble",
-        "lazy",
-        "noice",
-        "nui",
-        "notify",
-        "mason",
-        "toggleterm",
-        "lazyterm",
-      },
-
-      buftype_exclude = { "terminal" },
-      show_trailing_blankline_indent = false,
-      show_first_indent_level = false,
-      show_current_context = false,
-      --show_current_context_start = true,
-
-    },
-    --    config = function() require("plugins.configs.others").blankline() end,
-  },
-
-  -- active indent guide and indent text objects
-  {
-    "echasnovski/mini.indentscope",
-    version = false, -- wait till new 0.7.0 release to put it back on semver
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      -- symbol = "▏",
-      symbol = "│",
-      options = { try_as_border = true },
-      draw = {
-        delay = 50,
-        animation = function() return 10 end,
-      },
-    },
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason", "notify" },
-        callback = function() vim.b.miniindentscope_disable = true end,
-      })
-    end,
-  },
 
   {
     "folke/trouble.nvim",
@@ -1143,15 +867,6 @@ local plugins = {
     enabled = true,
   },
 
-  -- todo highlights
-  {
-    "folke/todo-comments.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    --dependencies = "nvim-lua/plenary.nvim",
-    config = function() require "plugins.configs.todo-comments" end,
-    -- event = 'BufWinEnter',
-    enabled = true,
-  },
 
   -- 注释工具
   {

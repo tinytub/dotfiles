@@ -5,12 +5,35 @@ local actions = require('telescope.actions')
 --local transform_mod = require('telescope.actions.mt').transform_mod
 
 vim.g.theme_switcher_loaded = true
+
+
+if not require("utils").has("flash.nvim") then
+  return
+end
+local function flash(prompt_bufnr)
+  require("flash").jump({
+    pattern = "^",
+    label = { after = { 0, 0 } },
+    search = {
+      mode = "search",
+      exclude = {
+        function(win)
+          return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
+        end,
+      },
+    },
+    action = function(match)
+      local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+      picker:set_selection(match.pos[1] - 1)
+    end,
+  })
+end
 -- require("base46").load_highlight "telescope"
 --local trouble = require("trouble.providers.telescope")
 -- Global remapping
 ------------------------------
 -- '--color=never',
-telescope.setup {
+local opts = {
   defaults = {
     find_command = { 'rg', "-L", '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' },
     ---- prompt_prefix = " ",
@@ -109,6 +132,11 @@ telescope.setup {
     }
   },
 }
+opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
+  mappings = { n = { s = flash }, i = { ["<c-s>"] = flash } },
+})
+
+telescope.setup(opts)
 
 -- load the term_picker extension
 require("telescope").load_extension "terms"

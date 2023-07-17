@@ -1,6 +1,17 @@
 local noice_status, noice = pcall(require, "noice")
 if not noice_status then return end
 --https://github.com/LazyVim/LazyVim
+local focused = true
+vim.api.nvim_create_autocmd("FocusGained", {
+  callback = function()
+    focused = true
+  end,
+})
+vim.api.nvim_create_autocmd("FocusLost", {
+  callback = function()
+    focused = false
+  end,
+})
 local opts = {
   lsp = {
     override = {
@@ -76,6 +87,22 @@ local opts = {
       },
       opts = { skip = true },
     },
+    {
+      filter = {
+        event = "notify",
+        find = "No information available",
+      },
+      opts = { skip = true },
+    },
+    {
+      filter = {
+        cond = function()
+          return not focused
+        end,
+      },
+      view = "notify_send",
+      opts = { stop = false },
+    }
   },
   presets = {
     bottom_search = true,

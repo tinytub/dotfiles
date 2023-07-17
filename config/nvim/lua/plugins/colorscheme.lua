@@ -18,7 +18,17 @@ return {
   {
     "folke/tokyonight.nvim",
     lazy = true,
-    opts = { style = "moon" },
+    opts = {
+      style = "moon",
+      sidebars = {
+        "qf",
+        "vista_kind",
+        "terminal",
+        "spectre_panel",
+        "startuptime",
+        "Outline",
+      },
+    },
   },
 
   {

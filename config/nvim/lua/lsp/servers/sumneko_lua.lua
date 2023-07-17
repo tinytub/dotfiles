@@ -15,7 +15,7 @@ return {
       },
       diagnostics = {
         enable = true,
-        globals = { "vim", "packer_plugins" }
+        --  globals = { "vim", "packer_plugins" }
       },
       completion = {
         keywordSnippet = "Replace",
