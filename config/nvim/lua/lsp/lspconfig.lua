@@ -66,29 +66,13 @@ end
 
 -- Manage server with custom setup
 local util = require "lspconfig.util"
+-- default servers
 local servers = {
   -- Use this to add any additional keymaps
   -- for specific lsp servers
   ---@type LazyKeys[]
   -- keys = {},
   lua_ls = require "lsp.servers.sumneko_lua",
-  pyright = require "lsp.servers.pyright",
-  --emmet_ls = require("user.lsp.settings.emmet_ls"),
-  vimls = require "lsp.servers.vimls",
-  cssls = {
-    css = {
-      lint = {
-        unknownAtRules = "ignore",
-      },
-    },
-    scss = {
-      lint = {
-        unknownAtRules = "ignore",
-      },
-    },
-  },
-  html = {},
-  bashls = {},
   grammarly = {
     filetypes = { "markdown" },
     single_file_support = true,

@@ -33,6 +33,7 @@ local opts = {
     { import = "plugins.extras.formatting" },
     { import = "plugins.extras.lang.json" },
     { import = "plugins.extras.lang.go" },
+    { import = "plugins.extras.lang.typescripts" },
     --{ import = "plugins.extras.lang.python" },
     { import = "plugins.extras.editor.mini-files" },
     --    { import = "plugins.extras.editor.leap" },

@@ -8,100 +8,143 @@ end
 icons.setup({
   override = {
     default_icon = {
-      icon = "",
+      icon = "󰈚",
       name = "Default",
     },
+
     c = {
       icon = "",
       name = "c",
     },
+
     css = {
       icon = "",
       name = "css",
     },
+
     deb = {
       icon = "",
       name = "deb",
     },
+
     Dockerfile = {
       icon = "",
       name = "Dockerfile",
     },
+
     html = {
       icon = "",
       name = "html",
     },
+
     jpeg = {
-      icon = "",
+      icon = "󰉏",
       name = "jpeg",
     },
+
     jpg = {
-      icon = "",
+      icon = "󰉏",
       name = "jpg",
     },
+
     js = {
-      icon = "",
+      icon = "󰌞",
       name = "js",
     },
+
     kt = {
       icon = "󱈙",
       name = "kt",
     },
+
     lock = {
-      icon = "",
+      icon = "󰌾",
       name = "lock",
     },
+
     lua = {
       icon = "",
       name = "lua",
     },
+
     mp3 = {
-      icon = "",
+      icon = "󰎆",
       name = "mp3",
     },
+
     mp4 = {
       icon = "",
       name = "mp4",
     },
+
     out = {
       icon = "",
       name = "out",
     },
+
     png = {
-      icon = "",
+      icon = "󰉏",
       name = "png",
     },
+
     py = {
       icon = "",
       name = "py",
     },
+
+    ["robots.txt"] = {
+      icon = "󰚩",
+      name = "robots",
+    },
+
     toml = {
       icon = "",
       name = "toml",
     },
+
     ts = {
-      icon = "ﯤ",
+      icon = "󰛦",
       name = "ts",
     },
+
+    ttf = {
+      icon = "",
+      name = "TrueTypeFont",
+    },
+
     rb = {
       icon = "",
       name = "rb",
     },
+
     rpm = {
       icon = "",
       name = "rpm",
     },
+
     vue = {
-      icon = "﵂",
+      icon = "󰡄",
       name = "vue",
     },
+
+    woff = {
+      icon = "",
+      name = "WebOpenFontFormat",
+    },
+
+    woff2 = {
+      icon = "",
+      name = "WebOpenFontFormat2",
+    },
+
     xz = {
       icon = "",
       name = "xz",
     },
+
     zip = {
       icon = "",
       name = "zip",
     },
-  },
+  }
 })

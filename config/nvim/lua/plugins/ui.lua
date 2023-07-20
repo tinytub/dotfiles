@@ -47,6 +47,7 @@ return {
   -- Better `vim.notify()`
   {
     "rcarriga/nvim-notify",
+    enabled = false,
     keys = {
       {
         "<leader>un",

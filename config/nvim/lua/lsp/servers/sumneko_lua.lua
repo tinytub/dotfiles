@@ -19,7 +19,7 @@ return {
       },
       completion = {
         keywordSnippet = "Replace",
-        callSnippet = "Replace",
+        callSnippet = "Both",
       },
       workspace = {
         checkThirdParty = false,
@@ -29,10 +29,31 @@ return {
         preloadFileSize = 100000,
         maxPreload = 10000
       },
+      misc = {
+        parameters = {
+          -- "--log-level=trace",
+        },
+      },
+      hint = {
+        enable = true,
+        setType = false,
+        paramType = true,
+        paramName = "Disable",
+        semicolon = "Disable",
+        arrayIndex = "Disable",
+      },
       telemetry = {
         enable = false,
       },
       single_file_support = true,
+      format = {
+        --  enable = false,
+        defaultConfig = {
+          indent_style = "space",
+          indent_size = "2",
+          continuation_indent_size = "2",
+        },
+      },
     },
   },
 }

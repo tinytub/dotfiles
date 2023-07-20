@@ -69,26 +69,53 @@ return {
 
   -- stylua: ignore
   keys = {
-    { "<leader>db", function() require("dap").toggle_breakpoint() end,                                    desc =
-    "Toggle Breakpoint" },
-    { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
-                                                                                                            desc =
-      "Breakpoint Condition" },
-    { "<leader>dc", function() require("dap").continue() end,                                             desc =
-    "Continue" },
-    { "<leader>dO", function() require("dap").step_over() end,                                            desc =
-    "Step Over" },
-    { "<leader>di", function() require("dap").step_into() end,                                            desc =
-    "Step Into" },
-    { "<leader>do", function() require("dap").step_out() end,                                             desc =
-    "Step Out" },
-    { "<leader>dw", function() require("dap.ui.widgets").hover() end,                                     desc =
-    "Widgets" },
-    { "<leader>dr", function() require("dap").repl.open() end,                                            desc = "Repl" },
+    {
+      "<leader>db",
+      function() require("dap").toggle_breakpoint() end,
+      desc =
+      "Toggle Breakpoint"
+    },
+    {
+      "<leader>dB",
+      function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
+      desc =
+      "Breakpoint Condition"
+    },
+    {
+      "<leader>dc",
+      function() require("dap").continue() end,
+      desc =
+      "Continue"
+    },
+    {
+      "<leader>dO",
+      function() require("dap").step_over() end,
+      desc =
+      "Step Over"
+    },
+    {
+      "<leader>di",
+      function() require("dap").step_into() end,
+      desc =
+      "Step Into"
+    },
+    {
+      "<leader>do",
+      function() require("dap").step_out() end,
+      desc =
+      "Step Out"
+    },
+    {
+      "<leader>dw",
+      function() require("dap.ui.widgets").hover() end,
+      desc =
+      "Widgets"
+    },
+    { "<leader>dr", function() require("dap").repl.open() end, desc = "Repl" },
   },
 
   config = function()
-    local icons = require("lspkind_icons")
+    local icons = require("plugins.configs.lspkind_icons")
     vim.api.nvim_set_hl(0, "DapStoppedLine", { default = true, link = "Visual" })
 
     for name, sign in pairs(icons.dap) do

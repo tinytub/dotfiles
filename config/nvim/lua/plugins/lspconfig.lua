@@ -20,7 +20,7 @@ return {
       autoformat = true,
       -- add any global capabilities here
       capabilities = {},
-      format_notify = false,
+      format_notify = true,
       inlay_hints = {
         enabled = false,
       },

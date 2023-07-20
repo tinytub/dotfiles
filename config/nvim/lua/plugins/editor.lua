@@ -106,25 +106,6 @@ local plugins = {
     enabled = true,
   },
 
-  --{
-  --  "rebelot/heirline.nvim",
-  --  enabled = false,
-  --  dependencies = { "catppuccin", "nvim-web-devicons" },
-  --  config = function()
-  --    --require("plugins.configs.heirline").setup()
-  --    require "plugins.configs.heirline"
-  --  end,
-  --  event = "VeryLazy",
-  --},
-
-  --{
-  --  "nvim-lualine/lualine.nvim",
-  --  event = "VeryLazy",
-  --  config = function()
-  --    require("plugins.configs.nvim-lualine")
-  --  end,
-  --},
-
 
   ---- Better buffer closing
   --{
@@ -477,6 +458,7 @@ local plugins = {
   {
     "nvim-neo-tree/neo-tree.nvim",
     cmd = { "Neotree", "NeotreeLogs" },
+    version = "3.*",
     enabled = true,
     dependencies = {
       "nvim-lua/plenary.nvim",

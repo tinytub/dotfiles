@@ -18,8 +18,8 @@ todocomments.setup {
   },
   keywords = {
     FIX = {
-      icon = " ", -- icon used for the sign, and in search results
-      color = "error", -- can be a hex color, or a named color (see below)
+      icon = " ",                                                     -- icon used for the sign, and in search results
+      color = "error",                                                   -- can be a hex color, or a named color (see below)
       alt = { 'FIXME', 'BUG', 'FIXIT', 'ISSUE', 'fix', 'fixme', 'bug' }, -- a set of other keywords that all map to this FIX keywords
       -- signs = false, -- configure signs for some keywords individually
     },
@@ -27,7 +27,7 @@ todocomments.setup {
     TODO = { icon = " ", color = "#bd93f9" },
     HACK = { icon = " ", color = "#ffb86c" },
     WARN = { icon = " ", color = "#ff5555", alt = { "WARNING", "XXX" } },
-    PERF = { icon = " ", color = "#8be9fd", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+    --PERF = { icon = " ", color = "#8be9fd", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
     NOTE = { icon = " ", color = "#50fa7b", alt = { "INFO" } },
   },
 }

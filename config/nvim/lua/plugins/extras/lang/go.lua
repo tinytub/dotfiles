@@ -115,6 +115,10 @@ return {
           --  "gopls", -- share the gopls instance if there is one already
           --  "-remote.debug=:0",
           --},
+          keys = {
+            -- Workaround for the lack of a DAP strategy in neotest-go: https://github.com/nvim-neotest/neotest-go/issues/12
+            { "<leader>td", "<cmd>lua require('dap-go').debug_test()<CR>", desc = "Debug Nearest (Go)" },
+          },
           settings = {
             gopls = {
               gofumpt = false,
@@ -242,8 +246,23 @@ return {
     },
     --    config = function() require "plugins.configs.go-nvim" end,
   },
-
-
+  {
+    "mfussenegger/nvim-dap",
+    optional = true,
+    dependencies = {
+      {
+        "mason.nvim",
+        opts = function(_, opts)
+          opts.ensure_installed = opts.ensure_installed or {}
+          table.insert(opts.ensure_installed, "delve")
+        end,
+      },
+      {
+        "leoluz/nvim-dap-go",
+        config = true,
+      },
+    },
+  },
   {
     "nvim-neotest/neotest",
     optional = true,
