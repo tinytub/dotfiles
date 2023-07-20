@@ -14,7 +14,8 @@ vim.api.nvim_create_autocmd("FocusLost", {
 })
 local opts = {
   notify = {
-    enabled = false,
+    enabled = true,
+    view = "mini"
   },
   lsp = {
     override = {
@@ -26,6 +27,7 @@ local opts = {
   },
   messages = {
     view_search = false,
+    view = "mini"
   },
   routes = {
     {

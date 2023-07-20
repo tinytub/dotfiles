@@ -32,6 +32,7 @@ local opts = {
     { import = "plugins.extras.dap" },
     { import = "plugins.extras.formatting" },
     { import = "plugins.extras.lang.json" },
+    { import = "plugins.extras.lang.lua" },
     { import = "plugins.extras.lang.go" },
     { import = "plugins.extras.lang.typescripts" },
     --{ import = "plugins.extras.lang.python" },

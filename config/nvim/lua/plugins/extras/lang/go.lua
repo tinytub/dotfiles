@@ -273,7 +273,7 @@ return {
       adapters = {
         ["neotest-go"] = {
           -- args = { '-race' },
-          args = { "-count=1", "-timeout=60s" },
+          args = { "-count=1", "-timeout=60s", "-race", "-cover" },
           experimantal = {
             test_table = true,
           },

@@ -72,7 +72,7 @@ local servers = {
   -- for specific lsp servers
   ---@type LazyKeys[]
   -- keys = {},
-  lua_ls = require "lsp.servers.sumneko_lua",
+  -- lua_ls = require "lsp.servers.sumneko_lua",
   grammarly = {
     filetypes = { "markdown" },
     single_file_support = true,
@@ -181,6 +181,7 @@ local lsp_handlers = function()
     if server_opts then
       server_opts = server_opts == true and {} or server_opts
       -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
+
       if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
         setup(server)
       else
