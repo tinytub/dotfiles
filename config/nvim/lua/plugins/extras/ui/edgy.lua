@@ -16,6 +16,7 @@ return {
     },
     opts = function()
       local opts = {
+        exit_when_last = true,
         bottom = {
           {
             ft = "toggleterm",
