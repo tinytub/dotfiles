@@ -96,6 +96,7 @@ end
 vim.g.markdown_recommended_style = 0
 
 g.mapleader = " "
+g.maplocalleader = "\\"
 
 
 -- disable some default providers

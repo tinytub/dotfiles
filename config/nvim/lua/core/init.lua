@@ -37,7 +37,8 @@ local opts = {
     { import = "plugins.extras.lang.typescripts" },
     --{ import = "plugins.extras.lang.python" },
     { import = "plugins.extras.editor.mini-files" },
-    --    { import = "plugins.extras.editor.leap" },
+    --{ import = "plugins.extras.database" },
+    --{ import = "plugins.extras.editor.leap" },
     { import = "plugins.extras.ui.edgy" },
     --    { import = "plugins.extras.util.mini-hipatterns" }, twinlandcss
 
