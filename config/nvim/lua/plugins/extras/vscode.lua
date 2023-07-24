@@ -1,6 +1,7 @@
 if not vim.g.vscode then
   return {}
 end
+print("running in vscode")
 
 local enabled = {
   "flit.nvim",
@@ -21,7 +22,6 @@ local Config = require("lazy.core.config")
 local Plugin = require("lazy.core.plugin")
 Config.options.checker.enabled = false
 Config.options.change_detection.enabled = false
-
 Config.options.defaults.cond = function(plugin)
   return vim.tbl_contains(enabled, plugin.name) or plugin.vscode
 end

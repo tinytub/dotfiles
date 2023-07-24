@@ -40,6 +40,7 @@ local opts = {
     --{ import = "plugins.extras.database" },
     --{ import = "plugins.extras.editor.leap" },
     { import = "plugins.extras.ui.edgy" },
+    { import = "plugins.extras.vscode" },
     --    { import = "plugins.extras.util.mini-hipatterns" }, twinlandcss
 
     -- add LazyVim and import its plugins
@@ -50,6 +51,16 @@ local opts = {
     -- { import = "lazyvim.plugins.configs.extras.ui.mini-animate" },
     -- import/override with your plugins
   },
+  colorscheme = function()
+    vim.api.nvim_command [[syntax on]]
+    if vim.fn.has('termguicolors') == 1 then
+      vim.cmd.set("termguicolors")
+    end
+    --local colors = require("catppuccin.palettes").get_palette()
+    --require("colors.catppuccin")
+    vim.cmd.colorscheme("catppuccin")
+  end,
+
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
     -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
@@ -58,6 +69,7 @@ local opts = {
     -- have outdated releases, which may break your Neovim install.
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
+
   },
   ui = {
     border = "rounded",

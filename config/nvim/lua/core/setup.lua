@@ -6,22 +6,22 @@ local defaults = {
   -- colorscheme can be a string like `catppuccin` or a function that will load the colorscheme
   ---@type string|fun()
   colorscheme = function()
-    --  require("tokyonight").load()
+    require("tokyonight").load()
     vim.api.nvim_command [[syntax on]]
     if vim.fn.has('termguicolors') == 1 then
       vim.cmd.set("termguicolors")
     end
     --local colors = require("catppuccin.palettes").get_palette()
     --require("colors.catppuccin")
-    vim.cmd.colorscheme("catppuccin")
+    --vim.cmd.colorscheme("catppuccin")
   end,
 
 
   -- load the default settings
   defaults = {
     autocmds = true, -- core.autocmds
-    keymaps = true, -- core.keymaps
-    options = true, -- core.options
+    keymaps = true,  -- core.keymaps
+    options = true,  -- core.options
   },
   -- icons used by other plugins
   icons = require("plugins.configs.lspkind_icons")

@@ -40,6 +40,7 @@ return {
     --config = function() require "colors.catppuccin" end,
     enabled = true,
     lazy = true,
+    vscode = true,
     opts = {
       flavour = "macchiato", -- latte, frappe, macchiato, mocha
       background = {
