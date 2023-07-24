@@ -50,11 +50,11 @@ return {
               single_file_support = true,
               format = {
                 --  enable = false,
-                defaultConfig = {
-                  indent_style = "space",
-                  indent_size = "2",
-                  continuation_indent_size = "2",
-                },
+                --defaultConfig = {
+                --  indent_style = "space",
+                --  indent_size = "2",
+                --  continuation_indent_size = "2",
+                --},
               },
             },
           },
