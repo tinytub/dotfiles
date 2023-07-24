@@ -76,7 +76,7 @@ local mappings = {
   ["M"] = { "<cmd>MarkdownPreviewToggle<cr>", "markdown preview" },
   ["h"] = { '<cmd>let @/ = ""<cr>', "no highlight" },
   ["v"] = { "<C-W>v", "split right" },
-  ["w"] = { "<cmd>execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>", "open terminal" },
+  -- ["w"] = { "<cmd>execute 15 .. 'new +terminal' | let b:term_type = 'hori' | startinsert <CR>", "open terminal" },
 
   a = {
     name = "+actions",
