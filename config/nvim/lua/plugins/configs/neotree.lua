@@ -23,7 +23,8 @@ function M.setup(opts)
         event = "file_opened",
         handler = function()
           --auto close
-          require("neo-tree").close_all()
+          -- require("neo-tree").close_all()
+          require("neo-tree.sources.manager").close_all();
         end,
       },
       {
