@@ -19,14 +19,14 @@ end
 function M.setup(opts)
   opts = vim.tbl_deep_extend("force", {
     event_handlers = { -- {{{
-      {
-        event = "file_opened",
-        handler = function()
-          --auto close
-          -- require("neo-tree").close_all()
-          require("neo-tree.sources.manager").close_all();
-        end,
-      },
+      --{
+      --  event = "file_opened",
+      --  handler = function()
+      --    --auto close
+      --    -- require("neo-tree").close_all()
+      --    require("neo-tree.sources.manager").close_all();
+      --  end,
+      --},
       {
         event = "neo_tree_window_after_open",
         handler = function(args)

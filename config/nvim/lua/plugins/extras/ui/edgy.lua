@@ -2,7 +2,7 @@ return {
   -- edgy
   {
     "folke/edgy.nvim",
-    enabled = false,
+    enabled = true,
     event = "VeryLazy",
     keys = {
       {

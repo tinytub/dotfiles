@@ -19,7 +19,7 @@ local plugins = {
       floating_window = true,
       fix_pos = true,
       hint_enable = false,
-      hint_prefix = " ",
+      hint_prefix = "󰘎 ",
       hint_scheme = "String",
       hi_parameter = "Search",
       max_height = 22,
@@ -461,9 +461,6 @@ local plugins = {
     version = "3.*",
     enabled = true,
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
       {
         "s1n7ax/nvim-window-picker",
         --"tinytub/nvim-window-picker",
@@ -477,7 +474,7 @@ local plugins = {
             autoselect_one = true,
             include_current_win = false,
             bo = {
-              filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix", "edgy" },
+              filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix", "edgy", "noice" },
               buftype = { "terminal", "quickfix" },
             },
           },
@@ -486,19 +483,36 @@ local plugins = {
         config = function(_, opts) require("window-picker").setup(opts) end,
       },
     },
+    keys = {
+      {
+        "<leader>fe",
+        function()
+          require("neo-tree.command").execute({ toggle = true, dir = require("utils").get_root() })
+        end,
+        desc = "Explorer NeoTree (root dir)",
+      },
+      {
+        "<leader>fE",
+        function()
+          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+        end,
+        desc = "Explorer NeoTree (cwd)",
+      },
+      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
+      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)",      remap = true },
+    },
+
     deactivate = function() vim.cmd [[Neotree close]] end,
     init = function()
       if vim.fn.argc() == 1 then
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == "directory" then require "neo-tree" end
+        if stat and stat.type == "directory" then
+          require("neo-tree")
+        end
       end
     end,
     opts = {
       sources = { "filesystem", "buffers", "git_status", "document_symbols" },
-      --source_selector = {
-      --  winbar = true,
-      --  content_layout = "center",
-      --},
       open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline" },
       filesystem = {
         bind_to_cwd = false,
@@ -508,6 +522,21 @@ local plugins = {
       window = {
         mappings = {
           ["<space>"] = "none",
+          ["<c-x>"] = "split_with_window_picker",
+          ["<c-v>"] = "vsplit_with_window_picker",
+          ["l"] = "open_with_window_picker",
+          ["<cr>"] = "open_drop",
+        },
+      },
+      document_symbols = {
+        follow_cursor = true,
+        renderers = {
+          symbol = {
+            { "indent",    with_expanders = true },
+            { "kind_icon", default = "?" },
+            { "name",      zindex = 10 },
+            -- removed the kind text as its redundant with the icon
+          },
         },
       },
       default_component_configs = {
@@ -520,13 +549,38 @@ local plugins = {
       },
     },
     config = function(_, opts)
-      --require("neo-tree").setup(opts)
-      require("plugins.configs.neotree").setup(opts)
+      -- some from https://github.com/CKolkey/config/blob/master/nvim/lua/plugins/neo-tree.lua
+      -- Enable a strong cursorline.
+      local function set_cursorline()
+        vim.wo.winhighlight = "CursorLine:WildMenu"
+        vim.wo.cursorline = true
+        vim.o.signcolumn = "auto"
+      end
+
+      -- Find previous neo-tree window and clear bright highlight selection.
+      -- Don't hide cursorline though, so 'follow_current_file' works.
+      local function reset_cursorline()
+        local winid = vim.fn.win_getid(vim.fn.winnr "#")
+        vim.api.nvim_win_set_option(winid, "winhighlight", "")
+      end
+
+      --require("plugins.configs.neotree").setup(opts)
+
+      opts = vim.tbl_deep_extend("force", {
+        event_handlers = { -- {{{
+          { event = "neo_tree_buffer_enter", handler = set_cursorline },
+          { event = "neo_tree_buffer_leave", handler = reset_cursorline },
+        }
+      }, opts or {})
+
+      require("neo-tree").setup(opts)
 
       vim.api.nvim_create_autocmd("TermClose", {
         pattern = "*lazygit",
         callback = function()
-          if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
+          if package.loaded["neo-tree.sources.git_status"] then
+            require("neo-tree.sources.git_status").refresh()
+          end
         end,
       })
     end,

@@ -73,6 +73,7 @@ return {
         mason = true,
         alpha = true,
         cmp = true,
+        flash = true,
         gitsigns = true,
         illuminate = true,
         indent_blankline = { enabled = true },
