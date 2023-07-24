@@ -54,14 +54,19 @@ return {
           keys = {
             { "<leader>cR", "<cmd>ClangdSwitchSourceHeader<cr>", desc = "Switch Source/Header (C/C++)" },
           },
-          root_dir = function(...)
-            -- using a root .clang-format or .clang-tidy file messes up projects, so remove them
+          root_dir = function(fname)
             return require("lspconfig.util").root_pattern(
-              "compile_commands.json",
-              "compile_flags.txt",
+              "Makefile",
+              "CMakeLists.txt",
               "configure.ac",
-              ".git"
-            )(...)
+              "configure.in",
+              "config.h.in",
+              "meson.build",
+              "meson_options.txt",
+              "build.ninja"
+            )(fname) or require("lspconfig.util").root_pattern("compile_commands.json", "compile_flags.txt")(
+              fname
+            ) or require("lspconfig.util").find_git_ancestor(fname)
           end,
           capabilities = {
             offsetEncoding = { "utf-16" },
@@ -151,4 +156,3 @@ return {
     end,
   },
 }
-

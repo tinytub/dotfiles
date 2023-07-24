@@ -138,7 +138,7 @@ map("n", "<leader>L", "<cmd>Lazy<cr>", { desc = "Lazy" })
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
 -- toggle options
---map("n", "<leader>uf", require("lazyvim.plugins.lsp.format").toggle, { desc = "Toggle format on Save" })
+map("n", "<leader>uf", require("lsp.format").toggle, { desc = "Toggle format on Save" })
 map("n", "<leader>us", function() Utils.toggle("spell") end, { desc = "Toggle Spelling" })
 map("n", "<leader>uw", function() Utils.toggle("wrap") end, { desc = "Toggle Word Wrap" })
 map("n", "<leader>ul", function() Utils.toggle_number() end, { desc = "Toggle Line Numbers" })

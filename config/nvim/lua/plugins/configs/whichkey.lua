@@ -18,21 +18,21 @@ end
 local options = {
   plugins = { spelling = true },
 
-  icons = {
-    breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
-    separator = "  ", -- symbol used between a key and it's label
-    group = "+",       -- symbol prepended to a group
-  },
-  popup_mappings = {
-    scroll_down = "<c-d>", -- binding to scroll down inside the popup
-    scroll_up = "<c-u>",   -- binding to scroll up inside the popup
-  },
-  window = {
-    border = "none", -- none/single/double/shadow
-  },
-  layout = {
-    spacing = 6, -- spacing between columns
-  },
+  --icons = {
+  --  breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
+  --  separator = "  ", -- symbol used between a key and it's label
+  --  group = "+",       -- symbol prepended to a group
+  --},
+  --popup_mappings = {
+  --  scroll_down = "<c-d>", -- binding to scroll down inside the popup
+  --  scroll_up = "<c-u>",   -- binding to scroll up inside the popup
+  --},
+  --window = {
+  --  border = "none", -- none/single/double/shadow
+  --},
+  --layout = {
+  --  spacing = 6, -- spacing between columns
+  --},
 
   hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " },
 
@@ -114,6 +114,10 @@ local mappings = {
     b = { "<cmd>Telescope file_browser<cr>", "file browser" },
     u = { "<cmd>Telescope colorscheme<cr>", "colorschemes" },
     w = { "<cmd>Telescope grep_string<cr>", "grep_string" },
+    --  { "<leader>sw", Utils.telescope("grep_string", { word_match = "-w" }), desc = "Word (root dir)" },
+    --  { "<leader>sW", Utils.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Word (cwd)" },
+    --  { "<leader>sw", Utils.telescope("grep_string"), mode = "v", desc = "Selection (root dir)" },
+    --  { "<leader>sW", Utils.telescope("grep_string", { cwd = false }), mode = "v", desc = "Selection (cwd)" },
     s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
     S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols" },
     --        ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "   pick hidden term" },
@@ -193,21 +197,6 @@ local mappings = {
     x = { "<cmd>cclose<cr>", "Close Quickfix" },
     r = {
       function()
-        --TODO: can use this tiny plugin https://github.com/smjonas/inc-rename.nvim
-        --if require("lazyvim.util").has("inc-rename.nvim") then
-        --  M._keys[#M._keys + 1] = {
-        --    "<leader>cr",
-        --    function()
-        --      local inc_rename = require("inc_rename")
-        --      return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand("<cword>")
-        --    end,
-        --    expr = true,
-        --    desc = "Rename",
-        --    has = "rename",
-        --  }
-        --else
-        --  M._keys[#M._keys + 1] = { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" }
-        --end
         vim.lsp.buf.rename.float()
       end,
       "lsp rename",
