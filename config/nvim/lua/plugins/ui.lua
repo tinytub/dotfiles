@@ -59,7 +59,7 @@ return {
     },
     opts = {
       timeout = 3000,
-      fps = 1, -- defualt 30, but in alacritty it's too fast with flick
+      fps = 30, -- defualt 30, but in alacritty it's too fast with flick
       max_height = function()
         return math.floor(vim.o.lines * 0.75)
       end,
