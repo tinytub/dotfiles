@@ -687,16 +687,6 @@ return {
     enabled = true,
   },
 
-  -- whichkey
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    keys = { "<leader>", '"', "'", "`", "c", "v" },
-    --module = "which-key",
-    config = function() require "plugins.configs.whichkey" end,
-    cond = function() return not vim.g.vscode end,
-  },
-
   -- Dashboard
   {
     "goolord/alpha-nvim",
@@ -707,5 +697,20 @@ return {
     config = function() require("plugins.configs.dashboard") end,
   },
 
+  --A Neovim plugin helping you establish good command workflow and habit
+  {
+    "m4xshen/hardtime.nvim",
+    enabled = false,
+    event = "VeryLazy",
+    opts = {
+      hiny = true,
+      restricted_keys = {
+        ["h"] = {},
+        ["j"] = {},
+        ["k"] = {},
+        ["l"] = {},
+      }
+    },
+  },
 
 }

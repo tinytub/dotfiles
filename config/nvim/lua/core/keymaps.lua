@@ -170,3 +170,5 @@ map("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
 map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
 map("t", "<C-\\>", "<cmd>close<cr>", { desc = "Hide Terminal" })
 map("t", "<c-_>", "<c-/>", { remap = true, desc = "which_key_ignore" })
+
+map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })

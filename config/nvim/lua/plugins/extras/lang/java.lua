@@ -34,22 +34,46 @@ return {
         jdtls = {
           -- stylua: ignore
           keys = {
-            { "<leader>co",  function() require("jdtls").organize_imports() end,                  desc =
-            "Organize Imports", },
-            { "<leader>cR",  function() require("jdtls").rename_file() end,                       desc = "Rename File", },
-            { "<leader>cxv", function() require("jdtls").extract_variable() end,                  desc =
-            "Extract Variable", },
-            { "<leader>cxv", function() require("jdtls").extract_variable({ visual = true }) end, mode = "v",
-                                                                                                                               desc =
-              "Extract Variable", },
-            { "<leader>cxc", function() require("jdtls").extract_constant() end,                  desc =
-            "Extract Constant", },
-            { "<leader>cxc", function() require("jdtls").extract_constant({ visual = true }) end, mode = "v",
-                                                                                                                               desc =
-              "Extract Constant", },
-            { "<leader>cxm", function() require("jdtls").extract_method({ visual = true }) end,   mode = "v",
-                                                                                                                               desc =
-              "Extract Method", },
+            {
+              "<leader>co",
+              function() require("jdtls").organize_imports() end,
+              desc =
+              "Organize Imports",
+            },
+            { "<leader>cR", function() require("jdtls").rename_file() end, desc = "Rename File", },
+            {
+              "<leader>cxv",
+              function() require("jdtls").extract_variable() end,
+              desc =
+              "Extract Variable",
+            },
+            {
+              "<leader>cxv",
+              function() require("jdtls").extract_variable({ visual = true }) end,
+              mode = "v",
+              desc =
+              "Extract Variable",
+            },
+            {
+              "<leader>cxc",
+              function() require("jdtls").extract_constant() end,
+              desc =
+              "Extract Constant",
+            },
+            {
+              "<leader>cxc",
+              function() require("jdtls").extract_constant({ visual = true }) end,
+              mode = "v",
+              desc =
+              "Extract Constant",
+            },
+            {
+              "<leader>cxm",
+              function() require("jdtls").extract_method({ visual = true }) end,
+              mode = "v",
+              desc =
+              "Extract Method",
+            },
           },
         },
       },
@@ -92,7 +116,7 @@ return {
               local project_name = root_dir and vim.fs.basename(root_dir)
               local cmd = { "jdtls" }
               if project_name then
-                local jdtls_cache_dir = vim.fs.joinpath(vim.fn.stdpath("cache"), "jdtls", project_name)
+                local jdtls_cache_dir = vim.fn.stdpath("cache") .. "/jdtls/" .. project_name
                 vim.list_extend(cmd, {
                   "-configuration",
                   vim.fs.joinpath(jdtls_cache_dir, "config"),
@@ -136,4 +160,3 @@ return {
     },
   },
 }
-
