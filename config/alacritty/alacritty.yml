@@ -104,7 +104,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux) monospace
     #   - (Windows) Consolas
-    family: 'JetBrainsMonoNL Nerd Font'
+    family: "JetBrainsMonoNL Nerd Font"
 
     # The `style` can be specified to pick a specific face.
     style: Regular
@@ -115,7 +115,7 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: 'JetBrainsMonoNL Nerd Font'
+    family: "JetBrainsMonoNL Nerd Font"
 
     # The `style` can be specified to pick a specific face.
     style: Bold
@@ -126,13 +126,13 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: 'JetBrainsMonoNL Nerd Font'
+    family: "JetBrainsMonoNL Nerd Font"
 
     # The `style` can be specified to pick a specific face.
     style: Italic
 
   # Point size
-  size: 14
+  size: 13
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
   #offset:
@@ -173,7 +173,7 @@ draw_bold_text_with_bright_colors: true
 bell:
   animation: EaseOutExpo
   duration: 0
-  color: '0xffffff'
+  color: "0xffffff"
 
 # Mouse bindings
 #
@@ -250,7 +250,7 @@ hints:
         mods: Control|Shift
 
 selection:
-  semantic_escape_chars: ",│`|:\"' ()[]{}<>"
+  semantic_escape_chars: ',│`|:"'' ()[]{}<>'
 
   # When set to `true`, selected text will be copied to the primary clipboard.
   save_to_clipboard: true
@@ -300,7 +300,6 @@ shell:
   #  - --index
   #  - 0
   #  - --create
-
 
   # Startup directory
   #
@@ -464,7 +463,7 @@ key_bindings:
   - {
       key: Comma,
       mods: Command,
-      chars: "$EDITOR ~/.config/alacritty/alacritty.yml\r"
+      chars: "$EDITOR ~/.config/alacritty/alacritty.yml\r",
     }
   - { key: Paste, action: Paste }
   - { key: Copy, action: Copy }
@@ -476,28 +475,13 @@ key_bindings:
   - { key: End, mods: Alt, chars: "\e[1;3F" }
   - { key: End, chars: "\eOF", mode: AppCursor }
   - { key: End, chars: "\e[F", mode: ~AppCursor }
-  - {
-      key: PageUp,
-      mods: Shift,
-      action: ScrollPageUp,
-      mode: ~Alt
-    }
+  - { key: PageUp, mods: Shift, action: ScrollPageUp, mode: ~Alt }
   - { key: PageUp, mods: Shift, chars: "\e[5;2~", mode: Alt }
   - { key: PageUp, mods: Control, chars: "\e[5;5~" }
   - { key: PageUp, mods: Alt, chars: "\e[5;3~" }
   - { key: PageUp, chars: "\e[5~" }
-  - {
-      key: PageDown,
-      mods: Shift,
-      action: ScrollPageDown,
-      mode: ~Alt
-    }
-  - {
-      key: PageDown,
-      mods: Shift,
-      chars: "\e[6;2~",
-      mode: Alt
-    }
+  - { key: PageDown, mods: Shift, action: ScrollPageDown, mode: ~Alt }
+  - { key: PageDown, mods: Shift, chars: "\e[6;2~", mode: Alt }
   - { key: PageDown, mods: Control, chars: "\e[6;5~" }
   - { key: PageDown, mods: Alt, chars: "\e[6;3~" }
   - { key: PageDown, chars: "\e[6~" }
