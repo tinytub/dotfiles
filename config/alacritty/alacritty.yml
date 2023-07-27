@@ -24,9 +24,9 @@ window:
   #
   # Specified in number of columns/lines, not pixels.
   # If both are `0`, this setting is ignored.
-  #dimensions:
-  #  columns: 160
-  #  lines: 80
+  dimensions:
+    columns: 160
+    lines: 40
 
   # Window position (changes require restart)
   #
@@ -463,7 +463,7 @@ key_bindings:
   - {
       key: Comma,
       mods: Command,
-      chars: "$EDITOR ~/.config/alacritty/alacritty.yml\r",
+      chars: "$EDITOR ~/.config/alacritty/alacritty.yml\r"
     }
   - { key: Paste, action: Paste }
   - { key: Copy, action: Copy }
@@ -475,13 +475,28 @@ key_bindings:
   - { key: End, mods: Alt, chars: "\e[1;3F" }
   - { key: End, chars: "\eOF", mode: AppCursor }
   - { key: End, chars: "\e[F", mode: ~AppCursor }
-  - { key: PageUp, mods: Shift, action: ScrollPageUp, mode: ~Alt }
+  - {
+      key: PageUp,
+      mods: Shift,
+      action: ScrollPageUp,
+      mode: ~Alt
+    }
   - { key: PageUp, mods: Shift, chars: "\e[5;2~", mode: Alt }
   - { key: PageUp, mods: Control, chars: "\e[5;5~" }
   - { key: PageUp, mods: Alt, chars: "\e[5;3~" }
   - { key: PageUp, chars: "\e[5~" }
-  - { key: PageDown, mods: Shift, action: ScrollPageDown, mode: ~Alt }
-  - { key: PageDown, mods: Shift, chars: "\e[6;2~", mode: Alt }
+  - {
+      key: PageDown,
+      mods: Shift,
+      action: ScrollPageDown,
+      mode: ~Alt
+    }
+  - {
+      key: PageDown,
+      mods: Shift,
+      chars: "\e[6;2~",
+      mode: Alt
+    }
   - { key: PageDown, mods: Control, chars: "\e[6;5~" }
   - { key: PageDown, mods: Alt, chars: "\e[6;3~" }
   - { key: PageDown, chars: "\e[6~" }

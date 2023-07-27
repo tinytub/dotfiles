@@ -2,7 +2,7 @@ return {
   {
     "hrsh7th/nvim-cmp",
     version = false,
-    --event = "InsertEnter",
+    event = "InsertEnter",
     dependencies = {
       {
         -- snippet plugin
@@ -79,17 +79,17 @@ return {
       --  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line-1, line, true)[1]:sub(col, col):match('%s') == nil
       --end
 
-      local has_words_before = function()
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
+      --local has_words_before = function()
+      --  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+      --  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      --end
 
       -- for copilot
-      --local has_words_before = function()
-      --  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
-      --  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-      --  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
-      --end
+      local has_words_before = function()
+        if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+      end
 
       local confirm = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Replace,
@@ -180,18 +180,13 @@ return {
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
           }),
-          -- old
-          --["<CR>"] = cmp.mapping.confirm({
-          --  behavior = cmp.ConfirmBehavior.Replace,
-          --  select = false,
-          --}),
-          -- copilot
+
           ["<CR>"] = function(...)
             return confirm(...)
           end,
 
           ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
+            if cmp.visible() and has_words_before() then
               cmp.select_next_item()
             elseif require("luasnip").expand_or_jumpable() then
               vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") --  luasnip.expand_or_jump()
@@ -220,7 +215,7 @@ return {
           { name = "buffer", },
           {
             name = "path",
-            --            max_item_count = 4
+            --  max_item_count = 4
           },
           -- { name = "nvim_lua",               priority = 60 },
           -- { name = "calc" },
