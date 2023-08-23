@@ -17,6 +17,7 @@ return {
     },
     opts = function()
       local opts = {
+        animate = { enabled = false },
         exit_when_last = true,
         bottom = {
           {

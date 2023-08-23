@@ -59,6 +59,7 @@ local icons = {
     Value = " ",
     Variable = " ",
     Copilot = " ",
+    Codeium = " ",
     Table = " ",
     Tag = " ",
     Calendar = " ",

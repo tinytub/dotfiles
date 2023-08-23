@@ -28,6 +28,7 @@ local opts = {
 
     { import = "plugins.extras.test" },
     { import = "plugins.extras.coding.copilot" },
+    { import = "plugins.extras.coding.codeium" },
     { import = "plugins.extras.coding.yanky" },
     { import = "plugins.extras.dap" },
     { import = "plugins.extras.formatting" },
@@ -41,6 +42,7 @@ local opts = {
     --{ import = "plugins.extras.database" },
     --{ import = "plugins.extras.editor.leap" },
     { import = "plugins.extras.ui.edgy" },
+    --    { import = "plugins.extras.ui.mini-animate" },
     { import = "plugins.extras.vscode" },
     --    { import = "plugins.extras.util.mini-hipatterns" }, twinlandcss
 

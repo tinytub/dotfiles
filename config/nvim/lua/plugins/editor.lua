@@ -308,150 +308,6 @@ local plugins = {
       "nvim-telescope/telescope.nvim",
     },
   },
-
-  --syntax highlighting
-  {
-    "nvim-treesitter/nvim-treesitter",
-    name = "nvim-treesitter",
-    version = false,
-    build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    cmd = { "TSUpdateSync" },
-    dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        init = function()
-          -- disable rtp plugin, as we only need its queries for mini.ai
-          -- In case other textobject modules are enabled, we will load them
-          -- once nvim-treesitter is loaded
-          require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
-          load_textobjects = true
-        end,
-      },
-    },
-    keys = {
-      { "<c-space>", desc = "Increment selection" },
-      { "<bs>",      desc = "Decrement selection", mode = "x" },
-    },
-    ---@type TSConfig
-    opts = {
-      highlight = { enable = true },
-      indent = { enable = true },
-      ensure_installed = {
-        "bash",
-        "c",
-        "css",
-        "cpp",
-        "html",
-        "javascript",
-        "typescript",
-        "json",
-        "jsonc",
-        "jsdoc",
-        "java",
-        "lua",
-        "luadoc",
-        "luap",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "query",
-        "regex",
-        "tsx",
-        "typescript",
-        "vim",
-        "vimdoc",
-        "yaml",
-        "toml",
-        "rust",
-        "vue",
-        "bash",
-        "go",
-        "gomod",
-        "gowork",
-        "gosum",
-      },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-space>",
-          node_incremental = "<C-space>",
-          scope_incremental = false,
-          node_decremental = "<bs>",
-        },
-      },
-    },
-    ---@param opts TSConfig
-    config = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        ---@type table<string, boolean>
-        local added = {}
-        opts.ensure_installed = vim.tbl_filter(function(lang)
-          if added[lang] then
-            return false
-          end
-          added[lang] = true
-          return true
-        end, opts.ensure_installed)
-      end
-      require("nvim-treesitter.configs").setup(opts)
-
-      if load_textobjects then
-        -- PERF: no need to load the plugin, if we only need its queries for mini.ai
-        if opts.textobjects then
-          for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
-            if opts.textobjects[mod] and opts.textobjects[mod].enable then
-              local Loader = require("lazy.core.loader")
-              Loader.disabled_rtp_plugins["nvim-treesitter-textobjects"] = nil
-              local plugin = require("lazy.core.config").plugins["nvim-treesitter-textobjects"]
-              require("lazy.core.loader").source_runtime(plugin.dir, "plugin")
-              break
-            end
-          end
-        end
-      end
-    end,
-    ----    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSEnable", "TSDisable", "TSModuleInfo" },
-    --config = function() require "plugins.configs.treesitter" end,
-    ----run = ":TSUpdate",
-    --run = function() require("nvim-treesitter.install").update { with_sync = true } () end,
-    ----config = function ()
-    ----   require "plugins.configs.treesitter"
-    ----end
-  },
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    dependencies = "nvim-treesitter",
-    config = function() require("treesitter-context").setup() end,
-    enabled = false,
-  },
-
-  -- Custom semantic text objects
-  --{
-  --  "nvim-treesitter/nvim-treesitter-textobjects",
-  --  dependencies = "nvim-treesitter",
-  --  --config = function ()
-  --  --  require("plugins.configs.treesitter").treesitter_obj()
-  --  --end,
-  --  enabled = false,
-  --},
-  ---- Smart text objects
-  --{
-  --  "RRethy/nvim-treesitter-textsubjects",
-  --  dependencies = "nvim-treesitter",
-  --  config = function()
-  --    require("plugins.configs.treesitter").textsubjects()
-  --  end,
-  --  enabled = false,
-  --},
-  ---- Text objects using hint labels
-  --{
-  --  "mfussenegger/nvim-ts-hint-textobject",
-  --  event = "BufRead",
-  --  dependencies = "nvim-treesitter",
-  --  enabled = false,
-  --},
-
   -- better text-objects
   {
     "echasnovski/mini.ai",
@@ -527,42 +383,6 @@ local plugins = {
       { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
       { "<leader>bD", function() require("mini.bufremove").delete(0, true) end,  desc = "Delete Buffer (Force)" },
     },
-  },
-
-  {
-    enabled = false,
-    "echasnovski/mini.animate",
-    event = "VeryLazy",
-    opts = function()
-      -- don't use animate when scrolling with the mouse
-      local mouse_scrolled = false
-      for _, scroll in ipairs { "Up", "Down" } do
-        local key = "<ScrollWheel" .. scroll .. ">"
-        vim.keymap.set({ "", "i" }, key, function()
-          mouse_scrolled = true
-          return key
-        end, { expr = true })
-      end
-
-      local animate = require "mini.animate"
-      return {
-        resize = {
-          timing = animate.gen_timing.linear { duration = 100, unit = "total" },
-        },
-        scroll = {
-          timing = animate.gen_timing.linear { duration = 150, unit = "total" },
-          subscroll = animate.gen_subscroll.equal {
-            predicate = function(total_scroll)
-              if mouse_scrolled then
-                mouse_scrolled = false
-                return false
-              end
-              return total_scroll > 1
-            end,
-          },
-        },
-      }
-    end,
   },
 
   {
@@ -867,7 +687,43 @@ local plugins = {
 
     optional = false,
     event = "BufWinEnter",
-    config = function() require "plugins.configs.toggleterm" end,
+    opts = {
+      -- size can be a number or function which is passed the current terminal
+      size = function(term)
+        if term.direction == "horizontal" then
+          return 15
+        elseif term.direction == "vertical" then
+          return vim.o.columns * 0.4
+        end
+      end,
+      open_mapping = [[<c-\>]],
+      hide_numbers = true, -- hide the number column in toggleterm buffers
+      shade_filetypes = {},
+      shade_terminals = true,
+      shading_factor = 2,       -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+      start_in_insert = true,
+      insert_mappings = true,   -- whether or not the open mapping applies in insert mode
+      persist_size = false,
+      direction = "horizontal", --'vertical' | 'horizontal' | 'window' | 'float'
+      close_on_exit = true,     -- close the terminal window when the process exits
+      shell = vim.o.shell,      -- change the default shell
+      -- This field is only relevant if direction is set to 'float'
+      float_opts = {
+        -- The border key is *almost* the same as 'nvim_open_win'
+        -- see :h nvim_open_win for details on borders however
+        -- the 'curved' border is a custom border type
+        -- not natively supported but implemented in this plugin.
+        border = 'rounded',
+        --winblend = 0,
+        --highlights = {
+        --  border = "Normal",
+        --  background = "Normal",
+        --}
+      },
+      execs = {
+        { "lazygit", "gg", "LazyGit" },
+      },
+    },
     --disable = not lvim.builtin.terminal.active,
   },
 

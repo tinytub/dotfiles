@@ -1,5 +1,10 @@
 return {
   {
+    "smjonas/inc-rename.nvim",
+    cmd = "IncRename",
+    config = true,
+  },
+  {
     "hrsh7th/nvim-cmp",
     version = false,
     event = "InsertEnter",
@@ -95,6 +100,10 @@ return {
         behavior = cmp.ConfirmBehavior.Replace,
         select = false,
       })
+      local border_opts = {
+        border = "rounded",
+        winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+      }
 
       return {
         snippet = {
@@ -150,23 +159,12 @@ return {
           path = 1,
         },
         confirm_opts = {
-          behavior = cmp.ConfirmBehavior.Insert,
+          behavior = cmp.ConfirmBehavior.Replace,
           select = false,
         },
         window = {
-          completion = {
-            border = border("CmpBorder"),
-            --side_padding = 1,
-            winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-            ----scrollbar = false,
-            --zindex = 1001,
-          },
-          documentation = {
-            border = border("CmpDocBorder"),
-            --side_padding = 1,
-            winhighlight = "Normal:CmpDoc",
-            --zindex = 1001,
-          },
+          completion = cmp.config.window.bordered(border_opts),
+          documentation = cmp.config.window.bordered(border_opts),
         },
 
         mapping = {
@@ -189,7 +187,8 @@ return {
             if cmp.visible() and has_words_before() then
               cmp.select_next_item()
             elseif require("luasnip").expand_or_jumpable() then
-              vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") --  luasnip.expand_or_jump()
+              --vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") --  luasnip.expand_or_jump()
+              require("luasnip").expand_or_jump()
             elseif has_words_before() then
               cmp.complete()
             else
@@ -210,11 +209,12 @@ return {
           end, { "i", "s" }),
         },
         sources = {
-          { name = "nvim_lsp", },
-          { name = "luasnip", },
-          { name = "buffer", },
+          { name = "nvim_lsp", priority = 1000 },
+          { name = "luasnip",  priority = 750 },
+          { name = "buffer",   priority = 500 },
           {
             name = "path",
+            priority = 250
             --  max_item_count = 4
           },
           -- { name = "nvim_lua",               priority = 60 },
