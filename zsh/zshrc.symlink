@@ -236,6 +236,7 @@ alias zb='z -b'      # 快速回到父目录
 # "cat" cloning
 if type "bat" >/dev/null 2>&1; then
     alias cat="bat"
+    export BAT_PAGER="less -RFX"
 fi
 
 # Attach existing tmux session or create new one
