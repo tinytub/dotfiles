@@ -1,5 +1,5 @@
 -- https://github.com/lettertwo/config/blob/main/nvim/pager.lua
---- for kitty
+-- for kitty
 vim.o.relativenumber = false
 vim.o.number = false
 vim.o.mouse = "a"
@@ -31,14 +31,28 @@ vim.api.nvim_create_autocmd(
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if vim.loop.fs_stat(lazypath) then
   vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
-
   require("lazy").setup({
     spec = {
       --{ import = "plugins.colorscheme" },
       -- Navigate seamlessly between kitty and nvim windows.
       --{ "knubie/vim-kitty-navigator",  build = [[ cp ./*.py $XDG_CONFIG_HOME/kitty/ ]] },
       {
+        "folke/tokyonight.nvim",
+        opts = {
+          style = "moon",
+          sidebars = {
+            "qf",
+            "vista_kind",
+            "terminal",
+            "spectre_panel",
+            "startuptime",
+            "Outline",
+          },
+        },
+      },
+      {
         "folke/which-key.nvim",
+        enabled = true,
         opts = {
           plugins = { spelling = true },
           window = { border = "single" },
@@ -60,11 +74,24 @@ if vim.loop.fs_stat(lazypath) then
         end,
       },
     },
+
+    --colorscheme = function()
+    --  vim.api.nvim_command [[syntax on]]
+    --  if vim.fn.has('termguicolors') == 1 then
+    --    vim.cmd.set("termguicolors")
+    --  end
+    --  --local colors = require("catppuccin.palettes").get_palette()
+    --  --require("colors.catppuccin")
+    --  vim.cmd.colorscheme("tokyonight")
+    --end,
+
+
     defaults = {
       lazy = false,
       version = false, -- always use the latest git commit
     },
     --install = { colorscheme = { "laserwave" } },
+    install = { colorscheme = { "catppuccin", "tokyonight", "habamax" } },
     ui = { border = "rounded" },
     checker = { enabled = false },
     performance = {
@@ -85,6 +112,7 @@ if vim.loop.fs_stat(lazypath) then
   })
 end
 
+vim.cmd.colorscheme("tokyonight")
 
 -- better up/down
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
