@@ -1,6 +1,6 @@
 
 
-export TERM="xterm-256color"
+#export TERM="xterm-256color"
 # LANG 如设置为 en_US 会导致特殊字符乱码
 #export LANG=zh_CN.UTF-8
 
@@ -67,3 +67,4 @@ export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 # ssh -t -L 127.0.0.1:6443:11.50.138.36:6443 root@11.50.138.45 -- kubectl  proxy --port 6443
 
 #alias -g zplug="LC_MESSAGES=en_US.UTF-8 zplug"
+

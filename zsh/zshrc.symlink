@@ -12,6 +12,8 @@
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
+ZSH_THEME=""
+
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
@@ -280,4 +282,14 @@ tmux-launch () {
 }
 
 eval "$(starship init zsh)"
+
+DISABLE_AUTO_TITLE="true"
+ZSH_THEME_TERM_TITLE_IDLE="%1d"
+#precmd () {print -Pn "\e]0;%~\a"}
+#precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+#precmd () {print -Pn "\e]0;%2d\a"}
+function precmd () {
+  window_title="\033]0;${PWD##*/}\007"
+  echo -ne "$window_title"
+}
 
