@@ -283,13 +283,16 @@ tmux-launch () {
 
 eval "$(starship init zsh)"
 
-DISABLE_AUTO_TITLE="true"
-ZSH_THEME_TERM_TITLE_IDLE="%1d"
-#precmd () {print -Pn "\e]0;%~\a"}
-#precmd () {print -Pn "\e]0;%n@%m: %~\a"}
-#precmd () {print -Pn "\e]0;%2d\a"}
-function precmd () {
-  window_title="\033]0;${PWD##*/}\007"
-  echo -ne "$window_title"
-}
+# kitty prompt
+if [[ -n $KITTY_INSTALLATION_DIR ]]; then
+  DISABLE_AUTO_TITLE="true"
+  ZSH_THEME_TERM_TITLE_IDLE="%1d"
+  #precmd () {print -Pn "\e]0;%~\a"}
+  #precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+  #precmd () {print -Pn "\e]0;%2d\a"}
+  function precmd () {
+    window_title="\033]0;${PWD##*/}\007"
+    echo -ne "$window_title"
+  }
+fi
 
