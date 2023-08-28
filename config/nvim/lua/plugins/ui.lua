@@ -98,7 +98,140 @@ return {
       --{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = { "i", "n", "s" } },
       --{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = { "i", "n", "s" } },
     },
-    config = function() require "plugins.configs.nvim-noice" end,
+    opts = {
+      notify = {
+        enabled = true,
+        view = "mini"
+      },
+      lsp = {
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
+        signature = { enabled = false },
+      },
+      messages = {
+        view_search = false,
+        view = "mini"
+      },
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            any = {
+              { find = "%d+L, %d+B" },
+              { find = "; after #%d+" },
+              { find = "; before #%d+" },
+            },
+          },
+          view = "mini",
+        },
+        {
+          filter = { event = "msg_show", find = "Hunk %d+ of %d+" },
+          view = "mini",
+        },
+        {
+          filter = { event = "msg_show", find = "%d+ more lines" },
+          opts = { skip = true },
+        },
+        {
+          filter = { event = "msg_show", find = "%d+ lines yanked" },
+          opts = { skip = true },
+        },
+        {
+          filter = { event = "msg_show", kind = "quickfix" },
+          view = "mini",
+        },
+        {
+          filter = { event = "msg_show", kind = "search_count" },
+          view = "mini",
+        },
+        {
+          filter = { event = "msg_show", kind = "wmsg" },
+          view = "mini",
+        },
+        {
+          --- hide written messages
+          filter = {
+            event = "msg_show",
+            kind = "",
+            find = "written",
+          },
+          opts = { skip = true },
+        },
+        {
+          --- hide edits
+          filter = {
+            event = "msg_show",
+            kind = "",
+            find = "newer than edits",
+          },
+          opts = { skip = true },
+        },
+        {
+          --- hide more line
+          filter = {
+            event = "msg_show",
+            kind = "",
+            find = " more line",
+          },
+          opts = { skip = true },
+        },
+        {
+          filter = {
+            event = "notify",
+            find = "No information available",
+          },
+          opts = { skip = true },
+        },
+        {
+          filter = {
+            cond = function()
+              return not focused
+            end,
+          },
+          view = "notify_send",
+          opts = { stop = false },
+        }
+      },
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        lsp_doc_border = true,
+      },
+      commands = {
+        all = {
+          view = "split",
+          opts = { enter = true, format = "details" },
+          filter = {},
+        },
+      },
+      ---@type NoiceConfigViews
+      views = {
+        mini = {
+          zindex = 100,
+          win_options = { winblend = 0 },
+        },
+      },
+    },
+    init = function()
+      focused = true
+      vim.api.nvim_create_autocmd("FocusGained", {
+        callback = function()
+          focused = true
+        end,
+      })
+      vim.api.nvim_create_autocmd("FocusLost", {
+        callback = function()
+          focused = false
+        end,
+      })
+    end,
+    config = function(_, opts)
+      require("noice").setup(opts)
+    end,
   },
 
   -- Neovim UI Enhancer
