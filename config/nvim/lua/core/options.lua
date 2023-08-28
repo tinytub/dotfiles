@@ -58,7 +58,7 @@ opt.pumheight = 10 -- Maximum number of entries in a popup
 
 -- disable nvim intro
 --opt.shortmess:append("sI")
-opt.shortmess:append({ W = true, I = true, c = true })
+opt.shortmess:append({ W = true, I = true, c = true, s = true })
 
 --opt.signcolumn = "number"
 opt.signcolumn = "yes"
