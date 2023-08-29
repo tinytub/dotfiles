@@ -28,7 +28,7 @@ local opts = {
 
     { import = "plugins.extras.test" },
     { import = "plugins.extras.coding.copilot" },
-    { import = "plugins.extras.coding.codeium" },
+    --    { import = "plugins.extras.coding.codeium" },
     { import = "plugins.extras.coding.yanky" },
     { import = "plugins.extras.dap" },
     { import = "plugins.extras.formatting" },

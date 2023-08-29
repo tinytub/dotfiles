@@ -200,6 +200,7 @@ return {
         command_palette = true,
         long_message_to_split = true,
         lsp_doc_border = true,
+        inc_rename = require("utils").has("inc-rename.nvim"),
       },
       commands = {
         all = {

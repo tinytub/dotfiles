@@ -13,6 +13,11 @@ opt.laststatus = 3
 opt.showmode = false
 
 opt.clipboard = "unnamedplus"
+opt.completeopt = "menu,menuone,noselect"
+opt.conceallevel = 3           -- Hide * markup for bold and italic
+
+opt.formatoptions = "jcroqlnt" -- tcqj
+
 --opt.cmdheight = 0 -- 控制cmd 高度, 0 会隐藏
 opt.cul = true -- cursor line
 

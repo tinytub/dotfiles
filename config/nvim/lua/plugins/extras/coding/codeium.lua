@@ -6,9 +6,12 @@ return {
     dependencies = {
       {
         "jcdickinson/codeium.nvim",
-        build  = ":Codeium Auth",
-        opts   = {},
-        config = function(_, opts)
+        dependencies = {
+          "nvim-lua/plenary.nvim",
+        },
+        build        = ":Codeium Auth",
+        opts         = {},
+        config       = function(_, opts)
           require("codeium").setup(opts)
         end,
       },
