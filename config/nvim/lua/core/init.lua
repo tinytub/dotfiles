@@ -27,7 +27,7 @@ local opts = {
     --{ import = "plugins.configs.nvim-cmp" },
 
     { import = "plugins.extras.test" },
-    { import = "plugins.extras.coding.copilot" },
+    --{ import = "plugins.extras.coding.copilot" },
     --    { import = "plugins.extras.coding.codeium" },
     { import = "plugins.extras.coding.yanky" },
     { import = "plugins.extras.dap" },

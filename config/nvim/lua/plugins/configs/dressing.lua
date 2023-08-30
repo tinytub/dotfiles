@@ -9,7 +9,6 @@ function M.config()
       default_prompt = "➤ ",
       prompt_align = "left",
       insert_only = true,
-      anchor = "SW",
       border = "rounded",
       relative = "cursor",
       prefer_width = 40,
@@ -21,6 +20,7 @@ function M.config()
         winhighlight = "Normal:Normal,NormalNC:NormalNC",
       },
       override = function(conf)
+        conf.anchor = "SW"
         return conf
       end,
       get_config = nil,
