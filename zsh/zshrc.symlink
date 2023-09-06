@@ -93,9 +93,9 @@ zinit wait lucid for \
   OMZP::kubectl \
   OMZP::ssh-agent \
   OMZP::command-not-found \
-  OMZP::git \
-  OMZL::git.zsh \
   OMZP::docker-compose
+#  OMZP::git \
+#  OMZL::git.zsh \
 
 # ─── IMPORTANT ───────────────────────────────────────────────────────────────
 

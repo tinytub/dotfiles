@@ -41,6 +41,7 @@ export PATH="/usr/local/opt/go@1.18/bin:$PATH"
 
 export PATH="/usr/local/opt/openssl@3/bin:$PATH"
 export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
+export PATH="/usr/local/sbin:$PATH"
 
 #autossh
 export AUTOSSH_PIDFILE=~/autossh.pid
