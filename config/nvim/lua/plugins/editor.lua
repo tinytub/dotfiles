@@ -265,14 +265,6 @@ local plugins = {
     },
   },
 
-  -- auto pairs
-  {
-    enabled = true,
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    opts = {},
-  },
-
   -- copilot
   {
     "zbirenbaum/copilot.lua",
@@ -325,6 +317,7 @@ local plugins = {
           }, {}),
           f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
         },
       }
     end,
@@ -788,7 +781,7 @@ If you rather use leap/flit instead, you can add the leap extra:
     end,
     optional = true,
   },
-  { "ggandor/flit.nvim",                           enabled = false, optional = true },
+  { "ggandor/flit.nvim", enabled = false, optional = true },
 
   -- Add Flash
   {
@@ -968,19 +961,6 @@ If you rather use leap/flit instead, you can add the leap extra:
     --  require("plugins.configs.others").comment()
     --end,
     enabled = false,
-  },
-  -- comments
-  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
-  {
-    "echasnovski/mini.comment",
-    event = "VeryLazy",
-    opts = {
-      options = {
-        custom_commentstring = function()
-          return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
-        end,
-      },
-    },
   },
 
   -- whichkey

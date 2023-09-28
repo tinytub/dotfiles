@@ -30,6 +30,9 @@ style = "bold blue"
 #modified= '[ $count](bold blue) '
 #behind = '[ ](bold purple) '
 #format = '([$all_status$ahead_behind]($style))'
+[git_status]
+ignore_submodules = true
+untracked = ""
 
 [[battery.display]]
 threshold = 50
