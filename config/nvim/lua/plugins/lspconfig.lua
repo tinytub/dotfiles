@@ -79,7 +79,8 @@ return {
     end,
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
+    optional = true,
     event = { "BufReadPre", "BufNewFile" },
     --ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css',
     --  'javascript', 'javascriptreact', 'python' },

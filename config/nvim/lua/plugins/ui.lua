@@ -79,8 +79,8 @@ return {
     end,
   },
 
-  -- noicer ui
   -- 关闭了fidget和notify, 如果手动关闭noice，记得打开fidget和notify
+  -- Highly experimental plugin that completely replaces the UI for messages, cmdline and the popupmenu.
   {
     "folke/noice.nvim",
     event = "VeryLazy",
@@ -758,10 +758,6 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      indent = {
-        char = "│",
-        highlight = "IndentBlanklineChar",
-      },
       scope = { enabled = false },
       exclude = {
         filetypes = {
