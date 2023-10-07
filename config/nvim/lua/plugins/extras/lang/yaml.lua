@@ -7,14 +7,15 @@ return {
       if type(opts.ensure_installed) == "table" then vim.list_extend(opts.ensure_installed, { "yaml" }) end
     end,
   },
-
+  -- yaml schema support
+  {
+    "b0o/SchemaStore.nvim",
+    lazy = true,
+    version = false, -- last release is way too old
+  },
   -- correctly setup lspconfig
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
-      "b0o/SchemaStore.nvim",
-      version = false, -- last release is way too old
-    },
     opts = {
       -- make sure mason installs the server
       servers = {

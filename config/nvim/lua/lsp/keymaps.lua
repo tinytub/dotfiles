@@ -43,9 +43,6 @@ M._keys = nil
 
 ---@return (LazyKeys|{has?:string})[]
 function M.get()
-  local format = function()
-    require("lsp.format").format({ force = true })
-  end
   if not M._keys then
     ---@class PluginLspKeys
     -- stylua: ignore
@@ -135,19 +132,6 @@ function M.get()
         desc = "Prev Warning"
       },
       {
-        "<leader>cf",
-        format,
-        desc = "Format Document",
-        has = "formatting"
-      },
-      {
-        "<leader>cf",
-        format,
-        desc = "Format Range",
-        mode = "v",
-        has = "rangeFormatting"
-      },
-      {
         "<leader>ca",
         vim.lsp.buf.code_action,
         desc = "Code Action",
@@ -170,12 +154,12 @@ function M.get()
         has = "codeAction",
       }
     }
-    if require("utils").has("inc-rename.nvim") then
+    if require("utils").has "inc-rename.nvim" then
       M._keys[#M._keys + 1] = {
         "<leader>cr",
         function()
-          local inc_rename = require("inc_rename")
-          return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand("<cword>")
+          local inc_rename = require "inc_rename"
+          return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand "<cword>"
         end,
         expr = true,
         desc = "Rename",
@@ -190,18 +174,16 @@ end
 
 ---@param method string
 function M.has(buffer, method)
-  method = method:find("/") and method or "textDocument/" .. method
-  local clients = vim.lsp.get_active_clients({ bufnr = buffer })
+  method = method:find "/" and method or "textDocument/" .. method
+  local clients = vim.lsp.get_active_clients { bufnr = buffer }
   for _, client in ipairs(clients) do
-    if client.supports_method(method) then
-      return true
-    end
+    if client.supports_method(method) then return true end
   end
   return false
 end
 
 function M.resolve(buffer)
-  local Keys = require("lazy.core.handler.keys")
+  local Keys = require "lazy.core.handler.keys"
   local keymaps = {} ---@type table<string,LazyKeys|{has?:string}>
 
   local function add(keymap)
@@ -216,8 +198,8 @@ function M.resolve(buffer)
     add(keymap)
   end
 
-  local opts = require("utils").opts("nvim-lspconfig")
-  local clients = vim.lsp.get_active_clients({ bufnr = buffer })
+  local opts = require("utils").opts "nvim-lspconfig"
+  local clients = vim.lsp.get_active_clients { bufnr = buffer }
   for _, client in ipairs(clients) do
     local maps = opts.servers[client.name] and opts.servers[client.name].keys or {}
     for _, keymap in ipairs(maps) do
@@ -228,7 +210,7 @@ function M.resolve(buffer)
 end
 
 function M.on_attach(client, buffer)
-  local Keys = require("lazy.core.handler.keys")
+  local Keys = require "lazy.core.handler.keys"
   local keymaps = M.resolve(buffer)
 
   for _, keys in pairs(keymaps) do
@@ -246,9 +228,7 @@ end
 function M.diagnostic_goto(next, severity)
   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
   severity = severity and vim.diagnostic.severity[severity] or nil
-  return function()
-    go({ severity = severity })
-  end
+  return function() go { severity = severity } end
 end
 
 return M

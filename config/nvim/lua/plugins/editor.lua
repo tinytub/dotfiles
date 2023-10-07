@@ -1,4 +1,4 @@
-local Util = require("utils")
+local Util = require "utils"
 
 local plugins = {
 
@@ -47,15 +47,15 @@ local plugins = {
           "prompt",
         },
         ignored_buftypes = { "nofile" },
-      }
-    }
+      },
+    },
     --    config = function() require "plugins.configs.smart-splits" end,
   },
 
   -- automatically highlighting other uses of the word under the cursor
   {
-    "rrethy/vim-illuminate",
-    event = { "BufReadPost", "BufNewFile" },
+    "RRethy/vim-illuminate",
+    event = "LazyFile",
     opts = {
       delay = 200,
       large_file_cutoff = 2000,
@@ -108,7 +108,6 @@ local plugins = {
     enabled = true,
   },
 
-
   ---- Better buffer closing
   --{
   --  "famiu/bufdelete.nvim",
@@ -134,21 +133,19 @@ local plugins = {
 
     keys = {
       { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
-      { "<leader>/", Util.telescope("live_grep"),                        desc = "Grep (root dir)" },
+      { "<leader>/", Util.telescope "live_grep",                         desc = "Grep (root dir)" },
       { "<leader>:", "<cmd>Telescope command_history<cr>",               desc = "Command History" },
       {
         "<leader><space>",
-        Util.telescope("files"),
-        desc =
-        "Find Files (root dir)"
+        Util.telescope "files",
+        desc = "Find Files (root dir)",
       },
       -- find
       { "<leader>bb", "<cmd>Telescope buffers<cr>",                         desc = "Buffers" },
       {
         "<leader>ff",
-        Util.telescope("files"),
-        desc =
-        "Find Files (root dir)"
+        Util.telescope "files",
+        desc = "Find Files (root dir)",
       },
       { "<leader>fa", "<cmd>Telescope live_grep<cr>",                       desc = "Live Grep" },
       { "<leader>fF", Util.telescope("files", { cwd = false }),             desc = "Find Files (cwd)" },
@@ -170,23 +167,20 @@ local plugins = {
       {
         "<leader>sd",
         "<cmd>Telescope diagnostics bufnr=0<cr>",
-        desc =
-        "Document diagnostics"
+        desc = "Document diagnostics",
       },
       {
         "<leader>sD",
         "<cmd>Telescope diagnostics<cr>",
-        desc =
-        "Workspace diagnostics"
+        desc = "Workspace diagnostics",
       },
-      { "<leader>sg", Util.telescope("live_grep"),                  desc = "Grep (root dir)" },
+      { "<leader>sg", Util.telescope "live_grep",                   desc = "Grep (root dir)" },
       { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
       { "<leader>sh", "<cmd>Telescope help_tags<cr>",               desc = "Help Pages" },
       {
         "<leader>sH",
         "<cmd>Telescope highlights<cr>",
-        desc =
-        "Search Highlight Groups"
+        desc = "Search Highlight Groups",
       },
       { "<leader>sk", "<cmd>Telescope keymaps<cr>",                                      desc = "Key Maps" },
       { "<leader>sM", "<cmd>Telescope man_pages<cr>",                                    desc = "Man Pages" },
@@ -197,23 +191,20 @@ local plugins = {
       { "<leader>sW", Util.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Word (cwd)" },
       {
         "<leader>sw",
-        Util.telescope("grep_string"),
+        Util.telescope "grep_string",
         mode = "v",
-        desc =
-        "Selection (root dir)"
+        desc = "Selection (root dir)",
       },
       {
         "<leader>sW",
         Util.telescope("grep_string", { cwd = false }),
         mode = "v",
-        desc =
-        "Selection (cwd)"
+        desc = "Selection (cwd)",
       },
       {
         "<leader>uC",
         Util.telescope("colorscheme", { enable_preview = true }),
-        desc =
-        "Colorscheme with preview"
+        desc = "Colorscheme with preview",
       },
       {
         "<leader>ss",
@@ -312,7 +303,6 @@ local plugins = {
     "echasnovski/mini.ai",
     enabled = true,
     event = "VeryLazy",
-    dependencies = { "nvim-treesitter-textobjects" },
     opts = function()
       local ai = require "mini.ai"
       return {
@@ -362,15 +352,15 @@ local plugins = {
         end
         local ic = vim.deepcopy(i)
         local ac = vim.deepcopy(a)
-        for key, name in pairs({ n = "Next", l = "Last" }) do
+        for key, name in pairs { n = "Next", l = "Last" } do
           i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
           a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
         end
-        require("which-key").register({
+        require("which-key").register {
           mode = { "o", "x" },
           i = i,
           a = a,
-        })
+        }
       end)
     end,
   },
@@ -378,10 +368,27 @@ local plugins = {
   -- buffer remove
   {
     "echasnovski/mini.bufremove",
-    -- stylua: ignore
     keys = {
-      { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
-      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end,  desc = "Delete Buffer (Force)" },
+      {
+        "<leader>bd",
+        function()
+          local bd = require("mini.bufremove").delete
+          if vim.bo.modified then
+            local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+            if choice == 1 then -- Yes
+              vim.cmd.write()
+              bd(0)
+            elseif choice == 2 then -- No
+              bd(0, true)
+            end
+          else
+            bd(0)
+          end
+        end,
+        desc = "Delete Buffer",
+      },
+      -- stylua: ignore
+      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
     },
   },
 
@@ -429,16 +436,12 @@ local plugins = {
     keys = {
       {
         "<leader>fe",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = require("utils").get_root() })
-        end,
+        function() require("neo-tree.command").execute { toggle = true, dir = require("utils").get_root() } end,
         desc = "Explorer NeoTree (root dir)",
       },
       {
         "<leader>fE",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
-        end,
+        function() require("neo-tree.command").execute { toggle = true, dir = vim.loop.cwd() } end,
         desc = "Explorer NeoTree (cwd)",
       },
       { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
@@ -449,9 +452,7 @@ local plugins = {
     init = function()
       if vim.fn.argc() == 1 then
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == "directory" then
-          require("neo-tree")
-        end
+        if stat and stat.type == "directory" then require "neo-tree" end
       end
     end,
     opts = {
@@ -492,6 +493,14 @@ local plugins = {
       },
     },
     config = function(_, opts)
+      local function on_move(data) Util.on_rename(data.source, data.destination) end
+
+      local events = require "neo-tree.events"
+      opts.event_handlers = opts.event_handlers or {}
+      vim.list_extend(opts.event_handlers, {
+        { event = events.FILE_MOVED,   handler = on_move },
+        { event = events.FILE_RENAMED, handler = on_move },
+      })
       -- some from https://github.com/CKolkey/config/blob/master/nvim/lua/plugins/neo-tree.lua
       -- Enable a strong cursorline.
       local function set_cursorline()
@@ -513,7 +522,7 @@ local plugins = {
         event_handlers = { -- {{{
           { event = "neo_tree_buffer_enter", handler = set_cursorline },
           { event = "neo_tree_buffer_leave", handler = reset_cursorline },
-        }
+        },
       }, opts or {})
 
       require("neo-tree").setup(opts)
@@ -521,9 +530,7 @@ local plugins = {
       vim.api.nvim_create_autocmd("TermClose", {
         pattern = "*lazygit",
         callback = function()
-          if package.loaded["neo-tree.sources.git_status"] then
-            require("neo-tree.sources.git_status").refresh()
-          end
+          if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
         end,
       })
     end,
@@ -531,29 +538,29 @@ local plugins = {
 
   {
     "lewis6991/gitsigns.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "LazyFile",
     enabled = true,
     --cond = function()
     --   return vim.fn.isdirectory ".git" == 1
     --end,
     opts = {
       --numhl         = false,
-      watch_gitdir  = {
+      watch_gitdir = {
         interval = 100,
       },
       sign_priority = 5,
-      signs         = {
-        add          = { text = "▎" }, -- catppuccin
-        change       = { text = "▎" }, -- catppuccin
+      signs = {
+        add = { text = "▎" },  -- catppuccin
+        change = { text = "▎" }, -- catppuccin
         --add          = { text = "▐" },
         --change       = { text = "▐" },
         --topdelete = { text = "契" }, -- catppuccin
         --delete       = { text = "▎" }, -- catppuccin
         --topdelete    = { text = "▔" }, -- catppuccin
-        delete       = { text = "" },
-        topdelete    = { text = "" },
+        delete = { text = "" },
+        topdelete = { text = "" },
         changedelete = { text = "▎" }, -- catppuccin
-        untracked    = { text = "▎" }, -- catppuccin
+        untracked = { text = "▎" },  -- catppuccin
       },
       --current_line_blame           = false,
       --current_line_blame_formatter = "<author>:<author_time:%Y-%m-%d> - <summary>",
@@ -564,11 +571,9 @@ local plugins = {
       --  delay             = 1000,
       --  ignore_whitespace = true,
       --},
-      on_attach     = function(buffer)
+      on_attach = function(buffer)
         local gs = package.loaded.gitsigns
-        local function map(mode, l, r, desc)
-          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
-        end
+        local function map(mode, l, r, desc) vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc }) end
         -- stylua: ignore start
         map("n", "]h", gs.next_hunk, "Next Hunk")
         map("n", "[h", gs.prev_hunk, "Prev Hunk")
@@ -647,13 +652,13 @@ local plugins = {
     end,
     opts = {
       mappings = {
-        add = "gza",            -- Add surrounding in Normal and Visual modes
-        delete = "gzd",         -- Delete surrounding
-        find = "gzf",           -- Find surrounding (to the right)
-        find_left = "gzF",      -- Find surrounding (to the left)
-        highlight = "gzh",      -- Highlight surrounding
-        replace = "gzr",        -- Replace surrounding
-        update_n_lines = "gzn", -- Update `n_lines`
+        add = "gsa",            -- Add surrounding in Normal and Visual modes
+        delete = "gsd",         -- Delete surrounding
+        find = "gsf",           -- Find surrounding (to the right)
+        find_left = "gsF",      -- Find surrounding (to the left)
+        highlight = "gsh",      -- Highlight surrounding
+        replace = "gsr",        -- Replace surrounding
+        update_n_lines = "gsn", -- Update `n_lines`
       },
     },
   },
@@ -713,7 +718,7 @@ local plugins = {
         -- see :h nvim_open_win for details on borders however
         -- the 'curved' border is a custom border type
         -- not natively supported but implemented in this plugin.
-        border = 'rounded',
+        border = "rounded",
         --winblend = 0,
         --highlights = {
         --  border = "Normal",
@@ -765,7 +770,6 @@ local plugins = {
     event = "VeryLazy",
   },
 
-
   -- Add Flash
   {
     "folke/flash.nvim",
@@ -787,14 +791,14 @@ local plugins = {
         --   },
         -- },
         char = {
-          jump_labels = false
+          jump_labels = false,
         },
         treesitter_search = {
           label = {
             rainbow = { enabled = true },
-          }
-        }
-      }
+          },
+        },
+      },
     },
     -- stylua: ignore
     keys = {
@@ -817,7 +821,6 @@ local plugins = {
       },
     },
   },
-
 
   {
     enabled = false,
@@ -850,7 +853,7 @@ local plugins = {
       {
         "<leader>gG",
         function() Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end,
-        desc = "Lazygit (cwd)"
+        desc = "Lazygit (cwd)",
       },
     },
   },
@@ -882,7 +885,6 @@ local plugins = {
     end,
     enabled = true,
   },
-
 
   {
     "folke/trouble.nvim",
@@ -922,7 +924,6 @@ local plugins = {
     enabled = true,
   },
 
-
   -- 注释工具
   {
     "numToStr/Comment.nvim",
@@ -938,7 +939,6 @@ local plugins = {
         extra = false,    -- Includes `gco`, `gcO`, `gcA`
         extended = false, -- Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
       },
-
     },
     --config = function()
     --  require("plugins.configs.others").comment()
@@ -968,7 +968,7 @@ local plugins = {
       defaults = {
         mode = { "n", "v" },
         ["g"] = { name = "+goto" },
-        ["gz"] = { name = "+surround" },
+        ["gs"] = { name = "+surround" },
         ["<leader>v"] = { "<C-W>v", "split right" },
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },
@@ -993,20 +993,18 @@ local plugins = {
         ["<M-]>"] = { "<cmd>lua require('smart-splits').resize_right(amount)<CR>", "vertical resize +2" },
         ["<TAB>"] = { "<cmd> BufferLineCycleNext <CR>", "cycle next buffer" },
         ["<S-Tab>"] = { "<cmd> BufferLineCyclePrev <CR>", "cycle prev buffer" },
-      }
+      },
     },
     --module = "which-key",
     --config = function() require "plugins.configs.whichkey" end,
     config = function(_, opts)
-      local wk = require("which-key")
+      local wk = require "which-key"
       wk.setup(opts)
       wk.register(opts.defaults)
       wk.register(opts.misc_n)
     end,
     --cond = function() return not vim.g.vscode end,
   },
-
-
 }
 
 return plugins

@@ -1,21 +1,21 @@
+---@class LazyVimConfig: LazyVimOptions
 local M = {}
 M.lazy_version = ">=9.1.0"
+M.use_lazy_file = true
+M.lazy_file_events = { "BufReadPost", "BufNewFile" }
 
----@class LazyVimConfig
+---@class LazyVimOptions
 local defaults = {
   -- colorscheme can be a string like `catppuccin` or a function that will load the colorscheme
   ---@type string|fun()
   colorscheme = function()
     require("tokyonight").load()
     vim.api.nvim_command [[syntax on]]
-    if vim.fn.has('termguicolors') == 1 then
-      vim.cmd.set("termguicolors")
-    end
+    if vim.fn.has "termguicolors" == 1 then vim.cmd.set "termguicolors" end
     --local colors = require("catppuccin.palettes").get_palette()
     --require("colors.catppuccin")
     --vim.cmd.colorscheme("catppuccin")
   end,
-
 
   -- load the default settings
   defaults = {
@@ -24,7 +24,7 @@ local defaults = {
     options = true,  -- core.options
   },
   -- icons used by other plugins
-  icons = require("plugins.configs.lspkind_icons")
+  icons = require "plugins.configs.lspkind_icons",
 }
 
 M.renames = {
@@ -33,12 +33,27 @@ M.renames = {
   ["null-ls.nvim"] = "none-ls.nvim",
 }
 
----@type LazyVimConfig
+---@type LazyVimOptions
 local options
 
----@param opts? LazyVimConfig
+---@param opts? LazyVimOptions
 function M.setup(opts)
-  options = vim.tbl_deep_extend("force", defaults, opts or {})
+  options = vim.tbl_deep_extend("force", defaults, opts or {}) or {}
+
+  if vim.fn.has "nvim-0.9.0" == 0 then
+    vim.api.nvim_echo({
+      {
+        "LazyVim requires Neovim >= 0.9.0\n",
+        "ErrorMsg",
+      },
+      { "Press any key to exit", "MoreMsg" },
+    }, true, {})
+
+    vim.fn.getchar()
+    vim.cmd [[quit]]
+    return
+  end
+
   if not M.has() then
     require("lazy.core.util").error(
       "**LazyVim** needs **lazy.nvim** version "
@@ -47,25 +62,24 @@ function M.setup(opts)
       .. "Please upgrade **lazy.nvim**",
       { title = "LazyVim" }
     )
-    error("Exiting")
+    error "Exiting"
   end
 
   -- autocmds can be loaded lazily when not opening a file
   local lazy_autocmds = vim.fn.argc(-1) == 0
-  if not lazy_autocmds then
-    M.load("autocmds")
-  end
+  if not lazy_autocmds then M.load "autocmds" end
 
+  local group = vim.api.nvim_create_augroup("LazyVim", { clear = true })
   vim.api.nvim_create_autocmd("User", {
-    group = vim.api.nvim_create_augroup("LazyVim", { clear = true }),
+    group = group,
     pattern = "VeryLazy",
     callback = function()
-      if lazy_autocmds then
-        M.load("autocmds")
-      end
-      M.load("keymaps")
+      if lazy_autocmds then M.load "autocmds" end
+      M.load "keymaps"
     end,
   })
+
+  if M.use_lazy_file then M.lazy_file() end
 
   require("lazy.core.util").try(function()
     if type(M.colorscheme) == "function" then
@@ -77,43 +91,87 @@ function M.setup(opts)
     msg = "Could not load your colorscheme",
     on_error = function(msg)
       require("lazy.core.util").error(msg)
-      vim.cmd.colorscheme("habamax")
+      vim.cmd.colorscheme "habamax"
+    end,
+  })
+end
+
+-- Properly load file based plugins without blocking the UI
+function M.lazy_file()
+  local events = {} ---@type {event: string, buf: number, data?: any}[]
+
+  local function load()
+    if #events == 0 then return end
+    local Event = require "lazy.core.handler.event"
+    local Util = require "lazy.core.util"
+    vim.api.nvim_del_augroup_by_name "lazy_file"
+    Util.track({ event = "LazyVim.lazy_file" })
+
+    ---@type table<string,string[]>
+    local skips = { FileType = Event.get_augroups "FileType" }
+    for _, event in ipairs(events) do
+      skips[event.event] = skips[event.event] or Event.get_augroups(event.event)
+    end
+    vim.api.nvim_exec_autocmds("User", { pattern = "LazyFile", modeline = false })
+    for _, event in ipairs(events) do
+      Event.trigger {
+        event = event.event,
+        exclude = skips[event.event],
+        data = event.data,
+        buf = event.buf,
+      }
+      if vim.bo[event.buf].filetype then
+        Event.trigger {
+          event = "FileType",
+          exclude = skips.FileType,
+          buf = event.buf,
+        }
+      end
+    end
+    vim.api.nvim_exec_autocmds("CursorMoved", { modeline = false })
+    events = {}
+    Util.track()
+  end
+
+  -- schedule wrap so that nested autocmds are executed
+  -- and the UI can continue rendering without blocking
+  load = vim.schedule_wrap(load)
+
+  vim.api.nvim_create_autocmd(M.lazy_file_events, {
+    group = vim.api.nvim_create_augroup("lazy_file", { clear = true }),
+    callback = function(event)
+      table.insert(events, event)
+      load()
     end,
   })
 end
 
 ---@param range? string
 function M.has(range)
-  local Semver = require("lazy.manage.semver")
+  local Semver = require "lazy.manage.semver"
   return Semver.range(range or M.lazy_version):matches(require("lazy.core.config").version or "0.0.0")
 end
 
 ---@param name "autocmds" | "options" | "keymaps"
 function M.load(name)
-  local Util = require("lazy.core.util")
+  local Util = require "lazy.core.util"
   local function _load(mod)
-    Util.try(function()
-      require(mod)
-    end, {
+    Util.try(function() require(mod) end, {
       msg = "Failed loading " .. mod,
       on_error = function(msg)
         local info = require("lazy.core.cache").find(mod)
-        if info == nil or (type(info) == "table" and #info == 0) then
-          return
-        end
+        if info == nil or (type(info) == "table" and #info == 0) then return end
         Util.error(msg)
       end,
     })
   end
 
   -- always load lazyvim, then user file
-  if M.defaults[name] then
-    _load("core." .. name)
-  end
+  if M.defaults[name] then _load("core." .. name) end
   _load("core." .. name)
   if vim.bo.filetype == "lazy" then
     -- HACK: LazyVim may have overwritten options of the Lazy ui, so reset this here
-    vim.cmd([[do VimResized]])
+    vim.cmd [[do VimResized]]
   end
   local pattern = "LazyVim" .. name:sub(1, 1):upper() .. name:sub(2)
   vim.api.nvim_exec_autocmds("User", { pattern = pattern, modeline = false })
@@ -123,38 +181,62 @@ M.did_init = false
 function M.init()
   if not M.did_init then
     M.did_init = true
+    --vim.opt.rtp:append(require("lazy.core.config").spec.plugins.LazyVim.dir)
+    M.use_lazy_file = M.use_lazy_file and vim.fn.argc(-1) > 0
+    ---@diagnostic disable-next-line: undefined-field
+    M.use_lazy_file = M.use_lazy_file and require("lazy.core.handler.event").trigger_events == nil
     -- delay notifications till vim.notify was replaced or after 500ms
     require("utils").lazy_notify()
 
     -- load options here, before lazy init while sourcing plugin modules
     -- this is needed to make sure options will be correctly applied
     -- after installing missing plugins
-    require("core.setup").load("options")
-    local Plugin = require("lazy.core.plugin")
+    require("core.setup").load "options"
+    local Plugin = require "lazy.core.plugin"
     local add = Plugin.Spec.add
+    ---@diagnostic disable-next-line: duplicate-set-field
     Plugin.Spec.add = function(self, plugin, ...)
-      if type(plugin) == "table" and M.renames[plugin[1]] then
-        require("lazy.core.util").warn(
-          ("Plugin `%s` was renamed to `%s`.\nPlease update your config for `%s`"):format(
-            plugin[1],
-            M.renames[plugin[1]],
-            self.importing or "LazyVim"
-          ),
-          { title = "LazyVim" }
-        )
-        plugin[1] = M.renames[plugin[1]]
+      if type(plugin) == "table" then
+        if M.renames[plugin[1]] then
+          require("lazy.core.util").warn(
+            ("Plugin `%s` was renamed to `%s`.\nPlease update your config for `%s`"):format(
+              plugin[1],
+              M.renames[plugin[1]],
+              self.importing or "LazyVim"
+            ),
+            { title = "LazyVim" }
+          )
+          plugin[1] = M.renames[plugin[1]]
+        end
+        if not M.use_lazy_file and plugin.event then
+          if plugin.event == "LazyFile" then
+            plugin.event = M.lazy_file_events
+          elseif type(plugin.event) == "table" then
+            local events = {} ---@type string[]
+            for _, event in ipairs(plugin.event) do
+              if event == "LazyFile" then
+                vim.list_extend(events, M.lazy_file_events)
+              else
+                events[#events + 1] = event
+              end
+            end
+          end
+        end
       end
       return add(self, plugin, ...)
     end
+    -- Add support for the LazyFile event
+    local Event = require "lazy.core.handler.event"
+    local _event = Event._event
+    ---@diagnostic disable-next-line: duplicate-set-field
+    Event._event = function(self, value) return value == "LazyFile" and "User LazyFile" or _event(self, value) end
   end
 end
 
 setmetatable(M, {
   __index = function(_, key)
-    if options == nil then
-      return vim.deepcopy(defaults)[key]
-    end
-    ---@cast options LazyVimConfig
+    if options == nil then return vim.deepcopy(defaults)[key] end
+    ---@cast options LazyVimOptions
     return options[key]
   end,
 })

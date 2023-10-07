@@ -53,5 +53,16 @@ return {
         vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id })
       end,
     })
+    local clients = vim.lsp.get_active_clients()
+    for _, client in ipairs(clients) do
+      if client:supports_method "workspace/willRenameFiles" then
+        local resp = client.request_sync("workspace/willRenameFiles", {
+          files = { { oldUri = vim.uri_from_fname(data.source), newUri = vim.uri_from_fname(data.destination) } },
+        }, 1000)
+        if resp and resp.result ~= nil then
+          vim.lsp.util.apply_workspace_edit(resp.result, client.offset_encoding)
+        end
+      end
+    end
   end,
 }

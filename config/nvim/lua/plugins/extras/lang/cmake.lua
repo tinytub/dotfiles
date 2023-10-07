@@ -2,21 +2,28 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "cmake" })
-      end
+      if type(opts.ensure_installed) == "table" then vim.list_extend(opts.ensure_installed, { "cmake" }) end
     end,
   },
   {
     "nvimtools/none-ls.nvim",
     optional = true,
     opts = function(_, opts)
-      local nls = require("null-ls")
+      local nls = require "null-ls"
       opts.sources = opts.sources or {}
       vim.list_extend(opts.sources, {
         nls.builtins.diagnostics.cmake_lint,
       })
     end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = {
+      linters_by_ft = {
+        cmake = { "cmakelint" },
+      },
+    },
   },
   {
     "mason.nvim",
@@ -36,6 +43,6 @@ return {
   {
     "Civitasv/cmake-tools.nvim",
     opts = {},
-    event = "BufRead",
+    event = "LazyFile",
   },
 }

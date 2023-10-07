@@ -1,4 +1,7 @@
 local icons = {
+  misc = {
+    dots = "󰇘",
+  },
   diagnostics = {
     --lspSymbol("Error", "")
     --lspSymbol("Info", "")
@@ -21,7 +24,6 @@ local icons = {
     added = " ",
     modified = " ",
     removed = " ",
-
   },
   kinds = {
     Array = " ",
@@ -58,7 +60,7 @@ local icons = {
     Unit = " ",
     Value = " ",
     Variable = " ",
-    Copilot = " ",
+    Copilot = " ",
     Codeium = " ",
     Table = " ",
     Tag = " ",

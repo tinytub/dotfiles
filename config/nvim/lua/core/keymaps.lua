@@ -20,9 +20,7 @@ local function map(mode, lhs, rhs, opts)
   if not keys.active[keys.parse({ lhs, mode = mode }).id] then
     opts = opts or {}
     opts.silent = opts.silent ~= false
-    if opts.remap and not vim.g.vscode then
-      opts.remap = nil
-    end
+    if opts.remap and not vim.g.vscode then opts.remap = nil end
     vim.keymap.set(mode, lhs, rhs, opts)
   end
 end
@@ -137,17 +135,23 @@ map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
 -- toggle options
 map("n", "<leader>uf", require("lsp.format").toggle, { desc = "Toggle format on Save" })
-map("n", "<leader>us", function() Utils.toggle("spell") end, { desc = "Toggle Spelling" })
-map("n", "<leader>uw", function() Utils.toggle("wrap") end, { desc = "Toggle Word Wrap" })
+map("n", "<leader>us", function() Utils.toggle "spell" end, { desc = "Toggle Spelling" })
+map("n", "<leader>uw", function() Utils.toggle "wrap" end, { desc = "Toggle Word Wrap" })
+map("n", "<leader>uL", function() Util.toggle "relativenumber" end, { desc = "Toggle Relative Line Numbers" })
 map("n", "<leader>ul", function() Utils.toggle_number() end, { desc = "Toggle Line Numbers" })
 map("n", "<leader>ud", Utils.toggle_diagnostics, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
-map("n", "<leader>uc", function() Utils.toggle("conceallevel", false, { 0, conceallevel }) end,
-  { desc = "Toggle Conceal" })
+map(
+  "n",
+  "<leader>uc",
+  function() Utils.toggle("conceallevel", false, { 0, conceallevel }) end,
+  { desc = "Toggle Conceal" }
+)
 if vim.lsp.inlay_hint then
   map("n", "<leader>uh", function() vim.lsp.inlay_hint(0, nil) end, { desc = "Toggle Inlay Hints" })
 end
-
+-- formatting
+map({ "n", "v" }, "<leader>cf", function() require("lsp.format").format { force = true } end, { desc = "Format" })
 
 map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })

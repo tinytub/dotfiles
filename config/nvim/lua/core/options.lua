@@ -1,13 +1,12 @@
-CONFIG_PATH = vim.fn.stdpath("config")
-DATA_PATH = vim.fn.stdpath("data")
-CACHE_PATH = vim.fn.stdpath("cache")
+CONFIG_PATH = vim.fn.stdpath "config"
+DATA_PATH = vim.fn.stdpath "data"
+CACHE_PATH = vim.fn.stdpath "cache"
 local opt = vim.opt
 local g = vim.g
 
 -- use filetype.lua instead of filetype.vim
 g.toggle_theme_icon = "  "
 g.theme_switcher_loaded = false
-
 
 opt.laststatus = 3
 opt.showmode = false
@@ -63,7 +62,7 @@ opt.pumheight = 10 -- Maximum number of entries in a popup
 
 -- disable nvim intro
 --opt.shortmess:append("sI")
-opt.shortmess:append({ W = true, I = true, c = true, s = true })
+opt.shortmess:append { W = true, I = true, c = true, s = true }
 
 --opt.signcolumn = "number"
 opt.signcolumn = "yes"
@@ -89,12 +88,41 @@ opt.updatetime = 250
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
-opt.whichwrap:append("<>[]hl")
+opt.whichwrap:append "<>[]hl"
+
+opt.winminwidth = 5 -- Minimum window width
+opt.wrap = false    -- Disable line wrap
+opt.fillchars = {
+  foldopen = "",
+  foldclose = "",
+  -- fold = "⸱",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
+}
 
 --opt.guifont = "Hack:h14"
-if vim.fn.has("nvim-0.9.0") == 1 then
+if vim.fn.has "nvim-0.9.0" == 1 then
   opt.splitkeep = "screen"
-  opt.shortmess:append({ C = true })
+  opt.shortmess:append { C = true }
+end
+
+if vim.fn.has "nvim-0.10" == 1 then opt.smoothscroll = true end
+-- Folding
+vim.opt.foldlevel = 99
+vim.opt.foldtext = "v:lua.require'utils.ui'.foldtext()"
+
+if vim.fn.has("nvim-0.9.0") == 1 then
+  vim.opt.statuscolumn = [[%!v:lua.require'utils.ui'.statuscolumn()]]
+end
+
+-- HACK: causes freezes on <= 0.9, so only enable on >= 0.10 for now
+if vim.fn.has("nvim-0.10") == 1 then
+  vim.opt.foldmethod = "expr"
+  vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+else
+  vim.opt.foldmethod = "indent"
 end
 
 -- Fix markdown indentation settings
@@ -102,7 +130,6 @@ vim.g.markdown_recommended_style = 0
 
 g.mapleader = " "
 g.maplocalleader = "\\"
-
 
 -- disable some default providers
 for _, provider in ipairs { "node", "perl", "python3", "ruby" } do

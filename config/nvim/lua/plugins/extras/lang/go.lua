@@ -17,7 +17,7 @@ return {
     optional = true,
     opts = {
       formatters_by_ft = {
-        go = { "goimports", "gofumpt" },
+        go = { "goimports" },
       },
     },
   },
@@ -191,9 +191,10 @@ return {
                 }
               end
 
-              -- stop autoformat and use format_acmd_go instead
-              vim.b.autoformat = false
-              require("lsp.format").format_acmd_go()
+              -- has move to use comform
+              ---- stop autoformat and use format_acmd_go instead
+              --vim.b.autoformat = false
+              --require("lsp.format").format_acmd_go()
             end
           end)
           -- end workaround
@@ -231,7 +232,7 @@ return {
       disable_defaults = false,
       --verbose = plugin_debug(),
       -- goimport = 'goimports', -- 'gopls'
-      goimport = 'gopls',
+      goimport = "gopls",
       fillstruct = "fillstruct",
       verbose = false,
       lsp_cfg = false,
@@ -251,7 +252,7 @@ return {
       --lsp_document_formatting = false,
       -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
       -- lsp_cfg = true,
-      lsp_inlay_hints = { enable = false }
+      lsp_inlay_hints = { enable = false },
     },
     --    config = function() require "plugins.configs.go-nvim" end,
   },
@@ -263,7 +264,7 @@ return {
         "mason.nvim",
         opts = function(_, opts)
           opts.ensure_installed = opts.ensure_installed or {}
-          table.insert(opts.ensure_installed, "delve")
+          vim.list_extend(opts.ensure_installed, { "gomodifytags", "impl", "goimports", "delve" })
         end,
       },
       {

@@ -40,7 +40,7 @@ return {
   -- ui components
   {
     "MunifTanjim/nui.nvim",
-    lazy = true
+    lazy = true,
   },
 
   -- Notification Enhancer
@@ -51,31 +51,21 @@ return {
     keys = {
       {
         "<leader>un",
-        function()
-          require("notify").dismiss({ silent = true, pending = true })
-        end,
+        function() require("notify").dismiss { silent = true, pending = true } end,
         desc = "Dismiss all Notifications",
       },
     },
     opts = {
       timeout = 3000,
       fps = 30, -- defualt 30, but in alacritty it's too fast with flick
-      max_height = function()
-        return math.floor(vim.o.lines * 0.75)
-      end,
-      max_width = function()
-        return math.floor(vim.o.columns * 0.75)
-      end,
+      max_height = function() return math.floor(vim.o.lines * 0.75) end,
+      max_width = function() return math.floor(vim.o.columns * 0.75) end,
       background_colour = "#000000",
     },
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("utils")
-      if not Util.has("noice.nvim") then
-        Util.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
-      end
+      local Util = require "utils"
+      if not Util.has "noice.nvim" then Util.on_very_lazy(function() vim.notify = require "notify" end) end
     end,
   },
 
@@ -101,7 +91,7 @@ return {
     opts = {
       notify = {
         enabled = true,
-        view = "mini"
+        view = "mini",
       },
       lsp = {
         override = {
@@ -113,7 +103,7 @@ return {
       },
       messages = {
         view_search = false,
-        view = "mini"
+        view = "mini",
       },
       routes = {
         {
@@ -187,20 +177,18 @@ return {
         },
         {
           filter = {
-            cond = function()
-              return not focused
-            end,
+            cond = function() return not focused end,
           },
           view = "notify_send",
           opts = { stop = false },
-        }
+        },
       },
       presets = {
         bottom_search = true,
         command_palette = true,
         long_message_to_split = true,
         lsp_doc_border = true,
-        inc_rename = require("utils").has("inc-rename.nvim"),
+        inc_rename = require("utils").has "inc-rename.nvim",
       },
       commands = {
         all = {
@@ -220,19 +208,13 @@ return {
     init = function()
       focused = true
       vim.api.nvim_create_autocmd("FocusGained", {
-        callback = function()
-          focused = true
-        end,
+        callback = function() focused = true end,
       })
       vim.api.nvim_create_autocmd("FocusLost", {
-        callback = function()
-          focused = false
-        end,
+        callback = function() focused = false end,
       })
     end,
-    config = function(_, opts)
-      require("noice").setup(opts)
-    end,
+    config = function(_, opts) require("noice").setup(opts) end,
   },
 
   -- Neovim UI Enhancer
@@ -258,7 +240,7 @@ return {
     "akinsho/bufferline.nvim",
     lazy = false,
     dependencies = { "catppuccin", "nvim-web-devicons" },
-    --event = "VeryLazy",
+    event = "VeryLazy",
     opts = {
       options = {
         diagnostics = "nvim_lsp",
@@ -548,8 +530,8 @@ return {
           ---- stylua: ignore
           --right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
           disabled_filetypes = {
-            statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal", },
-            winbar = { "neo-tree", "edgy" }
+            statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal" },
+            winbar = { "neo-tree", "edgy" },
           },
           --component_separators = { left = "", right = "" },
           --section_separators = { left = "", right = "" },
@@ -756,8 +738,12 @@ return {
   -- indent guides for Neovim
   {
     "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "LazyFile",
     opts = {
+      indent = {
+        char = "│",
+        tab_char = "│",
+      },
       scope = { enabled = false },
       exclude = {
         filetypes = {
@@ -780,7 +766,7 @@ return {
   {
     "echasnovski/mini.indentscope",
     version = false, -- wait till new 0.7.0 release to put it back on semver
-    event = { "BufReadPre", "BufNewFile" },
+    event = "LazyFile",
     opts = {
       -- symbol = "▏",
       symbol = "│",
@@ -800,7 +786,7 @@ return {
   -- todo highlights
   {
     "folke/todo-comments.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "LazyFile",
     --dependencies = "nvim-lua/plenary.nvim",
     config = function() require "plugins.configs.todo-comments" end,
     -- event = 'BufWinEnter',
@@ -814,7 +800,7 @@ return {
     optional = false,
     event = "VimEnter",
     --after = "base46",
-    config = function() require("plugins.configs.dashboard") end,
+    config = function() require "plugins.configs.dashboard" end,
   },
 
   --A Neovim plugin helping you establish good command workflow and habit
@@ -829,8 +815,7 @@ return {
         ["j"] = {},
         ["k"] = {},
         ["l"] = {},
-      }
+      },
     },
   },
-
 }

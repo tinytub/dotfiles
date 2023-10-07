@@ -5,8 +5,7 @@ return {
     dependencies = {
       "b0o/SchemaStore.nvim", -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
       { "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
-      { "folke/neodev.nvim",  opts = {} },
-
+      { "folke/neodev.nvim", opts = {} },
 
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
@@ -20,7 +19,6 @@ return {
       autoformat = true,
       -- add any global capabilities here
       capabilities = {},
-      format_notify = true,
       inlay_hints = {
         enabled = false,
       },
@@ -71,7 +69,7 @@ return {
     },
 
     config = function(_, opts)
-      if require("utils").has("neoconf.nvim") then
+      if require("utils").has "neoconf.nvim" then
         local plugin = require("lazy.core.config").spec.plugins["neoconf.nvim"]
         require("neoconf").setup(require("lazy.core.plugin").values(plugin, "opts", false))
       end
@@ -81,7 +79,7 @@ return {
   {
     "nvimtools/none-ls.nvim",
     optional = true,
-    event = { "BufReadPre", "BufNewFile" },
+    event = "LazyFile",
     --ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css',
     --  'javascript', 'javascriptreact', 'python' },
     dependencies = { "nvim-lspconfig", "mason.nvim" },
@@ -146,7 +144,4 @@ return {
     end,
     enabled = true,
   },
-
-
-
 }
