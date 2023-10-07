@@ -44,7 +44,7 @@ M._keys = nil
 ---@return (LazyKeys|{has?:string})[]
 function M.get()
   local format = function()
-    require("lazyvim.plugins.lsp.format").format({ force = true })
+    require("lsp.format").format({ force = true })
   end
   if not M._keys then
     ---@class PluginLspKeys

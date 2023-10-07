@@ -4,9 +4,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "typescript", "tsx" })
-      end
+      if type(opts.ensure_installed) == "table" then vim.list_extend(opts.ensure_installed, { "typescript", "tsx" }) end
     end,
   },
 
@@ -21,7 +19,7 @@ return {
         tsserver = {
           keys = {
             { "<leader>co", "<cmd>TypescriptOrganizeImports<CR>", desc = "Organize Imports" },
-            { "<leader>cR", "<cmd>TypescriptRenameFile<CR>",      desc = "Rename File" },
+            { "<leader>cR", "<cmd>TypescriptRenameFile<CR>", desc = "Rename File" },
           },
           settings = {
             typescript = {
@@ -46,7 +44,7 @@ return {
       },
       setup = {
         tsserver = function(_, opts)
-          require("typescript").setup({ server = opts })
+          require("typescript").setup { server = opts }
           return true
         end,
       },
@@ -55,9 +53,7 @@ return {
   {
     "nvimtools/none-ls.nvim",
     optional = true,
-    opts = function(_, opts)
-      table.insert(opts.sources, require("typescript.extensions.null-ls.code-actions"))
-    end,
+    opts = function(_, opts) table.insert(opts.sources, require "typescript.extensions.null-ls.code-actions") end,
   },
   {
     "mfussenegger/nvim-dap",
@@ -72,7 +68,7 @@ return {
       },
     },
     opts = function()
-      local dap = require("dap")
+      local dap = require "dap"
       if not dap.adapters["pwa-node"] then
         require("dap").adapters["pwa-node"] = {
           type = "server",
@@ -83,13 +79,13 @@ return {
             -- 💀 Make sure to update this path to point to your installation
             args = {
               require("mason-registry").get_package("js-debug-adapter"):get_install_path()
-              .. "/js-debug/src/dapDebugServer.js",
+                .. "/js-debug/src/dapDebugServer.js",
               "${port}",
             },
           },
         }
       end
-      for _, language in ipairs({ "typescript", "javascript" }) do
+      for _, language in ipairs { "typescript", "javascript" } do
         if not dap.configurations[language] then
           dap.configurations[language] = {
             {

@@ -4,9 +4,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "yaml" })
-      end
+      if type(opts.ensure_installed) == "table" then vim.list_extend(opts.ensure_installed, { "yaml" }) end
     end,
   },
 
@@ -58,11 +56,9 @@ return {
     setup = {
       yamlls = function()
         -- Neovim < 0.10 does not have dynamic registration for formatting
-        if vim.fn.has("nvim-0.10") == 0 then
-          require("lazyvim.util").on_attach(function(client, _)
-            if client.name == "yamlls" then
-              client.server_capabilities.documentFormattingProvider = true
-            end
+        if vim.fn.has "nvim-0.10" == 0 then
+          require("utils").on_attach(function(client, _)
+            if client.name == "yamlls" then client.server_capabilities.documentFormattingProvider = true end
           end)
         end
       end,

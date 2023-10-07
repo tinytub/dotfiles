@@ -765,30 +765,6 @@ local plugins = {
     event = "VeryLazy",
   },
 
-  -- F 键查询增强
-  -- disable old installations of leap and flit. Optional so it doesn't appear under disabled plugins
-  {
-    "ggandor/leap.nvim",
-    enabled = function()
-      vim.schedule(function()
-        local Config = require("lazy.core.config")
-        if Config.spec.disabled["leap.nvim"] or Config.spec.disabled["flit.nvim"] then
-          require("lazy.core.util").warn(
-            [[`flash.nvim` is now the default **LazyVim** jump plugin.
-**leap.nvim** and **flit.nvim** have been disabled.
-Please remove the plugins from your config.
-If you rather use leap/flit instead, you can add the leap extra:
-`lazyvim.plugins.extras.editor.leap`
-]],
-            { title = "LazyVim" }
-          )
-        end
-      end)
-      return false
-    end,
-    optional = true,
-  },
-  { "ggandor/flit.nvim", enabled = false, optional = true },
 
   -- Add Flash
   {

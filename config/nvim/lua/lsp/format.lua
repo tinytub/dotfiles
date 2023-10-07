@@ -6,6 +6,8 @@ M.opts = nil
 
 vim.b.autoformat = true
 
+M.custom_format = nil
+
 function M.toggle()
   if vim.b.autoformat == false then
     vim.b.autoformat = nil
@@ -86,7 +88,13 @@ end
 ---@param opts? {force?:boolean}
 function M.format(opts)
   local buf = vim.api.nvim_get_current_buf()
-  if vim.b.autoformat == false and not (opts and opts.force) then return end
+  if vim.b.autoformat == false and not (opts and opts.force) then
+    return
+  end
+
+  if M.custom_format and M.custom_format(buf) then
+    return
+  end
 
   local formatters = M.get_formatters(buf)
   local client_ids = vim.tbl_map(function(client) return client.id end, formatters.active)
