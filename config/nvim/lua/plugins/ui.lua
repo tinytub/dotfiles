@@ -753,42 +753,32 @@ return {
       }
     end,
   },
+  -- indent guides for Neovim
   {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-      indentLine_enabled = 1,
-      char = "▏",
-
-      filetype_exclude = {
-        "help",
-        "terminal",
-        "alpha",
-        "lazy",
-        "lspinfo",
-        "dashboard",
-        "TelescopePrompt",
-        "TelescopeResults",
-        "mason",
-        "neo-tree",
-        "Trouble",
-        "lazy",
-        "noice",
-        "nui",
-        "notify",
-        "mason",
-        "toggleterm",
-        "lazyterm",
+      indent = {
+        char = "│",
+        highlight = "IndentBlanklineChar",
       },
-
-      buftype_exclude = { "terminal" },
-      show_trailing_blankline_indent = false,
-      show_first_indent_level = false,
-      show_current_context = false,
-      --show_current_context_start = true,
-
+      scope = { enabled = false },
+      exclude = {
+        filetypes = {
+          "help",
+          "alpha",
+          "dashboard",
+          "neo-tree",
+          "Trouble",
+          "lazy",
+          "mason",
+          "notify",
+          "toggleterm",
+          "lazyterm",
+        },
+      },
     },
-    --    config = function() require("plugins.configs.others").blankline() end,
+    main = "ibl",
   },
   -- active indent guide and indent text objects
   {
