@@ -84,5 +84,6 @@
         "/Users/zhaopeng18/.local/share/nvim/lazy/neoconf.nvim/types",
         "/Users/zhaopeng18/.local/share/nvim/lazy/neoconf.nvim/types/lua",
         "${3rd}/luv/library"
-    ]
+    ],
+    "workspace.checkThirdParty": false
 }

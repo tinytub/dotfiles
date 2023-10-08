@@ -33,8 +33,9 @@ local opts = {
     { import = "plugins.extras.dap" },
     { import = "plugins.extras.formatting" },
     { import = "plugins.extras.lang.json" },
+    { import = "plugins.extras.lang.lua" },
     { import = "plugins.extras.lang.yaml" },
-    --   { import = "plugins.extras.lang.lua" },
+    --{ import = "plugins.extras.lang.lua" },
     { import = "plugins.extras.lang.go" },
     { import = "plugins.extras.lang.typescripts" },
     --{ import = "plugins.extras.lang.python" },
@@ -56,12 +57,10 @@ local opts = {
   },
   colorscheme = function()
     vim.api.nvim_command [[syntax on]]
-    if vim.fn.has('termguicolors') == 1 then
-      vim.cmd.set("termguicolors")
-    end
+    if vim.fn.has "termguicolors" == 1 then vim.cmd.set "termguicolors" end
     --local colors = require("catppuccin.palettes").get_palette()
     --require("colors.catppuccin")
-    vim.cmd.colorscheme("catppuccin")
+    vim.cmd.colorscheme "catppuccin"
   end,
 
   defaults = {
@@ -72,7 +71,6 @@ local opts = {
     -- have outdated releases, which may break your Neovim install.
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
-
   },
   ui = {
     border = "rounded",

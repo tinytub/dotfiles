@@ -12,7 +12,7 @@ return {
           settings = {
             Lua = {
               runtime = {
-                version = 'LuaJIT',
+                version = "LuaJIT",
                 --                path = runtime_path,
               },
               diagnostics = {
@@ -29,7 +29,7 @@ return {
                 --                    [vim.fn.expand('$VIMRUNTIME/lua')] = true,
                 --                    [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true },
                 preloadFileSize = 100000,
-                maxPreload = 10000
+                maxPreload = 10000,
               },
               misc = {
                 parameters = {
@@ -58,9 +58,8 @@ return {
               },
             },
           },
-        }
-      }
-    }
-  }
-
+        },
+      },
+    },
+  },
 }

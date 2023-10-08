@@ -6,13 +6,13 @@ return {
       "jbyuki/one-small-step-for-vimkind",
       -- stylua: ignore
       keys = {
-        { "<leader>daL", function() require("osv").launch({ port = 8086 }) end, desc = "Adapter Lua Server" },
-        { "<leader>dal", function() require("osv").run_this() end, desc = "Adapter Lua" },
+        { "<leader>daL", function() require("osv").launch({ port = 8086 }) end, desc = "Adapter Lua Server", ft = "lua" },
+        { "<leader>dal", function() require("osv").run_this() end, desc = "Adapter Lua", ft = "lua" },
       },
       config = function()
-        local dap = require("dap")
+        local dap = require "dap"
         dap.adapters.nlua = function(callback, config)
-          callback({ type = "server", host = config.host or "127.0.0.1", port = config.port or 8086 })
+          callback { type = "server", host = config.host or "127.0.0.1", port = config.port or 8086 }
         end
         dap.configurations.lua = {
           {

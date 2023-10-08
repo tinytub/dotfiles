@@ -20,8 +20,8 @@ local defaults = {
   -- load the default settings
   defaults = {
     autocmds = true, -- core.autocmds
-    keymaps = true,  -- core.keymaps
-    options = true,  -- core.options
+    keymaps = true, -- core.keymaps
+    options = true, -- core.options
   },
   -- icons used by other plugins
   icons = require "plugins.configs.lspkind_icons",
@@ -57,9 +57,9 @@ function M.setup(opts)
   if not M.has() then
     require("lazy.core.util").error(
       "**LazyVim** needs **lazy.nvim** version "
-      .. M.lazy_version
-      .. " to work properly.\n"
-      .. "Please upgrade **lazy.nvim**",
+        .. M.lazy_version
+        .. " to work properly.\n"
+        .. "Please upgrade **lazy.nvim**",
       { title = "LazyVim" }
     )
     error "Exiting"
@@ -105,10 +105,10 @@ function M.lazy_file()
     local Event = require "lazy.core.handler.event"
     local Util = require "lazy.core.util"
     vim.api.nvim_del_augroup_by_name "lazy_file"
-    Util.track({ event = "LazyVim.lazy_file" })
+    Util.track { event = "LazyVim.lazy_file" }
 
     ---@type table<string,string[]>
-    local skips = { FileType = Event.get_augroups "FileType" }
+    local skips = {}
     for _, event in ipairs(events) do
       skips[event.event] = skips[event.event] or Event.get_augroups(event.event)
     end
@@ -123,7 +123,6 @@ function M.lazy_file()
       if vim.bo[event.buf].filetype then
         Event.trigger {
           event = "FileType",
-          exclude = skips.FileType,
           buf = event.buf,
         }
       end

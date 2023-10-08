@@ -327,6 +327,7 @@ return {
         -- indicator used when context hits depth limit
         depth_limit_indicator = "..",
         icons = require("plugins.configs.lspkind_icons").kinds,
+        lazy_update_context = true,
       }
     end,
   },

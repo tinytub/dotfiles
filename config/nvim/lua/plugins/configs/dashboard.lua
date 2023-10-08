@@ -1,4 +1,4 @@
-local dashboard = require("alpha.themes.dashboard")
+local dashboard = require "alpha.themes.dashboard"
 --local logo = [[
 --           ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z
 --           ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z
@@ -43,20 +43,29 @@ dashboard.section.buttons.opts.hl = "AlphaButtons"
 dashboard.section.footer.opts.hl = "AlphaFooter"
 dashboard.opts.layout[1].val = 8
 
+local laststatus = vim.o.laststatus
+vim.o.laststatus = 0
 -- close Lazy and re-open when the dashboard is ready
 if vim.o.filetype == "lazy" then
   vim.cmd.close()
   vim.api.nvim_create_autocmd("User", {
+    once = true,
     pattern = "AlphaReady",
-    callback = function()
-      require("lazy").show()
-    end,
+    callback = function() require("lazy").show() end,
   })
 end
+vim.api.nvim_create_autocmd("BufUnload", {
+  once = true,
+  buffer = vim.api.nvim_get_current_buf(),
+  callback = function()
+    vim.opt.laststatus = laststatus
+  end,
+})
 
 require("alpha").setup(dashboard.opts)
 
 vim.api.nvim_create_autocmd("User", {
+  once = true,
   pattern = "LazyVimStarted",
   callback = function()
     local stats = require("lazy").stats()
