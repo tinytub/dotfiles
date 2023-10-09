@@ -37,9 +37,10 @@ return {
     },
     keys = {
       { "<c-space>", desc = "Increment selection" },
-      { "<bs>", desc = "Decrement selection", mode = "x" },
+      { "<bs>",      desc = "Decrement selection", mode = "x" },
     },
     ---@type TSConfig
+    ---@diagnostic disable-next-line: missing-fields
     opts = {
       context_commentstring = { enable = true, enable_autocmd = false },
 
@@ -51,6 +52,7 @@ return {
       ensure_installed = {
         "bash",
         "c",
+        "diff",
         "css",
         "cpp",
         "html",

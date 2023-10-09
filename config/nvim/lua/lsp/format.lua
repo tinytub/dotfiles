@@ -98,9 +98,7 @@ function M.format(opts)
   local client_ids = vim.tbl_map(function(client) return client.id end, formatters.active)
 
   if #client_ids == 0 then
-    if opts and opts.force then
-      Util.warn("No formatter available", { title = "LazyVim" })
-    end
+    if opts and opts.force then Util.warn("No formatter available", { title = "LazyVim" }) end
     return
   end
 
@@ -128,7 +126,7 @@ function M.get_formatters(bufnr)
   }
 
   ---@type lsp.Client[]
-  local clients = vim.lsp.get_active_clients { bufnr = bufnr }
+  local clients = require("utils").get_clients { bufnr = bufnr }
   for _, client in ipairs(clients) do
     if M.supports_format(client) then
       if (#null_ls > 0 and client.name == "null-ls") or #null_ls == 0 then
@@ -151,9 +149,9 @@ function M.supports_format(client)
   --function M.on_attach(client, buf)
   -- dont format if client disabled it
   if
-      client.config
-      and client.config.capabilities
-      and client.config.capabilities.documentFormattingProvider == false
+    client.config
+    and client.config.capabilities
+    and client.config.capabilities.documentFormattingProvider == false
   then
     return false
   end

@@ -2,7 +2,12 @@ local M = {}
 -- from https://github.com/LazyVim/LazyVim
 
 M.root_patterns = { ".git", "lua" }
-local Util = require("lazy.core.util")
+function M.get_clients(...)
+  local fn = vim.lsp.get_clients or vim.lsp.get_active_clients
+  return fn(...)
+end
+
+local Util = require "lazy.core.util"
 
 ---@param plugin string
 function M.has(plugin) return require("lazy.core.config").plugins[plugin] ~= nil end
@@ -11,7 +16,7 @@ function M.has(plugin) return require("lazy.core.config").plugins[plugin] ~= nil
 function M.on_attach(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
-      local buffer = args.buf
+      local buffer = args.buf ---@type number
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       on_attach(client, buffer)
     end,
@@ -31,7 +36,7 @@ function M.get_root()
   ---@type string[]
   local roots = {}
   if path then
-    for _, client in pairs(vim.lsp.get_active_clients { bufnr = 0 }) do
+    for _, client in pairs(M.get_clients({ bufnr = 0 })) do
       local workspace = client.config.workspace_folders
       local paths = workspace and vim.tbl_map(function(ws) return vim.uri_to_fname(ws.uri) end, workspace)
           or client.config.root_dir and { client.config.root_dir }
@@ -104,7 +109,7 @@ function M.float_term(cmd, opts)
   }, opts or {}, { persistent = true })
   ---@cast opts LazyCmdOptions|{interactive?:boolean, esc_esc?:false}
 
-  local termkey = vim.inspect({ cmd = cmd or "shell", cwd = opts.cwd, env = opts.env, count = vim.v.count1 })
+  local termkey = vim.inspect { cmd = cmd or "shell", cwd = opts.cwd, env = opts.env, count = vim.v.count1 }
 
   if terminals[termkey] and terminals[termkey]:buf_valid() then
     terminals[termkey]:toggle()
@@ -152,7 +157,7 @@ function M.lazy_notify()
   vim.notify = temp
 
   local timer = vim.loop.new_timer()
-  local check = vim.loop.new_check()
+  local check = assert(vim.loop.new_check())
 
   local replay = function()
     timer:stop()
@@ -178,11 +183,15 @@ end
 
 function M.fg(name)
   ---@type {foreground?:number}?
+  ---@diagnostic disable-next-line: deprecated
   local hl = vim.api.nvim_get_hl and vim.api.nvim_get_hl(0, { name = name }) or vim.api.nvim_get_hl_by_name(name, true)
-  local fg = hl and hl.fg or hl.foreground
-  return fg and { fg = string.format("#%06x", fg) }
+
+  ---@diagnostic disable-next-line: undefined-field
+  local fg = hl and (hl.fg or hl.foreground)
+  return fg and { fg = string.format("#%06x", fg) } or nil
 end
 
+---@return _.lspconfig.options
 function M.lsp_get_config(server)
   local configs = require "lspconfig.configs"
   return rawget(configs, server)
@@ -192,6 +201,7 @@ end
 ---@param cond fun( root_dir, config): boolean
 function M.lsp_disable(server, cond)
   local util = require "lspconfig.util"
+  ---@diagnostic disable-next-line: undefined-field
   local def = M.lsp_get_config(server)
   def.document_config.on_new_config = util.add_hook_before(def.document_config.on_new_config, function(config, root_dir)
     if cond(root_dir, config) then config.enabled = false end
@@ -201,11 +211,9 @@ end
 ---@param name string
 ---@param fn fun(name:string)
 function M.on_load(name, fn)
-  local Config = require("lazy.core.config")
+  local Config = require "lazy.core.config"
   if Config.plugins[name] and Config.plugins[name]._.loaded then
-    vim.schedule(function()
-      fn(name)
-    end)
+    vim.schedule(function() fn(name) end)
   else
     vim.api.nvim_create_autocmd("User", {
       pattern = "LazyLoad",
@@ -269,9 +277,10 @@ end
 ---@param from string
 ---@param to string
 function M.on_rename(from, to)
-  local clients = vim.lsp.get_active_clients()
+  local clients = M.get_clients()
   for _, client in ipairs(clients) do
-    if client:supports_method("workspace/willRenameFiles") then
+    if client.supports_method("workspace/willRenameFiles") then
+      ---@diagnostic disable-next-line: invisible
       local resp = client.request_sync("workspace/willRenameFiles", {
         files = {
           {
@@ -279,11 +288,31 @@ function M.on_rename(from, to)
             newUri = vim.uri_from_fname(to),
           },
         },
-      }, 1000)
-      if resp and resp.result ~= nil then
-        vim.lsp.util.apply_workspace_edit(resp.result, client.offset_encoding)
-      end
+      }, 1000, 0)
+      if resp and resp.result ~= nil then vim.lsp.util.apply_workspace_edit(resp.result, client.offset_encoding) end
     end
+  end
+end
+
+-- Wrapper around vim.keymap.set that will
+-- not create a keymap if a lazy key handler exists.
+-- It will also set `silent` to true by default.
+function M.safe_keymap_set(mode, lhs, rhs, opts)
+  local keys = require("lazy.core.handler").handlers.keys
+  ---@cast keys LazyKeysHandler
+  local modes = type(mode) == "string" and { mode } or mode
+
+  ---@param m string
+  modes = vim.tbl_filter(function(m)
+    return not (keys.have and keys:have(lhs, m))
+  end, modes)
+
+  -- do not create the keymap if a lazy keys handler exists
+  if #modes > 0 then
+    opts = opts or {}
+    opts.silent = opts.silent ~= false
+    if opts.remap and not vim.g.vscode then opts.remap = nil end
+    vim.keymap.set(modes, lhs, rhs, opts)
   end
 end
 

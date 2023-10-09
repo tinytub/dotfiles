@@ -82,9 +82,9 @@ return {
         mode = "c",
         desc = "Redirect Cmdline",
       },
-      { "<leader>snl", function() require("noice").cmd "last" end,    desc = "Noice Last Message" },
+      { "<leader>snl", function() require("noice").cmd "last" end, desc = "Noice Last Message" },
       { "<leader>snh", function() require("noice").cmd "history" end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd "all" end,     desc = "Noice All" },
+      { "<leader>sna", function() require("noice").cmd "all" end, desc = "Noice All" },
       --{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = { "i", "n", "s" } },
       --{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = { "i", "n", "s" } },
     },
@@ -249,7 +249,7 @@ return {
           --      local icons = require("lazyvim.config").icons.diagnostics
           local icons = require("plugins.configs.lspkind_icons").diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-              .. (diag.warning and icons.Warn .. diag.warning or "")
+            .. (diag.warning and icons.Warn .. diag.warning or "")
           return vim.trim(ret)
         end,
         offsets = {
@@ -262,10 +262,15 @@ return {
         },
       },
     },
-
     config = function(_, opts)
       opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
       require("bufferline").setup(opts)
+      -- Fix bufferline when restoring a session
+      vim.api.nvim_create_autocmd("BufAdd", {
+        callback = function()
+          vim.schedule(function() pcall(nvim_bufferline) end)
+        end,
+      })
     end,
   },
 
@@ -282,15 +287,15 @@ return {
           component_separators = { "", "" },
           section_separators = { "", "" },
           max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
-          show_tabs_always = true,     -- this shows tabs only when there are more than one tab or if the first tab is named
-          show_devicons = true,        -- this shows devicons in buffer section
+          show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
+          show_devicons = true, -- this shows devicons in buffer section
           colored = true,
-          show_bufnr = false,          -- this appends [bufnr] to buffer section,
+          show_bufnr = false, -- this appends [bufnr] to buffer section,
           tabline_show_last_separator = true,
-          show_filename_only = true,   -- shows base filename only instead of relative path in filename
-          modified_icon = "+ ",        -- change the default modified icon
-          modified_italic = true,      -- set to true by default; this determines whether the filename turns italic if modified
-          show_tabs_only = false,      -- this shows only tabs instead of tabs + buffers
+          show_filename_only = true, -- shows base filename only instead of relative path in filename
+          modified_icon = "+ ", -- change the default modified icon
+          modified_italic = true, -- set to true by default; this determines whether the filename turns italic if modified
+          show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
         },
       }
       vim.cmd [[
@@ -335,12 +340,17 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
+    init = function()
+      vim.g.lualine_laststatus = vim.o.laststatus
+      vim.o.laststatus = 0
+    end,
     opts = function()
       local navic = require "nvim-navic"
 
       local icons = require "plugins.configs.lspkind_icons"
       local Utils = require "utils"
 
+      vim.o.laststatus = vim.g.lualine_laststatus
       -- https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
       -- https://github.com/LazyVim/LazyVim
 

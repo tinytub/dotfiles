@@ -1,8 +1,8 @@
 ---@class LazyVimConfig: LazyVimOptions
 local M = {}
-M.lazy_version = ">=9.1.0"
+M.lazy_version = ">=10.8.0"
 M.use_lazy_file = true
-M.lazy_file_events = { "BufReadPost", "BufNewFile" }
+M.lazy_file_events = { "BufReadPost", "BufNewFile", "BufWritePre" }
 
 ---@class LazyVimOptions
 local defaults = {
@@ -36,18 +36,25 @@ M.renames = {
 ---@type LazyVimOptions
 local options
 
+---@param lines {[1]:string, [2]:string}[]
+function M.msg(lines)
+  vim.cmd [[clear]]
+  vim.api.nvim_echo(lines, true, {})
+  vim.fn.getchar()
+end
+
 ---@param opts? LazyVimOptions
 function M.setup(opts)
   options = vim.tbl_deep_extend("force", defaults, opts or {}) or {}
 
   if vim.fn.has "nvim-0.9.0" == 0 then
-    vim.api.nvim_echo({
+    M.msg {
       {
         "LazyVim requires Neovim >= 0.9.0\n",
         "ErrorMsg",
       },
       { "Press any key to exit", "MoreMsg" },
-    }, true, {})
+    }
 
     vim.fn.getchar()
     vim.cmd [[quit]]
@@ -55,14 +62,26 @@ function M.setup(opts)
   end
 
   if not M.has() then
-    require("lazy.core.util").error(
-      "**LazyVim** needs **lazy.nvim** version "
-        .. M.lazy_version
-        .. " to work properly.\n"
-        .. "Please upgrade **lazy.nvim**",
-      { title = "LazyVim" }
-    )
-    error "Exiting"
+    M.msg {
+      {
+        "LazyVim requires lazy.nvim " .. M.lazy_version .. "\n",
+        "WarningMsg",
+      },
+      { "Press any key to attempt an upgrade", "MoreMsg" },
+    }
+
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "LazyVimStarted",
+      callback = function()
+        require("lazy").update { plugins = { "lazy.nvim" }, wait = true }
+        M.msg {
+          {
+            "**lazy.nvim** has been upgraded.\nPlease restart **Neovim**",
+            "WarningMsg",
+          },
+        }
+      end,
+    })
   end
 
   -- autocmds can be loaded lazily when not opening a file
@@ -180,7 +199,8 @@ M.did_init = false
 function M.init()
   if not M.did_init then
     M.did_init = true
-    --vim.opt.rtp:append(require("lazy.core.config").spec.plugins.LazyVim.dir)
+    --local plugin = require("lazy.core.config").plugins
+    --if plugin then vim.opt.rtp:append(plugin.dir) end
     M.use_lazy_file = M.use_lazy_file and vim.fn.argc(-1) > 0
     ---@diagnostic disable-next-line: undefined-field
     M.use_lazy_file = M.use_lazy_file and require("lazy.core.handler.event").trigger_events == nil

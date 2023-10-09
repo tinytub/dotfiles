@@ -70,9 +70,25 @@ local util = require "lspconfig.util"
 local servers = {
   -- Use this to add any additional keymaps
   -- for specific lsp servers
-  ---@type LazyKeys[]
+  ---@type LazyKeysSpec[]
   -- keys = {},
-  -- lua_ls = require "lsp.servers.sumneko_lua",
+  --lua_ls = {
+  --  -- mason = false, -- set to false if you don't want this server to be installed with mason
+  --  -- Use this to add any additional keymaps
+  --  -- for specific lsp servers
+  --  ---@type LazyKeysSpec[]
+  --  -- keys = {},
+  --  settings = {
+  --    Lua = {
+  --      workspace = {
+  --        checkThirdParty = false,
+  --      },
+  --      completion = {
+  --        callSnippet = "Replace",
+  --      },
+  --    },
+  --  },
+  --},
   grammarly = {
     filetypes = { "markdown" },
     single_file_support = true,

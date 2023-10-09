@@ -61,9 +61,7 @@ return {
           -- attach cmp source whenever copilot attaches
           -- fixes lazy-loading issues with the copilot cmp source
           require("utils").on_attach(function(client)
-            if client.name == "copilot" then
-              copilot_cmp._on_insert_enter({})
-            end
+            if client.name == "copilot" then copilot_cmp._on_insert_enter {} end
           end)
         end,
       },
@@ -71,9 +69,8 @@ return {
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       --table.insert(opts.sources, 1, { name = "copilot", group_index = 2 })
-      table.insert(opts.sources, 3, { name = "copilot" })
-      opts.sorting = opts.sorting or require("cmp.config.default")().sorting
-      table.insert(opts.sorting.comparators, 1, require("copilot_cmp.comparators").prioritize)
+      table.insert(opts.sources, 1, { name = "copilot", group_index = 1 })
+      table.insert(opts.sorting.primary, "copilot")
     end,
   },
 }

@@ -32,9 +32,9 @@ return {
       {
         -- snippet plugin
         "L3MON4D3/LuaSnip",
-        build = (not jit.os:find("Windows"))
+        build = (not jit.os:find "Windows")
             and "echo -e 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
-            or nil,
+          or nil,
         dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
         config = function()
           local luasnip = require "luasnip"
@@ -69,7 +69,7 @@ return {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
-        'hrsh7th/cmp-cmdline',
+        "hrsh7th/cmp-cmdline",
         "saadparwaiz1/cmp_luasnip",
 
         --"saadparwaiz1/cmp_luasnip",
@@ -81,8 +81,8 @@ return {
     },
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
-      local cmp = require 'cmp'
-      local defaults = require("cmp.config.default")()
+      local cmp = require "cmp"
+      local defaults = require "cmp.config.default"()
       local function border(hl_name)
         return {
           { "╭", hl_name },
@@ -113,23 +113,36 @@ return {
       local has_words_before = function()
         if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match "^%s*$" == nil
       end
 
-      local confirm = cmp.mapping.confirm({
+      local confirm = cmp.mapping.confirm {
         behavior = cmp.ConfirmBehavior.Replace,
         select = false,
-      })
+      }
       local border_opts = {
         border = "rounded",
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
       }
+      -- LazyVim extension to prioritise certain sources
+      defaults.sorting.primary = {}
+
+      ---@param entry Cmp.Entry
+      local function is_primary(entry)
+        local config = require("cmp.config").global
+        return vim.tbl_contains(config.sorting.primary or {}, entry.source:get_debug_name())
+      end
+
+      table.insert(defaults.sorting.comparators, 1, function(a, b)
+        local aa = is_primary(a)
+        local bb = is_primary(b)
+        if aa and not bb then return true end
+        if not aa and bb then return false end
+      end)
 
       return {
         snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
+          expand = function(args) require("luasnip").lsp_expand(args.body) end,
         },
         preselect = cmp.PreselectMode.None, -- do not select the first item
         completion = {
@@ -157,9 +170,7 @@ return {
           --}),
           format = function(_, item)
             local icons = require("plugins.configs.lspkind_icons").kinds
-            if icons[item.kind] then
-              item.kind = icons[item.kind] .. item.kind
-            end
+            if icons[item.kind] then item.kind = icons[item.kind] .. item.kind end
             return item
           end,
         },
@@ -194,14 +205,12 @@ return {
           ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
           ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
           ["<C-y>"] = cmp.config.disable,
-          ["<C-e>"] = cmp.mapping({
+          ["<C-e>"] = cmp.mapping {
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
-          }),
+          },
 
-          ["<CR>"] = function(...)
-            return confirm(...)
-          end,
+          ["<CR>"] = function(...) return confirm(...) end,
 
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() and has_words_before() then
@@ -229,12 +238,13 @@ return {
           end, { "i", "s" }),
         },
         sources = {
-          { name = "nvim_lsp", priority = 1000 },
-          { name = "luasnip",  priority = 750 },
-          { name = "buffer",   priority = 500 },
+          { name = "nvim_lsp", priority = 1000, group_index = 1 },
+          { name = "luasnip", priority = 750, group_index = 1 },
+          { name = "buffer", priority = 500, group_index = 2 },
           {
             name = "path",
-            priority = 250
+            priority = 250,
+            group_index = 2,
             --  max_item_count = 4
           },
           -- { name = "nvim_lua",               priority = 60 },
@@ -257,25 +267,25 @@ return {
       }
     end,
     config = function(_, opts)
-      local cmp = require 'cmp'
+      local cmp = require "cmp"
       cmp.setup(opts)
       -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline('/', {
+      cmp.setup.cmdline("/", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
-          { name = 'nvim_lsp' },
-          { name = 'buffer' }
-        }
+          { name = "nvim_lsp" },
+          { name = "buffer" },
+        },
       })
       -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline(':', {
+      cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources({
-          { name = 'path' },
-          { name = 'cmdline' }
-        })
+        sources = cmp.config.sources {
+          { name = "path" },
+          { name = "cmdline" },
+        },
       })
-    end
+    end,
   },
 
   -- auto pairs
@@ -288,7 +298,7 @@ return {
       {
         "<leader>up",
         function()
-          local Util = require("lazy.core.util")
+          local Util = require "lazy.core.util"
           vim.g.minipairs_disable = not vim.g.minipairs_disable
           if vim.g.minipairs_disable then
             Util.warn("Disabled auto pairs", { title = "Option" })
@@ -300,6 +310,4 @@ return {
       },
     },
   },
-
-
 }
