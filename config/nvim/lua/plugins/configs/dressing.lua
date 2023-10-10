@@ -30,7 +30,6 @@ function M.config()
       backend = { "telescope", "builtin" },
 
       builtin = {
-        anchor = "NW",
         border = "rounded",
         relative = "editor",
         win_options = {
@@ -44,6 +43,7 @@ function M.config()
         max_height = 0.9,
         min_height = { 10, 0.2 },
         override = function(conf)
+          conf.anchor = "NW"
           return conf
         end,
       },

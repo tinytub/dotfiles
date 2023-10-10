@@ -1,4 +1,4 @@
-local Utils = require "utils"
+local Utils = require("utils")
 
 --local map = function(mode, keys, command, opts)
 --  local options = { noremap = true, silent = true }
@@ -61,8 +61,8 @@ map("c", "<C-j>", "<Down>", opt)
 map("c", "<C-k>", "<Up>", opt)
 map("c", "<C-t>", '[[<C-R>=expand("%:p:h") . "/" <CR>]]', opt)
 
-vim.cmd 'vnoremap p "0p'
-vim.cmd 'vnoremap P "0P'
+vim.cmd('vnoremap p "0p')
+vim.cmd('vnoremap P "0P')
 
 -- Resize window using <ctrl> arrow keys
 map("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
@@ -81,7 +81,7 @@ map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window w
 -- map('n', '<C-x>', ':lua require(\'core.utils\').close_buffer() <CR>', {noremap = true, silent = true})
 
 -- buffers
-if Utils.has "bufferline.nvim" then
+if Utils.has("bufferline.nvim") then
   map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
   map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
   map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
@@ -144,32 +144,45 @@ map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
 -- toggle options
 map("n", "<leader>uf", require("lsp.format").toggle, { desc = "Toggle format on Save" })
-map("n", "<leader>us", function() Utils.toggle "spell" end, { desc = "Toggle Spelling" })
-map("n", "<leader>uw", function() Utils.toggle "wrap" end, { desc = "Toggle Word Wrap" })
-map("n", "<leader>uL", function() Util.toggle "relativenumber" end, { desc = "Toggle Relative Line Numbers" })
-map("n", "<leader>ul", function() Utils.toggle_number() end, { desc = "Toggle Line Numbers" })
+map("n", "<leader>us", function()
+  Utils.toggle("spell")
+end, { desc = "Toggle Spelling" })
+map("n", "<leader>uw", function()
+  Utils.toggle("wrap")
+end, { desc = "Toggle Word Wrap" })
+map("n", "<leader>uL", function()
+  Utils.toggle("relativenumber")
+end, { desc = "Toggle Relative Line Numbers" })
+map("n", "<leader>ul", function()
+  Utils.toggle_number()
+end, { desc = "Toggle Line Numbers" })
 map("n", "<leader>ud", Utils.toggle_diagnostics, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
-map(
-  "n",
-  "<leader>uc",
-  function() Utils.toggle("conceallevel", false, { 0, conceallevel }) end,
-  { desc = "Toggle Conceal" }
-)
+map("n", "<leader>uc", function()
+  Utils.toggle("conceallevel", false, { 0, conceallevel })
+end, { desc = "Toggle Conceal" })
 if vim.lsp.inlay_hint then
-  map("n", "<leader>uh", function() vim.lsp.inlay_hint(0, nil) end, { desc = "Toggle Inlay Hints" })
+  map("n", "<leader>uh", function()
+    vim.lsp.inlay_hint(0, nil)
+  end, { desc = "Toggle Inlay Hints" })
 end
 -- formatting
-map({ "n", "v" }, "<leader>cf", function() require("lsp.format").format { force = true } end, { desc = "Format" })
+map({ "n", "v" }, "<leader>cf", function()
+  require("lsp.format").format({ force = true })
+end, { desc = "Format" })
 
 map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
 map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 
 -- floating terminal
-local lazyterm = function() Utils.float_term(nil, { cwd = Utils.get_root() }) end
+local lazyterm = function()
+  Utils.float_term(nil, { cwd = Utils.get_root() })
+end
 --map("n", "<leader>ft", lazyterm, { desc = "Terminal (root dir)" })
 map("n", "<leader>w", lazyterm, { desc = "Terminal (root dir)" })
-map("n", "<leader>fT", function() Utils.float_term() end, { desc = "Terminal (cwd)" })
+map("n", "<leader>fT", function()
+  Utils.float_term()
+end, { desc = "Terminal (cwd)" })
 map("n", "<c-/>", lazyterm, { desc = "Terminal (root dir)" })
 map("n", "<c-_>", lazyterm, { desc = "which_key_ignore" })
 

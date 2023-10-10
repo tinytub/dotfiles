@@ -1,4 +1,5 @@
 return {
+  --lspconfig
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
@@ -9,12 +10,9 @@ return {
 
       "mason.nvim",
       "williamboman/mason-lspconfig.nvim",
-      {
-        "hrsh7th/cmp-nvim-lsp",
-        --cond = function() return require("utils").has "nvim-cmp" end,
-      },
     },
 
+    ---@class PluginLspOpts
     opts = {
       autoformat = true,
       -- add any global capabilities here
@@ -68,8 +66,9 @@ return {
       },
     },
 
+    ---@param opts PluginLspOpts
     config = function(_, opts)
-      if require("utils").has "neoconf.nvim" then
+      if require("utils").has("neoconf.nvim") then
         local plugin = require("lazy.core.config").spec.plugins["neoconf.nvim"]
         require("neoconf").setup(require("lazy.core.plugin").values(plugin, "opts", false))
       end
@@ -84,7 +83,7 @@ return {
     --  'javascript', 'javascriptreact', 'python' },
     dependencies = { "nvim-lspconfig", "mason.nvim" },
     opts = function()
-      local nls = require "null-ls"
+      local nls = require("null-ls")
       return {
         root_dir = require("null-ls.utils").root_pattern(
           ".null-ls-root",
@@ -128,11 +127,13 @@ return {
     ---@param opts MasonSettings | {ensure_installed: string[]}
     config = function(_, opts)
       require("mason").setup(opts)
-      local mr = require "mason-registry"
+      local mr = require("mason-registry")
       local function ensure_installed()
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
-          if not p:is_installed() then p:install() end
+          if not p:is_installed() then
+            p:install()
+          end
         end
       end
 

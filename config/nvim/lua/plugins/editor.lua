@@ -126,8 +126,14 @@ local plugins = {
     version = false,
     dependencies = {
       {
-        "nvim-telescope/telescope-media-files.nvim",
-        enabled = false,
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+        enabled = vim.fn.executable("make") == 1,
+        config = function()
+          Util.on_load("telescope.nvim", function()
+            require("telescope").load_extension("fzf")
+          end)
+        end,
       },
     },
 
@@ -550,7 +556,7 @@ local plugins = {
       },
       sign_priority = 5,
       signs = {
-        add = { text = "▎" },  -- catppuccin
+        add = { text = "▎" }, -- catppuccin
         change = { text = "▎" }, -- catppuccin
         --add          = { text = "▐" },
         --change       = { text = "▐" },
@@ -560,7 +566,7 @@ local plugins = {
         delete = { text = "" },
         topdelete = { text = "" },
         changedelete = { text = "▎" }, -- catppuccin
-        untracked = { text = "▎" },  -- catppuccin
+        untracked = { text = "▎" }, -- catppuccin
       },
       --current_line_blame           = false,
       --current_line_blame_formatter = "<author>:<author_time:%Y-%m-%d> - <summary>",

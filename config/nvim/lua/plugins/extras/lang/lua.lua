@@ -6,9 +6,9 @@ return {
       servers = {
         --lua_ls = require "lsp.servers.sumneko_lua",
         lua_ls = {
-          init_options = { documentFormatting = true, codeAction = false },
+          --init_options = { documentFormatting = true, codeAction = false },
           --   cmd = { "lua-language-server", "-E", main_path },
-          filetypes = { "lua" },
+          --filetypes = { "lua" },
           settings = {
             Lua = {
               diagnostics = {

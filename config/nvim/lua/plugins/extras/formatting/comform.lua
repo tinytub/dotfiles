@@ -7,7 +7,9 @@ return {
     keys = {
       {
         "<leader>cF",
-        function() require("conform").format { formatters = { "injected" } } end,
+        function()
+          require("conform").format({ formatters = { "injected" } })
+        end,
         mode = { "n", "v" },
         desc = "Format Injected Langs",
       },
@@ -16,7 +18,9 @@ return {
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
       -- Install the conform formatter on VeryLazy
       require("utils").on_very_lazy(function()
-        require("lsp.format").custom_format = function(buf) return require("conform").format { bufnr = buf } end
+        require("lsp.format").custom_format = function(buf)
+          return require("conform").format({ bufnr = buf })
+        end
       end)
     end,
     opts = {

@@ -10,11 +10,13 @@ return {
     optional = true,
     opts = function(_, opts)
       local nls = require("null-ls")
-      table.insert(opts.sources, nls.builtins.formatting.prettierd.with({
-        extra_filetypes = { "yaml" },
-        disabled_filetypes = { "yaml" },
-      }
-      ))
+      table.insert(
+        opts.sources,
+        nls.builtins.formatting.prettierd.with({
+          extra_filetypes = { "yaml" },
+          disabled_filetypes = { "yaml" },
+        })
+      )
     end,
   },
   {

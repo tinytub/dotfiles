@@ -124,22 +124,6 @@ return {
         border = "rounded",
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
       }
-      -- LazyVim extension to prioritise certain sources
-      defaults.sorting.primary = {}
-
-      ---@param entry Cmp.Entry
-      local function is_primary(entry)
-        local config = require("cmp.config").global
-        return vim.tbl_contains(config.sorting.primary or {}, entry.source:get_debug_name())
-      end
-
-      table.insert(defaults.sorting.comparators, 1, function(a, b)
-        local aa = is_primary(a)
-        local bb = is_primary(b)
-        if aa and not bb then return true end
-        if not aa and bb then return false end
-      end)
-
       return {
         snippet = {
           expand = function(args) require("luasnip").lsp_expand(args.body) end,
@@ -211,7 +195,10 @@ return {
           },
 
           ["<CR>"] = function(...) return confirm(...) end,
-
+          ["<C-CR>"] = function(fallback)
+            cmp.abort()
+            fallback()
+          end,
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() and has_words_before() then
               cmp.select_next_item()
@@ -237,37 +224,48 @@ return {
             end
           end, { "i", "s" }),
         },
-        sources = {
-          { name = "nvim_lsp", priority = 1000, group_index = 1 },
-          { name = "luasnip", priority = 750, group_index = 1 },
-          { name = "buffer", priority = 500, group_index = 2 },
-          {
-            name = "path",
-            priority = 250,
-            group_index = 2,
-            --  max_item_count = 4
-          },
-          -- { name = "nvim_lua",               priority = 60 },
-          -- { name = "calc" },
-          -- { name = "nvim_lsp_signature_help" },
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+          { name = "path" },
+        }, {
+          { name = "buffer" },
+        }),
+        --sources = {
+        --  { name = "nvim_lsp", priority = 1000, group_index = 1 },
+        --  { name = "luasnip",  priority = 750,  group_index = 1 },
+        --  { name = "buffer",   priority = 500,  group_index = 2 },
+        --  {
+        --    name = "path",
+        --    priority = 250,
+        --    group_index = 2,
+        --    --  max_item_count = 4
+        --  },
+        --  -- { name = "nvim_lua",               priority = 60 },
+        --  -- { name = "calc" },
+        --  -- { name = "nvim_lsp_signature_help" },
 
-          --{
-          --  name = "buffer",
-          --  priority = 5,
-          --  keyword_length = 3,
-          --  max_item_count = 5,
-          --  option = {
-          --    get_bufnrs = function()
-          --      return vim.api.nvim_list_bufs()
-          --    end,
-          --  },
-          --},
-          { name = "rg", keyword_length = 3, max_item_count = 10, priority = 1 },
-        },
+        --  --{
+        --  --  name = "buffer",
+        --  --  priority = 5,
+        --  --  keyword_length = 3,
+        --  --  max_item_count = 5,
+        --  --  option = {
+        --  --    get_bufnrs = function()
+        --  --      return vim.api.nvim_list_bufs()
+        --  --    end,
+        --  --  },
+        --  --},
+        --  { name = "rg", keyword_length = 3, max_item_count = 10, priority = 1 },
+        --},
       }
     end,
     config = function(_, opts)
       local cmp = require "cmp"
+
+      for _, source in ipairs(opts.sources) do
+        source.group_index = source.group_index or 1
+      end
       cmp.setup(opts)
       -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline("/", {

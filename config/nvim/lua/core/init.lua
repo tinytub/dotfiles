@@ -1,19 +1,19 @@
 local M = {}
-local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
   -- bootstrap lazy.nvim
   -- stylua: ignore
   --vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
   print "Bootstrapping lazy.nvim .."
-  vim.fn.system {
+  vim.fn.system({
     "git",
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
     "--branch=stable", -- latest stable release
     lazypath,
-  }
+  })
 end
 
 -- vim.opt.rtp:prepend(lazypath)
@@ -27,7 +27,7 @@ local opts = {
     --{ import = "plugins.configs.nvim-cmp" },
 
     { import = "plugins.extras.test" },
-    --{ import = "plugins.extras.coding.copilot" },
+    -- { import = "plugins.extras.coding.copilot" },
     { import = "plugins.extras.coding.codeium" },
     { import = "plugins.extras.coding.yanky" },
     { import = "plugins.extras.dap" },
@@ -56,11 +56,13 @@ local opts = {
     -- import/override with your plugins
   },
   colorscheme = function()
-    vim.api.nvim_command [[syntax on]]
-    if vim.fn.has "termguicolors" == 1 then vim.cmd.set "termguicolors" end
+    vim.api.nvim_command([[syntax on]])
+    if vim.fn.has("termguicolors") == 1 then
+      vim.cmd.set("termguicolors")
+    end
     --local colors = require("catppuccin.palettes").get_palette()
     --require("colors.catppuccin")
-    vim.cmd.colorscheme "catppuccin"
+    vim.cmd.colorscheme("catppuccin")
   end,
 
   defaults = {
@@ -102,7 +104,7 @@ local opts = {
 }
 
 local function neovide_config()
-  vim.cmd [[set guifont=JetBrainsMonoNL\ Nerd\ Font:h14]]
+  vim.cmd([[set guifont=JetBrainsMonoNL\ Nerd\ Font:h14]])
   --vim.cmd [[set guifont=Input\ Nerd\ Font:h14]]
   --opt.guifont = "JetBrainsMono Nerd Font Mono"
   vim.g.neovide_refresh_rate = 60
@@ -119,7 +121,9 @@ local function neovide_config()
   vim.g.neovide_cursor_vfx_particle_density = 5.0
 end
 
-if vim.g.neovide then neovide_config() end
+if vim.g.neovide then
+  neovide_config()
+end
 
 function M.global_setup()
   require("core.setup").init()

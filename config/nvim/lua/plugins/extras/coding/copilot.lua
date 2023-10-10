@@ -34,7 +34,13 @@ return {
 
         separator = { left = "", right = "" },
         cond = function()
-          local ok, clients = pcall(vim.lsp.get_active_clients, { name = "copilot", bufnr = 0 })
+          if not package.loaded["copilot"] then
+            return
+          end
+          local ok, clients = pcall(require("lazyvim.util").get_clients, { name = "copilot", bufnr = 0 })
+          if not ok then
+            return false
+          end
           return ok and #clients > 0
         end,
         color = function()
@@ -69,8 +75,11 @@ return {
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       --table.insert(opts.sources, 1, { name = "copilot", group_index = 2 })
-      table.insert(opts.sources, 1, { name = "copilot", group_index = 1 })
-      table.insert(opts.sorting.primary, "copilot")
+      table.insert(opts.sources, 1, {
+        name = "copilot",
+        group_index = 1,
+        priority = 100,
+      })
     end,
   },
 }

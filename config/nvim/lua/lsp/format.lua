@@ -1,12 +1,19 @@
-local Util = require "lazy.core.util"
+local Util = require("lazy.core.util")
 
 local M = {}
 
+---@type PluginLspOpts
 M.opts = nil
 
-vim.b.autoformat = true
-
+-- Allow plugins to set a custom formatter for a buffer.
+-- See the conform extra for an example.
+---@type fun(bufnr:number):boolean
 M.custom_format = nil
+
+--vim.b.autoformat = true
+function M.enabled()
+  return M.opts.autoformat
+end
 
 function M.toggle()
   if vim.b.autoformat == false then
@@ -88,23 +95,36 @@ end
 ---@param opts? {force?:boolean}
 function M.format(opts)
   local buf = vim.api.nvim_get_current_buf()
-  if vim.b.autoformat == false and not (opts and opts.force) then return end
+  if vim.b.autoformat == false and not (opts and opts.force) then
+    return
+  end
 
-  if M.custom_format and Util.try(function() return M.custom_format(buf) end, { msg = "Custom formatter failed" }) then
+  if
+    M.custom_format
+    and Util.try(function()
+      return M.custom_format(buf)
+    end, { msg = "Custom formatter failed" })
+  then
     return
   end
 
   local formatters = M.get_formatters(buf)
-  local client_ids = vim.tbl_map(function(client) return client.id end, formatters.active)
+  local client_ids = vim.tbl_map(function(client)
+    return client.id
+  end, formatters.active)
 
   if #client_ids == 0 then
-    if opts and opts.force then Util.warn("No formatter available", { title = "LazyVim" }) end
+    if opts and opts.force then
+      Util.warn("No formatter available", { title = "LazyVim" })
+    end
     return
   end
 
   vim.lsp.buf.format(vim.tbl_deep_extend("force", {
     bufnr = buf,
-    filter = function(client) return vim.tbl_contains(client_ids, client.id) end,
+    filter = function(client)
+      return vim.tbl_contains(client_ids, client.id)
+    end,
   }, require("utils").opts("nvim-lspconfig").format or {}))
 end
 
@@ -126,7 +146,7 @@ function M.get_formatters(bufnr)
   }
 
   ---@type lsp.Client[]
-  local clients = require("utils").get_clients { bufnr = bufnr }
+  local clients = require("utils").get_clients({ bufnr = bufnr })
   for _, client in ipairs(clients) do
     if M.supports_format(client) then
       if (#null_ls > 0 and client.name == "null-ls") or #null_ls == 0 then
@@ -156,7 +176,7 @@ function M.supports_format(client)
     return false
   end
 
-  return client.supports_method "textDocument/formatting" or client.supports_method "textDocument/rangeFormatting"
+  return client.supports_method("textDocument/formatting") or client.supports_method("textDocument/rangeFormatting")
 
   --if client.supports_method "textDocument/formatting" then
   --  vim.api.nvim_create_autocmd("BufWritePre", {
@@ -189,12 +209,12 @@ function M.setup(opts)
       --  return
       --end
 
-      if M.opts.autoformat then M.format(opts) end
+      if M.opts.autoformat then
+        M.format(opts)
+      end
       --M.format(opts)
     end,
   })
 end
-
-function M.enabled() return M.opts.autoformat end
 
 return M
