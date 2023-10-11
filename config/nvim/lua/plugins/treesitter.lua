@@ -7,22 +7,22 @@ return {
     version = false,
     build = ":TSUpdate",
     event = { "LazyFile", "VeryLazy" },
-    cmd = { "TSUpdateSync" },
+    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
         config = function()
           -- When in diff mode, we want to use the default
           -- vim text objects c & C instead of the treesitter ones.
-          local move = require "nvim-treesitter.textobjects.move" ---@type table<string,fun(...)>
-          local configs = require "nvim-treesitter.configs"
+          local move = require("nvim-treesitter.textobjects.move") ---@type table<string,fun(...)>
+          local configs = require("nvim-treesitter.configs")
           for name, fn in pairs(move) do
-            if name:find "goto" == 1 then
+            if name:find("goto") == 1 then
               move[name] = function(q, ...)
                 if vim.wo.diff then
                   local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
                   for key, query in pairs(config or {}) do
-                    if q == query and key:find "[%]%[][cC]" then
+                    if q == query and key:find("[%]%[][cC]") then
                       vim.cmd("normal! " .. key)
                       return
                     end
@@ -37,7 +37,7 @@ return {
     },
     keys = {
       { "<c-space>", desc = "Increment selection" },
-      { "<bs>",      desc = "Decrement selection", mode = "x" },
+      { "<bs>", desc = "Decrement selection", mode = "x" },
     },
     ---@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
@@ -46,7 +46,9 @@ return {
 
       highlight = {
         enable = true,
-        disable = function(_, bufnr) return vim.b[bufnr].large_buf end,
+        disable = function(_, bufnr)
+          return vim.b[bufnr].large_buf
+        end,
       },
       indent = { enable = true },
       ensure_installed = {
@@ -109,7 +111,9 @@ return {
         ---@type table<string, boolean>
         local added = {}
         opts.ensure_installed = vim.tbl_filter(function(lang)
-          if added[lang] then return false end
+          if added[lang] then
+            return false
+          end
           added[lang] = true
           return true
         end, opts.ensure_installed)

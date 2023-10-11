@@ -5,7 +5,9 @@ return {
     enabled = false,
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     dependencies = { "nvim-lspconfig" },
-    config = function() require("plugins.configs.lsp-line").setup() end,
+    config = function()
+      require("plugins.configs.lsp-line").setup()
+    end,
     event = { "BufAdd", "BufRead", "BufNewFile", "InsertEnter" },
   },
 
@@ -14,15 +16,19 @@ return {
     "j-hui/fidget.nvim",
     dependencies = { "nvim-lspconfig" },
     enabled = false,
-    config = function() require "plugins.configs.fidget-nvim" end,
+    config = function()
+      require("plugins.configs.fidget-nvim")
+    end,
     event = { "BufAdd", "BufRead", "BufNewFile", "InsertEnter" },
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
-      local Util = require "utils"
-      if not Util.has "noice.nvim" then
-        print "noice not found, use fidget"
+      local Util = require("utils")
+      if not Util.has("noice.nvim") then
+        print("noice not found, use fidget")
 
-        Util.on_very_lazy(function() vim.notify = require "fidget" end)
+        Util.on_very_lazy(function()
+          vim.notify = require("fidget")
+        end)
       end
     end,
   },
@@ -33,7 +39,9 @@ return {
     "nvim-tree/nvim-web-devicons",
     --name = "nvim-web-devicons",
     --after = "base46",
-    config = function() require "plugins.configs.icons" end,
+    config = function()
+      require("plugins.configs.icons")
+    end,
     lazy = true,
   },
 
@@ -51,21 +59,31 @@ return {
     keys = {
       {
         "<leader>un",
-        function() require("notify").dismiss { silent = true, pending = true } end,
+        function()
+          require("notify").dismiss({ silent = true, pending = true })
+        end,
         desc = "Dismiss all Notifications",
       },
     },
     opts = {
       timeout = 3000,
       fps = 30, -- defualt 30, but in alacritty it's too fast with flick
-      max_height = function() return math.floor(vim.o.lines * 0.75) end,
-      max_width = function() return math.floor(vim.o.columns * 0.75) end,
+      max_height = function()
+        return math.floor(vim.o.lines * 0.75)
+      end,
+      max_width = function()
+        return math.floor(vim.o.columns * 0.75)
+      end,
       background_colour = "#000000",
     },
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
-      local Util = require "utils"
-      if not Util.has "noice.nvim" then Util.on_very_lazy(function() vim.notify = require "notify" end) end
+      local Util = require("utils")
+      if not Util.has("noice.nvim") then
+        Util.on_very_lazy(function()
+          vim.notify = require("notify")
+        end)
+      end
     end,
   },
 
@@ -78,13 +96,33 @@ return {
     keys = {
       {
         "<S-Enter>",
-        function() require("noice").redirect(vim.fn.getcmdline()) end,
+        function()
+          require("noice").redirect(vim.fn.getcmdline())
+        end,
         mode = "c",
         desc = "Redirect Cmdline",
       },
-      { "<leader>snl", function() require("noice").cmd "last" end, desc = "Noice Last Message" },
-      { "<leader>snh", function() require("noice").cmd "history" end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd "all" end, desc = "Noice All" },
+      {
+        "<leader>snl",
+        function()
+          require("noice").cmd("last")
+        end,
+        desc = "Noice Last Message",
+      },
+      {
+        "<leader>snh",
+        function()
+          require("noice").cmd("history")
+        end,
+        desc = "Noice History",
+      },
+      {
+        "<leader>sna",
+        function()
+          require("noice").cmd("all")
+        end,
+        desc = "Noice All",
+      },
       --{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward", mode = { "i", "n", "s" } },
       --{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward", mode = { "i", "n", "s" } },
     },
@@ -177,7 +215,9 @@ return {
         },
         {
           filter = {
-            cond = function() return not focused end,
+            cond = function()
+              return not focused
+            end,
           },
           view = "notify_send",
           opts = { stop = false },
@@ -188,7 +228,7 @@ return {
         command_palette = true,
         long_message_to_split = true,
         lsp_doc_border = true,
-        inc_rename = require("utils").has "inc-rename.nvim",
+        inc_rename = require("utils").has("inc-rename.nvim"),
       },
       commands = {
         all = {
@@ -208,13 +248,19 @@ return {
     init = function()
       focused = true
       vim.api.nvim_create_autocmd("FocusGained", {
-        callback = function() focused = true end,
+        callback = function()
+          focused = true
+        end,
       })
       vim.api.nvim_create_autocmd("FocusLost", {
-        callback = function() focused = false end,
+        callback = function()
+          focused = false
+        end,
       })
     end,
-    config = function(_, opts) require("noice").setup(opts) end,
+    config = function(_, opts)
+      require("noice").setup(opts)
+    end,
   },
 
   -- Neovim UI Enhancer
@@ -224,16 +270,18 @@ return {
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.select = function(...)
-        require("lazy").load { plugins = { "dressing.nvim" } }
+        require("lazy").load({ plugins = { "dressing.nvim" } })
         return vim.ui.select(...)
       end
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.input = function(...)
-        require("lazy").load { plugins = { "dressing.nvim" } }
+        require("lazy").load({ plugins = { "dressing.nvim" } })
         return vim.ui.input(...)
       end
     end,
-    config = function() require("plugins.configs.dressing").config() end,
+    config = function()
+      require("plugins.configs.dressing").config()
+    end,
   },
 
   {
@@ -268,7 +316,9 @@ return {
       -- Fix bufferline when restoring a session
       vim.api.nvim_create_autocmd("BufAdd", {
         callback = function()
-          vim.schedule(function() pcall(nvim_bufferline) end)
+          vim.schedule(function()
+            pcall(nvim_bufferline)
+          end)
         end,
       })
     end,
@@ -278,7 +328,7 @@ return {
     "kdheepak/tabline.nvim",
     enabled = false,
     config = function()
-      require("tabline").setup {
+      require("tabline").setup({
         -- Defaults configuration options
         enable = true,
         options = {
@@ -297,11 +347,11 @@ return {
           modified_italic = true, -- set to true by default; this determines whether the filename turns italic if modified
           show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
         },
-      }
-      vim.cmd [[
+      })
+      vim.cmd([[
       set guioptions-=e " Use showtabline in gui vim
       set sessionoptions+=tabpages,globals " store tabpages and globals in session
-    ]]
+    ]])
     end,
     --dependencies = { 'hoob3rt/lualine.nvim', 'kyazdani42/nvim-web-devicons' }
     dependencies = { "lualine.nvim", "nvim-web-devicons" },
@@ -319,7 +369,9 @@ return {
     init = function()
       vim.g.navic_silence = true
       require("utils").on_attach(function(client, buffer)
-        if client.server_capabilities.documentSymbolProvider then require("nvim-navic").attach(client, buffer) end
+        if client.server_capabilities.documentSymbolProvider then
+          require("nvim-navic").attach(client, buffer)
+        end
       end)
     end,
     opts = function()
@@ -345,10 +397,10 @@ return {
       vim.o.laststatus = 0
     end,
     opts = function()
-      local navic = require "nvim-navic"
+      local navic = require("nvim-navic")
 
-      local icons = require "plugins.configs.lspkind_icons"
-      local Utils = require "utils"
+      local icons = require("plugins.configs.lspkind_icons")
+      local Utils = require("utils")
 
       vim.o.laststatus = vim.g.lualine_laststatus
       -- https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
@@ -379,7 +431,9 @@ return {
       }
 
       local space = {
-        function() return " " end,
+        function()
+          return " "
+        end,
         color = { bg = colors.base, fg = "#80A7EA" },
         padding = { left = 0, right = 0 },
       }
@@ -471,7 +525,9 @@ return {
         end
       end
 
-      local function buffer_not_empty() return vim.fn.empty(vim.fn.expand "%:t") ~= 1 end
+      local function buffer_not_empty()
+        return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
+      end
 
       local diff = {
         "diff",
@@ -490,7 +546,9 @@ return {
 
       local modes = {
         "mode",
-        fmt = function(str) return str:sub(1, 1) end,
+        fmt = function(str)
+          return str:sub(1, 1)
+        end,
         --color = { bg = "#fab387		", fg = "#1e1e2e" },
         separator = { left = "", right = "" },
       }
@@ -498,8 +556,10 @@ return {
       local function getLspName()
         local msg = "No Active Lsp"
         local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-        local clients = vim.lsp.get_active_clients()
-        if next(clients) == nil then return msg end
+        local clients = require("utils").get_clients()
+        if next(clients) == nil then
+          return msg
+        end
         for _, client in ipairs(clients) do
           local filetypes = client.config.filetypes
           if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
@@ -524,7 +584,9 @@ return {
       }
 
       local lsp = {
-        function() return getLspName() end,
+        function()
+          return getLspName()
+        end,
 
         cond = buffer_not_empty,
         separator = { left = "", right = "" },
@@ -599,7 +661,7 @@ return {
               cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
               color = Utils.fg("Debug"),
             },
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg "Special" },
+            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg("Special") },
             --{
             --  "diff",
             --  symbols = {
@@ -637,7 +699,7 @@ return {
           },
           lualine_z = {
             dia,
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg "Special" },
+            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg("Special") },
             lsp,
             ---- { "progress", separator = "", padding = { left = 1, right = 0 } },
             --{ "location", padding = { left = 1, right = 1 } },
@@ -692,8 +754,12 @@ return {
 
             --},
             {
-              function() return navic.get_location() end,
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              function()
+                return navic.get_location()
+              end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               separator = { left = "", right = "" },
             },
           },
@@ -705,14 +771,18 @@ return {
               "filetype",
               icon_only = true,
               separator = { left = "", right = "" },
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               --separator = "",
               padding = { left = 1, right = 0 },
             },
             {
               "filename",
               path = 0,
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               color = { gui = "italic,bold" },
               symbols = { modified = "", readonly = "", unnamed = "" },
             },
@@ -728,7 +798,9 @@ return {
             {
               "filetype",
               icon_only = true,
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               separator = { left = "", right = "" },
               --separator = "",
               padding = { left = 1, right = 0 },
@@ -737,7 +809,9 @@ return {
             {
               "filename",
               path = 0,
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               symbols = { modified = "", readonly = "", unnamed = "" },
             },
           },
@@ -784,13 +858,17 @@ return {
       options = { try_as_border = true },
       draw = {
         delay = 50,
-        animation = function() return 10 end,
+        animation = function()
+          return 10
+        end,
       },
     },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason", "notify" },
-        callback = function() vim.b.miniindentscope_disable = true end,
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
       })
     end,
   },
@@ -799,7 +877,9 @@ return {
     "folke/todo-comments.nvim",
     event = "LazyFile",
     --dependencies = "nvim-lua/plenary.nvim",
-    config = function() require "plugins.configs.todo-comments" end,
+    config = function()
+      require("plugins.configs.todo-comments")
+    end,
     -- event = 'BufWinEnter',
     enabled = true,
   },
@@ -811,7 +891,9 @@ return {
     optional = false,
     event = "VimEnter",
     --after = "base46",
-    config = function() require "plugins.configs.dashboard" end,
+    config = function()
+      require("plugins.configs.dashboard")
+    end,
   },
 
   --A Neovim plugin helping you establish good command workflow and habit

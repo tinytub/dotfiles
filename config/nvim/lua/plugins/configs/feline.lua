@@ -99,9 +99,11 @@ function M.get()
   local function any_git_changes()
     local gst = b.gitsigns_status_dict -- git stats
     if gst then
-      if gst["added"] and gst["added"] > 0
-          or gst["removed"] and gst["removed"] > 0
-          or gst["changed"] and gst["changed"] > 0 then
+      if
+        gst["added"] and gst["added"] > 0
+        or gst["removed"] and gst["removed"] > 0
+        or gst["changed"] and gst["changed"] > 0
+      then
         return true
       end
     end
@@ -234,7 +236,6 @@ function M.get()
     right_sep = invi_sep,
   }
 
-
   -- Diffs ------>
 
   -- Extras ------>
@@ -338,7 +339,7 @@ function M.get()
     provider = function()
       if next(vim.lsp.buf_get_clients()) ~= nil then
         local names = {}
-        local clients = vim.lsp.get_active_clients()
+        local clients = require("utils").get_clients()
         for _, client in ipairs(clients) do
           if client.attached_buffers[vim.api.nvim_get_current_buf()] then
             table.insert(names, client.name)
@@ -346,7 +347,7 @@ function M.get()
         end
         local name = ""
         if names ~= {} then
-          name = table.concat(names, '|')
+          name = table.concat(names, "|")
         end
         return ("   LSP ~ " .. name .. " ") or "   LSP "
       else
@@ -364,7 +365,7 @@ function M.get()
     hl = {
       fg = clrs.red,
       bg = sett.bkg,
-    }
+    },
   }
 
   components.active[3][7] = {
@@ -374,7 +375,7 @@ function M.get()
       hl = {
         fg = sett.bkg,
         bg = clrs.red,
-      }
+      },
     },
 
     -- dirname
@@ -392,9 +393,9 @@ function M.get()
 
   components.active[3][8] = {
     provider = function()
-      local current_line = vim.fn.line "."
-      local current_col = vim.fn.col "."
-      local total_line = vim.fn.line "$"
+      local current_line = vim.fn.line(".")
+      local current_col = vim.fn.col(".")
+      local total_line = vim.fn.line("$")
 
       if current_col < 10 then
         current_col = " " .. current_col
@@ -403,7 +404,7 @@ function M.get()
       if current_line == 1 then
         --return " " .. current_line .. ":" .. current_col .. "/" .. "Top "
         return " " .. current_line .. ":" .. current_col .. "/" .. "Top "
-      elseif current_line == vim.fn.line "$" then
+      elseif current_line == vim.fn.line("$") then
         --return " " .. current_line .. ":" .. current_col .. "/" .. "Bot "
         return " " .. current_line .. ":" .. current_col .. "/" .. "Bot "
       end
@@ -449,7 +450,7 @@ local winbar_components = {
     left_sep = {
       str = "  ",
     },
-    hl = { bg = clrs.cyan, style = 'bold' },
+    hl = { bg = clrs.cyan, style = "bold" },
   },
   gps = {
     provider = function()
@@ -495,7 +496,6 @@ local winbar_components = {
   },
 }
 
-
 local winbar = {
   {
     --    winbar_components.file,
@@ -515,8 +515,6 @@ require("feline").winbar.setup({
     },
   },
 })
-
-
 
 ---------------------------------------------------
 --local present, feline = pcall(require, "feline")

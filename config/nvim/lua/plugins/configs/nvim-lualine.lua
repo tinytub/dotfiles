@@ -421,10 +421,10 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function()
-      local navic = require "nvim-navic"
+      local navic = require("nvim-navic")
 
-      local icons = require "plugins.configs.lspkind_icons"
-      local Utils = require "utils"
+      local icons = require("plugins.configs.lspkind_icons")
+      local Utils = require("utils")
 
       -- https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
       -- https://github.com/LazyVim/LazyVim
@@ -454,7 +454,9 @@ return {
       }
 
       local space = {
-        function() return " " end,
+        function()
+          return " "
+        end,
         color = { bg = colors.base, fg = "#80A7EA" },
         padding = { left = 0, right = 0 },
       }
@@ -546,7 +548,9 @@ return {
         end
       end
 
-      local function buffer_not_empty() return vim.fn.empty(vim.fn.expand "%:t") ~= 1 end
+      local function buffer_not_empty()
+        return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
+      end
 
       local diff = {
         "diff",
@@ -565,7 +569,9 @@ return {
 
       local modes = {
         "mode",
-        fmt = function(str) return str:sub(1, 1) end,
+        fmt = function(str)
+          return str:sub(1, 1)
+        end,
         --color = { bg = "#fab387		", fg = "#1e1e2e" },
         separator = { left = "", right = "" },
       }
@@ -573,8 +579,10 @@ return {
       local function getLspName()
         local msg = "No Active Lsp"
         local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-        local clients = vim.lsp.get_active_clients()
-        if next(clients) == nil then return msg end
+        local clients = require("utils").get_clients()
+        if next(clients) == nil then
+          return msg
+        end
         for _, client in ipairs(clients) do
           local filetypes = client.config.filetypes
           if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
@@ -599,7 +607,9 @@ return {
       }
 
       local lsp = {
-        function() return getLspName() end,
+        function()
+          return getLspName()
+        end,
 
         cond = buffer_not_empty,
         separator = { left = "", right = "" },
@@ -616,8 +626,8 @@ return {
           ---- stylua: ignore
           --right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
           disabled_filetypes = {
-            statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal", },
-            winbar = { "neo-tree", "edgy" }
+            statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal" },
+            winbar = { "neo-tree", "edgy" },
           },
           --component_separators = { left = "", right = "" },
           --section_separators = { left = "", right = "" },
@@ -674,7 +684,7 @@ return {
               cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
               color = Utils.fg("Debug"),
             },
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg "Special" },
+            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg("Special") },
             --{
             --  "diff",
             --  symbols = {
@@ -712,7 +722,7 @@ return {
           },
           lualine_z = {
             dia,
-            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg "Special" },
+            { require("lazy.status").updates, cond = require("lazy.status").has_updates, color = Utils.fg("Special") },
             lsp,
             ---- { "progress", separator = "", padding = { left = 1, right = 0 } },
             --{ "location", padding = { left = 1, right = 1 } },
@@ -767,8 +777,12 @@ return {
 
             --},
             {
-              function() return navic.get_location() end,
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              function()
+                return navic.get_location()
+              end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               separator = { left = "", right = "" },
             },
           },
@@ -780,14 +794,18 @@ return {
               "filetype",
               icon_only = true,
               separator = { left = "", right = "" },
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               --separator = "",
               padding = { left = 1, right = 0 },
             },
             {
               "filename",
               path = 0,
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               color = { gui = "italic,bold" },
               symbols = { modified = "", readonly = "", unnamed = "" },
             },
@@ -803,7 +821,9 @@ return {
             {
               "filetype",
               icon_only = true,
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               separator = { left = "", right = "" },
               --separator = "",
               padding = { left = 1, right = 0 },
@@ -812,7 +832,9 @@ return {
             {
               "filename",
               path = 0,
-              cond = function() return vim.fn.winwidth(0) > 30 and navic.is_available() end,
+              cond = function()
+                return vim.fn.winwidth(0) > 30 and navic.is_available()
+              end,
               symbols = { modified = "", readonly = "", unnamed = "" },
             },
           },
