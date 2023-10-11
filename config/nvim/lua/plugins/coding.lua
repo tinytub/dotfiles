@@ -32,27 +32,27 @@ return {
       {
         -- snippet plugin
         "L3MON4D3/LuaSnip",
-        build = (not jit.os:find "Windows")
+        build = (not jit.os:find("Windows"))
             and "echo -e 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
           or nil,
         dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
         config = function()
-          local luasnip = require "luasnip"
+          local luasnip = require("luasnip")
 
-          luasnip.config.set_config {
+          luasnip.config.set_config({
             history = true,
             delete_check_events = "TextChanged",
-          }
+          })
           luasnip.snippets = {
-            all = require "plugins.extras.luasnips.all",
-            go = require "plugins.extras.luasnips.golang",
-            lua = require "plugins.extras.luasnips.lua",
-            gitcommit = require "plugins.extras.luasnips.gitcommit",
-            markdown = require "plugins.extras.luasnips.markdown",
+            all = require("plugins.extras.luasnips.all"),
+            go = require("plugins.extras.luasnips.golang"),
+            lua = require("plugins.extras.luasnips.lua"),
+            gitcommit = require("plugins.extras.luasnips.gitcommit"),
+            markdown = require("plugins.extras.luasnips.markdown"),
           }
 
           require("luasnip.loaders.from_vscode").lazy_load()
-          require("luasnip.loaders.from_vscode").lazy_load { paths = vim.g.luasnippets_path or "" }
+          require("luasnip.loaders.from_vscode").lazy_load({ paths = vim.g.luasnippets_path or "" })
         end,
       },
 
@@ -81,8 +81,8 @@ return {
     },
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
-      local cmp = require "cmp"
-      local defaults = require "cmp.config.default"()
+      local cmp = require("cmp")
+      local defaults = require("cmp.config.default")()
       local function border(hl_name)
         return {
           { "╭", hl_name },
@@ -111,22 +111,26 @@ return {
 
       -- for copilot
       local has_words_before = function()
-        if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+        if vim.api.nvim_get_option_value(0, "buftype") == "prompt" then
+          return false
+        end
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match "^%s*$" == nil
+        return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
       end
 
-      local confirm = cmp.mapping.confirm {
+      local confirm = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Replace,
         select = false,
-      }
+      })
       local border_opts = {
         border = "rounded",
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
       }
       return {
         snippet = {
-          expand = function(args) require("luasnip").lsp_expand(args.body) end,
+          expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+          end,
         },
         preselect = cmp.PreselectMode.None, -- do not select the first item
         completion = {
@@ -154,7 +158,9 @@ return {
           --}),
           format = function(_, item)
             local icons = require("plugins.configs.lspkind_icons").kinds
-            if icons[item.kind] then item.kind = icons[item.kind] .. item.kind end
+            if icons[item.kind] then
+              item.kind = icons[item.kind] .. item.kind
+            end
             return item
           end,
         },
@@ -189,12 +195,14 @@ return {
           ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
           ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
           ["<C-y>"] = cmp.config.disable,
-          ["<C-e>"] = cmp.mapping {
+          ["<C-e>"] = cmp.mapping({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
-          },
+          }),
 
-          ["<CR>"] = function(...) return confirm(...) end,
+          ["<CR>"] = function(...)
+            return confirm(...)
+          end,
           ["<C-CR>"] = function(fallback)
             cmp.abort()
             fallback()
@@ -261,7 +269,7 @@ return {
       }
     end,
     config = function(_, opts)
-      local cmp = require "cmp"
+      local cmp = require("cmp")
 
       for _, source in ipairs(opts.sources) do
         source.group_index = source.group_index or 1
@@ -278,10 +286,10 @@ return {
       -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
-        sources = cmp.config.sources {
+        sources = cmp.config.sources({
           { name = "path" },
           { name = "cmdline" },
-        },
+        }),
       })
     end,
   },
@@ -296,7 +304,7 @@ return {
       {
         "<leader>up",
         function()
-          local Util = require "lazy.core.util"
+          local Util = require("lazy.core.util")
           vim.g.minipairs_disable = not vim.g.minipairs_disable
           if vim.g.minipairs_disable then
             Util.warn("Disabled auto pairs", { title = "Option" })
