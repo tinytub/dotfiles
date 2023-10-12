@@ -22,14 +22,16 @@ M.prios = {
   ["dap.core"] = 1,
 }
 
-M.ns = vim.api.nvim_create_namespace("lazyvim.extras")
+M.ns = vim.api.nvim_create_namespace("extras")
 ---@type string[]
 M.state = nil
 
 ---@return LazyExtra[]
 function M.get()
   M.state = M.state or LazyConfig.spec.modules
-  local root = LazyConfig.plugins.LazyVim.dir .. "/lua/plugins/extras"
+  --local root = LazyConfig.plugins.LazyVim.dir .. "/lua/plugins/extras"
+  local root = vim.fn.stdpath("config") .. "/lua/plugins/extras"
+  print("extras path", root)
   local extras = {} ---@type string[]
 
   Util.walk(root, function(path, name, type)
@@ -42,9 +44,11 @@ function M.get()
 
   ---@param extra string
   return vim.tbl_map(function(extra)
-    local modname = "lazyvim.plugins.extras." .. extra
+    print("extra name", extra)
+    local modname = "plugins.extras." .. extra
+    print("modname", modname)
     local enabled = vim.tbl_contains(M.state, modname)
-    local spec = Plugin.Spec.new({ import = "lazyvim.plugins.extras." .. extra }, { optional = true })
+    local spec = Plugin.Spec.new({ import = "plugins.extras." .. extra }, { optional = true })
     local plugins = {} ---@type string[]
     local optional = {} ---@type string[]
     for _, p in pairs(spec.plugins) do
@@ -109,11 +113,11 @@ function X:toggle()
         return name ~= extra.name
       end, Config.json.data.extras)
       M.state = vim.tbl_filter(function(name)
-        return name ~= "lazyvim.plugins.extras." .. extra.name
+        return name ~= "plugins.extras." .. extra.name
       end, M.state)
       if extra.enabled then
         table.insert(Config.json.data.extras, extra.name)
-        M.state[#M.state + 1] = "lazyvim.plugins.extras." .. extra.name
+        M.state[#M.state + 1] = "plugins.extras." .. extra.name
       end
       table.sort(Config.json.data.extras, function(a, b)
         local pa = M.prios[a] or 10
