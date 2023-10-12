@@ -175,7 +175,7 @@ return {
         gopls = function(_, opts)
           -- workaround for gopls not supporting semanticTokensProvider
           -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
-          require("utils").on_attach(function(client, _)
+          require("utils").lsp.on_attach(function(client, _)
             client.server_capabilities.documentFormattingProvider = true
             client.server_capabilities.documentRangeFormattingProvider = true
             if client.name == "gopls" then
@@ -204,17 +204,14 @@ return {
   },
   -- Ensure Go tools are installed
   --{
-  --  "jose-elias-alvarez/null-ls.nvim",
+  --  "nvimtools/none-ls.nvim",
+  --  optional = true,
   --  opts = function(_, opts)
-  --    if type(opts.sources) == "table" then
-  --      local nls = require("null-ls")
-  --      vim.list_extend(opts.sources, {
-  --        nls.builtins.code_actions.gomodifytags,
-  --        nls.builtins.code_actions.impl,
-  --        nls.builtins.formatting.gofumpt,
-  --        nls.builtins.formatting.goimports_reviser,
-  --      })
-  --    end
+  --    local null_ls = require("null-ls")
+  --    opts.sources = vim.list_extend(opts.sources or {}, {
+  --      null_ls.builtins.formatting.terraform_fmt,
+  --      null_ls.builtins.diagnostics.terraform_validate,
+  --    })
   --  end,
   --},
   -- Language

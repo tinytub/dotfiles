@@ -16,7 +16,7 @@ return {
       },
       setup = {
         ruff_lsp = function()
-          require("utils").on_attach(function(client, _)
+          require("utils").lsp.on_attach(function(client, _)
             if client.name == "ruff_lsp" then
               -- Disable hover in favor of Pyright
               client.server_capabilities.hoverProvider = false
@@ -62,7 +62,9 @@ return {
     "linux-cultist/venv-selector.nvim",
     cmd = "VenvSelect",
     opts = function(_, opts)
-      if require("lazyvim.util").has "nvim-dap-python" then opts.dap_enabled = true end
+      if require("lazyvim.util").has("nvim-dap-python") then
+        opts.dap_enabled = true
+      end
       return vim.tbl_deep_extend("force", opts, {
         name = {
           "venv",

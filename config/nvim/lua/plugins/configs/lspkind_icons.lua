@@ -66,6 +66,7 @@ local icons = {
     Tag = " ",
     Calendar = " ",
     --    Watch = " ",
+    Variable = "󰀫 ",
   },
 }
 

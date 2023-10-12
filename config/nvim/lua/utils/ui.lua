@@ -34,7 +34,9 @@ function M.get_signs(buf, lnum)
   end
 
   -- Sort by priority
-  table.sort(signs, function(a, b) return (a.priority or 0) < (b.priority or 0) end)
+  table.sort(signs, function(a, b)
+    return (a.priority or 0) < (b.priority or 0)
+  end)
 
   return signs
 end
@@ -46,7 +48,7 @@ function M.get_mark(buf, lnum)
   local marks = vim.fn.getmarklist(buf)
   vim.list_extend(marks, vim.fn.getmarklist())
   for _, mark in ipairs(marks) do
-    if mark.pos[1] == buf and mark.pos[2] == lnum and mark.mark:match "[a-zA-Z]" then
+    if mark.pos[1] == buf and mark.pos[2] == lnum and mark.mark:match("[a-zA-Z]") then
       return { text = mark.mark:sub(2), texthl = "DiagnosticHint" }
     end
   end
@@ -69,22 +71,35 @@ function M.foldtext()
     ret = { { vim.api.nvim_buf_get_lines(0, vim.v.lnum - 1, vim.v.lnum, false)[1], {} } }
   end
   table.insert(ret, { " " .. require("plugins.configs.lspkind_icons").misc.dots })
-  if not vim.treesitter.foldtext then return table.concat(vim.tbl_map(function(line) return line[1] end, ret), " ") end
+  if not vim.treesitter.foldtext then
+    return table.concat(
+      vim.tbl_map(function(line)
+        return line[1]
+      end, ret),
+      " "
+    )
+  end
   return ret
 end
 
 function M.statuscolumn()
   local win = vim.g.statusline_winid
-  if vim.wo[win].signcolumn == "no" then return "" end
+  if vim.wo[win].signcolumn == "no" then
+    return ""
+  end
   local buf = vim.api.nvim_win_get_buf(win)
   ---@type Sign?,Sign?,Sign?
   local left, right, fold
   for _, s in ipairs(M.get_signs(buf, vim.v.lnum)) do
-    if s.name and s.name:find "GitSign" then
+    if s.name and s.name:find("GitSign") then
       right = s
     else
       left = s
     end
+  end
+
+  if vim.v.virtnum ~= 0 then
+    left = nil
   end
 
   vim.api.nvim_win_call(win, function()
@@ -104,6 +119,15 @@ function M.statuscolumn()
     nu .. " ",
     M.icon(fold or right),
   }, "")
+end
+
+function M.fg(name)
+  ---@type {foreground?:number}?
+  ---@diagnostic disable-next-line: deprecated
+  local hl = vim.api.nvim_get_hl and vim.api.nvim_get_hl(0, { name = name }) or vim.api.nvim_get_hl_by_name(name, true)
+  ---@diagnostic disable-next-line: undefined-field
+  local fg = hl and (hl.fg or hl.foreground)
+  return fg and { fg = string.format("#%06x", fg) } or nil
 end
 
 return M

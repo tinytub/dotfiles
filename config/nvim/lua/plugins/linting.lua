@@ -25,7 +25,7 @@ return {
     config = function(_, opts)
       local M = {}
 
-      local lint = require "lint"
+      local lint = require("lint")
       for name, linter in pairs(opts.linters) do
         if type(linter) == "table" and type(lint.linters) == "table" then
           lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
@@ -53,7 +53,9 @@ return {
           return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
         end, names)
 
-        if #names > 0 then lint.try_lint(names) end
+        if #names > 0 then
+          lint.try_lint(names)
+        end
       end
 
       vim.api.nvim_create_autocmd(opts.events, {

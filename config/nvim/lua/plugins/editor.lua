@@ -1,4 +1,4 @@
-local Util = require "utils"
+local Util = require("utils")
 
 local plugins = {
 
@@ -25,12 +25,12 @@ local plugins = {
       hint_scheme = "String",
       hi_parameter = "Search",
       max_height = 22,
-      max_width = 10,      -- max_width of signature floating_window, line will be wrapped if exceed max_width
+      max_width = 10, -- max_width of signature floating_window, line will be wrapped if exceed max_width
       handler_opts = {
         border = "single", -- double, single, shadow, none
       },
-      zindex = 200,        -- by default it will be on top of all floating windows, set to 50 send it to bottom
-      padding = "",        -- character to pad on left and right of signature can be ' ', or '|'  etc
+      zindex = 200, -- by default it will be on top of all floating windows, set to 50 send it to bottom
+      padding = "", -- character to pad on left and right of signature can be ' ', or '|'  etc
     },
   },
 
@@ -81,12 +81,9 @@ local plugins = {
       --vim.api.nvim_set_hl(0, "IlluminatedWordWrite", ILLUMINATION)
       --vim.api.nvim_set_hl(0, "@illuminate", ILLUMINATION)
       local function map(key, dir, buffer)
-        vim.keymap.set(
-          "n",
-          key,
-          function() require("illuminate")["goto_" .. dir .. "_reference"](false) end,
-          { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer }
-        )
+        vim.keymap.set("n", key, function()
+          require("illuminate")["goto_" .. dir .. "_reference"](false)
+        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
       end
 
       map("]]", "next")
@@ -121,7 +118,7 @@ local plugins = {
   -- directory is a git repo.
   {
     "nvim-telescope/telescope.nvim",
-    commit = vim.fn.has "nvim-0.9.0" == 0 and "057ee0f8783" or nil,
+    commit = vim.fn.has("nvim-0.9.0") == 0 and "057ee0f8783" or nil,
     cmd = "Telescope",
     version = false,
     dependencies = {
@@ -139,37 +136,37 @@ local plugins = {
 
     keys = {
       { "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", desc = "Switch Buffer" },
-      { "<leader>/", Util.telescope "live_grep",                         desc = "Grep (root dir)" },
-      { "<leader>:", "<cmd>Telescope command_history<cr>",               desc = "Command History" },
+      { "<leader>/", Util.telescope("live_grep"), desc = "Grep (root dir)" },
+      { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
       {
         "<leader><space>",
-        Util.telescope "files",
+        Util.telescope("files"),
         desc = "Find Files (root dir)",
       },
       -- find
-      { "<leader>bb", "<cmd>Telescope buffers<cr>",                         desc = "Buffers" },
+      { "<leader>bb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
       {
         "<leader>ff",
-        Util.telescope "files",
+        Util.telescope("files"),
         desc = "Find Files (root dir)",
       },
-      { "<leader>fa", "<cmd>Telescope live_grep<cr>",                       desc = "Live Grep" },
-      { "<leader>fF", Util.telescope("files", { cwd = false }),             desc = "Find Files (cwd)" },
-      { "<leader>fr", "<cmd>Telescope oldfiles<cr>",                        desc = "Recent" },
+      { "<leader>fa", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
+      { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
+      { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
       { "<leader>fR", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Recent (cwd)" },
       -- git
-      { "<leader>gc", "<cmd>Telescope git_commits<CR>",                     desc = "commits" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>",                      desc = "status" },
-      { "<leader>go", "<cmd>Telescope git_status<cr>",                      desc = "Open changed file" },
-      { "<leader>gB", "<cmd>Telescope git_branches<cr>",                    desc = "Checkout branch" },
-      { "<leader>gf", "<cmd>Telescope git_files<cr>",                       desc = "git_files" },
+      { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
+      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
+      { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
+      { "<leader>gB", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
+      { "<leader>gf", "<cmd>Telescope git_files<cr>", desc = "git_files" },
 
       -- search
-      { '<leader>s"', "<cmd>Telescope registers<cr>",                       desc = "Registers" },
-      { "<leader>sa", "<cmd>Telescope autocommands<cr>",                    desc = "Auto Commands" },
-      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>",       desc = "Buffer" },
-      { "<leader>sc", "<cmd>Telescope command_history<cr>",                 desc = "Command History" },
-      { "<leader>sC", "<cmd>Telescope commands<cr>",                        desc = "Commands" },
+      { '<leader>s"', "<cmd>Telescope registers<cr>", desc = "Registers" },
+      { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
+      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
+      { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
+      { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
       {
         "<leader>sd",
         "<cmd>Telescope diagnostics bufnr=0<cr>",
@@ -180,24 +177,24 @@ local plugins = {
         "<cmd>Telescope diagnostics<cr>",
         desc = "Workspace diagnostics",
       },
-      { "<leader>sg", Util.telescope "live_grep",                   desc = "Grep (root dir)" },
+      { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
       { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
-      { "<leader>sh", "<cmd>Telescope help_tags<cr>",               desc = "Help Pages" },
+      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
       {
         "<leader>sH",
         "<cmd>Telescope highlights<cr>",
         desc = "Search Highlight Groups",
       },
-      { "<leader>sk", "<cmd>Telescope keymaps<cr>",                                      desc = "Key Maps" },
-      { "<leader>sM", "<cmd>Telescope man_pages<cr>",                                    desc = "Man Pages" },
-      { "<leader>sm", "<cmd>Telescope marks<cr>",                                        desc = "Jump to Mark" },
-      { "<leader>so", "<cmd>Telescope vim_options<cr>",                                  desc = "Options" },
-      { "<leader>sR", "<cmd>Telescope resume<cr>",                                       desc = "Resume" },
-      { "<leader>sw", Util.telescope("grep_string", { word_match = "-w" }),              desc = "Word (root dir)" },
+      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
+      { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+      { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
+      { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
+      { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
+      { "<leader>sw", Util.telescope("grep_string", { word_match = "-w" }), desc = "Word (root dir)" },
       { "<leader>sW", Util.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Word (cwd)" },
       {
         "<leader>sw",
-        Util.telescope "grep_string",
+        Util.telescope("grep_string"),
         mode = "v",
         desc = "Selection (root dir)",
       },
@@ -214,46 +211,26 @@ local plugins = {
       },
       {
         "<leader>ss",
-        Util.telescope("lsp_document_symbols", {
-          symbols = {
-            "Class",
-            "Function",
-            "Method",
-            "Constructor",
-            "Interface",
-            "Module",
-            "Struct",
-            "Trait",
-            "Field",
-            "Property",
-            "Enum",
-            "Constant",
-          },
-        }),
+        function()
+          require("telescope.builtin").lsp_document_symbols({
+            symbols = require("lazyvim.config").get_kind_filter(),
+          })
+        end,
         desc = "Goto Symbol",
       },
       {
         "<leader>sS",
-        Util.telescope("lsp_dynamic_workspace_symbols", {
-          symbols = {
-            "Class",
-            "Function",
-            "Method",
-            "Constructor",
-            "Interface",
-            "Module",
-            "Struct",
-            "Trait",
-            "Field",
-            "Property",
-            "Enum",
-            "Constant",
-          },
-        }),
+        function()
+          require("telescope.builtin").lsp_dynamic_workspace_symbols({
+            symbols = require("lazyvim.config").get_kind_filter(),
+          })
+        end,
         desc = "Goto Symbol (Workspace)",
       },
     },
-    config = function() require "plugins.configs.telescope" end,
+    config = function()
+      require("plugins.configs.telescope")
+    end,
   },
 
   -- Smooth escaping
@@ -297,7 +274,9 @@ local plugins = {
     "jackMort/ChatGPT.nvim",
     enabled = false,
     event = "VeryLazy",
-    config = function() require("chatgpt").setup() end,
+    config = function()
+      require("chatgpt").setup()
+    end,
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
@@ -310,7 +289,7 @@ local plugins = {
     enabled = true,
     event = "VeryLazy",
     opts = function()
-      local ai = require "mini.ai"
+      local ai = require("mini.ai")
       return {
         n_lines = 500,
         custom_textobjects = {
@@ -358,15 +337,15 @@ local plugins = {
         end
         local ic = vim.deepcopy(i)
         local ac = vim.deepcopy(a)
-        for key, name in pairs { n = "Next", l = "Last" } do
+        for key, name in pairs({ n = "Next", l = "Last" }) do
           i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
           a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
         end
-        require("which-key").register {
+        require("which-key").register({
           mode = { "o", "x" },
           i = i,
           a = a,
-        }
+        })
       end)
     end,
   },
@@ -407,7 +386,7 @@ local plugins = {
     --cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     config = function()
       --require("plugins.configs.nvimtree").config()
-      require "plugins.configs.nvimtree"
+      require("plugins.configs.nvimtree")
     end,
     enabled = false,
   },
@@ -436,29 +415,40 @@ local plugins = {
           },
           --         other_win_hl_color = "#e35e4f",
         },
-        config = function(_, opts) require("window-picker").setup(opts) end,
+        config = function(_, opts)
+          require("window-picker").setup(opts)
+        end,
       },
     },
     keys = {
       {
         "<leader>fe",
-        function() require("neo-tree.command").execute { toggle = true, dir = require("utils").get_root() } end,
+        function()
+          -- require("neo-tree.command").execute { toggle = true, dir = require("utils").get_root() } end,
+          require("neo-tree.command").execute({ toggle = true, dir = Util.root() })
+        end,
         desc = "Explorer NeoTree (root dir)",
       },
       {
         "<leader>fE",
-        function() require("neo-tree.command").execute { toggle = true, dir = vim.loop.cwd() } end,
+        function()
+          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+        end,
         desc = "Explorer NeoTree (cwd)",
       },
       { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)",      remap = true },
+      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
     },
 
-    deactivate = function() vim.cmd [[Neotree close]] end,
+    deactivate = function()
+      vim.cmd([[Neotree close]])
+    end,
     init = function()
-      if vim.fn.argc() == 1 then
+      if vim.fn.argc(-1) == 1 then
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == "directory" then require "neo-tree" end
+        if stat and stat.type == "directory" then
+          require("neo-tree")
+        end
       end
     end,
     opts = {
@@ -482,9 +472,9 @@ local plugins = {
         follow_cursor = true,
         renderers = {
           symbol = {
-            { "indent",    with_expanders = true },
+            { "indent", with_expanders = true },
             { "kind_icon", default = "?" },
-            { "name",      zindex = 10 },
+            { "name", zindex = 10 },
             -- removed the kind text as its redundant with the icon
           },
         },
@@ -499,12 +489,14 @@ local plugins = {
       },
     },
     config = function(_, opts)
-      local function on_move(data) Util.on_rename(data.source, data.destination) end
+      local function on_move(data)
+        Util.lsp.on_rename(data.source, data.destination)
+      end
 
-      local events = require "neo-tree.events"
+      local events = require("neo-tree.events")
       opts.event_handlers = opts.event_handlers or {}
       vim.list_extend(opts.event_handlers, {
-        { event = events.FILE_MOVED,   handler = on_move },
+        { event = events.FILE_MOVED, handler = on_move },
         { event = events.FILE_RENAMED, handler = on_move },
       })
       -- some from https://github.com/CKolkey/config/blob/master/nvim/lua/plugins/neo-tree.lua
@@ -518,7 +510,7 @@ local plugins = {
       -- Find previous neo-tree window and clear bright highlight selection.
       -- Don't hide cursorline though, so 'follow_current_file' works.
       local function reset_cursorline()
-        local winid = vim.fn.win_getid(vim.fn.winnr "#")
+        local winid = vim.fn.win_getid(vim.fn.winnr("#"))
         vim.api.nvim_win_set_option(winid, "winhighlight", "")
       end
 
@@ -536,7 +528,9 @@ local plugins = {
       vim.api.nvim_create_autocmd("TermClose", {
         pattern = "*lazygit",
         callback = function()
-          if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
+          if package.loaded["neo-tree.sources.git_status"] then
+            require("neo-tree.sources.git_status").refresh()
+          end
         end,
       })
     end,
@@ -579,7 +573,9 @@ local plugins = {
       --},
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
-        local function map(mode, l, r, desc) vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc }) end
+        local function map(mode, l, r, desc)
+          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+        end
         -- stylua: ignore start
         map("n", "]h", gs.next_hunk, "Next Hunk")
         map("n", "[h", gs.prev_hunk, "Prev Hunk")
@@ -645,25 +641,27 @@ local plugins = {
       local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
       local opts = require("lazy.core.plugin").values(plugin, "opts", false)
       local mappings = {
-        { opts.mappings.add,            desc = "Add surrounding",                     mode = { "n", "v" } },
-        { opts.mappings.delete,         desc = "Delete surrounding" },
-        { opts.mappings.find,           desc = "Find right surrounding" },
-        { opts.mappings.find_left,      desc = "Find left surrounding" },
-        { opts.mappings.highlight,      desc = "Highlight surrounding" },
-        { opts.mappings.replace,        desc = "Replace surrounding" },
+        { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
+        { opts.mappings.delete, desc = "Delete surrounding" },
+        { opts.mappings.find, desc = "Find right surrounding" },
+        { opts.mappings.find_left, desc = "Find left surrounding" },
+        { opts.mappings.highlight, desc = "Highlight surrounding" },
+        { opts.mappings.replace, desc = "Replace surrounding" },
         { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
       }
-      mappings = vim.tbl_filter(function(m) return m[1] and #m[1] > 0 end, mappings)
+      mappings = vim.tbl_filter(function(m)
+        return m[1] and #m[1] > 0
+      end, mappings)
       return vim.list_extend(mappings, keys)
     end,
     opts = {
       mappings = {
-        add = "gsa",            -- Add surrounding in Normal and Visual modes
-        delete = "gsd",         -- Delete surrounding
-        find = "gsf",           -- Find surrounding (to the right)
-        find_left = "gsF",      -- Find surrounding (to the left)
-        highlight = "gsh",      -- Highlight surrounding
-        replace = "gsr",        -- Replace surrounding
+        add = "gsa", -- Add surrounding in Normal and Visual modes
+        delete = "gsd", -- Delete surrounding
+        find = "gsf", -- Find surrounding (to the right)
+        find_left = "gsF", -- Find surrounding (to the left)
+        highlight = "gsh", -- Highlight surrounding
+        replace = "gsr", -- Replace surrounding
         update_n_lines = "gsn", -- Update `n_lines`
       },
     },
@@ -674,10 +672,10 @@ local plugins = {
     "nacro90/numb.nvim",
     --event = "BufRead",
     config = function()
-      require("numb").setup {
-        show_numbers = true,    -- Enable 'number' for the window while peeking
+      require("numb").setup({
+        show_numbers = true, -- Enable 'number' for the window while peeking
         show_cursorline = true, -- Enable 'cursorline' for the window while peeking
-      }
+      })
     end,
     enabled = true,
   },
@@ -687,7 +685,9 @@ local plugins = {
     ft = "qf",
     cmd = "BqfAutoToggle",
     event = "QuickFixCmdPost",
-    config = function() require "plugins.configs.nvim-bqf" end,
+    config = function()
+      require("plugins.configs.nvim-bqf")
+    end,
     enabled = true,
   },
 
@@ -711,13 +711,13 @@ local plugins = {
       hide_numbers = true, -- hide the number column in toggleterm buffers
       shade_filetypes = {},
       shade_terminals = true,
-      shading_factor = 2,       -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+      shading_factor = 2, -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
       start_in_insert = true,
-      insert_mappings = true,   -- whether or not the open mapping applies in insert mode
+      insert_mappings = true, -- whether or not the open mapping applies in insert mode
       persist_size = false,
       direction = "horizontal", --'vertical' | 'horizontal' | 'window' | 'float'
-      close_on_exit = true,     -- close the terminal window when the process exits
-      shell = vim.o.shell,      -- change the default shell
+      close_on_exit = true, -- close the terminal window when the process exits
+      shell = vim.o.shell, -- change the default shell
       -- This field is only relevant if direction is set to 'float'
       float_opts = {
         -- The border key is *almost* the same as 'nvim_open_win'
@@ -741,7 +741,9 @@ local plugins = {
   -- Markdown preview
   {
     "iamcco/markdown-preview.nvim",
-    run = function() vim.fn["mkdp#util#install"]() end,
+    run = function()
+      vim.fn["mkdp#util#install"]()
+    end,
     ft = "markdown",
     event = "BufRead",
   },
@@ -772,7 +774,9 @@ local plugins = {
     "karb94/neoscroll.nvim",
     enabled = true,
     --        event = "WinScrolled",
-    config = function() require("neoscroll").setup() end,
+    config = function()
+      require("neoscroll").setup()
+    end,
     event = "VeryLazy",
   },
 
@@ -831,7 +835,9 @@ local plugins = {
   {
     enabled = false,
     "unblevable/quick-scope",
-    config = function() require("plugins.configs.others").quickscope() end,
+    config = function()
+      require("plugins.configs.others").quickscope()
+    end,
   },
 
   -- Git
@@ -847,18 +853,22 @@ local plugins = {
       "Gw",
     },
     keys = {
-      { "<leader>gb", "<cmd>Git blame<cr>",  desc = "Git Blame" },
-      { "<leader>gd", "<cmd>Git diff<cr>",   desc = "Git Diff" },
-      { "<leader>gl", "<cmd>Git log<cr>",    desc = "Git Log" },
+      { "<leader>gb", "<cmd>Git blame<cr>", desc = "Git Blame" },
+      { "<leader>gd", "<cmd>Git diff<cr>", desc = "Git Diff" },
+      { "<leader>gl", "<cmd>Git log<cr>", desc = "Git Log" },
       { "<leader>gs", "<cmd>Git status<cr>", desc = "Git Status" },
       {
         "<leader>gg",
-        function() Util.float_term({ "lazygit" }, { cwd = Util.get_root(), esc_esc = false, ctrl_hjkl = false }) end,
+        function()
+          Util.float_term({ "lazygit" }, { cwd = Util.get_root(), esc_esc = false, ctrl_hjkl = false })
+        end,
         desc = "Lazygit (root dir)",
       },
       {
         "<leader>gG",
-        function() Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false }) end,
+        function()
+          Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false })
+        end,
         desc = "Lazygit (cwd)",
       },
     },
@@ -868,13 +878,13 @@ local plugins = {
     "vim-test/vim-test",
     event = "BufRead",
     config = function()
-      vim.cmd [[
+      vim.cmd([[
               function! ToggleTermStrategy(cmd) abort
                 call luaeval("require('toggleterm').exec(_A[1], _A[2])", [a:cmd, 0])
               endfunction
 
               let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
-            ]]
+            ]])
 
       vim.g["test#strategy"] = "toggleterm"
       --vim.g["test#strategy"] = "neovim"
@@ -897,18 +907,20 @@ local plugins = {
 
     cmd = { "Trouble", "TroubleToggle" },
     keys = {
-      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },
+      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
-      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>",               desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>",              desc = "Quickfix List (Trouble)" },
+      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>", desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix List (Trouble)" },
       {
         "[q",
         function()
           if require("trouble").is_open() then
-            require("trouble").previous { skip_groups = true, jump = true }
+            require("trouble").previous({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cprev)
-            if not ok then vim.notify(err, vim.log.levels.ERROR) end
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
           end
         end,
         desc = "Previous trouble/quickfix item",
@@ -917,16 +929,20 @@ local plugins = {
         "]q",
         function()
           if require("trouble").is_open() then
-            require("trouble").next { skip_groups = true, jump = true }
+            require("trouble").next({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cnext)
-            if not ok then vim.notify(err, vim.log.levels.ERROR) end
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
           end
         end,
         desc = "Next trouble/quickfix item",
       },
     },
-    config = function() require "plugins.configs.nvim-trouble" end,
+    config = function()
+      require("plugins.configs.nvim-trouble")
+    end,
     enabled = true,
   },
 
@@ -937,12 +953,12 @@ local plugins = {
     --config = override_req("nvim_comment", "(plugins.configs.configs.others).comment()"),
     opts = {
       padding = true, -- Add a space b/w comment and the line
-      sticky = true,  -- Whether the cursor should stay at its position
+      sticky = true, -- Whether the cursor should stay at its position
 
       -- We define all mappings manually to support neovim < 0.7
       mappings = {
-        basic = false,    -- Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
-        extra = false,    -- Includes `gco`, `gcO`, `gcA`
+        basic = false, -- Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
+        extra = false, -- Includes `gco`, `gcO`, `gcA`
         extended = false, -- Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
       },
     },
@@ -993,7 +1009,12 @@ local plugins = {
       },
       misc_n = {
         mode = { "n" },
-        ["<C-x>"] = { function() require("mini.bufremove").delete(0, false) end, "Delete Buffer" },
+        ["<C-x>"] = {
+          function()
+            require("mini.bufremove").delete(0, false)
+          end,
+          "Delete Buffer",
+        },
         ["<ESC>"] = { "<cmd> noh <CR>", "no highlight" },
         ["<M-[>"] = { "<cmd>lua require('smart-splits').resize_left(amount)<CR>", "vertical resize -2" },
         ["<M-]>"] = { "<cmd>lua require('smart-splits').resize_right(amount)<CR>", "vertical resize +2" },
@@ -1004,7 +1025,7 @@ local plugins = {
     --module = "which-key",
     --config = function() require "plugins.configs.whichkey" end,
     config = function(_, opts)
-      local wk = require "which-key"
+      local wk = require("which-key")
       wk.setup(opts)
       wk.register(opts.defaults)
       wk.register(opts.misc_n)

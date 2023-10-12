@@ -1,3 +1,4 @@
+local Util = require("utils")
 return {
   --lspconfig
   {
@@ -14,7 +15,7 @@ return {
 
     ---@class PluginLspOpts
     opts = {
-      autoformat = true,
+      --autoformat = true,
       -- add any global capabilities here
       capabilities = {},
       inlay_hints = {
@@ -75,38 +76,6 @@ return {
       require("lsp.lspconfig").config(opts)
     end,
   },
-  {
-    "nvimtools/none-ls.nvim",
-    optional = true,
-    event = "LazyFile",
-    --ft = { 'sh', 'lua', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'vim', 'json', 'markdown', 'css',
-    --  'javascript', 'javascriptreact', 'python' },
-    dependencies = { "nvim-lspconfig", "mason.nvim" },
-    opts = function()
-      local nls = require("null-ls")
-      return {
-        root_dir = require("null-ls.utils").root_pattern(
-          ".null-ls-root",
-          ".neoconf.json",
-          "Makefile",
-          ".git",
-          "go.mod"
-        ),
-        sources = {
-          --nls.builtins.formatting.fish_indent,
-          --nls.builtins.diagnostics.fish,
-          nls.builtins.diagnostics.zsh,
-          --nls.builtins.formatting.stylua,
-          nls.builtins.formatting.shfmt,
-        },
-      }
-    end,
-    --config = function()
-    --  require("lsp.null-ls")
-    --end,
-    enabled = true,
-  },
-
   -- Package Manager
   {
     "williamboman/mason.nvim",

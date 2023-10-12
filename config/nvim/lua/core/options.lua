@@ -1,6 +1,6 @@
-CONFIG_PATH = vim.fn.stdpath "config"
-DATA_PATH = vim.fn.stdpath "data"
-CACHE_PATH = vim.fn.stdpath "cache"
+CONFIG_PATH = vim.fn.stdpath("config")
+DATA_PATH = vim.fn.stdpath("data")
+CACHE_PATH = vim.fn.stdpath("cache")
 local opt = vim.opt
 local g = vim.g
 
@@ -13,7 +13,7 @@ opt.showmode = false
 
 opt.clipboard = "unnamedplus"
 opt.completeopt = "menu,menuone,noselect"
-opt.conceallevel = 3           -- Hide * markup for bold and italic
+opt.conceallevel = 3 -- Hide * markup for bold and italic
 
 opt.formatoptions = "jcroqlnt" -- tcqj
 
@@ -45,6 +45,16 @@ vim.g.loaded_node_provider = 0
 --opt.listchars = "tab:»·,nbsp:+, trail:·, extends:→,precedes:←";
 --opt.listchars = { tab = " " }
 
+-- Enable LazyVim auto format
+vim.g.autoformat = true
+
+-- LazyVim root dir detection
+-- Each entry can be:
+-- * the name of a detector function like `lsp` or `cwd`
+-- * a pattern or array of patterns like `.git` or `lua`.
+-- * a function with signature `function(buf) -> string|string[]`
+vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
+
 opt.hidden = true
 opt.ignorecase = true
 opt.smartcase = true
@@ -57,12 +67,12 @@ opt.number = true
 opt.numberwidth = 2
 opt.relativenumber = false
 opt.ruler = false
-opt.pumblend = 10  -- Popup blend
+opt.pumblend = 10 -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
 
 -- disable nvim intro
 --opt.shortmess:append("sI")
-opt.shortmess:append { W = true, I = true, c = true, s = true }
+opt.shortmess:append({ W = true, I = true, c = true, s = true })
 
 --opt.signcolumn = "number"
 opt.signcolumn = "yes"
@@ -90,10 +100,10 @@ opt.virtualedit = "block"
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
-opt.whichwrap:append "<>[]hl"
+opt.whichwrap:append("<>[]hl")
 
 opt.winminwidth = 5 -- Minimum window width
-opt.wrap = false    -- Disable line wrap
+opt.wrap = false -- Disable line wrap
 opt.fillchars = {
   foldopen = "",
   foldclose = "",
@@ -105,12 +115,14 @@ opt.fillchars = {
 }
 
 --opt.guifont = "Hack:h14"
-if vim.fn.has "nvim-0.9.0" == 1 then
+if vim.fn.has("nvim-0.9.0") == 1 then
   opt.splitkeep = "screen"
-  opt.shortmess:append { C = true }
+  opt.shortmess:append({ C = true })
 end
 
-if vim.fn.has "nvim-0.10" == 1 then opt.smoothscroll = true end
+if vim.fn.has("nvim-0.10") == 1 then
+  opt.smoothscroll = true
+end
 -- Folding
 vim.opt.foldlevel = 99
 vim.opt.foldtext = "v:lua.require'utils.ui'.foldtext()"
@@ -134,6 +146,6 @@ g.mapleader = " "
 g.maplocalleader = "\\"
 
 -- disable some default providers
-for _, provider in ipairs { "node", "perl", "python3", "ruby" } do
+for _, provider in ipairs({ "node", "perl", "python3", "ruby" }) do
   vim.g["loaded_" .. provider .. "_provider"] = 0
 end

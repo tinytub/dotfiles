@@ -1,8 +1,10 @@
 local M = {}
+
+local Util = require("utils")
 M.opts = nil
 
 -- Borders for LspInfo winodw
-local win = require "lspconfig.ui.windows"
+local win = require("lspconfig.ui.windows")
 local _default_opts = win.default_opts
 
 win.default_opts = function(options)
@@ -65,7 +67,7 @@ local function make_capabilities()
 end
 
 -- Manage server with custom setup
-local util = require "lspconfig.util"
+local lsputil = require("lspconfig.util")
 -- default servers
 local servers = {
   -- Use this to add any additional keymaps
@@ -93,7 +95,7 @@ local servers = {
     filetypes = { "markdown" },
     single_file_support = true,
     autostart = false,
-    root_dir = util.find_git_ancestor,
+    root_dir = lsputil.find_git_ancestor,
   },
 }
 
@@ -106,21 +108,33 @@ local function setup(server)
   }, servers[server] or {})
 
   if M.opts.setup[server] then
-    if M.opts.setup[server](server, server_opts) then return end
+    if M.opts.setup[server](server, server_opts) then
+      return
+    end
   elseif M.opts.setup["*"] then
-    if M.opts.setup["*"](server, server_opts) then return end
+    if M.opts.setup["*"](server, server_opts) then
+      return
+    end
   end
   require("lspconfig")[server].setup(server_opts)
 end
 
 --lsp_config.capabilities = capabilities
 local lsp_handlers = function()
-  -- setup autoformat, default is true
+  -- setup autoformat
+  Util.format.register(Util.lsp.formatter())
+
   local opts = M.opts
 
-  require("lsp.format").setup(opts)
+  -- deprectaed options
+  if opts.autoformat ~= nil then
+    vim.g.autoformat = opts.autoformat
+    Util.deprecate("nvim-lspconfig.opts.autoformat", "vim.g.autoformat")
+  end
+
+  --require("lsp.format").setup(opts)
   -- setup formatting and keymaps
-  require("utils").on_attach(function(client, buffer)
+  Util.lsp.on_attach(function(client, buffer)
     --require("lsp.format").on_attach(client, buffer)
     --require("lsp.keymaps").Lsp_keymaps(client, buffer)
     require("lsp.keymaps").on_attach(client, buffer)
@@ -129,7 +143,7 @@ local lsp_handlers = function()
     vim.api.nvim_buf_set_option(buffer, "omnifunc", "v:lua.vim.lsp.omnifunc")
     --require("lsp_signature").on_attach(require("plugins.configs.others").signature_opt())
 
-    local navic = require "nvim-navic"
+    local navic = require("nvim-navic")
     navic.attach(client, buffer)
     vim.g.navic_silence = true
   end)
@@ -155,17 +169,21 @@ local lsp_handlers = function()
   local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
 
   if opts.inlay_hints.enabled and inlay_hint then
-    require("utils").on_attach(function(client, buffer)
-      if client.supports_method "textDocument/inlayHint" then inlay_hint(buffer, true) end
+    Util.lsp.on_attach(function(client, buffer)
+      if client.supports_method("textDocument/inlayHint") then
+        inlay_hint(buffer, true)
+      end
     end)
   end
 
   if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then
-    opts.diagnostics.virtual_text.prefix = vim.fn.has "nvim-0.10.0" == 0 and "●"
+    opts.diagnostics.virtual_text.prefix = vim.fn.has("nvim-0.10.0") == 0 and "●"
       or function(diagnostic)
         local icons = require("plugins.configs.lspkind_icons").diagnostics
         for d, icon in pairs(icons) do
-          if diagnostic.severity == vim.diagnostic.severity[d:upper()] then return icon end
+          if diagnostic.severity == vim.diagnostic.severity[d:upper()] then
+            return icon
+          end
         end
       end
   end
@@ -204,12 +222,16 @@ local lsp_handlers = function()
     end
   end
 
-  if have_mason then mlsp.setup { ensure_installed = ensure_installed, handlers = { setup } } end
+  if have_mason then
+    mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
+  end
 
-  if require("utils").lsp_get_config "denols" and require("utils").lsp_get_config "tsserver" then
+  if Util.lsp.lsp_get_config("denols") and Util.lsp.lsp_get_config("tsserver") then
     local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
-    require("utils").lsp_disable("tsserver", is_deno)
-    require("utils").lsp_disable("denols", function(root_dir) return not is_deno(root_dir) end)
+    Util.lsp.lsp_disable("tsserver", is_deno)
+    Util.lsp.lsp_disable("denols", function(root_dir)
+      return not is_deno(root_dir)
+    end)
   end
 end
 

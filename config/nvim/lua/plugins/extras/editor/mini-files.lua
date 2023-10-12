@@ -53,16 +53,12 @@ return {
         vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id })
       end,
     })
-    local clients = require("utils").get_clients()
-    for _, client in ipairs(clients) do
-      if client:supports_method("workspace/willRenameFiles") then
-        local resp = client.request_sync("workspace/willRenameFiles", {
-          files = { { oldUri = vim.uri_from_fname(data.source), newUri = vim.uri_from_fname(data.destination) } },
-        }, 1000)
-        if resp and resp.result ~= nil then
-          vim.lsp.util.apply_workspace_edit(resp.result, client.offset_encoding)
-        end
-      end
-    end
+
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "MiniFilesActionRename",
+      callback = function(event)
+        require("utils").lsp.on_rename(event.data.from, event.data.to)
+      end,
+    })
   end,
 }
