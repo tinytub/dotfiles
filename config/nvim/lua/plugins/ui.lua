@@ -586,7 +586,7 @@ return {
           ---- stylua: ignore
           --right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
           disabled_filetypes = {
-            statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal" },
+            statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal", "starter" },
             winbar = { "neo-tree", "edgy" },
           },
           --component_separators = { left = "", right = "" },
@@ -926,7 +926,7 @@ return {
             { action = "Telescope live_grep", desc = " Find text", icon = " ", key = "g" },
             { action = "e $MYVIMRC", desc = " Config", icon = " ", key = "c" },
             { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
-            { action = "LazyExtras", desc = " LazyExtras", icon = " ", key = "e" },
+            { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "e" },
             { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
             { action = "qa", desc = " Quit", icon = " ", key = "q" },
           },

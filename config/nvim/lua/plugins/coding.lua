@@ -44,7 +44,7 @@ return {
             delete_check_events = "TextChanged",
           })
           luasnip.snippets = {
-            all = require("plugins.extras.luasnips.all"),
+            --           all = require("plugins.extras.luasnips.all"),
             go = require("plugins.extras.luasnips.golang"),
             lua = require("plugins.extras.luasnips.lua"),
             gitcommit = require("plugins.extras.luasnips.gitcommit"),

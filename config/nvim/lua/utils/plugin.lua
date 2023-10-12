@@ -14,17 +14,36 @@ M.deprecated_extras = {
   ["plugins.extras.ui.dashboard"] = "`dashboard.nvim` is now the default **LazyVim** starter.",
 }
 
+M.deprecated_modules = {
+  ["null-ls"] = "lsp.none-ls",
+  ["nvim-navic.lib"] = "editor.navic",
+  ["nvim-navic"] = "editor.navic",
+}
+
 ---@type table<string, string>
 M.renames = {
   ["windwp/nvim-spectre"] = "nvim-pack/nvim-spectre",
   ["jose-elias-alvarez/null-ls.nvim"] = "nvimtools/none-ls.nvim",
   ["null-ls.nvim"] = "none-ls.nvim",
+  ["romgrk/nvim-treesitter-context"] = "nvim-treesitter/nvim-treesitter-context",
 }
 
 function M.setup()
   M.fix_imports()
   M.fix_renames()
   M.lazy_file()
+  table.insert(package.loaders, function(module)
+    if M.deprecated_modules[module] then
+      Util.warn(
+        ("`%s` is no longer included by default in **LazyVim**.\nPlease install the `%s` extra if you still want to use it."):format(
+          module,
+          M.deprecated_modules[module]
+        ),
+        { title = "LazyVim" }
+      )
+      return function() end
+    end
+  end)
 end
 
 function M.extra_idx(name)

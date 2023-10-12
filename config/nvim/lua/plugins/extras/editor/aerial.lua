@@ -1,4 +1,4 @@
-local Config = require("core")
+local Config = require("core.config")
 local Util = require("utils")
 
 return {
@@ -57,7 +57,7 @@ return {
       return opts
     end,
     keys = {
-      { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" },
+      { "<leader>cs", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
     },
   },
 

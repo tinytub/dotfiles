@@ -27,12 +27,14 @@ local opts = {
     --{ import = "plugins.configs.nvim-cmp" },
 
     { import = "plugins.extras.test" },
+    { import = "plugins.extras.ui.edgy" },
     -- { import = "plugins.extras.coding.copilot" },
     ---    { import = "plugins.extras.coding.codeium" },
     { import = "plugins.extras.coding.yanky" },
     { import = "plugins.extras.dap" },
     --{ import = "plugins.extras.lsp" },
     { import = "plugins.extras.formatting" },
+    { import = "plugins.extras.editor.symbols-outline" },
     { import = "plugins.extras.lang.json" },
     { import = "plugins.extras.lang.lua" },
     { import = "plugins.extras.lang.yaml" },
@@ -45,7 +47,6 @@ local opts = {
     { import = "plugins.extras.editor.aerial" },
     --{ import = "plugins.extras.database" },
     --{ import = "plugins.extras.editor.leap" },
-    { import = "plugins.extras.ui.edgy" },
     --    { import = "plugins.extras.ui.mini-animate" },
     { import = "plugins.extras.vscode" },
     --    { import = "plugins.extras.util.mini-hipatterns" }, twinlandcss
@@ -129,9 +130,9 @@ if vim.g.neovide then
 end
 
 function M.global_setup()
-  require("core.setup").init()
+  require("core.config").init()
   require("lazy").setup(opts)
-  require("core.setup").setup(opts)
+  require("core.config").setup(opts)
 end
 
 return M

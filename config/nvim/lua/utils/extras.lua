@@ -1,4 +1,4 @@
-local Config = require("core")
+local Config = require("core.config")
 local Float = require("lazy.view.float")
 local LazyConfig = require("lazy.core.config")
 local Plugin = require("lazy.core.plugin")
@@ -16,12 +16,6 @@ local Util = require("utils")
 ---@class utils.extras
 local M = {}
 
-M.prios = {
-  ["editor.aerial"] = 100,
-  ["test.core"] = 1,
-  ["dap.core"] = 1,
-}
-
 M.ns = vim.api.nvim_create_namespace("extras")
 ---@type string[]
 M.state = nil
@@ -31,7 +25,6 @@ function M.get()
   M.state = M.state or LazyConfig.spec.modules
   --local root = LazyConfig.plugins.LazyVim.dir .. "/lua/plugins/extras"
   local root = vim.fn.stdpath("config") .. "/lua/plugins/extras"
-  print("extras path", root)
   local extras = {} ---@type string[]
 
   Util.walk(root, function(path, name, type)
@@ -44,9 +37,7 @@ function M.get()
 
   ---@param extra string
   return vim.tbl_map(function(extra)
-    print("extra name", extra)
     local modname = "plugins.extras." .. extra
-    print("modname", modname)
     local enabled = vim.tbl_contains(M.state, modname)
     local spec = Plugin.Spec.new({ import = "plugins.extras." .. extra }, { optional = true })
     local plugins = {} ---@type string[]
@@ -119,14 +110,9 @@ function X:toggle()
         table.insert(Config.json.data.extras, extra.name)
         M.state[#M.state + 1] = "plugins.extras." .. extra.name
       end
-      table.sort(Config.json.data.extras, function(a, b)
-        local pa = M.prios[a] or 10
-        local pb = M.prios[b] or 10
-        if pa == pb then
-          return a < b
-        end
-        return pa < pb
-      end)
+
+      table.sort(Config.json.data.extras)
+
       Config.json.save()
       Util.info(
         "`"
