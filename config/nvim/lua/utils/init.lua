@@ -11,6 +11,8 @@ local LazyUtil = require("lazy.core.util")
 ---@field plugin utils.plugin
 ---@field extras utils.extras
 ---@field inject utils.inject
+---@field news utils.news
+---@field json utils.json
 local M = {}
 
 ---@type table<string, string|string[]>
@@ -21,7 +23,6 @@ local deprecated = {
   root_patterns = { "root", "patterns" },
   get_root = { "root", "get" },
   float_term = { "terminal", "open" },
-  toggle = { "toggle", "option" },
   toggle_diagnostics = { "toggle", "diagnostics" },
   toggle_number = { "toggle", "number" },
   fg = "ui",
@@ -135,14 +136,6 @@ function M.on_load(name, fn)
       end,
     })
   end
-end
-
-function M.changelog()
-  local lv = require("lazy.core.config").plugins.LazyVim
-  local float = require("lazy.util").open(lv.dir .. "/CHANGELOG.md")
-  vim.wo[float.win].spell = false
-  vim.wo[float.win].wrap = false
-  vim.diagnostic.disable(float.buf)
 end
 
 -- Wrapper around vim.keymap.set that will

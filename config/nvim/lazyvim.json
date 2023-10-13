@@ -1,1 +1,11 @@
-{"extras":["coding.codeium","lsp.none-ls"],"hashes":[]}
+{
+  "extras": [
+    "plugins.extras.dap.core",
+    "plugins.extras.dap.nlua",
+    "plugins.extras.formatting.prettier"
+  ],
+  "news": [
+
+  ],
+  "version": 1
+}

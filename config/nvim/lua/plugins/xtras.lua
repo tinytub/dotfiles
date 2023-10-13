@@ -2,10 +2,10 @@ local Config = require("core.config")
 ---@param extra string
 -- Some extras need to be loaded before others
 local prios = {
-  ["editor.aerial"] = 100,
-  ["editor.symbols-outline"] = 100,
-  ["test.core"] = 1,
-  ["dap.core"] = 1,
+  ["plugins.extras.editor.aerial"] = 100,
+  ["plugins.extras.editor.symbols-outline"] = 100,
+  ["plugins.extras.test.core"] = 1,
+  ["plugins.extras.dap.core"] = 1,
 }
 
 table.sort(Config.json.data.extras, function(a, b)
@@ -18,6 +18,6 @@ table.sort(Config.json.data.extras, function(a, b)
 end)
 
 return vim.tbl_map(function(extra)
-  return { import = "plugins.extras." .. extra }
+  return { import = extra }
 end, Config.json.data.extras)
 --return {}

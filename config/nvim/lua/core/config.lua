@@ -23,6 +23,13 @@ local defaults = {
     keymaps = true, -- core.keymaps
     options = true, -- core.options
   },
+  news = {
+    -- When enabled, NEWS.md will be shown when changed.
+    -- This only contains big new features and breaking changes.
+    lazyvim = true,
+    -- Same but for Neovim's news.txt
+    neovim = false,
+  },
   -- icons used by other plugins
   icons = require("plugins.configs.lspkind_icons"),
   ---@type table<string, string[]>?
@@ -62,9 +69,10 @@ local defaults = {
 }
 
 M.json = {
+  version = 1,
   data = {
     version = nil, ---@type string?
-    hashes = {}, ---@type table<string, string>
+    news = {}, ---@type table<string, string>
     extras = {}, ---@type string[]
   },
 }
@@ -78,16 +86,10 @@ function M.json.load()
     local ok, json = pcall(vim.json.decode, data, { luanil = { object = true, array = true } })
     if ok then
       M.json.data = vim.tbl_deep_extend("force", M.json.data, json or {})
+      if M.json.data.version ~= M.json.version then
+        Util.json.migrate()
+      end
     end
-  end
-end
-
-function M.json.save()
-  local path = vim.fn.stdpath("config") .. "/lazyvim.json"
-  local f = io.open(path, "w")
-  if f then
-    f:write(vim.json.encode(M.json.data))
-    f:close()
   end
 end
 
@@ -114,6 +116,7 @@ function M.setup(opts)
       end
       M.load("keymaps")
       Util.format.setup()
+      Util.news.setup()
 
       vim.api.nvim_create_user_command("LazyRoot", function()
         Util.root.info()

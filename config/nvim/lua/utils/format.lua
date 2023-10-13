@@ -129,7 +129,7 @@ function M.health()
   local has_extra = vim.tbl_contains(Config.spec.modules, "plugins.extras.lsp.none-ls")
   if has_plugin and not has_extra then
     Util.warn({
-      "`conform.nvim` and `nvim-lint` are now the default forrmatters and linters in LazyVim.",
+      "`conform.nvim` and `nvim-lint` are now the default formatters and linters in LazyVim.",
       "",
       "You can use those plugins together with `none-ls.nvim`,",
       "but you need to enable the `lazyvim.plugins.extras.lsp.none-ls` extra,",
