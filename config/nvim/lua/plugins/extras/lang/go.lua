@@ -203,17 +203,17 @@ return {
     },
   },
   -- Ensure Go tools are installed
-  --{
-  --  "nvimtools/none-ls.nvim",
-  --  optional = true,
-  --  opts = function(_, opts)
-  --    local null_ls = require("null-ls")
-  --    opts.sources = vim.list_extend(opts.sources or {}, {
-  --      null_ls.builtins.formatting.terraform_fmt,
-  --      null_ls.builtins.diagnostics.terraform_validate,
-  --    })
-  --  end,
-  --},
+  {
+    "nvimtools/none-ls.nvim",
+    optional = true,
+    opts = function(_, opts)
+      local null_ls = require("null-ls")
+      opts.sources = vim.list_extend(opts.sources or {}, {
+        null_ls.builtins.formatting.terraform_fmt,
+        null_ls.builtins.diagnostics.terraform_validate,
+      })
+    end,
+  },
   -- Language
   -- may be i can try https://github.com/olexsmir/gopher.nvim or https://github.com/crispgm/nvim-go
   {
