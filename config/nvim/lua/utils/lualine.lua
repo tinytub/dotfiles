@@ -99,6 +99,7 @@ end
 
 ---@param opts? {cwd:false, subdirectory: true, parent: true, other: true, icon?:string}
 function M.root_dir(opts)
+  print("root_dir")
   opts = vim.tbl_extend("force", {
     cwd = false,
     subdirectory = true,
