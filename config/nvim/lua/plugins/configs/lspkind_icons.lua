@@ -55,6 +55,7 @@ local icons = {
     Snippet = " ",
     String = " ",
     Struct = " ",
+    TabNine = "󰏚 ",
     Text = " ",
     TypeParameter = " ",
     Unit = " ",

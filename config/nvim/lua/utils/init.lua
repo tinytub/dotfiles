@@ -13,6 +13,7 @@ local LazyUtil = require("lazy.core.util")
 ---@field inject utils.inject
 ---@field news utils.news
 ---@field json utils.json
+---@field lualine utils.lualine
 local M = {}
 
 ---@type table<string, string|string[]>
@@ -47,6 +48,10 @@ setmetatable(M, {
     return t[k]
   end,
 })
+
+function M.is_win()
+  return vim.loop.os_uname().sysname:find("Windows") ~= nil
+end
 
 ---@param plugin string
 function M.has(plugin)

@@ -1,30 +1,23 @@
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
-vim.env.PATH = vim.env.PATH .. (is_windows and ";" or ":") .. vim.fn.stdpath "data" .. "/mason/bin"
+vim.env.PATH = vim.env.PATH .. (is_windows and ";" or ":") .. vim.fn.stdpath("data") .. "/mason/bin"
 
-local function augroup(name) return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true }) end
-
-vim.api.nvim_create_autocmd("InsertLeave", {
-  callback = function()
-    if
-        require("luasnip").session.current_nodes[vim.api.nvim_get_current_buf()]
-        and not require("luasnip").session.jump_active
-    then
-      require("luasnip").unlink_current()
-    end
-  end,
-})
+local function augroup(name)
+  return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+end
 
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = augroup "checktime",
+  group = augroup("checktime"),
   command = "checktime",
 })
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
-  group = augroup "highlight_yank",
-  callback = function() vim.highlight.on_yank { higroup = "Search", timeout = 200 } end,
+  group = augroup("highlight_yank"),
+  callback = function()
+    vim.highlight.on_yank({ higroup = "Search", timeout = 200 })
+  end,
 })
 
 -- resize splits if window got resized
@@ -39,7 +32,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 
 -- go to last loc when opening a buffer
 vim.api.nvim_create_autocmd("BufReadPost", {
-  group = augroup "last_loc",
+  group = augroup("last_loc"),
   callback = function(event)
     local exclude = { "gitcommit" }
     local buf = event.buf
@@ -57,7 +50,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 
 -- close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup "close_with_q",
+  group = augroup("close_with_q"),
   pattern = {
     "PlenaryTestPopup",
     "help",
@@ -85,7 +78,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- wrap and check for spell in text filetypes
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup "wrap_spell",
+  group = augroup("wrap_spell"),
   pattern = { "gitcommit", "markdown" },
   callback = function()
     vim.opt_local.wrap = true
@@ -115,7 +108,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
 -- dont list quickfix buffers
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "qf",
-  callback = function() vim.opt_local.buflisted = false end,
+  callback = function()
+    vim.opt_local.buflisted = false
+  end,
 })
 
 -- do not autocommenting with o/O
@@ -125,9 +120,11 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  group = augroup "auto_create_dir",
+  group = augroup("auto_create_dir"),
   callback = function(event)
-    if event.match:match "^%w%w+://" then return end
+    if event.match:match("^%w%w+://") then
+      return
+    end
     local file = vim.loop.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
@@ -150,9 +147,11 @@ vim.api.nvim_create_autocmd("TermClose", {
   callback = function()
     local manager_avail, manager = pcall(require, "neo-tree.sources.manager")
     if manager_avail then
-      for _, source in ipairs { "filesystem", "git_status", "document_symbols" } do
+      for _, source in ipairs({ "filesystem", "git_status", "document_symbols" }) do
         local module = "neo-tree.sources." .. source
-        if package.loaded[module] then manager.refresh(require(module).name) end
+        if package.loaded[module] then
+          manager.refresh(require(module).name)
+        end
       end
     end
   end,

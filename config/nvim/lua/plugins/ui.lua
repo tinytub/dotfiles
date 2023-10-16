@@ -614,20 +614,19 @@ return {
           lualine_b = {
             --"branch"
             space,
-            dir,
+            Util.lualine.root_dir(),
+            --dir,
             space,
           },
           lualine_c = {
             --filename,
+            filetype,
             {
-              function()
-                return Util.root.pretty_path()
-              end,
+              Util.lualine.pretty_path(),
               color = { bg = "#80A7EA", fg = "#242735" },
               path = 1,
               separator = { left = "", right = "" },
             },
-            filetype,
             space,
             branch,
             diff,
@@ -889,7 +888,7 @@ return {
     end,
   },
   {
-    "glepnir/dashboard-nvim",
+    "nvimdev/dashboard-nvim",
     event = "VimEnter",
     opts = function()
       --local logo = [[
@@ -924,9 +923,9 @@ return {
             { action = "ene | startinsert", desc = " New file", icon = " ", key = "n" },
             { action = "Telescope oldfiles", desc = " Recent files", icon = " ", key = "r" },
             { action = "Telescope live_grep", desc = " Find text", icon = " ", key = "g" },
-            { action = "e $MYVIMRC", desc = " Config", icon = " ", key = "c" },
+            { action = Util.telescope.config_files(), desc = " Config", icon = " ", key = "c" },
             { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
-            { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "e" },
+            { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
             { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
             { action = "qa", desc = " Quit", icon = " ", key = "q" },
           },

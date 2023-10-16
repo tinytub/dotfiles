@@ -42,7 +42,10 @@ return {
       opts = opts or {}
       -- disable the colorscheme
       opts.colorscheme = function() end
-      require("lazyvim").setup(opts)
+      --require("lazyvim").setup(opts)
+  --require("core.config").init()
+      require("lazy").setup(opts)
+      require("core.config").setup(opts)
     end,
   },
   {

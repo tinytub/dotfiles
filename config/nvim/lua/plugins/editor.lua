@@ -145,6 +145,7 @@ local plugins = {
       },
       -- find
       { "<leader>bb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
+      { "<leader>fc", Util.telescope.config_files(), desc = "Find Config File" },
       {
         "<leader>ff",
         Util.telescope("files"),
@@ -750,16 +751,6 @@ local plugins = {
       },
     },
     --disable = not lvim.builtin.terminal.active,
-  },
-
-  -- Markdown preview
-  {
-    "iamcco/markdown-preview.nvim",
-    run = function()
-      vim.fn["mkdp#util#install"]()
-    end,
-    ft = "markdown",
-    event = "BufRead",
   },
 
   -- LSP Colors

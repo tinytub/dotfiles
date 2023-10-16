@@ -4,10 +4,10 @@ return {
     optional = true,
     dependencies = {
       {
-        "mason.nvim",
+        "williamboman/mason.nvim",
         opts = function(_, opts)
           opts.ensure_installed = opts.ensure_installed or {}
-          vim.list_extend(opts.ensure_installed, { "gomodifytags", "impl", "gofumpt", "goimports-reviser", "delve" })
+          vim.list_extend(opts.ensure_installed, { "delve" })
         end,
       },
     },
@@ -17,7 +17,7 @@ return {
     optional = true,
     opts = {
       formatters_by_ft = {
-        go = { "goimports" },
+        go = { "goimports", "gofumpt" },
       },
     },
   },
@@ -204,13 +204,31 @@ return {
   },
   -- Ensure Go tools are installed
   {
+    "williamboman/mason.nvim",
+    opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
+      vim.list_extend(opts.ensure_installed, { "goimports", "gofumpt" })
+    end,
+  },
+  {
     "nvimtools/none-ls.nvim",
     optional = true,
+    dependencies = {
+      {
+        "williamboman/mason.nvim",
+        opts = function(_, opts)
+          opts.ensure_installed = opts.ensure_installed or {}
+          vim.list_extend(opts.ensure_installed, { "gomodifytags", "impl" })
+        end,
+      },
+    },
     opts = function(_, opts)
-      local null_ls = require("null-ls")
+      local nls = require("null-ls")
       opts.sources = vim.list_extend(opts.sources or {}, {
-        null_ls.builtins.formatting.terraform_fmt,
-        null_ls.builtins.diagnostics.terraform_validate,
+        nls.builtins.formatting.terraform_fmt,
+        nls.builtins.diagnostics.terraform_validate,
+        nls.builtins.formatting.goimports,
+        nls.builtins.formatting.gofumpt,
       })
     end,
   },
@@ -258,7 +276,7 @@ return {
     optional = true,
     dependencies = {
       {
-        "mason.nvim",
+        "williamboman/mason.nvim",
         opts = function(_, opts)
           opts.ensure_installed = opts.ensure_installed or {}
           vim.list_extend(opts.ensure_installed, { "gomodifytags", "impl", "goimports", "delve" })

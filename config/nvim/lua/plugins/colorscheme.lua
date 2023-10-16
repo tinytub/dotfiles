@@ -7,9 +7,9 @@ return {
     "tinytub/base46",
     dependencies = "plenary.nvim",
     config = function()
-      local base46 = require "base46"
+      local base46 = require("base46")
       --base46.setup({ theme = "everforest", custom_highlights = "colors.themes.everforest" })
-      base46.setup { theme = "everforest" }
+      base46.setup({ theme = "everforest" })
     end,
     enabled = false,
   },
@@ -34,6 +34,7 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
+    priority = 1000,
     --dependencies = "nvim-treesitter",
     --dependencies = "bufferline.nvim",
     --    run = ":CatppuccinCompile",
@@ -49,7 +50,7 @@ return {
         dark = "macchiato",
         --dark = "mocha",
       },
-      transparent_background = true,
+      transparent_background = false,
       compile = {
         enabled = true,
         path = vim.fn.stdpath("cache") .. "/catppuccin",
@@ -81,12 +82,6 @@ return {
         mini = true,
         native_lsp = {
           enabled = true,
-          --virtual_text = {
-          --  errors = { "italic" },
-          --  hints = { "italic" },
-          --  warnings = { "italic" },
-          --  information = { "italic" },
-          --},
           underlines = {
             errors = { "undercurl" },
             hints = { "undercurl" },
@@ -107,19 +102,23 @@ return {
         treesitter = true,
         which_key = true,
       },
-    }
+    },
     --event = "VeryLazy",
   },
 
   {
     "sainnhe/everforest",
-    config = function() require("colors").init() end,
+    config = function()
+      require("colors").init()
+    end,
     enabled = false,
   },
 
   {
     "rebelot/kanagawa.nvim",
-    config = function() require("colors").init() end,
+    config = function()
+      require("colors").init()
+    end,
     enabled = false,
   },
 
@@ -130,5 +129,4 @@ return {
   --	end,
   --	enabled = false,
   --},
-
 }

@@ -1,11 +1,20 @@
 {
   "extras": [
+    "plugins.extras.coding.codeium",
     "plugins.extras.dap.core",
     "plugins.extras.dap.nlua",
-    "plugins.extras.formatting.prettier"
+    "plugins.extras.editor.navic",
+    "plugins.extras.formatting.prettier",
+    "plugins.extras.lang.docker",
+    "plugins.extras.lang.markdown",
+    "plugins.extras.lang.python",
+    "plugins.extras.test.core",
+    "plugins.extras.ui.edgy",
+    "plugins.extras.util.dot",
+    "plugins.extras.util.mini-hipatterns"
   ],
   "news": [
 
   ],
-  "version": 1
+  "version": 2
 }

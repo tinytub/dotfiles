@@ -108,36 +108,6 @@ function M.get()
       has = "signatureHelp"
     },
     {
-      "]d",
-      M.diagnostic_goto(true),
-      desc = "Next Diagnostic"
-    },
-    {
-      "[d",
-      M.diagnostic_goto(false),
-      desc = "Prev Diagnostic"
-    },
-    {
-      "]e",
-      M.diagnostic_goto(true, "ERROR"),
-      desc = "Next Error"
-    },
-    {
-      "[e",
-      M.diagnostic_goto(false, "ERROR"),
-      desc = "Prev Error"
-    },
-    {
-      "]w",
-      M.diagnostic_goto(true, "WARN"),
-      desc = "Next Warning"
-    },
-    {
-      "[w",
-      M.diagnostic_goto(false, "WARN"),
-      desc = "Prev Warning"
-    },
-    {
       "<leader>ca",
       vim.lsp.buf.code_action,
       desc = "Code Action",
@@ -220,14 +190,6 @@ function M.on_attach(_, buffer)
       opts.buffer = buffer
       vim.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, opts)
     end
-  end
-end
-
-function M.diagnostic_goto(next, severity)
-  local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
-  severity = severity and vim.diagnostic.severity[severity] or nil
-  return function()
-    go({ severity = severity })
   end
 end
 

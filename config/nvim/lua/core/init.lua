@@ -27,9 +27,9 @@ local opts = {
     --{ import = "plugins.configs.nvim-cmp" },
 
     { import = "plugins.extras.test" },
-    { import = "plugins.extras.ui.edgy" },
+    -- { import = "plugins.extras.ui.edgy" },
     -- { import = "plugins.extras.coding.copilot" },
-    ---    { import = "plugins.extras.coding.codeium" },
+    -- { import = "plugins.extras.coding.codeium" },
     { import = "plugins.extras.coding.yanky" },
     --{ import = "plugins.extras.dap" },
     --{ import = "plugins.extras.lsp" },
@@ -80,12 +80,6 @@ local opts = {
   },
   ui = {
     border = "rounded",
-    --icons = {
-    --  ft = "",
-    --  lazy = "鈴 ",
-    --  loaded = "",
-    --  not_loaded = "",
-    --},
   },
 
   install = { colorscheme = { "catppuccin", "tokyonight", "habamax" } },
