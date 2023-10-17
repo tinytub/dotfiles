@@ -48,7 +48,6 @@ return {
       },
     },
     init = function()
-      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
       -- Install the conform formatter on VeryLazy
       require("utils").on_very_lazy(function()
         require("utils").format.register({

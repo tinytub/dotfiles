@@ -1,6 +1,6 @@
 local Util = require("utils")
 
----@class lazyvim.util.lualine
+---@class utils.lualine
 local M = {}
 
 function M.cmp_source(name, icon)
@@ -74,7 +74,7 @@ function M.pretty_path(opts)
     if path == "" then
       return ""
     end
-    local root = Util.root.get()
+    local root = Util.root.get({ normalize = true })
     local cwd = Util.root.cwd()
 
     if opts.relative == "cwd" and path:find(cwd, 1, true) == 1 then
@@ -99,19 +99,19 @@ end
 
 ---@param opts? {cwd:false, subdirectory: true, parent: true, other: true, icon?:string}
 function M.root_dir(opts)
-  print("root_dir")
   opts = vim.tbl_extend("force", {
-    cwd = false,
+    cwd = true,
     subdirectory = true,
     parent = true,
     other = true,
     icon = "󱉭 ",
     color = Util.ui.fg("Special"),
+    separator = { left = "", right = "" },
   }, opts or {})
 
   local function get()
     local cwd = Util.root.cwd()
-    local root = Util.root.get()
+    local root = Util.root.get({ normalize = true })
     local name = vim.fs.basename(root)
 
     if root == cwd then
@@ -137,6 +137,7 @@ function M.root_dir(opts)
       return type(get()) == "string"
     end,
     color = opts.color,
+    separator = opts.separator,
   }
 end
 

@@ -119,10 +119,7 @@ function M.setup(opts)
       M.load("keymaps")
       Util.format.setup()
       Util.news.setup()
-
-      vim.api.nvim_create_user_command("LazyRoot", function()
-        Util.root.info()
-      end, { desc = "LazyVim roots for the current buffer" })
+      Util.root.setup()
 
       vim.api.nvim_create_user_command("LazyExtras", function()
         Util.extras.show()

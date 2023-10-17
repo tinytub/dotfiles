@@ -865,14 +865,14 @@ local plugins = {
       {
         "<leader>gg",
         function()
-          Util.float_term({ "lazygit" }, { cwd = Util.get_root(), esc_esc = false, ctrl_hjkl = false })
+          Util.terminal.open({ "lazygit" }, { cwd = Util.root.get(), esc_esc = false, ctrl_hjkl = false })
         end,
         desc = "Lazygit (root dir)",
       },
       {
         "<leader>gG",
         function()
-          Util.float_term({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false })
+          Util.terminal.open({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false })
         end,
         desc = "Lazygit (cwd)",
       },
