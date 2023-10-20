@@ -7,6 +7,7 @@
 export LC_ALL=en_US.UTF-8  
 export LANG=en_US.UTF-8
 setopt COMBINING_CHARS
+[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
 #export LANG=en_US.UTF-8
 

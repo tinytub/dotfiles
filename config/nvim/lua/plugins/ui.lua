@@ -879,16 +879,27 @@ return {
       -- symbol = "▏",
       symbol = "│",
       options = { try_as_border = true },
-      draw = {
-        delay = 50,
-        animation = function()
-          return 10
-        end,
-      },
+      --draw = {
+      --  delay = 50,
+      --  animation = function()
+      --    return 10
+      --  end,
+      --},
     },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason", "notify" },
+        pattern = {
+          "help",
+          "alpha",
+          "dashboard",
+          "neo-tree",
+          "Trouble",
+          "lazy",
+          "mason",
+          "notify",
+          "toggleterm",
+          "lazyterm",
+        },
         callback = function()
           vim.b.miniindentscope_disable = true
         end,
@@ -911,7 +922,7 @@ return {
     "goolord/alpha-nvim",
     optional = true,
     enabled = function()
-      require("lazyvim.util").warn({
+      require("utils").warn({
         "`dashboard.nvim` is now the default LazyVim starter plugin.",
         "",
         "To keep using `alpha.nvim`, please enable the `lazyvim.plugins.extras.ui.alpha` extra.",
@@ -956,7 +967,12 @@ return {
             { action = "ene | startinsert", desc = " New file", icon = " ", key = "n" },
             { action = "Telescope oldfiles", desc = " Recent files", icon = " ", key = "r" },
             { action = "Telescope live_grep", desc = " Find text", icon = " ", key = "g" },
-            { action = Util.telescope.config_files(), desc = " Config", icon = " ", key = "c" },
+            {
+              action = [[lua require("utils").telescope.config_files()()]],
+              desc = " Config",
+              icon = " ",
+              key = "c",
+            },
             { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
             { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
             { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
@@ -972,6 +988,7 @@ return {
 
       for _, button in ipairs(opts.config.center) do
         button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
+        button.key_format = "  %s"
       end
 
       -- close Lazy and re-open when the dashboard is ready

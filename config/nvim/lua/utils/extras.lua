@@ -20,7 +20,7 @@ local Util = require("utils")
 ---@field row? number
 ---@field plugins string[]
 ---@field optional string[]
----@class lazyvim.util.extras
+---@class utils.extras
 local M = {}
 
 ---@type LazyExtraSource[]

@@ -8,7 +8,10 @@ return {
       -- Add TabNine support, make sure you run :CmpTabnineHub after installation.
       {
         "tzachar/cmp-tabnine",
-        build = Util.is_win() and "pwsh -noni .\\install.ps1" or "./install.sh",
+        build = {
+          Util.is_win() and "pwsh -noni .\\install.ps1" or "./install.sh",
+          ":CmpTabnineHub",
+        },
         dependencies = "hrsh7th/nvim-cmp",
         opts = {
           max_lines = 1000,

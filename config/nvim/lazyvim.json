@@ -1,7 +1,9 @@
 {
   "extras": [
+    "plugins.extras.coding.codeium",
     "plugins.extras.dap.core",
     "plugins.extras.dap.nlua",
+    "plugins.extras.database.database",
     "plugins.extras.editor.navic",
     "plugins.extras.formatting.prettier",
     "plugins.extras.lang.docker",
@@ -10,7 +12,8 @@
     "plugins.extras.test.core",
     "plugins.extras.ui.edgy",
     "plugins.extras.util.dot",
-    "plugins.extras.util.mini-hipatterns"
+    "plugins.extras.util.mini-hipatterns",
+    "plugins.extras.util.project"
   ],
   "news": [
 

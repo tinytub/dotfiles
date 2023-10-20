@@ -1,6 +1,5 @@
 --syntax highlighting
 return {
-
   {
     "nvim-treesitter/nvim-treesitter",
     name = "nvim-treesitter",
@@ -156,22 +155,23 @@ return {
   --},
 
   -- Show context of the current function
+  -- 现实当前function的上下文
   {
     "nvim-treesitter/nvim-treesitter-context",
     event = "LazyFile",
     enabled = true,
-    opts = { mode = "cursor" },
+    opts = { mode = "cursor", max_lines = 3 },
   },
   -- Automatically add closing tags for HTML and JSX
   {
     "windwp/nvim-ts-autotag",
-    event = "InsertEnter",
+    event = "LazyFile",
     opts = {},
     keys = {
       {
         "<leader>ut",
         function()
-          local Util = require("lazyvim.util")
+          local Util = require("utils")
           local tsc = require("treesitter-context")
           tsc.toggle()
           if Util.inject.get_upvalue(tsc.toggle, "enabled") then
