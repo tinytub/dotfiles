@@ -193,8 +193,8 @@ function M.init()
   --  vim.opt.rtp:append(plugin.dir)
   --end
 
-  package.preload["lazyvim.plugins.lsp.format"] = function()
-    Util.deprecate([[require("lazyvim.plugins.lsp.format")]], [[require("utils").format]])
+  package.preload["plugins.lsp.format"] = function()
+    Util.deprecate([[require("plugins.lsp.format")]], [[require("utils").format]])
     return Util.format
   end
 

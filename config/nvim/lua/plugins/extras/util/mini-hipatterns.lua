@@ -7,7 +7,7 @@ M.plugin = {
   "echasnovski/mini.hipatterns",
   event = "LazyFile",
   opts = function()
-    local hi = require "mini.hipatterns"
+    local hi = require("mini.hipatterns")
     return {
       -- custom LazyVim option to enable the tailwind integration
       tailwind = {
@@ -18,7 +18,7 @@ M.plugin = {
         style = "full",
       },
       highlighters = {
-        hex_color = hi.gen_highlighter.hex_color { priority = 2000 },
+        hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
       },
     }
   end,
@@ -34,11 +34,15 @@ M.plugin = {
     if type(opts.tailwind) == "table" and opts.tailwind.enabled then
       -- reset hl groups when colorscheme changes
       vim.api.nvim_create_autocmd("ColorScheme", {
-        callback = function() M.hl = {} end,
+        callback = function()
+          M.hl = {}
+        end,
       })
       opts.highlighters.tailwind = {
         pattern = function()
-          if not vim.tbl_contains(opts.tailwind.ft, vim.bo.filetype) then return end
+          if not vim.tbl_contains(opts.tailwind.ft, vim.bo.filetype) then
+            return
+          end
           if opts.tailwind.style == "full" then
             return "%f[%w:-]()[%w:-]+%-[a-z%-]+%-%d+()%f[^%w:-]"
           elseif opts.tailwind.style == "compact" then
@@ -49,7 +53,7 @@ M.plugin = {
           ---@type string
           local match = m.full_match
           ---@type string,number
-          local color, shade = match:match "[%w-]+%-([a-z%-]+)%-(%d+)"
+          local color, shade = match:match("[%w-]+%-([a-z%-]+)%-(%d+)")
           shade = tonumber(shade)
           local bg = vim.tbl_get(M.colors, color, shade)
           if bg then
@@ -63,7 +67,7 @@ M.plugin = {
             return hl
           end
         end,
-        priotity = 2000,
+        extmark_opts = { priority = 2000 },
       }
     end
     require("mini.hipatterns").setup(opts)

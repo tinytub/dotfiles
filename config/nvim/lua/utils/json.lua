@@ -67,7 +67,7 @@ function M.migrate()
       json.data.hashes = nil
     end
     json.data.extras = vim.tbl_map(function(extra)
-      return "lazyvim.plugins.extras." .. extra
+      return "plugins.extras." .. extra
     end, json.data.extras or {})
   elseif json.data.version == 1 then
     json.data.extras = vim.tbl_map(function(extra)

@@ -25,7 +25,7 @@ local M = {}
 
 ---@type LazyExtraSource[]
 M.sources = {
-  { name = "LazyVim", desc = "LazyVim extras", module = "lazyvim.plugins.extras" },
+  --{ name = "LazyVim", desc = "LazyVim extras", module = "lazyvim.plugins.extras" },
   { name = "User", desc = "User extras", module = "plugins.extras" },
 }
 
