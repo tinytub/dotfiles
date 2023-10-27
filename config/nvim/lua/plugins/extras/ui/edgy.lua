@@ -43,6 +43,12 @@ return {
             end,
           },
           "Trouble",
+          {
+            ft = "trouble",
+            filter = function(buf, win)
+              return vim.api.nvim_win_get_config(win).relative == ""
+            end,
+          },
           { ft = "qf", title = "QuickFix" },
           {
             ft = "help",
@@ -130,7 +136,7 @@ return {
     optional = true,
     opts = function(_, opts)
       opts.open_files_do_not_replace_types = opts.open_files_do_not_replace_types
-        or { "terminal", "Trouble", "qf", "Outline" }
+        or { "terminal", "Trouble", "qf", "Outline", "trouble" }
       table.insert(opts.open_files_do_not_replace_types, "edgy")
     end,
   },
