@@ -235,6 +235,8 @@ alias zz='z -i'      # 使用交互式选择模式
 alias zf='z -I'      # 使用 fzf 对多个结果进行选择
 alias zb='z -b'      # 快速回到父目录
 
+alias ssh='TERM="xterm-256color" ssh'
+
 # "cat" cloning
 if type "bat" >/dev/null 2>&1; then
     alias cat="bat"

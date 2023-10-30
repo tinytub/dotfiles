@@ -84,7 +84,7 @@ opt.timeoutlen = 400
 opt.undofile = true
 
 opt.scrolloff = 4
-opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" }
+opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 opt.sidescrolloff = 5
 
 opt.showcmd = true
