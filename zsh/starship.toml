@@ -44,6 +44,8 @@ symbol = " "
 [git_metrics]
 disabled = false
 
+[pulumi]
+disabled = true
 #[aws]
 #symbol = "  "
 
