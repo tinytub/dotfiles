@@ -103,7 +103,7 @@ opt.virtualedit = "block"
 opt.whichwrap:append("<>[]hl")
 
 opt.winminwidth = 5 -- Minimum window width
-opt.wrap = false -- Disable line wrap
+opt.wrap = true -- Enable line wrap
 opt.fillchars = {
   foldopen = "",
   foldclose = "",
