@@ -1,31 +1,11 @@
-local sql_ft = { "sql", "mysql", "plsql" }
 return {
-  {
-    "hrsh7th/nvim-cmp",
-    optional = true,
-    dependencies = {
-      {
-        "kristijanhusak/vim-dadbod-completion",
-        init = function()
-          vim.api.nvim_create_autocmd("FileType", {
-            desc = "dadbod completion",
-            group = vim.api.nvim_create_augroup("dadbod_cmp", { clear = true }),
-            pattern = { "sql", "mysql", "plsql" },
-            callback = function()
-              require("cmp").setup.buffer({ sources = { { name = "vim-dadbod-completion" } } })
-            end,
-          })
-        end,
-      },
-    },
-  },
   {
     "tpope/vim-dadbod",
     cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
     dependencies = {
       "kristijanhusak/vim-dadbod-ui",
-      { "kristijanhusak/vim-dadbod-completion", ft = sql_ft },
-      { "jsborjesson/vim-uppercase-sql", ft = sql_ft },
+      { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" } },
+      { "jsborjesson/vim-uppercase-sql", ft = { "sql", "mysql", "plsql" } },
     },
     lazy = true,
     init = function()
@@ -35,7 +15,9 @@ return {
       vim.g.db_ui_use_nvim_notify = true
 
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = sql_ft,
+        desc = "dadbod completion",
+        group = vim.api.nvim_create_augroup("dadbod_cmp", { clear = true }),
+        pattern = { "sql", "mysql", "plsql" },
         callback = function()
           ---@diagnostic disable-next-line: missing-fields
           require("cmp").setup.buffer({ sources = { { name = "vim-dadbod-completion" } } })

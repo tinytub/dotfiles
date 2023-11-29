@@ -1,6 +1,6 @@
 {
   "extras": [
-    "plugins.extras.coding.codeium",
+    "plugins.extras.coding.copilot",
     "plugins.extras.dap.core",
     "plugins.extras.dap.nlua",
     "plugins.extras.database.database",
