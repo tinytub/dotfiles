@@ -1,1 +1,1 @@
-require "core".global_setup()
+require("core").global_setup()
