@@ -69,4 +69,5 @@ export https_proxy=http://127.0.0.1:7788 http_proxy=http://127.0.0.1:7788 all_pr
 # ssh -t -L 127.0.0.1:6443:11.50.138.36:6443 root@11.50.138.45 -- kubectl  proxy --port 6443
 
 #alias -g zplug="LC_MESSAGES=en_US.UTF-8 zplug"
+ulimit -n 4096
 
