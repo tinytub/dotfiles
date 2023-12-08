@@ -29,32 +29,32 @@ return {
     version = false,
     event = "InsertEnter",
     dependencies = {
-      --{
-      --  -- snippet plugin
-      --  "L3MON4D3/LuaSnip",
-      --  build = (not jit.os:find("Windows"))
-      --      and "echo -e 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
-      --    or nil,
-      --  dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
-      --  config = function()
-      --    --local luasnip = require("luasnip")
+      {
+        -- snippet plugin
+        "L3MON4D3/LuaSnip",
+        build = (not jit.os:find("Windows"))
+            and "echo -e 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
+          or nil,
+        dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
+        config = function()
+          local luasnip = require("luasnip")
 
-      --    --luasnip.config.set_config({
-      --    --  history = true,
-      --    --  delete_check_events = "TextChanged",
-      --    --})
-      --    --luasnip.snippets = {
-      --    --  --           all = require("plugins.extras.luasnips.all"),
-      --    --  go = require("plugins.extras.luasnips.golang"),
-      --    --  lua = require("plugins.extras.luasnips.lua"),
-      --    --  gitcommit = require("plugins.extras.luasnips.gitcommit"),
-      --    --  markdown = require("plugins.extras.luasnips.markdown"),
-      --    --}
+          luasnip.config.set_config({
+            history = true,
+            delete_check_events = "TextChanged",
+          })
+          luasnip.snippets = {
+            --           all = require("plugins.extras.luasnips.all"),
+            go = require("plugins.extras.luasnips.golang"),
+            lua = require("plugins.extras.luasnips.lua"),
+            gitcommit = require("plugins.extras.luasnips.gitcommit"),
+            markdown = require("plugins.extras.luasnips.markdown"),
+          }
 
-      --    --require("luasnip.loaders.from_vscode").lazy_load()
-      --    --require("luasnip.loaders.from_vscode").lazy_load({ paths = vim.g.luasnippets_path or "" })
-      --  end,
-      --},
+          require("luasnip.loaders.from_vscode").lazy_load()
+          require("luasnip.loaders.from_vscode").lazy_load({ paths = vim.g.luasnippets_path or "" })
+        end,
+      },
 
       -- autopairing of (){}[] etc
       --{
@@ -127,11 +127,11 @@ return {
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
       }
       return {
-        --snippet = {
-        --  expand = function(args)
-        --    require("luasnip").lsp_expand(args.body)
-        --  end,
-        --},
+        snippet = {
+          expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+          end,
+        },
         preselect = cmp.PreselectMode.None, -- do not select the first item
         completion = {
           completeopt = "menu,menuone,noinsert,noselect",
@@ -210,9 +210,9 @@ return {
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() and has_words_before() then
               cmp.select_next_item()
-            --elseif require("luasnip").expand_or_jumpable() then
-            --  --vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") --  luasnip.expand_or_jump()
-            --  require("luasnip").expand_or_jump()
+            elseif require("luasnip").expand_or_jumpable() then
+              --vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") --  luasnip.expand_or_jump()
+              require("luasnip").expand_or_jump()
             elseif has_words_before() then
               cmp.complete()
             else

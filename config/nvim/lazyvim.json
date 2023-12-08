@@ -12,6 +12,7 @@
     "plugins.extras.test.core",
     "plugins.extras.ui.edgy",
     "plugins.extras.util.dot",
+    "plugins.extras.util.kitty-scrollback",
     "plugins.extras.util.mini-hipatterns",
     "plugins.extras.util.project"
   ],
