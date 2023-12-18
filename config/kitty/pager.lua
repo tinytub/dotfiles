@@ -1,6 +1,7 @@
 -- https://github.com/lettertwo/config/blob/main/nvim/pager.lua
 -- for kitty
-vim.o.relativenumber = false
+
+vim.o.relativenumber = true
 vim.o.number = false
 vim.o.mouse = "a"
 vim.o.clipboard = "unnamedplus"
@@ -9,7 +10,7 @@ vim.o.virtualedit = "all"
 vim.o.list = false
 vim.o.foldcolumn = "0"
 vim.o.signcolumn = "no"
-vim.o.showtabline = 0
+vim.o.showtabline = "no"
 vim.o.scrollback = 100000
 vim.o.termguicolors = true
 vim.o.laststatus = 0
@@ -24,95 +25,116 @@ vim.g.maplocalleader = " "
 vim.api.nvim_create_autocmd("TermOpen", { pattern = "*", command = "normal G" })
 vim.api.nvim_create_autocmd("TermEnter", { pattern = "*", command = "stopinsert" })
 vim.api.nvim_create_autocmd(
-  "TermClose",
-  { pattern = "*", command = "call cursor(max([0,INPUT_LINE_NUMBER-1])+CURSOR_LINE, CURSOR_COLUMN)" }
+	"TermClose",
+	{ pattern = "*", command = "call cursor(max([0,INPUT_LINE_NUMBER-1])+CURSOR_LINE, CURSOR_COLUMN)" }
 )
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if vim.loop.fs_stat(lazypath) then
-  vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
-  require("lazy").setup({
-    spec = {
-      --{ import = "plugins.colorscheme" },
-      -- Navigate seamlessly between kitty and nvim windows.
-      --{ "knubie/vim-kitty-navigator",  build = [[ cp ./*.py $XDG_CONFIG_HOME/kitty/ ]] },
-      {
-        "folke/tokyonight.nvim",
-        opts = {
-          style = "moon",
-          sidebars = {
-            "qf",
-            "vista_kind",
-            "terminal",
-            "spectre_panel",
-            "startuptime",
-            "Outline",
-          },
-        },
-      },
-      {
-        "folke/which-key.nvim",
-        enabled = true,
-        opts = {
-          plugins = { spelling = true },
-          window = { border = "single" },
-          show_help = false,
-          show_keys = false,
-          key_labels = { ["<leader>"] = "SPC" },
-        },
-        config = function(_, opts)
-          local wk = require("which-key")
-          wk.setup(opts)
-          wk.register({
-            mode = { "n", "v" },
-            ["g"] = { name = "+goto" },
-            ["]"] = { name = "+next" },
-            ["["] = { name = "+prev" },
-            ["<leader>s"] = { name = "+search" },
-            ["<leader>u"] = { name = "+ui" },
-          })
-        end,
-      },
-    },
+	vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
-    --colorscheme = function()
-    --  vim.api.nvim_command [[syntax on]]
-    --  if vim.fn.has('termguicolors') == 1 then
-    --    vim.cmd.set("termguicolors")
-    --  end
-    --  --local colors = require("catppuccin.palettes").get_palette()
-    --  --require("colors.catppuccin")
-    --  vim.cmd.colorscheme("tokyonight")
-    --end,
-
-
-    defaults = {
-      lazy = false,
-      version = false, -- always use the latest git commit
-    },
-    --install = { colorscheme = { "laserwave" } },
-    install = { colorscheme = { "catppuccin", "tokyonight", "habamax" } },
-    ui = { border = "rounded" },
-    checker = { enabled = false },
-    performance = {
-      rtp = {
-        -- disable some rtp plugins
-        disabled_plugins = {
-          "gzip",
-          "matchit",
-          "matchparen",
-          "netrwPlugin",
-          "tarPlugin",
-          "tohtml",
-          "tutor",
-          "zipPlugin",
-        },
-      },
-    },
-  })
+	require("lazy").setup({
+		spec = {
+			{ import = "plugins.colorscheme" },
+			-- Navigate seamlessly between kitty and nvim windows.
+			--{ "knubie/vim-kitty-navigator", build = [[ cp ./*.py $XDG_CONFIG_HOME/kitty/ ]] },
+			{ "knubie/vim-kitty-navigator", build = [[ cp ./*.py ~/.config/kitty/ ]] },
+			{
+				"folke/which-key.nvim",
+				opts = {
+					plugins = { spelling = true },
+					window = { border = "single" },
+					show_help = false,
+					show_keys = false,
+					key_labels = { ["<leader>"] = "SPC" },
+				},
+				config = function(_, opts)
+					local wk = require("which-key")
+					wk.setup(opts)
+					wk.register({
+						mode = { "n", "v" },
+						["g"] = { name = "+goto" },
+						["]"] = { name = "+next" },
+						["["] = { name = "+prev" },
+						["<leader>s"] = { name = "+search" },
+						["<leader>u"] = { name = "+ui" },
+					})
+				end,
+			},
+		},
+		defaults = {
+			lazy = false,
+			version = false, -- always use the latest git commit
+		},
+		install = { colorscheme = { "laserwave" } },
+		ui = { border = "rounded" },
+		checker = { enabled = false },
+		performance = {
+			rtp = {
+				-- disable some rtp plugins
+				disabled_plugins = {
+					"gzip",
+					"matchit",
+					"matchparen",
+					"netrwPlugin",
+					"tarPlugin",
+					"tohtml",
+					"tutor",
+					"zipPlugin",
+				},
+			},
+		},
+	})
 end
 
-vim.cmd.colorscheme("tokyonight")
+function lsp_active()
+	for _, client in pairs(vim.lsp.get_clients()) do
+		if client.server_capabilities then
+			return true
+		end
+	end
+	return false
+end
+
+function close_floats()
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		if vim.api.nvim_win_get_config(win).relative ~= "" then
+			vim.api.nvim_win_close(win, false)
+		end
+	end
+end
+function clear_highlights()
+	vim.cmd("nohlsearch")
+	if lsp_active() then
+		vim.lsp.buf.clear_references()
+		for _, buffer in pairs(visible_buffers()) do
+			vim.lsp.util.buf_clear_references(buffer)
+		end
+	end
+end
+function feedkeys(keys, mode)
+	if mode == nil then
+		mode = "in"
+	end
+	return vim.api.nvim_feedkeys(termcodes(keys), mode, true)
+end
+function termcodes(str)
+	return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+function visible_buffers()
+	return vim.tbl_map(vim.api.nvim_win_get_buf, vim.api.nvim_list_wins())
+end
+
+function close_floats_and_clear_highlights()
+	close_floats()
+	if vim.bo.modifiable then
+		clear_highlights()
+	else
+		if #vim.api.nvim_list_wins() > 1 then
+			return feedkeys("<C-w>c")
+		end
+	end
+end
 
 -- better up/down
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
@@ -125,14 +147,15 @@ vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decreas
 vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
 
 -- Close floats, and clear highlights with <Esc>
+vim.keymap.set("n", "<Esc>", close_floats_and_clear_highlights, { desc = "Close floats, clear highlights" })
 
 -- Clear search, diff update and redraw
 -- taken from runtime/lua/_editor.lua
 vim.keymap.set(
-  "n",
-  "<leader>ur",
-  "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
-  { desc = "Redraw / clear hlsearch / diff update" }
+	"n",
+	"<leader>ur",
+	"<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
+	{ desc = "Redraw / clear hlsearch / diff update" }
 )
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
@@ -144,6 +167,10 @@ vim.keymap.set("x", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev se
 vim.keymap.set("o", "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
 
 -- toggle options
+--vim.keymap.set("n", "<leader>us", Util.create_toggle("spell", "wo"), { desc = "Toggle Spelling" })
+--vim.keymap.set("n", "<leader>uw", Util.create_toggle("wrap", "wo"), { desc = "Toggle Word Wrap" })
+--vim.keymap.set("n", "<leader>uh", Util.create_toggle("hlsearch", "o"), { desc = "Toggle Highlight Search" })
+--vim.keymap.set("n", "<leader>uc", Util.create_toggle("cursorline", "wo"), { desc = "Toggle Cursorline" })
 
 -- quit
 vim.keymap.set("n", "q", "<cmd>qa!<cr>", { desc = "Quit" })
@@ -151,5 +178,5 @@ vim.keymap.set("n", "<leader>q", "<cmd>qa!<cr>", { desc = "Quit" })
 
 -- highlights under cursor
 if vim.fn.has("nvim-0.9.0") == 1 then
-  vim.keymap.set("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
+	vim.keymap.set("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
 end

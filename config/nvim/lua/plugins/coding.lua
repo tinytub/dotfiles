@@ -68,7 +68,8 @@ return {
       {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-path",
+        --        "hrsh7th/cmp-path",
+        "FelipeLema/cmp-async-path",
         "hrsh7th/cmp-cmdline",
         "saadparwaiz1/cmp_luasnip",
 
@@ -235,7 +236,8 @@ return {
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "luasnip" },
-          { name = "path" },
+          --{ name = "path" },
+          { name = "async_path" },
         }, {
           { name = "buffer" },
         }),

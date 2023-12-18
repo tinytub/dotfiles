@@ -14,6 +14,9 @@ return {
       end,
     })
 
+    vim.o.mouse = "a"
+    vim.o.clipboard = "unnamedplus"
+
     require("kitty-scrollback").setup({
       global = function()
         return {
