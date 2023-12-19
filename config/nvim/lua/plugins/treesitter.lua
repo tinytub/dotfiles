@@ -94,6 +94,8 @@ return {
         "gowork",
         "gosum",
       },
+      ignore_install = { "comment" }, -- lagging
+
       incremental_selection = {
         enable = true,
         keymaps = {
