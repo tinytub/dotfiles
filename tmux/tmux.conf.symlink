@@ -68,6 +68,14 @@ set-option -g display-time 1500
 # redraw status line every 10 seconds
 set-option -g status-interval 10
 
+# sets style for the non-default status-lines
+# about uptime, i trying to make it compatible with osx and linux.
+set -g status-format[1] '#[fg=colour226 align=centre] %a %b %d %R %Y'
+set -ag status-format[1] '#[bg=colour238 fg=colour216 align=right] #h #[fg=default bg=colour238 align=left]'
+set -ag status-format[1] ' #S '
+set -ag status-format[1] '#[fg=colour158] #I/#{session_windows} #[italics] prefix + . #[noitalics] or #[italics] prefix + ? #[noitalics] to see more'
+set -g status-format[2] "#[align=centre, fg=#ff2052] #(whereami.sh) #[align=left, bg=colour238] since #{t:session_created} #[align=right] #(uptime.sh)"
+
 # if you destroy|exit the session while attched to it it will attach you to the next session
 set-option -g detach-on-destroy off
 
@@ -91,8 +99,9 @@ bind C-f command-prompt -p find-session 'switch-client -t %%'
 #bind \\ split-window -h
 
 # use vim-like keys for splits and windows
-bind-key v split-window -h -c "#{pane_current_path}"
-bind-key s split-window -v -c "#{pane_current_path}"
+bind v split-window -h -c "#{pane_current_path}"
+bind s split-window -v -c "#{pane_current_path}"
+bind c new-window -c "$HOME"
 
 # pane navigation -r will repeat
 bind h select-pane -L  # move left
@@ -155,18 +164,21 @@ unbind-key n
 set -g prefix C-a
 bind C-a send-prefix
 
-bind-key n command-prompt -p 'New Window Name:' 'new-window -c "#{pane_current_path}" -n %1'
+bind n command-prompt -p 'New Window Name:' 'new-window -c "#{pane_current_path}" -n %1'
 
 # vim like mappingn for copy and pasting
 #bind-key C-[ copy-mode
-bind-key [ copy-mode
-bind-key -T copy-mode-vi 'v' send -X begin-selection
-bind-key -T copy-mode-vi 'y' send -X copy-selection
-bind-key -T copy-mode-vi 'Y' send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
-bind-key C-p paste-buffer
+bind [ copy-mode
+bind -T copy-mode-vi 'v' send -X begin-selection
+bind -T copy-mode-vi 'y' send -X copy-selection
+bind -T copy-mode-vi 'Y' send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
+bind C-p paste-buffer
 
 bind b list-buffers  # list paste buffers
 bind P choose-buffer # choose which buffer to paste from
+
+# session management with a great overview on current sessions and their windows/panes **IMPORTANT**
+bind . choose-tree -Zs
 
 
 
