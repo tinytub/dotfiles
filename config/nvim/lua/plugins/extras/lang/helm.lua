@@ -8,8 +8,21 @@ require("utils.lsp").on_attach(function(client, buffer)
   end
 end)
 
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  pattern = {
+    "*/templates/*.yaml",
+    "*/templates/*.tpl",
+    "*.gotmpl",
+    "helmfile*.yaml",
+  },
+  callback = function()
+    vim.bo.filetype = "helm"
+    vim.bo.commentstring = "{{/* %s */}}"
+  end,
+})
+
 return {
-  "towolf/vim-helm",
+  { "towolf/vim-helm" },
   {
     "neovim/nvim-lspconfig",
     opts = {
