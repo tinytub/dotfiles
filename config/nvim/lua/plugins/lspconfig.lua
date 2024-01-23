@@ -30,8 +30,15 @@ return {
           -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
           prefix = "icons",
         },
-        signs = true,
         severity_sort = true,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] =require("plugins.configs.lspkind_icons").diagnostics.Error,
+            [vim.diagnostic.severity.WARN] = require("plugins.configs.lspkind_icons").diagnostics.Warn,
+            [vim.diagnostic.severity.HINT] = require("plugins.configs.lspkind_icons").diagnostics.Hint,
+            [vim.diagnostic.severity.INFO] = require("plugins.configs.lspkind_icons").diagnostics.Info,
+          },
+        },
         -- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
         -- Be aware that you also will need to properly configure your LSP server to
         -- provide the inlay hints.

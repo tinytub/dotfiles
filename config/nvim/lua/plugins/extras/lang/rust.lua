@@ -12,10 +12,8 @@ return {
     },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
-      local cmp = require "cmp"
-      opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        { name = "crates" },
-      }))
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, { name = "crates" })
     end,
   },
 
@@ -34,7 +32,9 @@ return {
     "williamboman/mason.nvim",
     optional = true,
     opts = function(_, opts)
-      if type(opts.ensure_installed) == "table" then vim.list_extend(opts.ensure_installed, { "codelldb" }) end
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, { "codelldb" })
+      end
     end,
   },
 
@@ -46,10 +46,10 @@ return {
       local adapter ---@type any
       if ok then
         -- rust tools configuration for debugging support
-        local codelldb = mason_registry.get_package "codelldb"
+        local codelldb = mason_registry.get_package("codelldb")
         local extension_path = codelldb:get_install_path() .. "/extension/"
         local codelldb_path = extension_path .. "adapter/codelldb"
-        local liblldb_path = vim.fn.has "mac" == 1 and extension_path .. "lldb/lib/liblldb.dylib"
+        local liblldb_path = vim.fn.has("mac") == 1 and extension_path .. "lldb/lib/liblldb.dylib"
           or extension_path .. "lldb/lib/liblldb.so"
         adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
       end
@@ -59,13 +59,13 @@ return {
         },
         tools = {
           on_initialized = function()
-            vim.cmd [[
+            vim.cmd([[
                   augroup RustLSP
                     autocmd CursorHold                      *.rs silent! lua vim.lsp.buf.document_highlight()
                     autocmd CursorMoved,InsertEnter         *.rs silent! lua vim.lsp.buf.clear_references()
                     autocmd BufEnter,CursorHold,InsertLeave *.rs silent! lua vim.lsp.codelens.refresh()
                   augroup END
-                ]]
+                ]])
           end,
         },
       }
@@ -114,7 +114,7 @@ return {
             {
               "K",
               function()
-                if vim.fn.expand "%:t" == "Cargo.toml" and require("crates").popup_available() then
+                if vim.fn.expand("%:t") == "Cargo.toml" and require("crates").popup_available() then
                   require("crates").show_popup()
                 else
                   vim.lsp.buf.hover()
@@ -127,7 +127,7 @@ return {
       },
       setup = {
         rust_analyzer = function(_, opts)
-          local rust_tools_opts = require("utils").opts "rust-tools.nvim"
+          local rust_tools_opts = require("utils").opts("rust-tools.nvim")
           require("rust-tools").setup(vim.tbl_deep_extend("force", rust_tools_opts or {}, { server = opts }))
           return true
         end,

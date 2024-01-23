@@ -177,6 +177,9 @@ map("n", "<leader>uT", function()
     vim.treesitter.start()
   end
 end, { desc = "Toggle Treesitter Highlight" })
+map("n", "<leader>ub", function()
+  Util.toggle("background", false, { "light", "dark" })
+end, { desc = "Toggle Background" })
 
 map("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
 map("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })

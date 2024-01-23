@@ -1,6 +1,7 @@
 {
   "extras": [
     "plugins.extras.coding.copilot",
+    "plugins.extras.coding.native_snippets",
     "plugins.extras.dap.core",
     "plugins.extras.dap.nlua",
     "plugins.extras.database.database",
@@ -10,6 +11,7 @@
     "plugins.extras.lang.helm",
     "plugins.extras.lang.markdown",
     "plugins.extras.lang.python",
+    "plugins.extras.lang.tailwind",
     "plugins.extras.lang.yaml",
     "plugins.extras.test.core",
     "plugins.extras.ui.edgy",

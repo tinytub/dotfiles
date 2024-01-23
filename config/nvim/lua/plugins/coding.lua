@@ -29,33 +29,6 @@ return {
     version = false,
     event = "InsertEnter",
     dependencies = {
-      {
-        -- snippet plugin
-        "L3MON4D3/LuaSnip",
-        build = (not jit.os:find("Windows"))
-            and "echo -e 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
-          or nil,
-        dependencies = { "rafamadriz/friendly-snippets", "onsails/lspkind.nvim" },
-        config = function()
-          local luasnip = require("luasnip")
-
-          luasnip.config.set_config({
-            history = true,
-            delete_check_events = "TextChanged",
-          })
-          luasnip.snippets = {
-            --           all = require("plugins.extras.luasnips.all"),
-            go = require("plugins.extras.luasnips.golang"),
-            lua = require("plugins.extras.luasnips.lua"),
-            gitcommit = require("plugins.extras.luasnips.gitcommit"),
-            markdown = require("plugins.extras.luasnips.markdown"),
-          }
-
-          require("luasnip.loaders.from_vscode").lazy_load()
-          require("luasnip.loaders.from_vscode").lazy_load({ paths = vim.g.luasnippets_path or "" })
-        end,
-      },
-
       -- autopairing of (){}[] etc
       --{
       --  enabled = false,
@@ -71,7 +44,6 @@ return {
         --        "hrsh7th/cmp-path",
         "FelipeLema/cmp-async-path",
         "hrsh7th/cmp-cmdline",
-        "saadparwaiz1/cmp_luasnip",
 
         --"saadparwaiz1/cmp_luasnip",
         --"hrsh7th/cmp-nvim-lua",
@@ -128,11 +100,6 @@ return {
         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
       }
       return {
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
-        },
         preselect = cmp.PreselectMode.None, -- do not select the first item
         completion = {
           completeopt = "menu,menuone,noinsert,noselect",
@@ -175,7 +142,6 @@ return {
         -- 去重
         duplicates = {
           nvim_lsp = 1,
-          luasnip = 1,
           cmp_tabnine = 1,
           buffer = 1,
           path = 1,
@@ -211,9 +177,6 @@ return {
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() and has_words_before() then
               cmp.select_next_item()
-            elseif require("luasnip").expand_or_jumpable() then
-              --vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") --  luasnip.expand_or_jump()
-              require("luasnip").expand_or_jump()
             elseif has_words_before() then
               cmp.complete()
             else
@@ -235,7 +198,6 @@ return {
         },
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
-          { name = "luasnip" },
           --{ name = "path" },
           { name = "async_path" },
         }, {
@@ -316,6 +278,51 @@ return {
         end,
         desc = "Toggle auto pairs",
       },
+    },
+  },
+  -- snippets
+  {
+    "L3MON4D3/LuaSnip",
+    build = (not jit.os:find("Windows"))
+        and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
+      or nil,
+    dependencies = {
+      {
+        "rafamadriz/friendly-snippets",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+      },
+      {
+        "nvim-cmp",
+        dependencies = {
+          "saadparwaiz1/cmp_luasnip",
+        },
+        opts = function(_, opts)
+          opts.snippet = {
+            expand = function(args)
+              require("luasnip").lsp_expand(args.body)
+            end,
+          }
+          table.insert(opts.sources, { name = "luasnip" })
+        end,
+      },
+    },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
+    },
+    -- stylua: ignore
+    keys = {
+      {
+        "<tab>",
+        function()
+          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+        end,
+        expr = true, silent = true, mode = "i",
+      },
+      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
+      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
     },
   },
 }
