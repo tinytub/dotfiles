@@ -1,3 +1,12 @@
+-- for copilot
+local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+    return false
+  end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+end
+
 return {
   {
     "smjonas/inc-rename.nvim",
@@ -299,11 +308,29 @@ return {
           "saadparwaiz1/cmp_luasnip",
         },
         opts = function(_, opts)
+          local cmp = require("cmp")
           opts.snippet = {
             expand = function(args)
               require("luasnip").lsp_expand(args.body)
             end,
           }
+          opts.mapping["<C-e>"] = cmp.mapping({
+            i = cmp.mapping.abort(),
+            c = cmp.mapping.close(),
+          })
+          opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() and has_words_before() then
+              cmp.select_next_item()
+            elseif require("luasnip").expand_or_jumpable() then
+              --vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") --  luasnip.expand_or_jump()
+              require("luasnip").expand_or_jump()
+            elseif has_words_before() then
+              cmp.complete()
+            else
+              fallback()
+            end
+          end, { "i", "s" })
+
           table.insert(opts.sources, { name = "luasnip" })
         end,
       },
@@ -313,16 +340,49 @@ return {
       delete_check_events = "TextChanged",
     },
     -- stylua: ignore
-    keys = {
-      {
-        "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
-        expr = true, silent = true, mode = "i",
-      },
-      { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    },
+    --keys = {
+    --  {
+    --    "<tab>",
+    --    function()
+    --      return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+    --    end,
+    --    expr = true, silent = true, mode = "i",
+    --  },
+    --  { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
+    --  { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
+    --},
+    config = function()
+      local luasnip = require("luasnip")
+      luasnip.snippets = {
+        --           all = require("plugins.extras.luasnips.all"),
+        go = require("plugins.extras.luasnips.golang"),
+        lua = require("plugins.extras.luasnips.lua"),
+        gitcommit = require("plugins.extras.luasnips.gitcommit"),
+        markdown = require("plugins.extras.luasnips.markdown"),
+      }
+      --local cmp = require("cmp")
+      --local cmp_luasnip = require("cmp_nvim_luasnip")
+      --cmp.setup.buffer({
+      --  sources = {
+      --    { name = "nvim_lsp" },
+      --    { name = "luasnip" },
+      --    { name = "buffer" },
+      --  },
+      --})
+      --cmp_luasnip.setup({
+      --  sources = {
+      --    { name = "nvim_lsp" },
+      --    { name = "luasnip" },
+      --    { name = "buffer" },
+      --  },
+      --})
+      --require("luasnip/loaders/from_vscode").lazy_load()
+      --require("luasnip/loaders/from_vscode").load({
+      --  paths = {
+      --    "~/.config/nvim/snippets",
+      --    "~/.config/nvim/snippets/UltiSnips",
+      --  },
+      --})
+    end,
   },
 }
