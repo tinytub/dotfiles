@@ -61,7 +61,7 @@ return {
             return
           end
           local status = require("copilot.api").status.data
-          -- return { bg = "#313244", fg = "#80A7EA" }
+          --return { bg = "#313244", fg = "#80A7EA" }
           --return colors[status.status] or { bg = "#313244", fg = "#80A7EA" }
           return colors[status.status] or colors[""]
         end,
