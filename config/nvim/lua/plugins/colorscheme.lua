@@ -50,7 +50,9 @@ return {
         dark = "macchiato",
         --dark = "mocha",
       },
-      transparent_background = false,
+      transparent_background = true,
+      no_italic = true,
+      no_bold = false,
       compile = {
         enabled = true,
         path = vim.fn.stdpath("cache") .. "/catppuccin",
@@ -106,6 +108,13 @@ return {
         telescope = true,
         treesitter = true,
         which_key = true,
+      },
+      color_overrides = {
+        mocha = {
+          -- I don't think these colours are pastel enough by default!
+          peach = "#fcc6a7",
+          green = "#d2fac5",
+        },
       },
     },
     --event = "VeryLazy",

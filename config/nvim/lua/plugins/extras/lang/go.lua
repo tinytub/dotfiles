@@ -299,6 +299,7 @@ return {
         ["neotest-go"] = {
           -- args = { '-race' },
           args = { "-count=1", "-timeout=60s", "-race", "-cover" },
+          recursive_run = true,
           experimantal = {
             test_table = true,
           },
