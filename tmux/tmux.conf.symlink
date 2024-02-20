@@ -5,12 +5,13 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 # keybindings to control panes
 set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'christoomey/vim-tmux-navigator'
+
 #set -g @plugin 'tmux-plugins/tmux-cpu'
 #set -g @plugin 'ofirgall/tmux-window-name'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
-set -g @plugin 'catppuccin/tmux'
 set -g @plugin 'laktak/extrakto'
 #set -g @plugin "arcticicestudio/nord-tmux" 
 set -g @plugin 'jabirali/tmux-tilish'
@@ -19,8 +20,7 @@ set -g @plugin 'jabirali/tmux-tilish'
 
 set -s focus-events on
 
-# Disable escape time
-set -s escape-time 0
+set -s escape-time 50
 
 set -g history-limit 102400    #  scrollback buffer n lines
 
@@ -65,16 +65,14 @@ set -g set-titles-string '#h ❐ #S ● #I #W #T'
 set-option -g display-panes-time 1000
 # slightly longer status messages display time
 set-option -g display-time 1500
-# redraw status line every 10 seconds
-set-option -g status-interval 10
 
 # sets style for the non-default status-lines
 # about uptime, i trying to make it compatible with osx and linux.
-set -g status-format[1] '#[fg=colour226 align=centre] %a %b %d %R %Y'
-set -ag status-format[1] '#[bg=colour238 fg=colour216 align=right] #h #[fg=default bg=colour238 align=left]'
-set -ag status-format[1] ' #S '
-set -ag status-format[1] '#[fg=colour158] #I/#{session_windows} #[italics] prefix + . #[noitalics] or #[italics] prefix + ? #[noitalics] to see more'
-set -g status-format[2] "#[align=centre, fg=#ff2052] #(whereami.sh) #[align=left, bg=colour238] since #{t:session_created} #[align=right] #(uptime.sh)"
+#set -g status-format[1] '#[fg=colour226 align=centre] %a %b %d %R %Y'
+#set -ag status-format[1] '#[bg=colour238 fg=colour216 align=right] #h #[fg=default bg=colour238 align=left]'
+#set -ag status-format[1] ' #S '
+#set -ag status-format[1] '#[fg=colour158] #I/#{session_windows} #[italics] prefix + . #[noitalics] or #[italics] prefix + ? #[noitalics] to see more'
+#set -g status-format[2] "#[align=centre, fg=#ff2052] #(whereami.sh) #[align=left, bg=colour238] since #{t:session_created} #[align=right] #(uptime.sh)"
 
 # if you destroy|exit the session while attched to it it will attach you to the next session
 set-option -g detach-on-destroy off
@@ -144,7 +142,7 @@ set -g set-clipboard off
 # =====================================
 # ===    Appearence and status bar  ===
 # ======================================
-set-option -g status-position top
+# set-option -g status-position top
 #set -g @catppuccin_window_tabs_enabled on # or off to disable window_tabs
 
 # ==========================
@@ -181,6 +179,36 @@ bind P choose-buffer # choose which buffer to paste from
 bind . choose-tree -Zs
 
 
+
+# Status bar customization
+set -g status-interval 10         # update the status bar every 10 seconds
+set -g status-justify left
+set -g status-position bottom
+set -g status-left-length 200     # increase length (from 10)
+set -g status-style 'bg=default'  # transparent background
+
+# STATUS BAR STYLE 0 - catppuccin
+#set -g @plugin 'catppuccin/tmux'
+
+# STATUS BAR STYLE 1 - PLAIN
+set -g status-left "#[fg=#b4befe,bg=default]  #S #[fg=#45475a,bg=default]|"
+set -g status-right "#[fg=#eba0ac,bg=default]#{?window_zoomed_flag, ,} #[fg=#45475a,bg=default]|#[fg=#f2dcdc,bg=default] %m/%d/%y "
+set -g window-status-current-format '#[fg=#b4befe,bg=default] #I#W'
+set -g window-status-format '#[fg=gray,bg=default] #I #W'
+
+# STATUS BAR STYLE 2 - BUBBLES
+# set -g status-left '#[fg=#2b2a30,bg=default]#[fg=#b4befe,bg=#2b2a30]  #S #[fg=#2b2a30,bg=default]#[fg=#45475a,bg=default] |'
+# set -g status-right '#[fg=#3b2a30,bg=default] #[fg=#eba0ac,bg=#2b2a30]#{?window_zoomed_flag,,}#[fg=#2b2a30,bg=default] #[fg=#45475a,bg=default]| #[fg=#2b2a30,bg=default]#[fg=#f2dcdc,bg=#2b2a30]%m/%d/%y#[fg=#2b2a30,bg=default]'
+# set -g window-status-current-format '#[fg=#2b2a30,bg=default] #[fg=#b4befe,bg=#2b2a30]#I#W#[fg=#2b2a30,bg=default]'
+# set -g window-status-format '#[fg=gray,bg=default]  #I #W '
+
+set -g window-status-last-style 'fg=white,bg=default'
+set -g pane-border-style 'fg=#b4befe'
+set -g pane-active-border-style 'fg=#b4befe'
+set -g default-terminal "${TERM}"
+set -g message-command-style bg=default,fg=#f2dcdc
+set -g message-style bg=default,fg=#f2dcdc
+set -g mode-style bg=default,fg=#f2dcdc
 
 # ==========================
 # ===   Plugin Resurrect ===
