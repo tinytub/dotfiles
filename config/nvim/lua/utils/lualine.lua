@@ -106,7 +106,8 @@ function M.root_dir(opts)
     other = true,
     icon = "󱉭 ",
     color = Util.ui.fg("Special"),
-    separator = { left = "", right = "" },
+    -- separator = { left = "", right = "" },
+    separator = { left = "", right = "" },
   }, opts or {})
 
   local function get()

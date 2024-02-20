@@ -507,7 +507,7 @@ return {
           --return " "
           return " "
         end,
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
         color = { bg = "#313244", fg = "#80A7EA" },
         padding = { left = 1, right = 0 },
       }
@@ -537,7 +537,7 @@ return {
 
           --return vim.b.short_path
         end,
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
         icon = "",
       }
 
@@ -551,7 +551,7 @@ return {
         "filename",
         color = { bg = "#80A7EA", fg = "#242735" },
         path = 1,
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
       }
 
       local filetype = {
@@ -559,7 +559,7 @@ return {
         icon_only = true,
         colored = true,
         color = { bg = "#313244" },
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
       }
 
       --local filetype_tab = {
@@ -582,19 +582,19 @@ return {
       local fileformat = {
         "fileformat",
         color = { bg = "#b4befe", fg = "#313244" },
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
       }
 
       local encoding = {
         "encoding",
         color = { bg = "#313244", fg = "#80A7EA" },
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
       }
 
       local branch = {
         "branch",
         color = { bg = "#a6e3a1", fg = "#313244" },
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
       }
 
       local function buffer_git_diff()
@@ -615,7 +615,7 @@ return {
         "diff",
         color = { bg = "#313244", fg = "#313244" },
         cond = buffer_not_empty,
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
         symbols = {
           added = icons.git.added,
           modified = icons.git.modified,
@@ -657,7 +657,7 @@ return {
         "diagnostics",
         cond = buffer_not_empty,
         color = { bg = "#313244", fg = "#80A7EA" },
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
         symbols = {
           error = icons.diagnostics.Error,
           warn = icons.diagnostics.Warn,
@@ -672,7 +672,7 @@ return {
         end,
 
         cond = buffer_not_empty,
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
         color = { bg = "#f38ba8", fg = "#1e1e2e" },
       }
 
@@ -693,8 +693,10 @@ return {
           --section_separators = { left = "", right = "" },
           --component_separators = { left = '', right = '' },
           --section_separators = { left = '', right = '' },
-          component_separators = { left = "", right = "" },
-          section_separators = { left = "", right = "" },
+          -- component_separators = { left = "", right = "" },
+          -- section_separators = { left = "", right = "" },
+          component_separators = { left = "", right = "" },
+          section_separators = { left = "", right = "" },
 
           ignore_focus = {},
           --always_divide_middle = true,
@@ -706,17 +708,17 @@ return {
         },
         sections = {
           lualine_a = {
-            { "mode", separator = { left = "", right = "" } },
+            { "mode", separator = { left = "", right = "" } },
             --"mode",
             --modes,
             vim_icons,
           },
           lualine_b = {
             --"branch"
-            space,
+            -- space,
             Util.lualine.root_dir(),
             --dir,
-            space,
+            -- space,
           },
           lualine_c = {
             --filename,
@@ -725,12 +727,13 @@ return {
               Util.lualine.pretty_path(),
               color = { bg = "#80A7EA", fg = "#242735" },
               path = 1,
-              separator = { left = "", right = "" },
+              separator = { left = "", right = "" },
             },
-            space,
+            -- space,
             branch,
             diff,
           },
+
           lualine_x = {
             -- space,
             -- stylua: ignore
@@ -769,7 +772,7 @@ return {
           lualine_y = {
             encoding,
             fileformat,
-            space,
+            --space,
             --{ "filetype", icon_only = false, },
 
             -- {

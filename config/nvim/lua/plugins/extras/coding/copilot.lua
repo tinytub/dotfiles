@@ -45,7 +45,7 @@ return {
           return icons .. (status.message or "")
         end,
 
-        separator = { left = "", right = "" },
+        separator = { left = "", right = "" },
         cond = function()
           if not package.loaded["copilot"] then
             return
