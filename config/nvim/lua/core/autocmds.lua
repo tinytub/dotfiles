@@ -100,6 +100,7 @@ vim.api.nvim_create_autocmd("FileType", {
 --      if vim.api.nvim_buf_get_option(0, "buftype") ~= "terminal" then
 --         vim.cmd "lcd %:p:h"
 --      end
+
 --   end,
 --})
 

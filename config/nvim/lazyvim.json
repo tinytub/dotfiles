@@ -1,7 +1,6 @@
 {
   "extras": [
     "plugins.extras.coding.copilot",
-    "plugins.extras.coding.native_snippets",
     "plugins.extras.dap.core",
     "plugins.extras.dap.nlua",
     "plugins.extras.database.database",
