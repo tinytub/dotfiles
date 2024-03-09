@@ -1,35 +1,30 @@
-require("utils.lsp").on_attach(function(client, buffer)
-  if client.name == "docker_compose_language_service" then
-    if vim.api.nvim_buf_get_option(buffer, "filetype") == "helm" then
+require("utils").lsp.on_attach(function(client, buffer)
+  if client.name == "yamlls" then
+    if vim.api.nvim_get_option_value("filetype", { buf = buffer }) == "helm" then
       vim.schedule(function()
-        vim.cmd("LspStop ++force docker_compose_language_service")
+        vim.cmd("LspStop ++force yamlls")
       end)
     end
   end
 end)
 
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-  pattern = {
-    "*/templates/*.yaml",
-    "*/templates/*.tpl",
-    "*.gotmpl",
-    "helmfile*.yaml",
-  },
-  callback = function()
-    vim.bo.filetype = "helm"
-    vim.bo.commentstring = "{{/* %s */}}"
-  end,
-})
-
 return {
-  { "towolf/vim-helm" },
+  { "towolf/vim-helm", ft = "helm" },
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        docker_compose_language_service = {},
+        yamlls = {},
         helm_ls = {},
       },
     },
+  },
+  {
+    "williamboman/mason.nvim",
+    opts = function(_, opts)
+      vim.list_extend(opts.ensure_installed, {
+        "helm-ls",
+      })
+    end,
   },
 }

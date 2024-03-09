@@ -462,11 +462,14 @@ local plugins = {
           ["<c-v>"] = "vsplit_with_window_picker",
           ["l"] = "open_with_window_picker",
           ["<cr>"] = "open_drop",
-          ["Y"] = function(state)
-            local node = state.tree:get_node()
-            local path = node:get_id()
-            vim.fn.setreg("+", path, "c")
-          end,
+          ["Y"] = {
+            function(state)
+              local node = state.tree:get_node()
+              local path = node:get_id()
+              vim.fn.setreg("+", path, "c")
+            end,
+            desc = "copy path to clipboard",
+          },
         },
       },
       document_symbols = {

@@ -5,6 +5,7 @@
     "plugins.extras.dap.nlua",
     "plugins.extras.database.database",
     "plugins.extras.editor.navic",
+    "plugins.extras.editor.outline",
     "plugins.extras.formatting.prettier",
     "plugins.extras.lang.docker",
     "plugins.extras.lang.helm",
@@ -22,5 +23,5 @@
   "news": [
 
   ],
-  "version": 2
+  "version": 3
 }

@@ -42,9 +42,11 @@ local opts = {
     { import = "plugins.extras.lang.go" },
     { import = "plugins.extras.lang.typescripts" },
     --{ import = "plugins.extras.lang.python" },
+    --{ import = "plugins.extras.ui.edgy" },
     { import = "plugins.extras.editor.mini-files" },
     { import = "plugins.extras.editor.navic" },
     { import = "plugins.extras.editor.aerial" },
+    --{ import = "plugins.extras.editor.outline" },
     --{ import = "plugins.extras.database" },
     --{ import = "plugins.extras.editor.leap" },
     --    { import = "plugins.extras.ui.mini-animate" },
@@ -103,7 +105,7 @@ local opts = {
 }
 
 local function neovide_config()
-  vim.cmd([[set guifont=JetBrainsMonoNL\ Nerd\ Font:h14]])
+  vim.cmd([[set guifont=JetBrainsMonoNL\ Nerd\ Font:h12]])
   --vim.cmd [[set guifont=Input\ Nerd\ Font:h14]]
   --opt.guifont = "JetBrainsMono Nerd Font Mono"
   vim.g.neovide_refresh_rate = 60
@@ -118,6 +120,31 @@ local function neovide_config()
   vim.g.neovide_cursor_vfx_particle_lifetime = 1.2
   vim.g.neovide_cursor_vfx_particle_speed = 20.0
   vim.g.neovide_cursor_vfx_particle_density = 5.0
+  --vim.g.neovide_padding_top = 0.4
+  --vim.g.neovide_padding_bottom = 0.4
+  --vim.g.neovide_padding_right = 0.4
+  --vim.g.neovide_padding_left = 0.4
+  vim.g.neovide_hide_mouse_when_typing = true
+  --vim.g.neovide_window_blurred = true
+
+  vim.g.neovide_input_use_logo = true
+  vim.g.neovide_cursor_trail_length = 0.05
+  vim.g.neovide_remember_window_size = true
+  vim.g.neovide_input_macos_alt_is_meta = 1
+  vim.g.neovide_cursor_animation_length = 0.05
+  vim.g.neovide_cursor_vfx_mode = "pixiedust"
+  vim.g.neovide_floating_shadow = false
+
+  vim.g.neovide_transparency = 1
+  vim.g.transparency = 0.88
+  -- vim.g.neovide_background_color = ("#0f1117" .. string.format("%x", math.floor(((255 * vim.g.transparency) or 0.8))))
+
+  vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
+  vim.keymap.set("v", "<D-c>", '"+y') -- Copy
+  vim.keymap.set("n", "<D-v>", '"+P') -- Paste normal mode
+  vim.keymap.set("v", "<D-v>", '"+P') -- Paste visual mode
+  vim.keymap.set("c", "<D-v>", "<C-R>+") -- Paste command mode
+  vim.keymap.set("i", "<D-v>", '<ESC>l"+Pli') -- Paste insert mode
 end
 
 if vim.g.neovide then

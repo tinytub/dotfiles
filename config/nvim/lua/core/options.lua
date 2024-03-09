@@ -80,7 +80,10 @@ opt.splitbelow = true
 opt.splitright = true
 opt.tabstop = 4
 opt.termguicolors = true
-opt.timeoutlen = 400
+--opt.timeoutlen = 400
+if not vim.g.vscode then
+  opt.timeoutlen = 300 -- Lower than default (1000) to quickly trigger which-key
+end
 opt.undofile = true
 
 opt.scrolloff = 4

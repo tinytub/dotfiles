@@ -126,13 +126,13 @@ return {
     keys = {
       {
         "<leader>tt",
-        function() require("neotest").run.run(vim.fn.expand("%")) end,
+      --  function() require("neotest").run.run(vim.fn.expand("%")) end,
         desc =
         "Run File"
       },
       {
         "<leader>tT",
-        function() require("neotest").run.run(vim.loop.cwd()) end,
+      --  function() require("neotest").run.run(vim.loop.cwd()) end,
         desc =
         "Run All Test Files"
       },

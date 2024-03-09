@@ -21,6 +21,12 @@ return {
       inlay_hints = {
         enabled = false,
       },
+      -- Enable this to enable the builtin LSP code lenses on Neovim >= 0.10.0
+      -- Be aware that you also will need to properly configure your LSP server to
+      -- provide the code lenses.
+      codelens = {
+        enabled = false,
+      },
       diagnostics = {
         virtual_text = {
           spacing = 4,
@@ -33,7 +39,7 @@ return {
         severity_sort = true,
         signs = {
           text = {
-            [vim.diagnostic.severity.ERROR] =require("plugins.configs.lspkind_icons").diagnostics.Error,
+            [vim.diagnostic.severity.ERROR] = require("plugins.configs.lspkind_icons").diagnostics.Error,
             [vim.diagnostic.severity.WARN] = require("plugins.configs.lspkind_icons").diagnostics.Warn,
             [vim.diagnostic.severity.HINT] = require("plugins.configs.lspkind_icons").diagnostics.Hint,
             [vim.diagnostic.severity.INFO] = require("plugins.configs.lspkind_icons").diagnostics.Info,

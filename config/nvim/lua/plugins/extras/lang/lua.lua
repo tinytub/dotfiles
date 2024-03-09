@@ -20,6 +20,9 @@ return {
               workspace = {
                 checkThirdParty = false,
               },
+              codeLens = {
+                enable = true,
+              },
               --hint = {
               --  enable = true,
               --  setType = false,
