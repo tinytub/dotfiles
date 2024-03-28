@@ -1,6 +1,12 @@
 CONFIG_PATH = vim.fn.stdpath("config")
 DATA_PATH = vim.fn.stdpath("data")
 CACHE_PATH = vim.fn.stdpath("cache")
+
+-- Optionally setup the terminal to use
+-- This sets `vim.o.shell` and does some additional configuration for:
+-- * pwsh
+-- * powershell
+-- LazyVim.terminal.setup("pwsh")
 local opt = vim.opt
 local g = vim.g
 
@@ -11,7 +17,11 @@ g.theme_switcher_loaded = false
 opt.laststatus = 3
 opt.showmode = false
 
-opt.clipboard = "unnamedplus"
+if not vim.env.SSH_TTY then
+  -- only set clipboard if not in ssh, to make sure the OSC 52
+  -- integration works automatically. Requires Neovim >= 0.10.0
+  opt.clipboard = "unnamedplus" -- Sync with system clipboard
+end
 opt.completeopt = "menu,menuone,noselect"
 opt.conceallevel = 2 -- Hide * markup for bold and italic, but not markers with substitutions
 
@@ -54,6 +64,11 @@ vim.g.autoformat = true
 -- * a pattern or array of patterns like `.git` or `lua`.
 -- * a function with signature `function(buf) -> string|string[]`
 vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
+
+-- LazyVim automatically configures the lazygit theme,
+-- based on the active colorscheme.
+-- Set to false to disable.
+vim.g.lazygit_config = true
 
 opt.hidden = true
 opt.ignorecase = true
@@ -128,16 +143,18 @@ if vim.fn.has("nvim-0.10") == 1 then
 end
 -- Folding
 vim.opt.foldlevel = 99
-vim.opt.foldtext = "v:lua.require'utils.ui'.foldtext()"
 
 if vim.fn.has("nvim-0.9.0") == 1 then
   vim.opt.statuscolumn = [[%!v:lua.require'utils.ui'.statuscolumn()]]
+  vim.opt.foldtext = "v:lua.require'utils.ui'.foldtext()"
 end
 
 -- HACK: causes freezes on <= 0.9, so only enable on >= 0.10 for now
 if vim.fn.has("nvim-0.10") == 1 then
   vim.opt.foldmethod = "expr"
   vim.opt.foldexpr = "v:lua.require'utils'.ui.foldexpr()"
+  vim.opt.foldtext = ""
+  vim.opt.fillchars = "fold: "
 else
   vim.opt.foldmethod = "indent"
 end

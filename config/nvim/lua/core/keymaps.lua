@@ -1,5 +1,3 @@
-local Util = require("utils")
-
 --local map = function(mode, keys, command, opts)
 --  local options = { noremap = true, silent = true }
 --  if opts then options = vim.tbl_extend("force", options, opts) end
@@ -32,7 +30,7 @@ local Util = require("utils")
 
 -- DO NOT USE THIS IN YOU OWN CONFIG!!
 -- use `vim.keymap.set` instead
-local map = Util.safe_keymap_set
+local map = LazyUtil.safe_keymap_set
 
 local opt = {}
 
@@ -141,33 +139,33 @@ map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
 -- toggle options
 map("n", "<leader>uf", function()
-  Util.format.toggle()
+  LazyUtil.format.toggle()
 end, { desc = "Toggle auto format (global)" })
 map("n", "<leader>uF", function()
-  Util.format.toggle(true)
+  LazyUtil.format.toggle(true)
 end, { desc = "Toggle auto format (buffer)" })
 map("n", "<leader>us", function()
-  Util.toggle("spell")
+  LazyUtil.toggle("spell")
 end, { desc = "Toggle Spelling" })
 map("n", "<leader>uw", function()
-  Util.toggle("wrap")
+  LazyUtil.toggle("wrap")
 end, { desc = "Toggle Word Wrap" })
 map("n", "<leader>uL", function()
-  Util.toggle("relativenumber")
+  LazyUtil.toggle("relativenumber")
 end, { desc = "Toggle Relative Line Numbers" })
 map("n", "<leader>ul", function()
-  Util.toggle.number()
+  LazyUtil.toggle.number()
 end, { desc = "Toggle Line Numbers" })
 map("n", "<leader>ud", function()
-  Util.toggle.diagnostics()
+  LazyUtil.toggle.diagnostics()
 end, { desc = "Toggle Diagnostics" })
 local conceallevel = vim.o.conceallevel > 0 and vim.o.conceallevel or 3
 map("n", "<leader>uc", function()
-  Util.toggle("conceallevel", false, { 0, conceallevel })
+  LazyUtil.toggle("conceallevel", false, { 0, conceallevel })
 end, { desc = "Toggle Conceal" })
 if vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint then
   map("n", "<leader>uh", function()
-    Util.toggle.inlay_hints()
+    LazyUtil.toggle.inlay_hints()
   end, { desc = "Toggle Inlay Hints" })
 end
 map("n", "<leader>uT", function()
@@ -178,7 +176,7 @@ map("n", "<leader>uT", function()
   end
 end, { desc = "Toggle Treesitter Highlight" })
 map("n", "<leader>ub", function()
-  Util.toggle("background", false, { "light", "dark" })
+  LazyUtil.toggle("background", false, { "light", "dark" })
 end, { desc = "Toggle Background" })
 
 map("n", "[q", vim.cmd.cprev, { desc = "Previous quickfix" })
@@ -186,7 +184,7 @@ map("n", "]q", vim.cmd.cnext, { desc = "Next quickfix" })
 
 -- formatting
 map({ "n", "v" }, "<leader>cf", function()
-  Util.format({ force = true })
+  LazyUtil.format({ force = true })
 end, { desc = "Format" })
 
 -- diagnostic
@@ -210,23 +208,27 @@ map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 
 -- floating terminal
 local lazyterm = function()
-  Util.terminal(nil, { cwd = Util.root() })
+  LazyUtil.terminal(nil, { cwd = LazyUtil.root() })
 end
 --map("n", "<leader>ft", lazyterm, { desc = "Terminal (root dir)" })
 map("n", "<leader>w", lazyterm, { desc = "Terminal (root dir)" })
 map("n", "<leader>fT", function()
-  Util.terminal()
+  LazyUtil.terminal()
 end, { desc = "Terminal (cwd)" })
 map("n", "<c-/>", lazyterm, { desc = "Terminal (root dir)" })
 map("n", "<c-_>", lazyterm, { desc = "which_key_ignore" })
 
 -- lazygit
 map("n", "<leader>gg", function()
-  Util.terminal({ "lazygit" }, { cwd = Util.root(), esc_esc = false, ctrl_hjkl = false })
+  LazyUtil.lazygit({ cwd = LazyUtil.root.git(), esc_esc = false, ctrl_hjkl = false })
 end, { desc = "Lazygit (root dir)" })
 map("n", "<leader>gG", function()
-  Util.terminal({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false })
+  LazyUtil.lazygit()
 end, { desc = "Lazygit (cwd)" })
+map("n", "<leader>gf", function()
+  local git_path = vim.api.nvim_buf_get_name(0)
+  LazyUtil.lazygit({ args = { "-f", vim.trim(git_path) } })
+end, { desc = "Lazygit current file history" })
 
 -- Terminal Mappings
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })

@@ -1,5 +1,5 @@
 -- add binaries installed by mason.nvim to path
-local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
+local is_windows = vim.uv.os_uname().sysname == "Windows_NT"
 vim.env.PATH = vim.env.PATH .. (is_windows and ";" or ":") .. vim.fn.stdpath("data") .. "/mason/bin"
 
 local function augroup(name)
@@ -148,36 +148,13 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   group = augroup("auto_create_dir"),
   callback = function(event)
-    if event.match:match("^%w%w+://") then
+    if event.match:match("^%w%w+:[\\/][\\/]") then
       return
     end
-    local file = vim.loop.fs_realpath(event.match) or event.match
+    local file = vim.uv.fs_realpath(event.match) or event.match
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
-
--- Copy/Paste when using ssh on a remote server
--- Only works on Neovim >= 0.10.0
-if vim.clipboard and vim.clipboard.osc52 then
-  vim.api.nvim_create_autocmd("VimEnter", {
-    group = augroup("ssh_clipboard"),
-    callback = function()
-      if vim.env.SSH_CONNECTION and vim.clipboard.osc52 then
-        vim.g.clipboard = {
-          name = "OSC 52",
-          copy = {
-            ["+"] = require("vim.clipboard.osc52").copy,
-            ["*"] = require("vim.clipboard.osc52").copy,
-          },
-          paste = {
-            ["+"] = require("vim.clipboard.osc52").paste,
-            ["*"] = require("vim.clipboard.osc52").paste,
-          },
-        }
-      end
-    end,
-  })
-end
 
 -- show cursor line only in active window
 vim.api.nvim_create_autocmd({ "InsertLeave", "WinEnter" }, {

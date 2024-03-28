@@ -1,4 +1,3 @@
-local Util = require("utils")
 
 return {
   -- Tabnine cmp source
@@ -9,7 +8,7 @@ return {
       {
         "tzachar/cmp-tabnine",
         build = {
-          Util.is_win() and "pwsh -noni .\\install.ps1" or "./install.sh",
+          LazyUtil.is_win() and "pwsh -noni .\\install.ps1" or "./install.sh",
           ":CmpTabnineHub",
         },
         dependencies = "hrsh7th/nvim-cmp",
@@ -31,7 +30,7 @@ return {
         priority = 100,
       })
 
-      opts.formatting.format = Util.inject.args(opts.formatting.format, function(entry, item)
+      opts.formatting.format = LazyUtil.inject.args(opts.formatting.format, function(entry, item)
         -- Hide percentage in the menu
         if entry.source.name == "cmp_tabnine" then
           item.menu = ""

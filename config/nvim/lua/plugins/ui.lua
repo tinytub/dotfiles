@@ -23,11 +23,10 @@ return {
     event = { "BufAdd", "BufRead", "BufNewFile", "InsertEnter" },
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("utils")
-      if not Util.has("noice.nvim") then
+      if not LazyUtil.has("noice.nvim") then
         print("noice not found, use fidget")
 
-        Util.on_very_lazy(function()
+        LazyUtil.on_very_lazy(function()
           vim.notify = require("fidget")
         end)
       end
@@ -67,6 +66,7 @@ return {
       },
     },
     opts = {
+      stages = "static",
       timeout = 3000,
       fps = 30, -- defualt 30, but in alacritty it's too fast with flick
       max_height = function()
@@ -82,9 +82,8 @@ return {
     },
     init = function()
       -- when noice is not enabled, install notify on VeryLazy
-      local Util = require("utils")
-      if not Util.has("noice.nvim") then
-        Util.on_very_lazy(function()
+      if not LazyUtil.has("noice.nvim") then
+        LazyUtil.on_very_lazy(function()
           vim.notify = require("notify")
         end)
       end
@@ -406,7 +405,7 @@ return {
           lualine_b = { "branch" },
 
           lualine_c = {
-            Util.lualine.root_dir(),
+            LazyUtil.lualine.root_dir(),
             {
               "diagnostics",
               symbols = {
@@ -417,31 +416,31 @@ return {
               },
             },
             { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { Util.lualine.pretty_path() },
+            { LazyUtil.lualine.pretty_path() },
           },
           lualine_x = {
             -- stylua: ignore
             {
               function() return require("noice").api.status.command.get() end,
               cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-              color = Util.ui.fg("Statement"),
+              color = LazyUtil.ui.fg("Statement"),
             },
             -- stylua: ignore
             {
               function() return require("noice").api.status.mode.get() end,
               cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-              color = Util.ui.fg("Constant"),
+              color = LazyUtil.ui.fg("Constant"),
             },
             -- stylua: ignore
             {
               function() return "  " .. require("dap").status() end,
               cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-              color = Util.ui.fg("Debug"),
+              color = LazyUtil.ui.fg("Debug"),
             },
             {
               require("lazy.status").updates,
               cond = require("lazy.status").has_updates,
-              color = Util.ui.fg("Special"),
+              color = LazyUtil.ui.fg("Special"),
             },
             {
               "diff",
@@ -479,7 +478,6 @@ return {
       local navic = require("nvim-navic")
 
       local icons = require("plugins.configs.lspkind_icons")
-      local Utils = require("utils")
       -- PERF: we don't need this lualine require madness 🤷
       local lualine_require = require("lualine_require")
       lualine_require.require = require
@@ -716,7 +714,7 @@ return {
           lualine_b = {
             --"branch"
             -- space,
-            Util.lualine.root_dir(),
+            LazyUtil.lualine.root_dir(),
             --dir,
             -- space,
           },
@@ -724,7 +722,7 @@ return {
             --filename,
             filetype,
             {
-              Util.lualine.pretty_path(),
+              LazyUtil.lualine.pretty_path(),
               color = { bg = "#80A7EA", fg = "#242735" },
               path = 1,
               separator = { left = "", right = "" },
@@ -740,25 +738,25 @@ return {
             {
               function() return require("noice").api.status.command.get() end,
               cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-              color = Utils.ui.fg("Statement"),
+              color = LazyUtil.ui.fg("Statement"),
             },
             -- stylua: ignore
             {
               function() return require("noice").api.status.mode.get() end,
               cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-              color = Utils.ui.fg("Constant"),
+              color = LazyUtil.ui.fg("Constant"),
             },
             -- stylua: ignore
             {
               function() return "  " .. require("dap").status() end,
               cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
-              color = Utils.ui.fg("Debug"),
+              color = LazyUtil.ui.fg("Debug"),
             },
 
             {
               require("lazy.status").updates,
               cond = require("lazy.status").has_updates,
-              color = Util.ui.fg("Special"),
+              color = LazyUtil.ui.fg("Special"),
             },
             --{
             --  "diff",
@@ -800,7 +798,7 @@ return {
             {
               require("lazy.status").updates,
               cond = require("lazy.status").has_updates,
-              color = Utils.ui.fg("Special"),
+              color = LazyUtil.ui.fg("Special"),
             },
             lsp,
             ---- { "progress", separator = "", padding = { left = 1, right = 0 } },

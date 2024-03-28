@@ -1,11 +1,10 @@
 local Config = require("core.config")
-local Util = require("utils")
 
 ---@class utils.news
 local M = {}
 
 function M.hash(file)
-  local stat = vim.loop.fs_stat(file)
+  local stat = vim.uv.fs_stat(file)
   if not stat then
     return
   end
@@ -44,7 +43,7 @@ function M.open(file, opts)
     print(opts.plugin)
     local plugin = require("lazy.core.config").plugins[opts.plugin] --[[@as LazyPlugin?]]
     if not plugin then
-      return Util.error("plugin not found: " .. opts.plugin)
+      return LazyUtil.error("plugin not found: " .. opts.plugin)
     end
     file = plugin.dir .. "/" .. file
   elseif opts.rtp then
@@ -52,7 +51,7 @@ function M.open(file, opts)
   end
 
   if not file then
-    return Util.error("File not found")
+    return LazyUtil.error("File not found")
   end
 
   if opts.when_changed then
@@ -61,7 +60,7 @@ function M.open(file, opts)
       return
     end
     Config.json.data.news[ref] = hash
-    Util.json.save()
+    LazyUtil.json.save()
   end
 
   local float = require("lazy.util").float({

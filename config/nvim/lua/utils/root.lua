@@ -1,4 +1,3 @@
-local Util = require("utils")
 
 ---@class utils.root
 ---@overload fun(): string
@@ -22,7 +21,7 @@ M.spec = { "lsp", { ".git", "lua" }, "cwd" }
 M.detectors = {}
 
 function M.detectors.cwd()
-  return { vim.loop.cwd() }
+  return { vim.uv.cwd() }
 end
 
 function M.detectors.lsp(buf)
@@ -40,7 +39,7 @@ function M.detectors.lsp(buf)
     end
   end
   return vim.tbl_filter(function(path)
-    path = Util.norm(path)
+    path = LazyUtil.norm(path)
     return path and bufpath:find(path, 1, true) == 1
   end, roots)
 end
@@ -48,7 +47,7 @@ end
 ---@param patterns string[]|string
 function M.detectors.pattern(buf, patterns)
   patterns = type(patterns) == "string" and { patterns } or patterns
-  local path = M.bufpath(buf) or vim.loop.cwd()
+  local path = M.bufpath(buf) or vim.uv.cwd()
   local pattern = vim.fs.find(patterns, { path = path, upward = true })[1]
   return pattern and { vim.fs.dirname(pattern) } or {}
 end
@@ -58,15 +57,15 @@ function M.bufpath(buf)
 end
 
 function M.cwd()
-  return M.realpath(vim.loop.cwd()) or ""
+  return M.realpath(vim.uv.cwd()) or ""
 end
 
 function M.realpath(path)
   if path == "" or path == nil then
     return nil
   end
-  path = vim.loop.fs_realpath(path) or path
-  return Util.norm(path)
+  path = vim.uv.fs_realpath(path) or path
+  return LazyUtil.norm(path)
 end
 
 ---@param spec LazyRootSpec
@@ -134,7 +133,7 @@ function M.info()
   lines[#lines + 1] = "vim.g.root_spec = " .. vim.inspect(spec)
   lines[#lines + 1] = "```"
   require("utils").info(lines, { title = "LazyVim Roots" })
-  return roots[1] and roots[1].paths[1] or vim.loop.cwd()
+  return roots[1] and roots[1].paths[1] or vim.uv.cwd()
 end
 
 ---@type table<number, string>
@@ -142,7 +141,7 @@ M.cache = {}
 
 function M.setup()
   vim.api.nvim_create_user_command("LazyRoot", function()
-    Util.root.info()
+    LazyUtil.root.info()
   end, { desc = "LazyVim roots for the current buffer" })
 
   vim.api.nvim_create_autocmd({ "LspAttach", "BufWritePost", "DirChanged" }, {
@@ -165,14 +164,22 @@ function M.get(opts)
   local ret = M.cache[buf]
   if not ret then
     local roots = M.detect({ all = false })
-    ret = roots[1] and roots[1].paths[1] or vim.loop.cwd()
+    ret = roots[1] and roots[1].paths[1] or vim.uv.cwd()
     M.cache[buf] = ret
   end
   if opts and opts.normalize then
     return ret
   end
-  return Util.is_win() and ret:gsub("/", "\\") or ret
+  return LazyUtil.is_win() and ret:gsub("/", "\\") or ret
 end
+
+function M.git()
+  local root = M.get()
+  local git_root = vim.fs.find(".git", { path = root, upward = true })[1]
+  local ret = git_root and vim.fn.fnamemodify(git_root, ":h") or root
+  return ret
+end
+
 ---@param opts? {hl_last?: string}
 function M.pretty_path(opts)
   return ""

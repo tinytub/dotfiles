@@ -1,6 +1,8 @@
 local get_current_gomod = function()
   local file = io.open("go.mod", "r")
-  if file == nil then return nil end
+  if file == nil then
+    return nil
+  end
 
   local first_line = file:read()
   local mod_name = first_line:gsub("module ", "")
@@ -10,9 +12,9 @@ end
 
 return {
   root_dir = function(fname)
-    local Path = require "plenary.path"
+    local Path = require("plenary.path")
 
-    local absolute_cwd = Path:new(vim.loop.cwd()):absolute()
+    local absolute_cwd = Path:new(vim.uv.cwd()):absolute()
     local absolute_fname = Path:new(fname):absolute()
 
     if string.find(absolute_cwd, "/cmd/", 1, true) and string.find(absolute_fname, absolute_cwd, 1, true) then

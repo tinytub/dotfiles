@@ -1,6 +1,5 @@
 local M = {}
 
-local Util = require("utils")
 M.opts = nil
 
 -- Borders for LspInfo winodw
@@ -122,19 +121,19 @@ end
 --lsp_config.capabilities = capabilities
 local lsp_handlers = function()
   -- setup autoformat
-  Util.format.register(Util.lsp.formatter())
+  LazyUtil.format.register(Util.lsp.formatter())
 
   local opts = M.opts
 
   -- deprectaed options
   if opts.autoformat ~= nil then
     vim.g.autoformat = opts.autoformat
-    Util.deprecate("nvim-lspconfig.opts.autoformat", "vim.g.autoformat")
+    LazyUtil.deprecate("nvim-lspconfig.opts.autoformat", "vim.g.autoformat")
   end
 
   --require("lsp.format").setup(opts)
   -- setup formatting and keymaps
-  Util.lsp.on_attach(function(client, buffer)
+  LazyUtil.lsp.on_attach(function(client, buffer)
     --require("lsp.format").on_attach(client, buffer)
     --require("lsp.keymaps").Lsp_keymaps(client, buffer)
     require("lsp.keymaps").on_attach(client, buffer)
@@ -168,16 +167,16 @@ local lsp_handlers = function()
 
   -- inlay hints
   if opts.inlay_hints.enabled then
-    Util.lsp.on_attach(function(client, buffer)
+    LazyUtil.lsp.on_attach(function(client, buffer)
       if client.supports_method("textDocument/inlayHint") then
-        Util.toggle.inlay_hints(buffer, true)
+        LazyUtil.toggle.inlay_hints(buffer, true)
       end
     end)
   end
 
   -- code lens
   if opts.codelens.enabled and vim.lsp.codelens then
-    Util.lsp.on_attach(function(client, buffer)
+    LazyUtil.lsp.on_attach(function(client, buffer)
       if client.supports_method("textDocument/codeLens") then
         vim.lsp.codelens.refresh()
         --- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
@@ -229,7 +228,7 @@ local lsp_handlers = function()
 
       if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
         setup(server)
-      else
+      elseif server_opts.enabled ~= false then
         ensure_installed[#ensure_installed + 1] = server
       end
     end
@@ -239,10 +238,10 @@ local lsp_handlers = function()
     mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
   end
 
-  if Util.lsp.lsp_get_config("denols") and Util.lsp.lsp_get_config("tsserver") then
+  if LazyUtil.lsp.lsp_get_config("denols") and LazyUtil.lsp.lsp_get_config("tsserver") then
     local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
-    Util.lsp.lsp_disable("tsserver", is_deno)
-    Util.lsp.lsp_disable("denols", function(root_dir)
+    LazyUtil.lsp.lsp_disable("tsserver", is_deno)
+    LazyUtil.lsp.lsp_disable("denols", function(root_dir)
       return not is_deno(root_dir)
     end)
   end

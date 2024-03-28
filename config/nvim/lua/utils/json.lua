@@ -1,5 +1,4 @@
 local Config = require("core.config")
-local Util = require("utils")
 
 ---@class utils.json
 local M = {}
@@ -14,7 +13,7 @@ local function encode(value, indent)
   elseif t == "number" or t == "boolean" then
     return tostring(value)
   elseif t == "table" then
-    local is_list = Util.is_list(value)
+    local is_list = LazyUtil.is_list(value)
     local parts = {}
     local next_indent = indent .. "  "
 
@@ -57,7 +56,7 @@ function M.save()
 end
 
 function M.migrate()
-  Util.info("Migrating `lazyvim.json` to version `" .. Config.json.version .. "`")
+  LazyUtil.info("Migrating `lazyvim.json` to version `" .. Config.json.version .. "`")
   local json = Config.json
 
   -- v0

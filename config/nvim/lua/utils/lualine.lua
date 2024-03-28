@@ -1,4 +1,3 @@
-local Util = require("utils")
 
 ---@class utils.lualine
 local M = {}
@@ -25,9 +24,9 @@ function M.cmp_source(name, icon)
   end
 
   local colors = {
-    ok = Util.ui.fg("Special"),
-    error = Util.ui.fg("DiagnosticError"),
-    pending = Util.ui.fg("DiagnosticWarn"),
+    ok = LazyUtil.ui.fg("Special"),
+    error = LazyUtil.ui.fg("DiagnosticError"),
+    pending = LazyUtil.ui.fg("DiagnosticWarn"),
   }
 
   return {
@@ -79,6 +78,7 @@ function M.pretty_path(opts)
     modified_hl = "MatchParen",
     directory_hl = "",
     filename_hl = "Bold",
+    modified_sign = "",
   }, opts or {})
 
   return function(self)
@@ -87,8 +87,8 @@ function M.pretty_path(opts)
     if path == "" then
       return ""
     end
-    local root = Util.root.get({ normalize = true })
-    local cwd = Util.root.cwd()
+    local root = LazyUtil.root.get({ normalize = true })
+    local cwd = LazyUtil.root.cwd()
 
     if opts.relative == "cwd" and path:find(cwd, 1, true) == 1 then
       path = path:sub(#cwd + 2)
@@ -103,6 +103,7 @@ function M.pretty_path(opts)
     end
 
     if opts.modified_hl and vim.bo.modified then
+      parts[#parts] = parts[#parts] .. opts.modified_sign
       parts[#parts] = M.format(self, parts[#parts], opts.modified_hl)
     else
       parts[#parts] = M.format(self, parts[#parts], opts.filename_hl)
@@ -125,14 +126,14 @@ function M.root_dir(opts)
     parent = true,
     other = true,
     icon = "󱉭 ",
-    color = Util.ui.fg("Special"),
+    color = LazyUtil.ui.fg("Special"),
     -- separator = { left = "", right = "" },
     separator = { left = "", right = "" },
   }, opts or {})
 
   local function get()
-    local cwd = Util.root.cwd()
-    local root = Util.root.get({ normalize = true })
+    local cwd = LazyUtil.root.cwd()
+    local root = LazyUtil.root.get({ normalize = true })
     local name = vim.fs.basename(root)
 
     if root == cwd then

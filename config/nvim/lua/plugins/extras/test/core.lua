@@ -2,6 +2,7 @@ return {
   {
     "nvim-neotest/neotest",
     dependencies = {
+      "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",
       --'nvim-treesitter/nvim-treesitter',
       --'antoinemadec/FixCursorHold.nvim',
@@ -132,7 +133,7 @@ return {
       },
       {
         "<leader>tT",
-      --  function() require("neotest").run.run(vim.loop.cwd()) end,
+      --  function() require("neotest").run.run(vim.uv.cwd()) end,
         desc =
         "Run All Test Files"
       },

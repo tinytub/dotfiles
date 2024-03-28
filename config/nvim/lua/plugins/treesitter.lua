@@ -183,13 +183,12 @@ return {
       {
         "<leader>ut",
         function()
-          local Util = require("utils")
           local tsc = require("treesitter-context")
           tsc.toggle()
-          if Util.inject.get_upvalue(tsc.toggle, "enabled") then
-            Util.info("Enabled Treesitter Context", { title = "Option" })
+          if LazyUtil.inject.get_upvalue(tsc.toggle, "enabled") then
+            LazyUtil.info("Enabled Treesitter Context", { title = "Option" })
           else
-            Util.warn("Disabled Treesitter Context", { title = "Option" })
+            LazyUtil.warn("Disabled Treesitter Context", { title = "Option" })
           end
         end,
         desc = "Toggle Treesitter Context",

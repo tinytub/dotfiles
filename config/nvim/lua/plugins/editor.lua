@@ -1,5 +1,3 @@
-local Util = require("utils")
-
 local plugins = {
 
   ---- Easily speed up your neovim startup time!
@@ -124,10 +122,11 @@ local plugins = {
     dependencies = {
       {
         "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
-        enabled = vim.fn.executable("make") == 1,
+        build = vim.fn.executable("make") == 1 and "make"
+          or "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+        enabled = vim.fn.executable("make") == 1 or vim.fn.executable("cmake") == 1,
         config = function()
-          Util.on_load("telescope.nvim", function()
+          LazyUtil.on_load("telescope.nvim", function()
             require("telescope").load_extension("fzf")
           end)
         end,
@@ -140,32 +139,32 @@ local plugins = {
         "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>",
         desc = "Switch Buffer",
       },
-      { "<leader>/", Util.telescope("live_grep"), desc = "Grep (root dir)" },
+      { "<leader>/", LazyUtil.telescope("live_grep"), desc = "Grep (root dir)" },
       { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
       {
         "<leader><space>",
-        Util.telescope("files"),
+        LazyUtil.telescope("files"),
         desc = "Find Files (root dir)",
       },
       -- find
       { "<leader>bb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
-      { "<leader>fc", Util.telescope.config_files(), desc = "Find Config File" },
+      { "<leader>fc", LazyUtil.telescope.config_files(), desc = "Find Config File" },
       {
         "<leader>ff",
-        Util.telescope("files"),
+        LazyUtil.telescope("files"),
         desc = "Find Files (root dir)",
       },
       { "<leader>fa", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
-      { "<leader>fF", Util.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
+      { "<leader>fF", LazyUtil.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
       { "<leader>fg", "<cmd>Telescope git_files<cr>", desc = "Find Files (git-files)" },
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
-      { "<leader>fR", Util.telescope("oldfiles", { cwd = vim.loop.cwd() }), desc = "Recent (cwd)" },
+      { "<leader>fR", LazyUtil.telescope("oldfiles", { cwd = vim.uv.cwd() }), desc = "Recent (cwd)" },
       -- git
       { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
       { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
       { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
       { "<leader>gB", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
-      { "<leader>gf", "<cmd>Telescope git_files<cr>", desc = "git_files" },
+      -- { "<leader>gf", "<cmd>Telescope git_files<cr>", desc = "git_files" },
 
       -- search
       { '<leader>s"', "<cmd>Telescope registers<cr>", desc = "Registers" },
@@ -183,8 +182,8 @@ local plugins = {
         "<cmd>Telescope diagnostics<cr>",
         desc = "Workspace diagnostics",
       },
-      { "<leader>sg", Util.telescope("live_grep"), desc = "Grep (root dir)" },
-      { "<leader>sG", Util.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
+      { "<leader>sg", LazyUtil.telescope("live_grep"), desc = "Grep (root dir)" },
+      { "<leader>sG", LazyUtil.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
       { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
       {
         "<leader>sH",
@@ -196,23 +195,23 @@ local plugins = {
       { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
       { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
       { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
-      { "<leader>sw", Util.telescope("grep_string", { word_match = "-w" }), desc = "Word (root dir)" },
-      { "<leader>sW", Util.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Word (cwd)" },
+      { "<leader>sw", LazyUtil.telescope("grep_string", { word_match = "-w" }), desc = "Word (root dir)" },
+      { "<leader>sW", LazyUtil.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Word (cwd)" },
       {
         "<leader>sw",
-        Util.telescope("grep_string"),
+        LazyUtil.telescope("grep_string"),
         mode = "v",
         desc = "Selection (root dir)",
       },
       {
         "<leader>sW",
-        Util.telescope("grep_string", { cwd = false }),
+        LazyUtil.telescope("grep_string", { cwd = false }),
         mode = "v",
         desc = "Selection (cwd)",
       },
       {
         "<leader>uC",
-        Util.telescope("colorscheme", { enable_preview = true }),
+        LazyUtil.telescope("colorscheme", { enable_preview = true }),
         desc = "Colorscheme with preview",
       },
       {
@@ -282,6 +281,26 @@ local plugins = {
           f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
           t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
+          d = { "%f[%d]%d+" }, -- digits
+          e = { -- Word with case
+            {
+              "%u[%l%d]+%f[^%l%d]",
+              "%f[%S][%l%d]+%f[^%l%d]",
+              "%f[%P][%l%d]+%f[^%l%d]",
+              "^[%l%d]+%f[^%l%d]",
+            },
+            "^().*()$",
+          },
+          g = function() -- Whole buffer, similar to `gg` and 'G' motion
+            local from = { line = 1, col = 1 }
+            local to = {
+              line = vim.fn.line("$"),
+              col = math.max(vim.fn.getline("$"):len(), 1),
+            }
+            return { from = from, to = to }
+          end,
+          u = ai.gen_spec.function_call(), -- u for "Usage"
+          U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
         },
       }
     end,
@@ -308,10 +327,15 @@ local plugins = {
           a = "Argument",
           b = "Balanced ), ], }",
           c = "Class",
+          d = "Digit(s)",
+          e = "Word in CamelCase & snake_case",
           f = "Function",
+          g = "Entire file",
           o = "Block, conditional, loop",
           q = "Quote `, \", '",
           t = "Tag",
+          u = "Use/call function & method",
+          U = "Use/call without dot in name",
         }
         local a = vim.deepcopy(i)
         for k, v in pairs(a) do
@@ -407,14 +431,14 @@ local plugins = {
         "<leader>fe",
         function()
           -- require("neo-tree.command").execute { toggle = true, dir = require("utils").get_root() } end,
-          require("neo-tree.command").execute({ toggle = true, dir = Util.root() })
+          require("neo-tree.command").execute({ toggle = true, dir = LazyUtil.root() })
         end,
         desc = "Explorer NeoTree (root dir)",
       },
       {
         "<leader>fE",
         function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
         end,
         desc = "Explorer NeoTree (cwd)",
       },
@@ -441,7 +465,7 @@ local plugins = {
     end,
     init = function()
       if vim.fn.argc(-1) == 1 then
-        local stat = vim.loop.fs_stat(vim.fn.argv(0))
+        local stat = vim.uv.fs_stat(vim.fn.argv(0))
         if stat and stat.type == "directory" then
           require("neo-tree")
         end
@@ -470,6 +494,12 @@ local plugins = {
             end,
             desc = "copy path to clipboard",
           },
+          ["O"] = {
+            function(state)
+              require("lazy.util").open(state.tree:get_node().path, { system = true })
+            end,
+            desc = "open with system application",
+          },
         },
       },
       document_symbols = {
@@ -494,7 +524,7 @@ local plugins = {
     },
     config = function(_, opts)
       local function on_move(data)
-        Util.lsp.on_rename(data.source, data.destination)
+        LazyUtil.lsp.on_rename(data.source, data.destination)
       end
 
       local events = require("neo-tree.events")
@@ -854,14 +884,14 @@ local plugins = {
       {
         "<leader>gg",
         function()
-          Util.terminal.open({ "lazygit" }, { cwd = Util.root.get(), esc_esc = false, ctrl_hjkl = false })
+          LazyUtil.terminal.open({ "lazygit" }, { cwd = LazyUtil.root.get(), esc_esc = false, ctrl_hjkl = false })
         end,
         desc = "Lazygit (root dir)",
       },
       {
         "<leader>gG",
         function()
-          Util.terminal.open({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false })
+          LazyUtil.terminal.open({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false })
         end,
         desc = "Lazygit (cwd)",
       },
@@ -985,6 +1015,7 @@ local plugins = {
         mode = { "n", "v" },
         ["g"] = { name = "+goto" },
         ["gs"] = { name = "+surround" },
+        ["z"] = { name = "+fold" },
         ["<leader>v"] = { "<C-W>v", "split right" },
         ["]"] = { name = "+next" },
         ["["] = { name = "+prev" },

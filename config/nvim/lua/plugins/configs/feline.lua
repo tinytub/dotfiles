@@ -266,7 +266,7 @@ function M.get()
   --        "",
   --        "",
   --      }
-  --      local ms = vim.loop.hrtime() / 1000000
+  --      local ms = vim.uv.hrtime() / 1000000
   --      local frame = math.floor(ms / 120) % #spinners
 
   --      if percentage >= 70 then
@@ -827,7 +827,7 @@ require("feline").winbar.setup({
 --        "",
 --      }
 --
---      local ms = vim.loop.hrtime() / 1000000
+--      local ms = vim.uv.hrtime() / 1000000
 --      local frame = math.floor(ms / 120) % #spinners
 --
 --      if percentage >= 70 then

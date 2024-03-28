@@ -1,3 +1,11 @@
+if lazyvim_docs then
+  -- LSP Server to use for Python.
+  -- Set to "basedpyright" to use basedpyright instead of pyright.
+  vim.g.lazyvim_python_lsp = "pyright"
+end
+
+local lsp = vim.g.lazyvim_python_lsp or "pyright"
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -11,7 +19,15 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        pyright = {},
+        pyright = {
+          enabled = lsp == "pyright",
+        },
+        basedpyright = {
+          enabled = lsp == "basedpyright",
+        },
+        [lsp] = {
+          enabled = true,
+        },
         ruff_lsp = {
           keys = {
             {
@@ -32,7 +48,7 @@ return {
       },
       setup = {
         ruff_lsp = function()
-          require("utils").lsp.on_attach(function(client, _)
+          LazyUtil.lsp.on_attach(function(client, _)
             if client.name == "ruff_lsp" then
               -- Disable hover in favor of Pyright
               client.server_capabilities.hoverProvider = false
@@ -65,8 +81,8 @@ return {
       "mfussenegger/nvim-dap-python",
       -- stylua: ignore
       keys = {
-                { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method" },
-        { "<leader>dPc", function() require('dap-python').test_class() end, desc = "Debug Class" },
+        { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method", ft = "python" },
+        { "<leader>dPc", function() require('dap-python').test_class() end, desc = "Debug Class", ft = "python" },
       },
       config = function()
         local path = require("mason-registry").get_package("debugpy"):get_install_path()
@@ -78,7 +94,7 @@ return {
     "linux-cultist/venv-selector.nvim",
     cmd = "VenvSelect",
     opts = function(_, opts)
-      if require("utils").has("nvim-dap-python") then
+      if LazyUtil.has("nvim-dap-python") then
         opts.dap_enabled = true
       end
       return vim.tbl_deep_extend("force", opts, {

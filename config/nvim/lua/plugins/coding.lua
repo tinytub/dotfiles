@@ -277,12 +277,11 @@ return {
       {
         "<leader>up",
         function()
-          local Util = require("lazy.core.util")
           vim.g.minipairs_disable = not vim.g.minipairs_disable
           if vim.g.minipairs_disable then
-            Util.warn("Disabled auto pairs", { title = "Option" })
+            LazyUtil.warn("Disabled auto pairs", { title = "Option" })
           else
-            Util.info("Enabled auto pairs", { title = "Option" })
+            LazyUtil.info("Enabled auto pairs", { title = "Option" })
           end
         end,
         desc = "Toggle auto pairs",
@@ -292,7 +291,7 @@ return {
   -- snippets
   {
     "L3MON4D3/LuaSnip",
-    build = (not jit.os:find("Windows"))
+    build = (not LazyUtil.is_win())
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
       or nil,
     dependencies = {

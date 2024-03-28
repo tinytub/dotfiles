@@ -31,12 +31,11 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function(_, opts)
-      local Util = require("utils")
       local colors = {
-        [""] = Util.ui.fg("Special"),
-        ["Normal"] = Util.ui.fg("Special"),
-        ["Warning"] = Util.ui.fg("DiagnosticError"),
-        ["InProgress"] = Util.ui.fg("DiagnosticWarn"),
+        [""] = LazyUtil.ui.fg("Special"),
+        ["Normal"] = LazyUtil.ui.fg("Special"),
+        ["Warning"] = LazyUtil.ui.fg("DiagnosticError"),
+        ["InProgress"] = LazyUtil.ui.fg("DiagnosticWarn"),
       }
       table.insert(opts.sections.lualine_x, 2, {
         function()

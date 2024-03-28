@@ -1,4 +1,3 @@
-local Util = require("utils")
 return {
   --lspconfig
   {

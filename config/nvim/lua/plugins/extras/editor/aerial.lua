@@ -1,5 +1,4 @@
 local Config = require("core.config")
-local Util = require("utils")
 
 return {
   desc = "Aerial Symbol Browser",
@@ -55,7 +54,7 @@ return {
     "nvim-telescope/telescope.nvim",
     optional = true,
     opts = function()
-      Util.on_load("telescope.nvim", function()
+      LazyUtil.on_load("telescope.nvim", function()
         require("telescope").load_extension("aerial")
       end)
     end,
@@ -73,11 +72,11 @@ return {
     "folke/edgy.nvim",
     optional = true,
     opts = function(_, opts)
-      local edgy_idx = Util.plugin.extra_idx("ui.edgy")
-      local aerial_idx = Util.plugin.extra_idx("editor.aerial")
+      local edgy_idx = LazyUtil.plugin.extra_idx("ui.edgy")
+      local aerial_idx = LazyUtil.plugin.extra_idx("editor.aerial")
 
       if edgy_idx and edgy_idx > aerial_idx then
-        Util.warn("The `edgy.nvim` extra must be **imported** before the `aerial.nvim` extra to work properly.", {
+        LazyUtil.warn("The `edgy.nvim` extra must be **imported** before the `aerial.nvim` extra to work properly.", {
           title = "LazyVim",
         })
       end
