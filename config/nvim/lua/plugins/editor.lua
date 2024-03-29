@@ -162,7 +162,7 @@ local plugins = {
       -- git
       { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
       { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
-      { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
+      --{ "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
       { "<leader>gB", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
       -- { "<leader>gf", "<cmd>Telescope git_files<cr>", desc = "git_files" },
 

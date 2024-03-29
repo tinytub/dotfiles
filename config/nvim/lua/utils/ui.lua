@@ -103,7 +103,7 @@ function M.statuscolumn()
     ---@type Sign?,Sign?,Sign?
     local left, right, fold
     for _, s in ipairs(M.get_signs(buf, vim.v.lnum)) do
-      if s.name and s.name:find("GitSign") then
+      if s.name and (s.name:find("GitSign") or s.name:find("MiniDiffSign")) then
         right = s
       else
         left = s
@@ -134,6 +134,10 @@ function M.statuscolumn()
       components[2] = is_relnum and "%r" or "%l" -- other lines
     end
     components[2] = "%=" .. components[2] .. " " -- right align
+  end
+
+  if vim.v.virtnum ~= 0 then
+    components[2] = "%= "
   end
 
   return table.concat(components, "")

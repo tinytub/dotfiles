@@ -7,6 +7,31 @@ local M = setmetatable({}, {
   end,
 })
 
+---@alias LazyGitColor {fg?:string, bg?:string, bold?:boolean}
+
+---@class LazyGitTheme: table<number, LazyGitColor>
+---@field activeBorderColor LazyGitColor
+---@field cherryPickedCommitBgColor LazyGitColor
+---@field cherryPickedCommitFgColor LazyGitColor
+---@field defaultFgColor LazyGitColor
+---@field inactiveBorderColor LazyGitColor
+---@field optionsTextColor LazyGitColor
+---@field searchingActiveBorderColor LazyGitColor
+---@field selectedLineBgColor LazyGitColor
+---@field unstagedChangesColor LazyGitColor
+M.theme = {
+  [241] = { fg = "Special" },
+  activeBorderColor = { fg = "MatchParen", bold = true },
+  cherryPickedCommitBgColor = { fg = "Identifier" },
+  cherryPickedCommitFgColor = { fg = "Function" },
+  defaultFgColor = { fg = "Normal" },
+  inactiveBorderColor = { fg = "FloatBorder" },
+  optionsTextColor = { fg = "Function" },
+  searchingActiveBorderColor = { fg = "MatchParen", bold = true },
+  selectedLineBgColor = { bg = "Visual" }, -- set to `default` to have no background colour
+  unstagedChangesColor = { fg = "DiagnosticError" },
+}
+
 M.theme_path = vim.fn.stdpath("cache") .. "/lazygit-theme.yml"
 
 -- re-create theme file on startup
@@ -35,8 +60,22 @@ function M.open(opts)
     if M.dirty then
       M.update_config()
     end
-    M.config_dir = M.config_dir or vim.trim(vim.fn.system("lazygit -cd"))
-    vim.env.LG_CONFIG_FILE = M.config_dir .. "/config.yml" .. "," .. M.theme_path
+
+    if not M.config_dir then
+      local Process = require("lazy.manage.process")
+      local ok, lines = pcall(Process.exec, { "lazygit", "-cd" })
+      if ok then
+        M.config_dir = lines[1]
+        vim.env.LG_CONFIG_FILE = M.config_dir .. "/config.yml" .. "," .. M.theme_path
+      else
+        ---@diagnostic disable-next-line: cast-type-mismatch
+        ---@cast lines string
+        LazyVim.error(
+          { "Failed to get **lazygit** config directory.", "Will not apply **lazygit** config.", "", "# Error:", lines },
+          { title = "lazygit" }
+        )
+      end
+    end
   end
   return LazyUtil.terminal(cmd, opts)
 end
@@ -44,23 +83,35 @@ end
 function M.set_ansi_color(idx, color)
   io.write(("\27]4;%d;%s\7"):format(idx, color))
 end
-
+---@param v LazyGitColor
+---@return string[]
+function M.get_color(v)
+  ---@type string[]
+  local color = {}
+  if v.fg then
+    color[1] = LazyVim.ui.color(v.fg)
+  elseif v.bg then
+    color[1] = LazyVim.ui.color(v.bg, true)
+  end
+  if v.bold then
+    table.insert(color, "bold")
+  end
+  return color
+end
 function M.update_config()
-  -- LazyGit uses color 241 a lot, so also set it to a nice color
-  -- pcall, since some terminals don't like this
-  pcall(M.set_ansi_color, 241, LazyUtil.ui.color("Special") or "blue")
+  ---@type table<string, string[]>
+  local theme = {}
 
-  local theme = {
-    activeBorderColor = { LazyUtil.ui.color("MatchParen") or "orange", "bold" },
-    cherryPickedCommitBgColor = { "cyan" },
-    cherryPickedCommitFgColor = { "blue" },
-    defaultFgColor = { "default" },
-    inactiveBorderColor = { LazyUtil.ui.color("FloatBorder") or "blue" },
-    optionsTextColor = { "blue" },
-    searchingActiveBorderColor = { LazyUtil.ui.color("MatchParen") or "orange", "bold" },
-    selectedLineBgColor = { LazyUtil.ui.color("CursorLine", true) }, -- set to `default` to have no background colour
-    unstagedChangesColor = { "red" },
-  }
+  for k, v in pairs(M.theme) do
+    if type(k) == "number" then
+      local color = M.get_color(v)
+      -- LazyGit uses color 241 a lot, so also set it to a nice color
+      -- pcall, since some terminals don't like this
+      pcall(M.set_ansi_color, k, color[1])
+    else
+      theme[k] = M.get_color(v)
+    end
+  end
   local config = [[
 os:
   editPreset: "nvim-remote"

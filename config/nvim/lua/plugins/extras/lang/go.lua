@@ -247,7 +247,7 @@ return {
       disable_defaults = false,
       --verbose = plugin_debug(),
       -- goimport = 'goimports', -- 'gopls'
-      goimport = "gopls",
+      goimports = "gopls",
       fillstruct = "fillstruct",
       verbose = false,
       lsp_cfg = false,

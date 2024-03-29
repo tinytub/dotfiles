@@ -61,6 +61,15 @@ return {
         --"hrsh7th/cmp-path",
       },
     },
+    -- Not all LSP servers add brackets when completing a function.
+    -- To better deal with this, LazyVim adds a custom option to cmp,
+    -- that you can configure. For example:
+    --
+    -- ```lua
+    -- opts = {
+    --   auto_brackets = { "python" }
+    -- }
+    -- ```
     opts = function()
       vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
@@ -77,7 +86,6 @@ return {
           { "│", hl_name },
         }
       end
-
       --local has_words_before = function()
       --  if vim.api.nvim_buf_get_option(0, 'buftype') == 'prompt' then
       --    return false
@@ -110,6 +118,7 @@ return {
       }
       return {
         preselect = cmp.PreselectMode.None, -- do not select the first item
+        auto_brackets = {}, -- configure any filetype to auto add brackets
         completion = {
           completeopt = "menu,menuone,noinsert,noselect",
         },
@@ -241,13 +250,25 @@ return {
         --},
       }
     end,
+    ---@param opts cmp.ConfigSchema | {auto_brackets?: string[]}
     config = function(_, opts)
-      local cmp = require("cmp")
-
       for _, source in ipairs(opts.sources) do
         source.group_index = source.group_index or 1
       end
+      local cmp = require("cmp")
+      local Kind = cmp.lsp.CompletionItemKind
       cmp.setup(opts)
+      cmp.event:on("confirm_done", function(event)
+        if not vim.tbl_contains(opts.auto_brackets or {}, vim.bo.filetype) then
+          return
+        end
+        local entry = event.entry
+        local item = entry:get_completion_item()
+        if vim.tbl_contains({ Kind.Function, Kind.Method }, item.kind) then
+          local keys = vim.api.nvim_replace_termcodes("()<left>", false, false, true)
+          vim.api.nvim_feedkeys(keys, "i", true)
+        end
+      end)
       -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline("/", {
         mapping = cmp.mapping.preset.cmdline(),
