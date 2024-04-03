@@ -125,12 +125,6 @@ local lsp_handlers = function()
 
   local opts = M.opts
 
-  -- deprectaed options
-  if opts.autoformat ~= nil then
-    vim.g.autoformat = opts.autoformat
-    LazyUtil.deprecate("nvim-lspconfig.opts.autoformat", "vim.g.autoformat")
-  end
-
   --require("lsp.format").setup(opts)
   -- setup formatting and keymaps
   LazyUtil.lsp.on_attach(function(client, buffer)
@@ -150,19 +144,22 @@ local lsp_handlers = function()
   local register_capability = vim.lsp.handlers["client/registerCapability"]
 
   vim.lsp.handlers["client/registerCapability"] = function(err, res, ctx)
+    ---@diagnostic disable-next-line: no-unknown
     local ret = register_capability(err, res, ctx)
-    local client_id = ctx.client_id
-    ---@type lsp.Client
-    local client = vim.lsp.get_client_by_id(client_id)
+    local client = vim.lsp.get_client_by_id(ctx.client_id)
     local buffer = vim.api.nvim_get_current_buf()
     --require("lsp.keymaps").Lsp_keymaps(client, buffer)
     require("lsp.keymaps").on_attach(client, buffer)
     return ret
   end
 
-  for name, icon in pairs(require("plugins.configs.lspkind_icons").diagnostics) do
-    name = "DiagnosticSign" .. name
-    vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+  -- diagnostics signs
+  if vim.fn.has("nvim-0.10.0") == 0 then
+    for severity, icon in pairs(opts.diagnostics.signs.text) do
+      local name = vim.diagnostic.severity[severity]:lower():gsub("^%l", string.upper)
+      name = "DiagnosticSign" .. name
+      vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+    end
   end
 
   -- inlay hints
