@@ -1,3 +1,29 @@
+local function map_split(buf_id, lhs, direction)
+  local minifiles = require("mini.files")
+
+  local function rhs()
+    local window = minifiles.get_target_window()
+
+    -- Noop if the explorer isn't open or the cursor is on a directory.
+    if window == nil or minifiles.get_fs_entry().fs_type == "directory" then
+      return
+    end
+
+    -- Make a new window and set it as target.
+    local new_target_window
+    vim.api.nvim_win_call(window, function()
+      vim.cmd(direction .. " split")
+      new_target_window = vim.api.nvim_get_current_win()
+    end)
+
+    minifiles.set_target_window(new_target_window)
+
+    -- Go in and close the explorer.
+    minifiles.go_in({ close_on_file = true })
+  end
+
+  vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = "Split " .. string.sub(direction, 12) })
+end
 return {
   "echasnovski/mini.files",
   opts = {
@@ -60,5 +86,42 @@ return {
         require("utils").lsp.on_rename(event.data.from, event.data.to)
       end,
     })
+
+    vim.api.nvim_create_autocmd("User", {
+      desc = "Add minifiles split keymaps",
+      pattern = "MiniFilesBufferCreate",
+      callback = function(args)
+        local buf_id = args.data.buf_id
+        map_split(buf_id, "<C-s>", "belowright horizontal")
+        map_split(buf_id, "<C-v>", "belowright vertical")
+      end,
+    })
+    --local map_split = function(buf_id, lhs, direction)
+    --  local minifiles = require("mini.files")
+    --  local rhs = function()
+    --    -- Make new window and set it as target
+    --    local new_target_window
+    --    vim.api.nvim_win_call(minifiles.get_target_window(), function()
+    --      vim.cmd(direction .. " split")
+    --      new_target_window = vim.api.nvim_get_current_win()
+    --    end)
+
+    --    minifiles.set_target_window(new_target_window)
+    --  end
+
+    --  -- Adding `desc` will result into `show_help` entries
+    --  local desc = "Split " .. direction
+    --  vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
+    --end
+
+    --vim.api.nvim_create_autocmd("User", {
+    --  pattern = "MiniFilesBufferCreate",
+    --  callback = function(args)
+    --    local buf_id = args.data.buf_id
+    --    -- Tweak keys to your liking
+    --    map_split(buf_id, "<c-s>", "belowright horizontal")
+    --    map_split(buf_id, "<c-v>", "belowright vertical")
+    --  end,
+    --})
   end,
 }

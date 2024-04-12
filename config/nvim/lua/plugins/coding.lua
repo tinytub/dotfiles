@@ -293,7 +293,11 @@ return {
     enabled = true,
     "echasnovski/mini.pairs",
     event = "VeryLazy",
-    opts = {},
+    opts = {
+      mappings = {
+        ["`"] = { action = "closeopen", pair = "``", neigh_pattern = "[^\\`].", register = { cr = false } },
+      },
+    },
     keys = {
       {
         "<leader>up",
@@ -312,7 +316,7 @@ return {
   -- snippets
   {
     "L3MON4D3/LuaSnip",
-    build = (not LazyUtil.is_win())
+    build = (not LazyVim.is_win())
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
       or nil,
     dependencies = {
@@ -328,29 +332,11 @@ return {
           "saadparwaiz1/cmp_luasnip",
         },
         opts = function(_, opts)
-          local cmp = require("cmp")
           opts.snippet = {
             expand = function(args)
               require("luasnip").lsp_expand(args.body)
             end,
           }
-          opts.mapping["<C-e>"] = cmp.mapping({
-            i = cmp.mapping.abort(),
-            c = cmp.mapping.close(),
-          })
-          opts.mapping["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() and has_words_before() then
-              cmp.select_next_item()
-            elseif require("luasnip").expand_or_jumpable() then
-              --vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "") --  luasnip.expand_or_jump()
-              require("luasnip").expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
-            else
-              fallback()
-            end
-          end, { "i", "s" })
-
           table.insert(opts.sources, { name = "luasnip" })
         end,
       },
@@ -359,6 +345,18 @@ return {
       history = true,
       delete_check_events = "TextChanged",
     },
+    config = function()
+      local luasnip = require("luasnip")
+      luasnip.snippets = {
+        --           all = require("plugins.extras.luasnips.all"),
+        -- 似乎不生效了
+        go = require("plugins.extras.luasnips.golang"),
+        lua = require("plugins.extras.luasnips.lua"),
+        gitcommit = require("plugins.extras.luasnips.gitcommit"),
+        markdown = require("plugins.extras.luasnips.markdown"),
+      }
+    end,
+
     -- stylua: ignore
     --keys = {
     --  {
@@ -371,38 +369,5 @@ return {
     --  { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
     --  { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
     --},
-    config = function()
-      local luasnip = require("luasnip")
-      luasnip.snippets = {
-        --           all = require("plugins.extras.luasnips.all"),
-        go = require("plugins.extras.luasnips.golang"),
-        lua = require("plugins.extras.luasnips.lua"),
-        gitcommit = require("plugins.extras.luasnips.gitcommit"),
-        markdown = require("plugins.extras.luasnips.markdown"),
-      }
-      --local cmp = require("cmp")
-      --local cmp_luasnip = require("cmp_nvim_luasnip")
-      --cmp.setup.buffer({
-      --  sources = {
-      --    { name = "nvim_lsp" },
-      --    { name = "luasnip" },
-      --    { name = "buffer" },
-      --  },
-      --})
-      --cmp_luasnip.setup({
-      --  sources = {
-      --    { name = "nvim_lsp" },
-      --    { name = "luasnip" },
-      --    { name = "buffer" },
-      --  },
-      --})
-      --require("luasnip/loaders/from_vscode").lazy_load()
-      --require("luasnip/loaders/from_vscode").load({
-      --  paths = {
-      --    "~/.config/nvim/snippets",
-      --    "~/.config/nvim/snippets/UltiSnips",
-      --  },
-      --})
-    end,
   },
 }

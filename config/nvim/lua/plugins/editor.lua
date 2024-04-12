@@ -60,24 +60,11 @@ local plugins = {
       large_file_overrides = {
         providers = {
           "lsp",
-          --   "treesitter",
         },
       },
     },
     config = function(_, opts)
       require("illuminate").configure(opts)
-      --vim.api.nvim_set_hl(0, "IlluminatedWordText", { ctermbg = "237", guibg = "#374145" })
-      --vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "IlluminatedWordText" })
-      --vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "IlluminatedWordText" })
-      --local illuminate_bg = string.format("#%06x", vim.api.nvim_get_hl_by_name("Visual", true).background)
-      --vim.api.nvim_set_hl(0, "IlluminatedWordText", { bg = illuminate_bg })
-      --vim.api.nvim_set_hl(0, "IlluminatedWordRead", { bg = illuminate_bg })
-      --vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { bg = illuminate_bg })
-      --local ILLUMINATION = { bg = "#383D47" }
-      --vim.api.nvim_set_hl(0, "IlluminatedWordText", ILLUMINATION)
-      --vim.api.nvim_set_hl(0, "IlluminatedWordRead", ILLUMINATION)
-      --vim.api.nvim_set_hl(0, "IlluminatedWordWrite", ILLUMINATION)
-      --vim.api.nvim_set_hl(0, "@illuminate", ILLUMINATION)
       local function map(key, dir, buffer)
         vim.keymap.set("n", key, function()
           require("illuminate")["goto_" .. dir .. "_reference"](false)
@@ -876,26 +863,7 @@ local plugins = {
       "Gwrite",
       "Gw",
     },
-    keys = {
-      { "<leader>gb", "<cmd>Git blame<cr>", desc = "Git Blame" },
-      { "<leader>gd", "<cmd>Git diff<cr>", desc = "Git Diff" },
-      { "<leader>gl", "<cmd>Git log<cr>", desc = "Git Log" },
-      { "<leader>gs", "<cmd>Git status<cr>", desc = "Git Status" },
-      {
-        "<leader>gg",
-        function()
-          LazyUtil.terminal.open({ "lazygit" }, { cwd = LazyUtil.root.get(), esc_esc = false, ctrl_hjkl = false })
-        end,
-        desc = "Lazygit (root dir)",
-      },
-      {
-        "<leader>gG",
-        function()
-          LazyUtil.terminal.open({ "lazygit" }, { esc_esc = false, ctrl_hjkl = false })
-        end,
-        desc = "Lazygit (cwd)",
-      },
-    },
+    keys = {},
   },
 
   {
