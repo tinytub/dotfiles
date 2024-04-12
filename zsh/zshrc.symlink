@@ -301,3 +301,5 @@ if [[ -n $KITTY_INSTALLATION_DIR ]]; then
   }
 fi
 
+
+alias gf=gf
