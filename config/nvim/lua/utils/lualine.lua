@@ -1,4 +1,3 @@
-
 ---@class utils.lualine
 local M = {}
 

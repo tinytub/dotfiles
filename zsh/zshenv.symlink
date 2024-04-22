@@ -70,4 +70,4 @@ export https_proxy=http://127.0.0.1:7788 http_proxy=http://127.0.0.1:7788 all_pr
 
 #alias -g zplug="LC_MESSAGES=en_US.UTF-8 zplug"
 ulimit -n 4096
-
+source /Users/zhaopeng18/.iterm2_shell_integration.zsh

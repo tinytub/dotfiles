@@ -14,7 +14,7 @@ dynamic_padding = false
 decorations = "Buttonless" #"Buttonless" #"Transparent" #"buttonless"
 opacity = 1.0
 startup_mode = "Windowed"
-dynamic_title = true
+#dynamic_title = true
 #
 #  [window.dimensions]
 #  columns = 160
@@ -30,25 +30,39 @@ instance = "Alacritty"
 
 
 [scrolling]
-history = 10000
+history = 15000
 multiplier = 3
 
 [font]
 size = 12
 builtin_box_drawing = false
 [font.normal]
-family = "JetBrainsMonoNL Nerd Font Mono"
+family = "IosevkaTerm Nerd Font Mono"
 style = "Regular"
 [font.bold]
-family = "JetBrainsMonoNL Nerd Font Mono"
+family = "IosevkaTerm Nerd Font Mono"
 style = "Bold"
 [font.italic]
-family = "JetBrainsMonoNL Nerd Font Mono"
+family = "IosevkaTerm Nerd Font Mono"
 style = "Italic"
 [font.bold_italic]
-family = "JetBrainsMonoNL Nerd Font Mono"
+family = "IosevkaTerm Nerd Font Mono"
 style = "Bold Italic"
 
+
+#[font.normal]
+#family = "JetBrainsMonoNL Nerd Font Mono"
+#style = "Regular"
+#[font.bold]
+#family = "JetBrainsMonoNL Nerd Font Mono"
+#style = "Bold"
+#[font.italic]
+#family = "JetBrainsMonoNL Nerd Font Mono"
+#style = "Italic"
+#[font.bold_italic]
+#family = "JetBrainsMonoNL Nerd Font Mono"
+
+#style = "Bold Italic"
 #[font.offset]
 #x = 0
 #y = 1
@@ -108,20 +122,20 @@ key = "Return"
 mods = "Alt"
 action = "ToggleFullscreen"
 
-[[keyboard.bindings]]
-key = "Key0"
-mods = "Command"
-action = "ResetFontSize"
-
-[[keyboard.bindings]]
-key = "Equals"
-mods = "Command"
-action = "IncreaseFontSize"
-
-[[keyboard.bindings]]
-key = "Minus"
-mods = "Command"
-action = "DecreaseFontSize"
+#[[keyboard.bindings]]
+#key = "Key0"
+#mods = "Command"
+#action = "ResetFontSize"
+#
+#[[keyboard.bindings]]
+#key = "Equals"
+#mods = "Command"
+#action = "IncreaseFontSize"
+#
+#[[keyboard.bindings]]
+#key = "Minus"
+#mods = "Command"
+#action = "DecreaseFontSize"
 
 [[keyboard.bindings]]
 key = "Comma"
@@ -623,52 +637,52 @@ chars = "\u001bZ"
 
 [[keyboard.bindings]]
 key = "Key1"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b1"
 
 [[keyboard.bindings]]
 key = "Key2"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b2"
 
 [[keyboard.bindings]]
 key = "Key3"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b3"
 
 [[keyboard.bindings]]
 key = "Key4"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b4"
 
 [[keyboard.bindings]]
 key = "Key5"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b5"
 
 [[keyboard.bindings]]
 key = "Key6"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b6"
 
 [[keyboard.bindings]]
 key = "Key7"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b7"
 
 [[keyboard.bindings]]
 key = "Key8"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b8"
 
 [[keyboard.bindings]]
 key = "Key9"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b9"
 
 [[keyboard.bindings]]
 key = "Key0"
-mods = "Alt"
+mods = "Command"
 chars = "\u001b0"
 
 [[keyboard.bindings]]
