@@ -187,8 +187,8 @@ set -g status-position bottom
 set -g status-left-length 200     # increase length (from 10)
 set -g status-style 'bg=default'  # transparent background
 
-# STATUS BAR STYLE 0 - catppuccin
 set -g @plugin 'catppuccin/tmux'
+# STATUS BAR STYLE 0 - catppuccin
 set -g @catppuccin_window_right_separator "█ "
 set -g @catppuccin_window_number_position "right"
 set -g @catppuccin_window_middle_separator " | "
@@ -198,6 +198,31 @@ set -g @catppuccin_status_modules_right "application session user host date_time
 set -g @catppuccin_status_left_separator "█"
 set -g @catppuccin_status_right_separator "█"
 set -g @catppuccin_date_time_text "%Y-%m-%d %H:%M:%S"
+
+# STATUS BAR STYLE 3 - catppuccin
+#set -g @catppuccin_window_left_separator ""
+#set -g @catppuccin_window_right_separator " "
+#set -g @catppuccin_window_middle_separator " █"
+#set -g @catppuccin_window_number_position "right"
+#set -g @catppuccin_window_default_fill "number"
+#set -g @catppuccin_window_default_text "#W"
+#set -g @catppuccin_window_current_fill "number"
+#set -g @catppuccin_window_current_text "#W"
+#set -g @catppuccin_status_modules_right "directory user host session"
+#set -g @catppuccin_status_left_separator  " "
+#set -g @catppuccin_status_right_separator ""
+#set -g @catppuccin_status_fill "icon"
+#set -g @catppuccin_status_connect_separator "no"
+#set -g @catppuccin_directory_text "#{pane_current_path}"
+
+
+set -g @catppuccin_icon_window_last "󰖰 "
+set -g @catppuccin_icon_window_current "󰖯 "
+set -g @catppuccin_icon_window_zoom "󰁌 "
+set -g @catppuccin_icon_window_mark "󰃀 "
+set -g @catppuccin_icon_window_silent "󰂛 "
+set -g @catppuccin_icon_window_activity "󱅫 "
+set -g @catppuccin_icon_window_bell "󰂞 "
 
 # STATUS BAR STYLE 1 - PLAIN
 #set -g status-left "#[fg=#b4befe,bg=default]  #S #[fg=#45475a,bg=default]|"
