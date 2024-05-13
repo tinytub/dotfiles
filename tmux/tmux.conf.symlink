@@ -236,9 +236,9 @@ set -g @catppuccin_icon_window_bell "󰂞 "
 # set -g window-status-current-format '#[fg=#2b2a30,bg=default] #[fg=#b4befe,bg=#2b2a30]#I#W#[fg=#2b2a30,bg=default]'
 # set -g window-status-format '#[fg=gray,bg=default]  #I #W '
 
-set -g window-status-last-style 'fg=white,bg=default'
-set -g pane-border-style 'fg=#b4befe'
-set -g pane-active-border-style 'fg=#b4befe'
+#set -g window-status-last-style 'fg=white,bg=default'
+#set -g pane-border-style 'fg=#b4befe'
+#set -g pane-active-border-style 'fg=#b4befe'
 set -g default-terminal "${TERM}"
 set -g message-command-style bg=default,fg=#f2dcdc
 set -g message-style bg=default,fg=#f2dcdc

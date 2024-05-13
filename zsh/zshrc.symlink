@@ -83,8 +83,6 @@ zinit light andrewferrier/fzf-z
 #zinit ice wait"1" lucid
 #zinit light wfxr/forgit
 
-zinit ice wait"3" lucid
-zinit light bonnefoa/kubectl-fzf
 
 zinit wait lucid for \
   OMZP::colored-man-pages \
@@ -286,6 +284,19 @@ tmux-launch () {
     fi
 }
 
+checkrabbish() {
+# Kill unknown high cpu usage process
+# Run the ps command and store the output in a variable
+ps_output=$(ps -ef | grep diagnosticd | grep -v "grep")
+# Check if the output contains the diagnosticd process
+if [ -n "$ps_output" ]; then
+    # Extract the PID of the diagnosticd process
+    pid=$(echo "$ps_output" | awk '{print $2}')
+    # Kill the diagnosticd process using the PID
+    echo "diagnosticd process with PID $pid has been founded. use \"sudo kill -9 $pid\""
+fi
+}
+
 eval "$(starship init zsh)"
 
 # kitty prompt
@@ -301,8 +312,7 @@ if [[ -n $KITTY_INSTALLATION_DIR ]]; then
   }
 fi
 
-
-alias gf=gf
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+checkrabbish
 

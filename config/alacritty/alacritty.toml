@@ -12,14 +12,15 @@ draw_bold_text_with_bright_colors = true
 [window]
 dynamic_padding = false
 decorations = "Buttonless" #"Buttonless" #"Transparent" #"buttonless"
-opacity = 1.0
+#opacity = 1.0
+opacity = 0.95
 startup_mode = "Windowed"
 #dynamic_title = true
 #
-#  [window.dimensions]
-#  columns = 160
-#  lines = 40
-#
+[window.dimensions]
+columns = 180 
+lines = 60
+
  [window.padding]
  x = 2
  y = 2
@@ -36,31 +37,32 @@ multiplier = 3
 [font]
 size = 12
 builtin_box_drawing = false
-[font.normal]
-family = "IosevkaTerm Nerd Font Mono"
-style = "Regular"
-[font.bold]
-family = "IosevkaTerm Nerd Font Mono"
-style = "Bold"
-[font.italic]
-family = "IosevkaTerm Nerd Font Mono"
-style = "Italic"
-[font.bold_italic]
-family = "IosevkaTerm Nerd Font Mono"
-style = "Bold Italic"
-
 
 #[font.normal]
-#family = "JetBrainsMonoNL Nerd Font Mono"
+#family = "IosevkaTerm Nerd Font Mono"
 #style = "Regular"
 #[font.bold]
-#family = "JetBrainsMonoNL Nerd Font Mono"
+#family = "IosevkaTerm Nerd Font Mono"
 #style = "Bold"
 #[font.italic]
-#family = "JetBrainsMonoNL Nerd Font Mono"
+#family = "IosevkaTerm Nerd Font Mono"
 #style = "Italic"
 #[font.bold_italic]
-#family = "JetBrainsMonoNL Nerd Font Mono"
+#family = "IosevkaTerm Nerd Font Mono"
+#style = "Bold Italic"
+
+
+[font.normal]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Regular"
+[font.bold]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Bold"
+[font.italic]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Italic"
+[font.bold_italic]
+family = "JetBrainsMonoNL Nerd Font Mono"
 
 #style = "Bold Italic"
 #[font.offset]
