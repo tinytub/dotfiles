@@ -937,7 +937,7 @@ return {
   },
   {
     "nvimdev/dashboard-nvim",
-    event = "VimEnter",
+    lazy = false,
     opts = function()
       --local logo = [[
       --     ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z

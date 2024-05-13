@@ -28,7 +28,7 @@
 --  end
 --end
 
--- DO NOT USE THIS IN YOU OWN CONFIG!!
+-- DO NOT USE `LazyVim.safe_keymap_set` IN YOUR OWN CONFIG!!
 -- use `vim.keymap.set` instead
 local map = LazyUtil.safe_keymap_set
 

@@ -70,7 +70,7 @@ function M.open(opts)
       else
         ---@diagnostic disable-next-line: cast-type-mismatch
         ---@cast lines string
-        LazyVim.error(
+        LazyUtil.error(
           { "Failed to get **lazygit** config directory.", "Will not apply **lazygit** config.", "", "# Error:", lines },
           { title = "lazygit" }
         )
@@ -89,9 +89,9 @@ function M.get_color(v)
   ---@type string[]
   local color = {}
   if v.fg then
-    color[1] = LazyVim.ui.color(v.fg)
+    color[1] = LazyUtil.ui.color(v.fg)
   elseif v.bg then
-    color[1] = LazyVim.ui.color(v.bg, true)
+    color[1] = LazyUtil.ui.color(v.bg, true)
   end
   if v.bold then
     table.insert(color, "bold")

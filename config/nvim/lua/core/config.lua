@@ -1,4 +1,3 @@
-_G.LazyVim = require("utils")
 _G.LazyUtil = require("utils")
 
 ---@class LazyVimConfig: LazyVimOptions
