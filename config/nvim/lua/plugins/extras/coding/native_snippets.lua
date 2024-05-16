@@ -1,5 +1,5 @@
 if not vim.snippet then
-  LazyVim.warn("Native snippets are only supported on Neovim >= 0.10.0")
+  LazyUtil.warn("Native snippets are only supported on Neovim >= 0.10.0")
   return {}
 end
 return {
@@ -10,13 +10,19 @@ return {
   },
   {
     "nvim-cmp",
-    opts = {
-      snippet = {
+
+    dependencies = {
+      { "rafamadriz/friendly-snippets" },
+      { "garymjr/nvim-snippets", opts = { friendly_snippets = true } },
+    },
+    opts = function(_, opts)
+      opts.snippet = {
         expand = function(args)
           vim.snippet.expand(args.body)
         end,
-      },
-    },
+      }
+      table.insert(opts.sources, { name = "snippets" })
+    end,
     keys = {
       {
         "<Tab>",
