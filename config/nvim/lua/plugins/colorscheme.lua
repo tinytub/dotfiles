@@ -32,6 +32,24 @@ return {
   },
 
   {
+    "scottmckendry/cyberdream.nvim",
+    lazy = false,
+    priority = 1000,
+
+    opts = function()
+      local colors = require("cyberdream.colors").default
+      return {
+        transparent = false,
+        theme = {
+          highlights = {
+            Constant = { fg = colors.magenta },
+          },
+        },
+      }
+    end,
+  },
+
+  {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,

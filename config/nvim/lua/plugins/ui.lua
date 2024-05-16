@@ -239,8 +239,8 @@ return {
       { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
       { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
       { "<leader>snt", function() require("noice").cmd("telescope") end, desc = "Noice Telescope" },
-      { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
-      { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
+      --{ "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
+      --{ "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
     },
   },
 
@@ -326,8 +326,12 @@ return {
         options = {
           -- If lualine is installed tabline will use separators configured in lualine by default.
           -- These options can be used to override those settings.
-          component_separators = { "", "" },
-          section_separators = { "", "" },
+          --component_separators = { "", "" },
+          --section_separators = { "", "" },
+
+          component_separators = { left = " ", right = " " },
+          section_separators = { left = " ", right = " " },
+
           max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
           show_tabs_always = true, -- this shows tabs only when there are more than one tab or if the first tab is named
           show_devicons = true, -- this shows devicons in buffer section
@@ -372,9 +376,12 @@ return {
 
       vim.o.laststatus = vim.g.lualine_laststatus
 
+      local cyberdream = require("lualine.themes.cyberdream") -- or require("lualine.themes.cyberdream-light") for the light variant
       return {
+
         options = {
-          theme = "auto",
+          --theme = "auto",
+          theme = "cyberdream",
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "alpha", "starter" } },
         },
@@ -464,24 +471,34 @@ return {
       -- https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
       -- https://github.com/LazyVim/LazyVim
 
-      local colors = {
-        red = "#cdd6f4",
-        grey = "#181825",
-        black = "#1e1e2e",
-        white = "#313244",
-        base = "#24273A", -- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/palettes/macchiato.lua
-        light_green = "#6c7086",
-        orange = "#fab387",
-        green = "#a6e3a1",
-        blue = "#80A7EA",
+      --local colors = {
+      --  red = "#cdd6f4",
+      --  grey = "#181825",
+      --  black = "#1e1e2e",
+      --  white = "#313244",
+      --  base = "#24273A", -- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/palettes/macchiato.lua
+      --  light_green = "#6c7086",
+      --  orange = "#fab387",
+      --  green = "#a6e3a1",
+      --  blue = "#80A7EA",
+      --}
+      local colors = require("cyberdream.colors").default
+      local cyberdream = require("lualine.themes.cyberdream")
+      local copilot_colors = {
+        [""] = { fg = colors.grey, bg = colors.none },
+        ["Normal"] = { fg = colors.grey, bg = colors.none },
+        ["Warning"] = { fg = colors.red, bg = colors.none },
+        ["InProgress"] = { fg = colors.yellow, bg = colors.none },
       }
+
       -- is e0bc, nf-ple-upper_left_triangle
       -- is e0ba, nf-ple-lower_right_triangle
 
       local vim_icons = {
         function()
           --return " "
-          return " "
+          --return " "
+          return " "
         end,
         separator = { left = "", right = "" },
         color = { bg = "#313244", fg = "#80A7EA" },
@@ -655,7 +672,7 @@ return {
       return {
         options = {
           icons_enabled = true,
-          theme = "auto",
+          -- theme = "auto", -- lazyvim
           globalstatus = true,
           ---- stylua: ignore
           --close_command = function(n) require("mini.bufremove").delete(n, false) end,
@@ -665,16 +682,22 @@ return {
             statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal", "starter" },
             winbar = { "neo-tree", "edgy" },
           },
-          --component_separators = { left = "", right = "" },
+          --ccolorsomponent_separators = { left = "", right = "" },
           --section_separators = { left = "", right = "" },
           --component_separators = { left = '', right = '' },
           --section_separators = { left = '', right = '' },
           -- component_separators = { left = "", right = "" },
           -- section_separators = { left = "", right = "" },
-          component_separators = { left = "", right = "" },
-          section_separators = { left = "", right = "" },
 
+          -- lazyvim
+          --component_separators = { left = "", right = "" },
+          --section_separators = { left = "", right = "" },
           ignore_focus = {},
+
+          component_separators = { left = " ", right = " " },
+          section_separators = { left = " ", right = " " },
+          theme = cyberdream,
+
           --always_divide_middle = true,
           --refresh = {
           --  statusline = 1000,
@@ -802,7 +825,7 @@ return {
           lualine_y = {},
           lualine_z = {},
         },
-        extensions = { "neo-tree", "lazy" },
+        --extensions = { "neo-tree", "lazy" },
         winbar = {
           lualine_a = {},
           lualine_b = {},
@@ -819,6 +842,7 @@ return {
           lualine_y = {},
           lualine_z = {},
         },
+        extensions = { "lazy", "toggleterm", "mason", "neo-tree", "trouble" },
       }
     end,
   },
@@ -1002,4 +1026,98 @@ return {
       },
     },
   },
+  --{
+  --  "nvim-lualine/lualine.nvim",
+  --  event = "VeryLazy",
+  --  opts = function()
+  --    local colors = require("cyberdream.colors").default
+  --    local cyberdream = require("lualine.themes.cyberdream")
+  --    local copilot_colors = {
+  --      [""] = { fg = colors.grey, bg = colors.none },
+  --      ["Normal"] = { fg = colors.grey, bg = colors.none },
+  --      ["Warning"] = { fg = colors.red, bg = colors.none },
+  --      ["InProgress"] = { fg = colors.yellow, bg = colors.none },
+  --    }
+  --    return {
+  --      options = {
+  --        component_separators = { left = " ", right = " " },
+  --        section_separators = { left = " ", right = " " },
+  --        theme = cyberdream,
+  --        globalstatus = true,
+  --        disabled_filetypes = { statusline = { "dashboard", "alpha" } },
+  --      },
+  --      sections = {
+  --        lualine_a = { { "mode", icon = "" } },
+  --        lualine_b = { { "branch", icon = "y" } },
+  --        lualine_c = {
+  --          {
+  --            "diagnostics",
+  --            symbols = {
+  --              error = " ",
+  --              warn = " ",
+  --              info = " ",
+  --              hint = "󰝶 ",
+  --            },
+  --          },
+  --          { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+  --          {
+  --            "filename",
+  --            symbols = { modified = "  ", readonly = "", unnamed = "" },
+  --          },
+  --          {
+  --            function()
+  --              return require("nvim-navic").get_location()
+  --            end,
+  --            cond = function()
+  --              return package.loaded["nvim-navic"] and require("nvim-navic").is_available()
+  --            end,
+  --            color = { fg = colors.grey, bg = colors.none },
+  --          },
+  --        },
+  --        lualine_x = {
+  --          {
+  --            require("lazy.status").updates,
+  --            cond = require("lazy.status").has_updates,
+  --            color = { fg = colors.green },
+  --          },
+  --          {
+  --            function()
+  --              local icon = " "
+  --              local status = require("copilot.api").status.data
+  --              return icon .. (status.message or "")
+  --            end,
+  --            cond = function()
+  --              local ok, clients = pcall(vim.lsp.get_active_clients, { name = "copilot", bufnr = 0 })
+  --              return ok and #clients > 0
+  --            end,
+  --            color = function()
+  --              if not package.loaded["copilot"] then
+  --                return
+  --              end
+  --              local status = require("copilot.api").status.data
+  --              return copilot_colors[status.status] or copilot_colors[""]
+  --            end,
+  --          },
+  --          { "diff" },
+  --        },
+  --        lualine_y = {
+  --          {
+  --            "progress",
+  --          },
+  --          {
+  --            "location",
+  --            color = { fg = colors.cyan, bg = colors.none },
+  --          },
+  --        },
+  --        lualine_z = {
+  --          function()
+  --            return "  " .. os.date("%X") .. " 🚀 "
+  --          end,
+  --        },
+  --      },
+
+  --      extensions = { "lazy", "toggleterm", "mason", "neo-tree", "trouble" },
+  --    }
+  --  end,
+  --},
 }

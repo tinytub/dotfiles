@@ -68,7 +68,8 @@ local opts = {
     end
     --local colors = require("catppuccin.palettes").get_palette()
     --require("colors.catppuccin")
-    vim.cmd.colorscheme("catppuccin")
+    --vim.cmd.colorscheme("catppuccin")
+    vim.cmd.colorscheme("cyberdream")
     --vim.cmd.colorscheme("tokyonight")
   end,
 
