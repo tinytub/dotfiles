@@ -16,6 +16,11 @@ return {
     opts = {
       --autoformat = true,
       -- add any global capabilities here
+
+      -- Enable lsp cursor word highlighting
+      document_highlight = {
+        enabled = true,
+      },
       capabilities = {},
       inlay_hints = {
         enabled = true,

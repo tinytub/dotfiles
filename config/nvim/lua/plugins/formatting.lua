@@ -8,7 +8,10 @@ function M.setup(_, opts)
       if formatter.extra_args then
         ---@diagnostic disable-next-line: undefined-field
         formatter.prepend_args = formatter.extra_args
-        LazyUtil.deprecate(("opts.formatters.%s.extra_args"):format(name), ("opts.formatters.%s.prepend_args"):format(name))
+        LazyUtil.deprecate(
+          ("opts.formatters.%s.extra_args"):format(name),
+          ("opts.formatters.%s.prepend_args"):format(name)
+        )
       end
     end
   end
@@ -51,9 +54,7 @@ return {
           priority = 100,
           primary = true,
           format = function(buf)
-            local plugin = require("lazy.core.config").plugins["conform.nvim"]
-            local Plugin = require("lazy.core.plugin")
-            local opts = Plugin.values(plugin, "opts", false)
+            local opts = LazyUtil.opts("conform.nvim")
             require("conform").format(Util.merge({}, opts.format, { bufnr = buf }))
           end,
           sources = function(buf)

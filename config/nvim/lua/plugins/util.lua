@@ -1,12 +1,4 @@
 return {
-  -- measure startuptime
-  {
-    "dstein64/vim-startuptime",
-    cmd = "StartupTime",
-    config = function()
-      vim.g.startuptime_tries = 10
-    end,
-  },
 
   -- Session management. This saves your session in the background,
   -- keeping track of open buffers, window arrangement, and more.

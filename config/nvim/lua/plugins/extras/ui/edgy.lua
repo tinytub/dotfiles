@@ -64,7 +64,7 @@ return {
             end,
             pinned = true,
             open = function()
-              require("neo-tree.command").execute({ dir = LazyVim.root() })
+              require("neo-tree.command").execute({ dir = LazyUtil.root() })
             end,
             size = { height = 0.5 },
           },

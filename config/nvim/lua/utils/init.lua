@@ -72,7 +72,7 @@ end
 
 ---@param name string
 function M.opts(name)
-  local plugin = require("lazy.core.config").plugins[name]
+  local plugin = require("lazy.core.config").spec.plugins[name]
   if not plugin then
     return {}
   end
@@ -199,4 +199,18 @@ function M.set_user_var(key, value)
   io.write(string.format("\027]1337;SetUserVar=%s=%s\a", key, M.base64(value)))
 end
 
+---@generic T
+---@param list T[]
+---@return T[]
+function M.dedup(list)
+  local ret = {}
+  local seen = {}
+  for _, v in ipairs(list) do
+    if not seen[v] then
+      table.insert(ret, v)
+      seen[v] = true
+    end
+  end
+  return ret
+end
 return M

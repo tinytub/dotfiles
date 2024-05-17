@@ -44,7 +44,7 @@ local opts = {
     --{ import = "plugins.extras.lang.python" },
     --{ import = "plugins.extras.ui.edgy" },
     { import = "plugins.extras.editor.mini-files" },
-    { import = "plugins.extras.editor.navic" },
+    --{ import = "plugins.extras.editor.navic" },
     --{ import = "plugins.extras.editor.aerial" },
     --{ import = "plugins.extras.editor.outline" },
     --{ import = "plugins.extras.database" },
@@ -68,8 +68,8 @@ local opts = {
     end
     --local colors = require("catppuccin.palettes").get_palette()
     --require("colors.catppuccin")
-    --vim.cmd.colorscheme("catppuccin")
-    vim.cmd.colorscheme("cyberdream")
+    vim.cmd.colorscheme("catppuccin")
+    --vim.cmd.colorscheme("cyberdream")
     --vim.cmd.colorscheme("tokyonight")
   end,
 

@@ -5,7 +5,7 @@ if vim.tbl_contains(Config.json.data.extras, "lazyvim.plugins.extras.editor.trou
     local extra = "lazyvim.plugins.extras.editor." .. other
     if vim.tbl_contains(Config.json.data.extras, extra) then
       other = other:gsub("^%l", string.upper)
-      LazyVim.error({
+      LazyUtil.error({
         "**Trouble v3** includes support for document symbols.",
         ("You currently have the **%s** extra enabled."):format(other),
         "Please disable it in your config.",
@@ -54,7 +54,7 @@ return {
     opts = function(_, opts)
       local trouble = require("trouble")
       if not trouble.statusline then
-        LazyVim.error("You have enabled the **trouble-v3** extra,\nbut still need to update it with `:Lazy`")
+        LazyUtil.error("You have enabled the **trouble-v3** extra,\nbut still need to update it with `:Lazy`")
         return
       end
       local symbols = trouble.statusline({

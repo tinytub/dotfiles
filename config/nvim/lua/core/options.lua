@@ -7,6 +7,10 @@ CACHE_PATH = vim.fn.stdpath("cache")
 -- * pwsh
 -- * powershell
 -- LazyVim.terminal.setup("pwsh")
+
+-- Hide deprecation warnings
+vim.g.deprecation_warnings = false
+
 local opt = vim.opt
 local g = vim.g
 
@@ -17,11 +21,10 @@ g.theme_switcher_loaded = false
 opt.laststatus = 3
 opt.showmode = false
 
-if not vim.env.SSH_TTY then
-  -- only set clipboard if not in ssh, to make sure the OSC 52
-  -- integration works automatically. Requires Neovim >= 0.10.0
-  opt.clipboard = "unnamedplus" -- Sync with system clipboard
-end
+-- only set clipboard if not in ssh, to make sure the OSC 52
+-- integration works automatically. Requires Neovim >= 0.10.0
+opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus" -- Sync with system clipboard
+
 opt.completeopt = "menu,menuone,noselect"
 opt.conceallevel = 2 -- Hide * markup for bold and italic, but not markers with substitutions
 
@@ -35,7 +38,7 @@ opt.expandtab = true
 opt.shiftwidth = 4
 opt.smartindent = true
 
-vim.opt.fillchars = {
+opt.fillchars = {
   foldopen = "",
   foldclose = "",
   fold = " ",
@@ -43,10 +46,12 @@ vim.opt.fillchars = {
   diff = "╱",
   eob = " ",
 }
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
-vim.o.foldcolumn = "0"
+
+opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+opt.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
+opt.foldlevelstart = 99
+opt.foldenable = true
+opt.foldcolumn = "0"
 
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
@@ -141,22 +146,20 @@ end
 if vim.fn.has("nvim-0.10") == 1 then
   opt.smoothscroll = true
 end
--- Folding
-vim.opt.foldlevel = 99
 
 if vim.fn.has("nvim-0.9.0") == 1 then
-  vim.opt.statuscolumn = [[%!v:lua.require'utils.ui'.statuscolumn()]]
-  vim.opt.foldtext = "v:lua.require'utils.ui'.foldtext()"
+  opt.statuscolumn = [[%!v:lua.require'utils.ui'.statuscolumn()]]
+  opt.foldtext = "v:lua.require'utils.ui'.foldtext()"
 end
 
 -- HACK: causes freezes on <= 0.9, so only enable on >= 0.10 for now
 if vim.fn.has("nvim-0.10") == 1 then
-  vim.opt.foldmethod = "expr"
-  vim.opt.foldexpr = "v:lua.require'utils'.ui.foldexpr()"
-  vim.opt.foldtext = ""
-  vim.opt.fillchars = "fold: "
+  opt.foldmethod = "expr"
+  opt.foldexpr = "v:lua.require'utils'.ui.foldexpr()"
+  opt.foldtext = ""
+  opt.fillchars = "fold: "
 else
-  vim.opt.foldmethod = "indent"
+  opt.foldmethod = "indent"
 end
 
 vim.o.formatexpr = "v:lua.require'utils'.format.formatexpr()"

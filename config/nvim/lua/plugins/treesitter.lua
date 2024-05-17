@@ -170,14 +170,6 @@ return {
   --  enabled = false,
   --},
 
-  -- Show context of the current function
-  -- 现实当前function的上下文
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    event = "LazyFile",
-    enabled = false,
-    opts = { mode = "cursor", max_lines = 3 },
-  },
   -- Automatically add closing tags for HTML and JSX
   {
     "windwp/nvim-ts-autotag",

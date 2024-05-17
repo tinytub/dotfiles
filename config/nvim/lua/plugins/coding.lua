@@ -32,7 +32,25 @@ return {
       enable_autocmd = false,
     },
   },
-
+  {
+    import = "plugins.extras.coding.mini-comment",
+    enabled = function()
+      if vim.fn.has("nvim-0.10") == 1 then
+        -- Majestically override the native `get_commentstring` function.
+        vim.schedule(function()
+          LazyUtil.inject.set_upvalue(
+            LazyUtil.inject.get_upvalue(require("vim._comment").textobject, "get_comment_parts"),
+            "get_commentstring",
+            function()
+              return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
+            end
+          )
+        end)
+      else
+        return true
+      end
+    end,
+  },
   {
     "hrsh7th/nvim-cmp",
     version = false,
@@ -264,8 +282,9 @@ return {
         end
         local entry = event.entry
         local item = entry:get_completion_item()
-        if vim.tbl_contains({ Kind.Function, Kind.Method }, item.kind) then
-          local prev_char = vim.fn.getline("."):sub(vim.fn.col(".") - 1, vim.fn.col("."))
+        if vim.tbl_contains({ Kind.Function, Kind.Method }, item.kind) and item.insertTextFormat ~= 2 then
+          local cursor = vim.api.nvim_win_get_cursor(0)
+          local prev_char = vim.api.nvim_buf_get_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2] + 1, {})[1]
           if prev_char ~= "(" and prev_char ~= ")" then
             local keys = vim.api.nvim_replace_termcodes("()<left>", false, false, true)
             vim.api.nvim_feedkeys(keys, "i", true)
@@ -317,60 +336,63 @@ return {
     },
   },
   -- snippets
-  {
-    "L3MON4D3/LuaSnip",
-    build = (not LazyUtil.is_win())
-        and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
-      or nil,
-    dependencies = {
-      {
-        "rafamadriz/friendly-snippets",
-        config = function()
-          require("luasnip.loaders.from_vscode").lazy_load()
-        end,
-      },
-      {
+  vim.snippet
+      and {
         "nvim-cmp",
         dependencies = {
-          "saadparwaiz1/cmp_luasnip",
+          { "rafamadriz/friendly-snippets" },
+          { "garymjr/nvim-snippets", opts = { friendly_snippets = true } },
         },
         opts = function(_, opts)
           opts.snippet = {
             expand = function(args)
-              require("luasnip").lsp_expand(args.body)
+              vim.snippet.expand(args.body)
             end,
           }
-          table.insert(opts.sources, { name = "luasnip" })
+          table.insert(opts.sources, { name = "snippets" })
         end,
-      },
-    },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
-    config = function()
-      local luasnip = require("luasnip")
-      luasnip.snippets = {
-        --           all = require("plugins.extras.luasnips.all"),
-        -- 似乎不生效了
-        go = require("plugins.extras.luasnips.golang"),
-        lua = require("plugins.extras.luasnips.lua"),
-        gitcommit = require("plugins.extras.luasnips.gitcommit"),
-        markdown = require("plugins.extras.luasnips.markdown"),
+        keys = {
+          {
+            "<Tab>",
+            function()
+              if vim.snippet.active({ direction = 1 }) then
+                vim.schedule(function()
+                  vim.snippet.jump(1)
+                end)
+                return
+              end
+              return "<Tab>"
+            end,
+            expr = true,
+            silent = true,
+            mode = "i",
+          },
+          {
+            "<Tab>",
+            function()
+              vim.schedule(function()
+                vim.snippet.jump(1)
+              end)
+            end,
+            silent = true,
+            mode = "s",
+          },
+          {
+            "<S-Tab>",
+            function()
+              if vim.snippet.active({ direction = -1 }) then
+                vim.schedule(function()
+                  vim.snippet.jump(-1)
+                end)
+                return
+              end
+              return "<S-Tab>"
+            end,
+            expr = true,
+            silent = true,
+            mode = { "i", "s" },
+          },
+        },
       }
-    end,
-
-    -- stylua: ignore
-    --keys = {
-    --  {
-    --    "<tab>",
-    --    function()
-    --      return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-    --    end,
-    --    expr = true, silent = true, mode = "i",
-    --  },
-    --  { "<tab>", function() require("luasnip").jump(1) end, mode = "s" },
-    --  { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    --},
-  },
+    or { import = "plugins.extras.coding.luasnip", enabled = vim.fn.has("nvim-0.10") == 0 },
 }

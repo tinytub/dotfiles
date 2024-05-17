@@ -136,9 +136,11 @@ local lsp_handlers = function()
     vim.api.nvim_buf_set_option(buffer, "omnifunc", "v:lua.vim.lsp.omnifunc")
     --require("lsp_signature").on_attach(require("plugins.configs.others").signature_opt())
 
-    local navic = require("nvim-navic")
-    navic.attach(client, buffer)
-    vim.g.navic_silence = true
+    if LazyUtil.has("nvim-navic") then
+      local navic = require("nvim-navic")
+      navic.attach(client, buffer)
+      vim.g.navic_silence = true
+    end
   end)
 
   local register_capability = vim.lsp.handlers["client/registerCapability"]
@@ -153,6 +155,8 @@ local lsp_handlers = function()
     return ret
   end
 
+  LazyUtil.lsp.words.setup(opts.document_highlight)
+
   -- diagnostics signs
   if vim.fn.has("nvim-0.10.0") == 0 then
     if type(opts.diagnostics.signs) ~= "boolean" then
@@ -164,27 +168,29 @@ local lsp_handlers = function()
     end
   end
 
-  -- inlay hints
-  if opts.inlay_hints.enabled then
-    LazyUtil.lsp.on_attach(function(client, buffer)
-      if client.supports_method("textDocument/inlayHint") then
-        LazyUtil.toggle.inlay_hints(buffer, true)
-      end
-    end)
-  end
+  if vim.fn.has("nvim-0.10") == 1 then
+    -- inlay hints
+    if opts.inlay_hints.enabled then
+      LazyUtil.lsp.on_attach(function(client, buffer)
+        if client.supports_method("textDocument/inlayHint") then
+          LazyUtil.toggle.inlay_hints(buffer, true)
+        end
+      end)
+    end
 
-  -- code lens
-  if opts.codelens.enabled and vim.lsp.codelens then
-    LazyUtil.lsp.on_attach(function(client, buffer)
-      if client.supports_method("textDocument/codeLens") then
-        vim.lsp.codelens.refresh()
-        --- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
-        vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-          buffer = buffer,
-          callback = vim.lsp.codelens.refresh,
-        })
-      end
-    end)
+    -- code lens
+    if opts.codelens.enabled and vim.lsp.codelens then
+      LazyUtil.lsp.on_attach(function(client, buffer)
+        if client.supports_method("textDocument/codeLens") then
+          vim.lsp.codelens.refresh()
+          --- autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
+          vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+            buffer = buffer,
+            callback = vim.lsp.codelens.refresh,
+          })
+        end
+      end)
+    end
   end
 
   if type(opts.diagnostics.virtual_text) == "table" and opts.diagnostics.virtual_text.prefix == "icons" then

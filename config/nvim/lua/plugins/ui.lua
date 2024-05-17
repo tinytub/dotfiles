@@ -367,101 +367,8 @@ return {
         vim.o.laststatus = 0
       end
     end,
+
     opts = function()
-      -- PERF: we don't need this lualine require madness 🤷
-      local lualine_require = require("lualine_require")
-      lualine_require.require = require
-
-      local icons = require("core.config").icons
-
-      vim.o.laststatus = vim.g.lualine_laststatus
-
-      local cyberdream = require("lualine.themes.cyberdream") -- or require("lualine.themes.cyberdream-light") for the light variant
-      return {
-
-        options = {
-          --theme = "auto",
-          theme = "cyberdream",
-          globalstatus = true,
-          disabled_filetypes = { statusline = { "dashboard", "alpha", "starter" } },
-        },
-        sections = {
-          lualine_a = { "mode" },
-          lualine_b = { "branch" },
-
-          lualine_c = {
-            LazyUtil.lualine.root_dir(),
-            {
-              "diagnostics",
-              symbols = {
-                error = icons.diagnostics.Error,
-                warn = icons.diagnostics.Warn,
-                info = icons.diagnostics.Info,
-                hint = icons.diagnostics.Hint,
-              },
-            },
-            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { LazyUtil.lualine.pretty_path() },
-          },
-          lualine_x = {
-            -- stylua: ignore
-            {
-              function() return require("noice").api.status.command.get() end,
-              cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-              color = LazyUtil.ui.fg("Statement"),
-            },
-            -- stylua: ignore
-            {
-              function() return require("noice").api.status.mode.get() end,
-              cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-              color = LazyUtil.ui.fg("Constant"),
-            },
-            -- stylua: ignore
-            {
-              function() return "  " .. require("dap").status() end,
-              cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-              color = LazyUtil.ui.fg("Debug"),
-            },
-            {
-              require("lazy.status").updates,
-              cond = require("lazy.status").has_updates,
-              color = LazyUtil.ui.fg("Special"),
-            },
-            {
-              "diff",
-              symbols = {
-                added = icons.git.added,
-                modified = icons.git.modified,
-                removed = icons.git.removed,
-              },
-              source = function()
-                local gitsigns = vim.b.gitsigns_status_dict
-                if gitsigns then
-                  return {
-                    added = gitsigns.added,
-                    modified = gitsigns.changed,
-                    removed = gitsigns.removed,
-                  }
-                end
-              end,
-            },
-          },
-          lualine_y = {
-            { "progress", separator = " ", padding = { left = 1, right = 0 } },
-            { "location", padding = { left = 0, right = 1 } },
-          },
-          lualine_z = {
-            function()
-              return " " .. os.date("%R")
-            end,
-          },
-        },
-        extensions = { "neo-tree", "lazy" },
-      }
-    end,
-    opts = function()
-      local navic = require("nvim-navic")
-
       local icons = require("plugins.configs.lspkind_icons")
       -- PERF: we don't need this lualine require madness 🤷
       local lualine_require = require("lualine_require")
@@ -471,25 +378,27 @@ return {
       -- https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
       -- https://github.com/LazyVim/LazyVim
 
-      --local colors = {
-      --  red = "#cdd6f4",
-      --  grey = "#181825",
-      --  black = "#1e1e2e",
-      --  white = "#313244",
-      --  base = "#24273A", -- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/palettes/macchiato.lua
-      --  light_green = "#6c7086",
-      --  orange = "#fab387",
-      --  green = "#a6e3a1",
-      --  blue = "#80A7EA",
-      --}
-      local colors = require("cyberdream.colors").default
-      local cyberdream = require("lualine.themes.cyberdream")
-      local copilot_colors = {
-        [""] = { fg = colors.grey, bg = colors.none },
-        ["Normal"] = { fg = colors.grey, bg = colors.none },
-        ["Warning"] = { fg = colors.red, bg = colors.none },
-        ["InProgress"] = { fg = colors.yellow, bg = colors.none },
+      local colors = {
+        red = "#cdd6f4",
+        grey = "#181825",
+        black = "#1e1e2e",
+        white = "#313244",
+        base = "#24273A", -- https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/palettes/macchiato.lua
+        light_green = "#6c7086",
+        orange = "#fab387",
+        green = "#a6e3a1",
+        blue = "#80A7EA",
       }
+
+      -- cyberdream
+      --local colors = require("cyberdream.colors").default
+      --local cyberdream = require("lualine.themes.cyberdream")
+      --local copilot_colors = {
+      --  [""] = { fg = colors.grey, bg = colors.none },
+      --  ["Normal"] = { fg = colors.grey, bg = colors.none },
+      --  ["Warning"] = { fg = colors.red, bg = colors.none },
+      --  ["InProgress"] = { fg = colors.yellow, bg = colors.none },
+      --}
 
       -- is e0bc, nf-ple-upper_left_triangle
       -- is e0ba, nf-ple-lower_right_triangle
@@ -690,13 +599,11 @@ return {
           -- section_separators = { left = "", right = "" },
 
           -- lazyvim
-          --component_separators = { left = "", right = "" },
-          --section_separators = { left = "", right = "" },
-          ignore_focus = {},
+          component_separators = { left = "", right = "" },
+          section_separators = { left = "", right = "" },
 
-          component_separators = { left = " ", right = " " },
-          section_separators = { left = " ", right = " " },
-          theme = cyberdream,
+          ignore_focus = {},
+          theme = "auto",
 
           --always_divide_middle = true,
           --refresh = {
@@ -855,7 +762,6 @@ return {
         char = "│",
         tab_char = "│",
       },
-      scope = { enabled = false },
       exclude = {
         filetypes = {
           "help",
@@ -873,44 +779,6 @@ return {
       },
     },
     main = "ibl",
-  },
-  -- active indent guide and indent text objects
-  {
-    "echasnovski/mini.indentscope",
-    enabled = true,
-    version = false, -- wait till new 0.7.0 release to put it back on semver
-    event = "LazyFile",
-    opts = {
-      -- symbol = "▏",
-      symbol = "│",
-      options = { try_as_border = true },
-      draw = {
-        --delay = 50,
-        animation = function()
-          return 0
-        end,
-      },
-    },
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "trouble",
-          "lazy",
-          "mason",
-          "notify",
-          "toggleterm",
-          "lazyterm",
-        },
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
-      })
-    end,
   },
   -- todo highlights
   {

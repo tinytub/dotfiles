@@ -230,6 +230,11 @@ map("n", "<leader>gf", function()
   local git_path = vim.api.nvim_buf_get_name(0)
   LazyUtil.lazygit({ args = { "-f", vim.trim(git_path) } })
 end, { desc = "Lazygit current file history" })
+-- quit
+map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
+-- highlights under cursor
+map("n", "<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
+map("n", "<leader>uI", "<cmd>InspectTree<cr>", { desc = "Inspect Tree" })
 
 -- Terminal Mappings
 map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
