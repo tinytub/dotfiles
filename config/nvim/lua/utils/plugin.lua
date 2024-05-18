@@ -11,6 +11,7 @@ M.deprecated_extras = {
   ["plugins.extras.linting.nvim-lint"] = "`nvim-lint` is now the default **LazyVim** linter.",
   ["plugins.extras.ui.dashboard"] = "`dashboard.nvim` is now the default **LazyVim** starter.",
   ["plugins.extras.coding.native_snippets"] = "Native snippets are now the default for **Neovim >= 0.10**",
+  ["plugins.extras.ui.treesitter-rewrite"] = "Disabled `treesitter-rewrite` extra for now. Not ready yet.",
 }
 
 M.deprecated_modules = {

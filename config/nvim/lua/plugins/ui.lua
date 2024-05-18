@@ -585,8 +585,14 @@ return {
           globalstatus = true,
           ---- stylua: ignore
           --close_command = function(n) require("mini.bufremove").delete(n, false) end,
+          close_command = function(n)
+            LazyUtil.ui.bufremove(n)
+          end,
           ---- stylua: ignore
           --right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
+          right_mouse_command = function(n)
+            LazyUtil.ui.bufremove(n)
+          end,
           disabled_filetypes = {
             statusline = { "alpha", "dashboard", "alpha", "neo-tree", "terminal", "starter" },
             winbar = { "neo-tree", "edgy" },

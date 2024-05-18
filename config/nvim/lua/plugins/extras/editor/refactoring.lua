@@ -122,4 +122,14 @@ return {
       end
     end,
   },
+  -- which key integration
+  {
+    "folke/which-key.nvim",
+    optional = true,
+    opts = {
+      defaults = {
+        ["<leader>r"] = { name = "+refactor" },
+      },
+    },
+  },
 }

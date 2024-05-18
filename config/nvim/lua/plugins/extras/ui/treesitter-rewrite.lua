@@ -100,6 +100,7 @@ return {
   },
   {
     "RRethy/vim-illuminate",
+    optional = true,
     enabled = false,
   },
 }
