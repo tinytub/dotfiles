@@ -1,4 +1,9 @@
 return {
+  recommended = function()
+    return LazyUtil.extras.wants({
+      ft = { "json", "jsonc", "json5" },
+    })
+  end,
 
   -- yaml schema support
   {

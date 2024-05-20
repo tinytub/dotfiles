@@ -1,4 +1,10 @@
 return {
+  recommended = function()
+    return LazyUtil.extras.wants({
+      ft = "dockerfile",
+      root = { "Dockerfile", "docker-compose.yml", "compose.yml", "docker-compose.yaml", "compose.yaml" },
+    })
+  end,
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)

@@ -12,6 +12,7 @@ M.deprecated_extras = {
   ["plugins.extras.ui.dashboard"] = "`dashboard.nvim` is now the default **LazyVim** starter.",
   ["plugins.extras.coding.native_snippets"] = "Native snippets are now the default for **Neovim >= 0.10**",
   ["plugins.extras.ui.treesitter-rewrite"] = "Disabled `treesitter-rewrite` extra for now. Not ready yet.",
+  ["plugins.extras.coding.mini-ai"] = "`mini.ai` is now a core LazyVim plugin (again)",
 }
 
 M.deprecated_modules = {

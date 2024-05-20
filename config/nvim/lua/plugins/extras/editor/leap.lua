@@ -50,6 +50,15 @@ return {
       },
     },
   },
+  {
+    "folke/which-key.nvim",
+    optional = true,
+    opts = {
+      defaults = {
+        ["gz"] = { name = "+surround" },
+      },
+    },
+  },
   -- makes some plugins dot-repeatable like leap
   { "tpope/vim-repeat", event = "VeryLazy" },
 }

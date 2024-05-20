@@ -10,7 +10,19 @@ local inlay_hints_settings = {
 }
 
 return {
-
+  recommended = function()
+    return LazyUtil.extras.wants({
+      ft = {
+        "javascript",
+        "javascriptreact",
+        "javascript.jsx",
+        "typescript",
+        "typescriptreact",
+        "typescript.tsx",
+      },
+      root = { "tsconfig.json", "package.json", "jsconfig.json" },
+    })
+  end,
   -- add typescript to treesitter
   {
     "nvim-treesitter/nvim-treesitter",

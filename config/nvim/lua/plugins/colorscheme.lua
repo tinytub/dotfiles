@@ -91,7 +91,7 @@ return {
         --},
 
         symbols_outline = true,
-        treesitter_context = true,
+        --treesitter_context = true,
         mason = true,
         aerial = true,
         alpha = true,
@@ -110,8 +110,8 @@ return {
           enabled = true,
           underlines = {
             errors = { "undercurl" },
-            hints = { "undercurl" },
             warnings = { "undercurl" },
+            hints = { "undercurl" },
             information = { "undercurl" },
           },
           inlay_hints = {

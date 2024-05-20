@@ -1,15 +1,15 @@
 return {
   recommended = function()
     return LazyUtil.extras.wants({
-      ft = "yaml.ansible",
-      root = { "ansible.cfg", ".ansible-lint" },
+      ft = "toml",
+      root = "*.toml",
     })
   end,
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "yaml" })
+        vim.list_extend(opts.ensure_installed, { "toml" })
       end
     end,
   },
@@ -17,28 +17,14 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      -- for ansiblels validation
-      vim.list_extend(opts.ensure_installed, { "ansible-lint" })
+      vim.list_extend(opts.ensure_installed, { "taplo" })
     end,
   },
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        ansiblels = {},
-      },
-    },
-  },
-  {
-    "mfussenegger/nvim-ansible",
-
-    keys = {
-      {
-        "<leader>tr",
-        function()
-          require("ansible").run()
-        end,
-        silent = true,
+        taplo = {},
       },
     },
   },

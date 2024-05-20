@@ -1,4 +1,10 @@
 return {
+  recommended = function()
+    return LazyUtil.extras.wants({
+      ft = "markdown",
+      root = "README.md",
+    })
+  end,
   {
     "stevearc/conform.nvim",
     optional = true,

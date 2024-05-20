@@ -71,7 +71,7 @@ local defaults = {
 }
 
 M.json = {
-  version = 3,
+  version = 4,
   data = {
     version = nil, ---@type string?
     news = {}, ---@type table<string, string>
@@ -129,6 +129,13 @@ function M.setup(opts)
         vim.cmd([[Lazy! load all]])
         vim.cmd([[checkhealth]])
       end, { desc = "Load all plugins and run :checkhealth" })
+
+      local health = require("lazy.health")
+      vim.list_extend(health.valid, {
+        "recommended",
+        "desc",
+        "vscode",
+      })
     end,
   })
 

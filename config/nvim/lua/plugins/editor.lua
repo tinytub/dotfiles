@@ -837,9 +837,7 @@ local plugins = {
       misc_n = {
         mode = { "n" },
         ["<C-x>"] = {
-          function()
-            require("mini.bufremove").delete(0, false)
-          end,
+          LazyUtil.ui.bufremove,
           "Delete Buffer",
         },
         ["<ESC>"] = { "<cmd> noh <CR>", "no highlight" },

@@ -1,11 +1,11 @@
 {
   "extras": [
     "plugins.extras.coding.codeium",
-    "plugins.extras.coding.mini-ai",
     "plugins.extras.coding.mini-surround",
     "plugins.extras.dap.core",
     "plugins.extras.dap.nlua",
     "plugins.extras.database.database",
+    "plugins.extras.editor.dial",
     "plugins.extras.editor.mini-diff",
     "plugins.extras.editor.mini-move",
     "plugins.extras.editor.refactoring",
@@ -28,5 +28,5 @@
   "news": [
 
   ],
-  "version": 3
+  "version": 4
 }

@@ -31,24 +31,52 @@ return {
     opts = {
       enable_autocmd = false,
     },
+    init = function()
+      if vim.fn.has("nvim-0.10") == 1 then
+        vim.schedule(function()
+          local get_option = vim.filetype.get_option
+          vim.filetype.get_option = function(filetype, option)
+            return option == "commentstring" and require("ts_context_commentstring.internal").calculate_commentstring()
+              or get_option(filetype, option)
+          end
+        end)
+      end
+    end,
   },
   {
     import = "plugins.extras.coding.mini-comment",
-    enabled = function()
-      if vim.fn.has("nvim-0.10") == 1 then
-        -- Majestically override the native `get_commentstring` function.
-        vim.schedule(function()
-          LazyUtil.inject.set_upvalue(
-            LazyUtil.inject.get_upvalue(require("vim._comment").textobject, "get_comment_parts"),
-            "get_commentstring",
-            function()
-              return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
-            end
-          )
-        end)
-      else
-        return true
-      end
+    enabled = vim.fn.has("nvim-0.10") == 0,
+  },
+  -- Better text-objects
+  {
+    "echasnovski/mini.ai",
+    event = "VeryLazy",
+    opts = function()
+      LazyUtil.on_load("which-key.nvim", function()
+        vim.schedule(LazyUtil.mini.ai_whichkey)
+      end)
+      local ai = require("mini.ai")
+      return {
+        n_lines = 500,
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter({ -- code block
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+          }),
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
+          d = { "%f[%d]%d+" }, -- digits
+          e = { -- Word with case
+            { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
+            "^().*()$",
+          },
+          i = LazyUtil.mini.ai_indent, -- indent
+          g = LazyUtil.mini.ai_buffer, -- buffer
+          u = ai.gen_spec.function_call(), -- u for "Usage"
+          U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
+        },
+      }
     end,
   },
   {
@@ -203,9 +231,12 @@ return {
             c = cmp.mapping.close(),
           }),
 
-          ["<CR>"] = function(...)
-            return confirm(...)
-          end,
+          --["<CR>"] = function(...)
+          --  return confirm(...)
+          --end,
+
+          ["<CR>"] = LazyUtil.cmp.confirm(),
+          ["<S-CR>"] = LazyUtil.cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<C-CR>"] = function(fallback)
             cmp.abort()
             fallback()
@@ -274,22 +305,14 @@ return {
         source.group_index = source.group_index or 1
       end
       local cmp = require("cmp")
-      local Kind = cmp.lsp.CompletionItemKind
       cmp.setup(opts)
       cmp.event:on("confirm_done", function(event)
-        if not vim.tbl_contains(opts.auto_brackets or {}, vim.bo.filetype) then
-          return
+        if vim.tbl_contains(opts.auto_brackets or {}, vim.bo.filetype) then
+          LazyUtil.cmp.auto_brackets(event.entry)
         end
-        local entry = event.entry
-        local item = entry:get_completion_item()
-        if vim.tbl_contains({ Kind.Function, Kind.Method }, item.kind) and item.insertTextFormat ~= 2 then
-          local cursor = vim.api.nvim_win_get_cursor(0)
-          local prev_char = vim.api.nvim_buf_get_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2] + 1, {})[1]
-          if prev_char ~= "(" and prev_char ~= ")" then
-            local keys = vim.api.nvim_replace_termcodes("()<left>", false, false, true)
-            vim.api.nvim_feedkeys(keys, "i", true)
-          end
-        end
+      end)
+      cmp.event:on("menu_opened", function(event)
+        LazyUtil.cmp.add_missing_snippet_docs(event.window)
       end)
       -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline("/", {
@@ -345,8 +368,8 @@ return {
         },
         opts = function(_, opts)
           opts.snippet = {
-            expand = function(args)
-              vim.snippet.expand(args.body)
+            expand = function(item)
+              return LazyUtil.cmp.expand(item.body)
             end,
           }
           table.insert(opts.sources, { name = "snippets" })
@@ -355,17 +378,11 @@ return {
           {
             "<Tab>",
             function()
-              if vim.snippet.active({ direction = 1 }) then
-                vim.schedule(function()
-                  vim.snippet.jump(1)
-                end)
-                return
-              end
-              return "<Tab>"
+              return vim.snippet.active({ direction = 1 }) and "<cmd>lua vim.snippet.jump(1)<cr>" or "<Tab>"
             end,
             expr = true,
             silent = true,
-            mode = "i",
+            mode = { "i", "s" },
           },
           {
             "<Tab>",
@@ -380,13 +397,7 @@ return {
           {
             "<S-Tab>",
             function()
-              if vim.snippet.active({ direction = -1 }) then
-                vim.schedule(function()
-                  vim.snippet.jump(-1)
-                end)
-                return
-              end
-              return "<S-Tab>"
+              return vim.snippet.active({ direction = -1 }) and "<cmd>lua vim.snippet.jump(-1)<cr>" or "<Tab>"
             end,
             expr = true,
             silent = true,

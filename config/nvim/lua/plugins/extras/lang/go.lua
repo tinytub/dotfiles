@@ -1,4 +1,10 @@
 return {
+  recommended = function()
+    return LazyUtil.extras.wants({
+      ft = { "go", "gomod", "gowork", "gotmpl" },
+      root = { "go.work", "go.mod" },
+    })
+  end,
   {
     "mfussenegger/nvim-dap",
     optional = true,

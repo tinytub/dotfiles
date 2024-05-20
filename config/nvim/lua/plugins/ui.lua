@@ -268,6 +268,7 @@ return {
   {
     "akinsho/bufferline.nvim",
     lazy = false,
+    commit = vim.fn.has("nvim-0.10") == 0 and "73540cb95f8d95aa1af3ed57713c6720c78af915" or nil,
     dependencies = { "catppuccin", "nvim-web-devicons" },
     event = "VeryLazy",
     keys = {
@@ -306,7 +307,7 @@ return {
       opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
       require("bufferline").setup(opts)
       -- Fix bufferline when restoring a session
-      vim.api.nvim_create_autocmd("BufAdd", {
+      vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
         callback = function()
           vim.schedule(function()
             pcall(nvim_bufferline)

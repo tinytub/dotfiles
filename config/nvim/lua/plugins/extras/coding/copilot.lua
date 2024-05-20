@@ -1,6 +1,7 @@
 return {
   -- copilot
   {
+    recommended = true,
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     build = ":Copilot auth",

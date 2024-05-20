@@ -90,7 +90,9 @@ function M.get()
       end,
       desc = "Source Action",
       has = "codeAction",
-    }
+    },
+   { "]]", function() LazyUtil.lsp.words.jump(vim.v.count1) end, has = "documentHighlight", desc = "Next Reference" },
+   { "[[", function() LazyUtil.lsp.words.jump(-vim.v.count1) end, has = "documentHighlight", desc = "Previous reference" }
   }
 
   if require("utils").has("inc-rename.nvim") then
