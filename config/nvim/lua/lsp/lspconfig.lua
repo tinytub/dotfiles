@@ -143,7 +143,7 @@ local lsp_handlers = function()
     end
   end)
 
-  LazyUtil.lsp.setup_dynamic_capability()
+  LazyUtil.lsp.setup()
   LazyUtil.lsp.on_dynamic_capability(require("lsp.keymaps").on_attach)
 
   LazyUtil.lsp.words.setup(opts.document_highlight)
