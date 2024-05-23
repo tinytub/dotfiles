@@ -69,7 +69,7 @@ return {
         dark = "macchiato",
         --dark = "mocha",
       },
-      transparent_background = false,
+      transparent_background = true,
       no_italic = true,
       no_bold = false,
       compile = {
