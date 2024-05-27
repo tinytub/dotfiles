@@ -233,6 +233,11 @@ map("n", "<leader>gf", function()
   local git_path = vim.api.nvim_buf_get_name(0)
   LazyUtil.lazygit({ args = { "-f", vim.trim(git_path) } })
 end, { desc = "Lazygit current file history" })
+
+map("n", "<leader>gl", function()
+  LazyUtil.lazygit({ args = { "log" } })
+end, { desc = "Lazygit Log" })
+
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
 -- highlights under cursor

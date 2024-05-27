@@ -42,12 +42,13 @@ function M.setup()
     ---@diagnostic disable-next-line: no-unknown
     local ret = register_capability(err, res, ctx)
     local client = vim.lsp.get_client_by_id(ctx.client_id)
-    local buffer = vim.api.nvim_get_current_buf()
     if client then
-      vim.api.nvim_exec_autocmds("User", {
-        pattern = "LspDynamicCapability",
-        data = { client_id = client.id, buffer = buffer },
-      })
+      for buffer in pairs(client.attached_buffers) do
+        vim.api.nvim_exec_autocmds("User", {
+          pattern = "LspDynamicCapability",
+          data = { client_id = client.id, buffer = buffer },
+        })
+      end
     end
     return ret
   end
@@ -57,6 +58,18 @@ end
 
 ---@param client vim.lsp.Client
 function M._check_methods(client, buffer)
+  -- don't trigger on invalid buffers
+  if not vim.api.nvim_buf_is_valid(buffer) then
+    return
+  end
+  -- don't trigger on non-listed buffers
+  if not vim.bo[buffer].buflisted then
+    return
+  end
+  -- don't trigger on nofile buffers
+  if vim.bo[buffer].buftype == "nofile" then
+    return
+  end
   for method, clients in pairs(M._supports_method) do
     clients[client] = clients[client] or {}
     if not clients[client][buffer] then
@@ -214,8 +227,9 @@ function M.lsp_disable(server, cond)
   end)
 end
 
----@alias LspWord {from:{[1]:number, [2]:number}, to:{[1]:number, [2]:number}, current?:boolean} 1-0 indexed
+---@alias LspWord {from:{[1]:number, [2]:number}, to:{[1]:number, [2]:number}} 1-0 indexed
 M.words = {}
+M.words.enabled = false
 M.words.ns = vim.api.nvim_create_namespace("vim_lsp_references")
 
 ---@param opts? {enabled?: boolean}
@@ -224,11 +238,13 @@ function M.words.setup(opts)
   if not opts.enabled then
     return
   end
+  M.words.enabled = true
   local handler = vim.lsp.handlers["textDocument/documentHighlight"]
   vim.lsp.handlers["textDocument/documentHighlight"] = function(err, result, ctx, config)
     if not vim.api.nvim_buf_is_loaded(ctx.bufnr) then
       return
     end
+    vim.lsp.buf.clear_references()
     return handler(err, result, ctx, config)
   end
   M.on_supports_method("textDocument/documentHighlight", function(_, buf)
@@ -236,7 +252,7 @@ function M.words.setup(opts)
       group = vim.api.nvim_create_augroup("lsp_word_" .. buf, { clear = true }),
       buffer = buf,
       callback = function(ev)
-        if not M.words.at() then
+        if not ({ M.words.get() })[2] then
           if ev.event:find("CursorMoved") then
             vim.lsp.buf.clear_references()
           else
@@ -248,38 +264,35 @@ function M.words.setup(opts)
   end)
 end
 
----@return LspWord[]
+---@return LspWord[] words, number? current
 function M.words.get()
   local cursor = vim.api.nvim_win_get_cursor(0)
-  return vim.tbl_map(function(extmark)
-    local ret = {
+  local current, ret = nil, {} ---@type number?, LspWord[]
+  for _, extmark in ipairs(vim.api.nvim_buf_get_extmarks(0, M.words.ns, 0, -1, { details = true })) do
+    local w = {
       from = { extmark[2] + 1, extmark[3] },
       to = { extmark[4].end_row + 1, extmark[4].end_col },
     }
-    if cursor[1] >= ret.from[1] and cursor[1] <= ret.to[1] and cursor[2] >= ret.from[2] and cursor[2] <= ret.to[2] then
-      ret.current = true
-    end
-    return ret
-  end, vim.api.nvim_buf_get_extmarks(0, M.words.ns, 0, -1, { details = true }))
-end
-
----@param words? LspWord[]
----@return LspWord?, number?
-function M.words.at(words)
-  for idx, word in ipairs(words or M.words.get()) do
-    if word.current then
-      return word, idx
+    ret[#ret + 1] = w
+    if cursor[1] >= w.from[1] and cursor[1] <= w.to[1] and cursor[2] >= w.from[2] and cursor[2] <= w.to[2] then
+      current = #ret
     end
   end
+  return ret, current
 end
 
-function M.words.jump(count)
-  local words = M.words.get()
-  local _, idx = M.words.at(words)
+---@param count number
+---@param cycle? boolean
+function M.words.jump(count, cycle)
+  local words, idx = M.words.get()
   if not idx then
     return
   end
-  local target = words[idx + count]
+  idx = idx + count
+  if cycle then
+    idx = (idx - 1) % #words + 1
+  end
+  local target = words[idx]
   if target then
     vim.api.nvim_win_set_cursor(0, target.from)
   end

@@ -163,7 +163,9 @@ local lsp_handlers = function()
     -- inlay hints
     if opts.inlay_hints.enabled then
       LazyUtil.lsp.on_supports_method("textDocument/inlayHint", function(client, buffer)
-        LazyUtil.toggle.inlay_hints(buffer, true)
+        if vim.api.nvim_buf_is_valid(buffer) and vim.bo[buffer].buftype == "" then
+          LazyUtil.toggle.inlay_hints(buffer, true)
+        end
       end)
     end
 

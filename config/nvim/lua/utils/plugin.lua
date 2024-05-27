@@ -13,6 +13,7 @@ M.deprecated_extras = {
   ["plugins.extras.coding.native_snippets"] = "Native snippets are now the default for **Neovim >= 0.10**",
   ["plugins.extras.ui.treesitter-rewrite"] = "Disabled `treesitter-rewrite` extra for now. Not ready yet.",
   ["plugins.extras.coding.mini-ai"] = "`mini.ai` is now a core LazyVim plugin (again)",
+  ["plugins.extras.lazyrc"] = "local spec files are now a lazy.nvim feature",
 }
 
 M.deprecated_modules = {
