@@ -18,11 +18,6 @@ return {
     "folke/ts-comments.nvim",
     event = "VeryLazy",
     opts = {},
-    enabled = vim.fn.has("nvim-0.10") == 1,
-  },
-  {
-    import = "plugins.extras.coding.mini-comment",
-    enabled = vim.fn.has("nvim-0.10") == 0,
   },
   -- Better text-objects
   {
@@ -346,57 +341,66 @@ return {
     },
   },
   -- snippets
-  vim.fn.has("nvim-0.10") == 1
-      and {
-        "nvim-cmp",
-        dependencies = {
-          {
-            "garymjr/nvim-snippets",
 
-            opts = {
-              friendly_snippets = true,
-            },
-            dependencies = { "rafamadriz/friendly-snippets" },
-          },
+  {
+    "nvim-cmp",
+    dependencies = {
+      {
+        "garymjr/nvim-snippets",
+        opts = {
+          friendly_snippets = true,
         },
-        opts = function(_, opts)
-          opts.snippet = {
-            expand = function(item)
-              return LazyUtil.cmp.expand(item.body)
-            end,
-          }
-          table.insert(opts.sources, { name = "snippets" })
+        dependencies = { "rafamadriz/friendly-snippets" },
+      },
+    },
+    opts = function(_, opts)
+      opts.snippet = {
+        expand = function(item)
+          return LazyUtil.cmp.expand(item.body)
         end,
-        keys = {
-          {
-            "<Tab>",
-            function()
-              return vim.snippet.active({ direction = 1 }) and "<cmd>lua vim.snippet.jump(1)<cr>" or "<Tab>"
-            end,
-            expr = true,
-            silent = true,
-            mode = { "i", "s" },
-          },
-          {
-            "<Tab>",
-            function()
-              vim.schedule(function()
-                vim.snippet.jump(1)
-              end)
-            end,
-            silent = true,
-            mode = "s",
-          },
-          {
-            "<S-Tab>",
-            function()
-              return vim.snippet.active({ direction = -1 }) and "<cmd>lua vim.snippet.jump(-1)<cr>" or "<Tab>"
-            end,
-            expr = true,
-            silent = true,
-            mode = { "i", "s" },
-          },
+      }
+      table.insert(opts.sources, { name = "snippets" })
+    end,
+    keys = {
+      {
+        "<Tab>",
+        function()
+          return vim.snippet.active({ direction = 1 }) and "<cmd>lua vim.snippet.jump(1)<cr>" or "<Tab>"
+        end,
+        expr = true,
+        silent = true,
+        mode = { "i", "s" },
+      },
+      {
+        "<S-Tab>",
+        function()
+          return vim.snippet.active({ direction = -1 }) and "<cmd>lua vim.snippet.jump(-1)<cr>" or "<Tab>"
+        end,
+        expr = true,
+        silent = true,
+        mode = { "i", "s" },
+      },
+    },
+  },
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = function()
+      return {
+        library = {
+          uv = "luvit-meta/library",
+          lazyvim = "LazyVim",
         },
       }
-    or { import = "plugins.extras.coding.luasnip", enabled = vim.fn.has("nvim-0.10") == 0 },
+    end,
+  },
+  -- Manage libuv types with lazy. Plugin will never be loaded
+  { "Bilal2453/luvit-meta", lazy = true },
+  -- Add lazydev source to cmp
+  {
+    "hrsh7th/nvim-cmp",
+    opts = function(_, opts)
+      table.insert(opts.sources, { name = "lazydev", group_index = 0 })
+    end,
+  },
 }

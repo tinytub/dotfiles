@@ -3,6 +3,13 @@ local Config = require("core.config")
 return {
   desc = "Aerial Symbol Browser",
   {
+    "folke/trouble.nvim",
+    optional = true,
+    keys = {
+      { "<leader>cs", false },
+    },
+  },
+  {
     "stevearc/aerial.nvim",
     event = "LazyFile",
     opts = function()

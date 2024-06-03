@@ -376,16 +376,6 @@ return {
 
       vim.o.laststatus = vim.g.lualine_laststatus
 
-      local trouble = require("trouble")
-      local symbols = trouble.statusline
-        and trouble.statusline({
-          mode = "symbols",
-          groups = {},
-          title = false,
-          filter = { range = true },
-          format = "{kind_icon}{symbol.name:Normal}",
-          hl_group = "lualine_c_normal",
-        })
       -- https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
       -- https://github.com/LazyVim/LazyVim
 
@@ -589,7 +579,7 @@ return {
         color = { bg = "#f38ba8", fg = "#1e1e2e" },
       }
 
-      return {
+      local opts = {
         options = {
           icons_enabled = true,
           -- theme = "auto", -- lazyvim
@@ -651,10 +641,6 @@ return {
               color = { bg = "#80A7EA", fg = "#242735" },
               path = 1,
               separator = { left = "", right = "" },
-            },
-            {
-              symbols and symbols.get,
-              cond = symbols and symbols.has,
             },
             -- space,
             branch,
@@ -772,6 +758,24 @@ return {
         },
         extensions = { "lazy", "toggleterm", "mason", "neo-tree", "trouble" },
       }
+      -- do not add trouble symbols if aerial is enabled
+      if vim.g.trouble_lualine then
+        local trouble = require("trouble")
+        local symbols = trouble.statusline
+          and trouble.statusline({
+            mode = "symbols",
+            groups = {},
+            title = false,
+            filter = { range = true },
+            format = "{kind_icon}{symbol.name:Normal}",
+            hl_group = "lualine_c_normal",
+          })
+        table.insert(opts.sections.lualine_c, {
+          symbols and symbols.get,
+          cond = symbols and symbols.has,
+        })
+      end
+      return opts
     end,
   },
   -- indent guides for Neovim
@@ -811,20 +815,6 @@ return {
     end,
     -- event = 'BufWinEnter',
     enabled = true,
-  },
-
-  {
-    "goolord/alpha-nvim",
-    optional = true,
-    enabled = function()
-      require("utils").warn({
-        "`dashboard.nvim` is now the default LazyVim starter plugin.",
-        "",
-        "To keep using `alpha.nvim`, please enable the `lazyvim.plugins.extras.ui.alpha` extra.",
-        "Or to hide this message, remove the alpha spec from your config.",
-      })
-      return false
-    end,
   },
   {
     "nvimdev/dashboard-nvim",
