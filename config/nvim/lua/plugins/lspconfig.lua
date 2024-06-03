@@ -22,7 +22,14 @@ return {
         document_highlight = {
           enabled = true,
         },
-        capabilities = {},
+        capabilities = {
+          workspace = {
+            fileOperations = {
+              didRename = true,
+              willRename = true,
+            },
+          },
+        },
         inlay_hints = {
           enabled = false,
           exclude = {}, -- filetypes for which you don't want to enable inlay hints

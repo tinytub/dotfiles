@@ -375,6 +375,17 @@ return {
       lualine_require.require = require
 
       vim.o.laststatus = vim.g.lualine_laststatus
+
+      local trouble = require("trouble")
+      local symbols = trouble.statusline
+        and trouble.statusline({
+          mode = "symbols",
+          groups = {},
+          title = false,
+          filter = { range = true },
+          format = "{kind_icon}{symbol.name:Normal}",
+          hl_group = "lualine_c_normal",
+        })
       -- https://github.com/Strazil001/Nvim/blob/main/after/plugin/lualine.lua
       -- https://github.com/LazyVim/LazyVim
 
@@ -640,6 +651,10 @@ return {
               color = { bg = "#80A7EA", fg = "#242735" },
               path = 1,
               separator = { left = "", right = "" },
+            },
+            {
+              symbols and symbols.get,
+              cond = symbols and symbols.has,
             },
             -- space,
             branch,

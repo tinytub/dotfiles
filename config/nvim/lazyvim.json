@@ -9,7 +9,6 @@
     "plugins.extras.editor.mini-diff",
     "plugins.extras.editor.mini-move",
     "plugins.extras.editor.refactoring",
-    "plugins.extras.editor.trouble-v3",
     "plugins.extras.formatting.prettier",
     "plugins.extras.lang.docker",
     "plugins.extras.lang.helm",
@@ -25,8 +24,6 @@
     "plugins.extras.util.mini-hipatterns",
     "plugins.extras.util.project"
   ],
-  "news": [
-
-  ],
-  "version": 5
+  "news": [],
+  "version": 6
 }

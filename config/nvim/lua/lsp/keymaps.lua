@@ -3,8 +3,8 @@ local M = {}
 ---@type LazyKeysLspSpec[]|nil
 M._keys = nil
 
----@alias LazyKeysLspSpec LazyKeysSpec|{has?:string, cond?:fun():boolean}
----@alias LazyKeysLsp LazyKeys|{has?:string, cond?:fun():boolean}
+---@alias LazyKeysLspSpec LazyKeysSpec|{has?:string|string[], cond?:fun():boolean}
+---@alias LazyKeysLsp LazyKeys|{has?:string|string[], cond?:fun():boolean}
 
 ---@return LazyKeysLspSpec[]
 function M.get()
@@ -29,11 +29,7 @@ function M.get()
       desc = "Goto Definition",
       has = "definition"
     },
-    {
-      "gr",
-      "<cmd>Telescope lsp_references<cr>",
-      desc = "References"
-    },
+    { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References", nowait = true },
     {
       "gD",
       vim.lsp.buf.declaration,
@@ -75,7 +71,8 @@ function M.get()
       has = "codeAction"
     },
     { "<leader>cc", vim.lsp.codelens.run, desc = "Run Codelens", mode = { "n", "v" }, has = "codeLens" },
-    { "<leader>cC", vim.lsp.codelens.refresh, desc = "Refresh & Display Codelens", mode = { "n" }, has = "codeLens" },
+      { "<leader>cC", vim.lsp.codelens.refresh, desc = "Refresh & Display Codelens", mode = { "n" }, has = "codeLens" },
+      { "<leader>cR", LazyUtil.lsp.rename_file, desc = "Rename File", mode ={"n"}, has = { "workspace/didRenameFiles", "workspace/willRenameFiles" } },
     {
       "<leader>cA",
       function()
@@ -118,8 +115,16 @@ function M.get()
   return M._keys
 end
 
----@param method string
+---@param method string|string[]
 function M.has(buffer, method)
+  if type(method) == "table" then
+    for _, m in ipairs(method) do
+      if M.has(buffer, m) then
+        return true
+      end
+    end
+    return false
+  end
   method = method:find("/") and method or "textDocument/" .. method
   local clients = require("utils").lsp.get_clients({ bufnr = buffer })
   for _, client in ipairs(clients) do

@@ -1,6 +1,7 @@
 local telescope = require("telescope")
 
 local actions = require("telescope.actions")
+local open_with_trouble = require("trouble.sources.telescope").open
 --local action_state = require("telescope.actions.state")
 --local transform_mod = require('telescope.actions.mt').transform_mod
 
@@ -108,6 +109,8 @@ local opts = {
     -- buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker,
     mappings = {
       i = {
+        ["<c-t>"] = open_with_trouble,
+        ["<a-t>"] = open_with_trouble,
         ["<C-c>"] = actions.close,
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,

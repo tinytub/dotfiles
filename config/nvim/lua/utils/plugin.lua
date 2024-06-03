@@ -14,6 +14,7 @@ M.deprecated_extras = {
   ["plugins.extras.ui.treesitter-rewrite"] = "Disabled `treesitter-rewrite` extra for now. Not ready yet.",
   ["plugins.extras.coding.mini-ai"] = "`mini.ai` is now a core LazyVim plugin (again)",
   ["plugins.extras.lazyrc"] = "local spec files are now a lazy.nvim feature",
+  ["plugins.extras.editor.trouble-v3"] = "Trouble v3 has been merged in main",
 }
 
 M.deprecated_modules = {

@@ -238,6 +238,13 @@ map("n", "<leader>gl", function()
   LazyUtil.lazygit({ args = { "log" } })
 end, { desc = "Lazygit Log" })
 
+map("n", "<leader>wm", function()
+  LazyUtil.toggle.maximize()
+end, { desc = "Maximize Toggle" })
+map("n", "<leader>m", function()
+  LazyUtil.toggle.maximize()
+end, { desc = "Maximize Toggle" })
+
 -- quit
 map("n", "<leader>qq", "<cmd>qa<cr>", { desc = "Quit All" })
 -- highlights under cursor

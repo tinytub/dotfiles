@@ -1,14 +1,3 @@
-local inlay_hints_settings = {
-  includeInlayEnumMemberValueHints = true,
-  includeInlayFunctionLikeReturnTypeHints = true,
-  includeInlayFunctionParameterTypeHints = true,
-  includeInlayParameterNameHints = "literals",
-  includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-  includeInlayPropertyDeclarationTypeHints = true,
-  includeInlayVariableTypeHints = false,
-  includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-}
-
 return {
   recommended = function()
     return LazyUtil.extras.wants({
@@ -25,11 +14,12 @@ return {
   end,
   -- add typescript to treesitter
   {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        vim.list_extend(opts.ensure_installed, { "typescript", "tsx" })
-      end
+
+    "yioneko/nvim-vtsls",
+    lazy = true,
+    opts = {},
+    config = function(_, opts)
+      require("vtsls").config(opts)
     end,
   },
 
