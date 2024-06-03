@@ -1,251 +1,17 @@
-local have_make = vim.fn.executable("make") == 1
-local have_cmake = vim.fn.executable("cmake") == 1
+return {
 
-local plugins = {
-
-  ---- Easily speed up your neovim startup time!
-  "nathom/filetype.nvim",
-
-  -- Lua functions
-  "nvim-lua/plenary.nvim",
-
-  -- lsp signature 展示
-  -- 或者试试 nvim_lsp_signature_help
   {
-    "ray-x/lsp_signature.nvim",
-    event = "VeryLazy",
+    "karb94/neoscroll.nvim",
     enabled = true,
-    dependencies = "nvim-lspconfig",
-    opts = {
-      bind = true,
-      doc_lines = 0,
-      floating_window = true,
-      fix_pos = true,
-      hint_enable = false,
-      hint_prefix = "󰘎 ",
-      hint_scheme = "String",
-      hi_parameter = "Search",
-      max_height = 22,
-      max_width = 10, -- max_width of signature floating_window, line will be wrapped if exceed max_width
-      handler_opts = {
-        border = "single", -- double, single, shadow, none
-      },
-      zindex = 200, -- by default it will be on top of all floating windows, set to 50 send it to bottom
-      padding = "", -- character to pad on left and right of signature can be ' ', or '|'  etc
-    },
-  },
-
-  -- Smarter Splits
-  {
-    "mrjones2014/smart-splits.nvim",
-    module = "smart-splits",
-    opts = {
-      {
-        ignored_filetypes = {
-          "nofile",
-          "quickfix",
-          "qf",
-          "prompt",
-        },
-        ignored_buftypes = { "nofile" },
-      },
-    },
-    --    config = function() require "plugins.configs.smart-splits" end,
-  },
-
-  ---- Better buffer closing
-  --{
-  --  "famiu/bufdelete.nvim",
-  --  module = "bufdelete",
-  --  cmd = { "Bdelete", "Bwipeout" },
-  --},
-
-  -- Fuzzy finder.
-  -- The default key bindings to find files will use Telescope's
-  -- `find_files` or `git_files` depending on whether the
-  -- directory is a git repo.
-  {
-    "nvim-telescope/telescope.nvim",
-    commit = vim.fn.has("nvim-0.9.0") == 0 and "057ee0f8783" or nil,
-    cmd = "Telescope",
-    version = false,
-    dependencies = {
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = have_make and "make"
-          or "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-        enabled = have_make or have_cmake,
-        config = function(plugin)
-          LazyUtil.on_load("telescope.nvim", function()
-            local ok, err = pcall(require("telescope").load_extension, "fzf")
-            if not ok then
-              local lib = plugin.dir .. "/build/libfzf." .. (LazyUtil.is_win() and "dll" or "so")
-              if not vim.uv.fs_stat(lib) then
-                LazyUtil.warn("`telescope-fzf-native.nvim` not built. Rebuilding...")
-                require("lazy").build({ plugins = { plugin }, show = false }):wait(function()
-                  LazyUtil.info("Rebuilding `telescope-fzf-native.nvim` done.\nPlease restart Neovim.")
-                end)
-              else
-                LazyUtil.error("Failed to load `telescope-fzf-native.nvim`:\n" .. err)
-              end
-            end
-          end)
-        end,
-      },
-    },
-
-    keys = {
-      {
-        "<leader>,",
-        "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>",
-        desc = "Switch Buffer",
-      },
-      { "<leader>/", LazyUtil.telescope("live_grep"), desc = "Grep (root dir)" },
-      { "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-      {
-        "<leader><space>",
-        LazyUtil.telescope("files"),
-        desc = "Find Files (root dir)",
-      },
-      -- find
-      { "<leader>bb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
-      { "<leader>fc", LazyUtil.telescope.config_files(), desc = "Find Config File" },
-      {
-        "<leader>ff",
-        LazyUtil.telescope("files"),
-        desc = "Find Files (root dir)",
-      },
-      { "<leader>fa", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
-      { "<leader>fF", LazyUtil.telescope("files", { cwd = false }), desc = "Find Files (cwd)" },
-      { "<leader>fg", "<cmd>Telescope git_files<cr>", desc = "Find Files (git-files)" },
-      { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent" },
-      { "<leader>fR", LazyUtil.telescope("oldfiles", { cwd = vim.uv.cwd() }), desc = "Recent (cwd)" },
-      -- git
-      { "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "commits" },
-      { "<leader>gs", "<cmd>Telescope git_status<CR>", desc = "status" },
-      --{ "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
-      { "<leader>gB", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
-      -- { "<leader>gf", "<cmd>Telescope git_files<cr>", desc = "git_files" },
-
-      -- search
-      { '<leader>s"', "<cmd>Telescope registers<cr>", desc = "Registers" },
-      { "<leader>sa", "<cmd>Telescope autocommands<cr>", desc = "Auto Commands" },
-      { "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Buffer" },
-      { "<leader>sc", "<cmd>Telescope command_history<cr>", desc = "Command History" },
-      { "<leader>sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-      {
-        "<leader>sd",
-        "<cmd>Telescope diagnostics bufnr=0<cr>",
-        desc = "Document diagnostics",
-      },
-      {
-        "<leader>sD",
-        "<cmd>Telescope diagnostics<cr>",
-        desc = "Workspace diagnostics",
-      },
-      { "<leader>sg", LazyUtil.telescope("live_grep"), desc = "Grep (root dir)" },
-      { "<leader>sG", LazyUtil.telescope("live_grep", { cwd = false }), desc = "Grep (cwd)" },
-      { "<leader>sh", "<cmd>Telescope help_tags<cr>", desc = "Help Pages" },
-      {
-        "<leader>sH",
-        "<cmd>Telescope highlights<cr>",
-        desc = "Search Highlight Groups",
-      },
-      { "<leader>sj", "<cmd>Telescope jumplist<cr>", desc = "Jumplist" },
-      { "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
-      { "<leader>sl", "<cmd>Telescope loclist<cr>", desc = "Location List" },
-      { "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-      { "<leader>sm", "<cmd>Telescope marks<cr>", desc = "Jump to Mark" },
-      { "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
-      { "<leader>sR", "<cmd>Telescope resume<cr>", desc = "Resume" },
-      { "<leader>sq", "<cmd>Telescope quickfix<cr>", desc = "Quickfix List" },
-      { "<leader>sw", LazyUtil.telescope("grep_string", { word_match = "-w" }), desc = "Word (root dir)" },
-      { "<leader>sW", LazyUtil.telescope("grep_string", { cwd = false, word_match = "-w" }), desc = "Word (cwd)" },
-      {
-        "<leader>sw",
-        LazyUtil.telescope("grep_string"),
-        mode = "v",
-        desc = "Selection (root dir)",
-      },
-      {
-        "<leader>sW",
-        LazyUtil.telescope("grep_string", { cwd = false }),
-        mode = "v",
-        desc = "Selection (cwd)",
-      },
-      {
-        "<leader>uC",
-        LazyUtil.telescope("colorscheme", { enable_preview = true }),
-        desc = "Colorscheme with preview",
-      },
-      {
-        "<leader>ss",
-        function()
-          require("telescope.builtin").lsp_document_symbols({
-            symbols = require("core.config").get_kind_filter(),
-          })
-        end,
-        desc = "Goto Symbol",
-      },
-      {
-        "<leader>sS",
-        function()
-          require("telescope.builtin").lsp_dynamic_workspace_symbols({
-            symbols = require("core.config").get_kind_filter(),
-          })
-        end,
-        desc = "Goto Symbol (Workspace)",
-      },
-    },
+    --        event = "WinScrolled",
     config = function()
-      require("plugins.configs.telescope")
+      require("neoscroll").setup()
     end,
-  },
-
-  -- Smooth escaping
-  {
-    "max397574/better-escape.nvim",
-    enabled = false,
-    event = "InsertCharPre",
-    opts = {
-      mapping = { "jk" },
-      timeout = 300,
-      clear_empty_lines = false, -- clear line after escaping if there is only whitespace
-      keys = "<Esc>",
-    },
-  },
-
-  {
-    "jackMort/ChatGPT.nvim",
-    enabled = false,
     event = "VeryLazy",
-    config = function()
-      require("chatgpt").setup()
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
   },
-  {
-    "nvim-tree/nvim-tree.lua",
-    --after = "nvim-web-devicons",
-    ft = "alpha",
-    event = "VimEnter",
-    cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    --cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-    config = function()
-      --require("plugins.configs.nvimtree").config()
-      require("plugins.configs.nvimtree")
-    end,
-    enabled = false,
-  },
+
   {
     "nvim-neo-tree/neo-tree.nvim",
-    cmd = { "Neotree", "NeotreeLogs" },
-    version = "3.*",
-    enabled = true,
     dependencies = {
       {
         "s1n7ax/nvim-window-picker",
@@ -271,286 +37,68 @@ local plugins = {
         end,
       },
     },
-    keys = {
-      {
-        "<leader>fe",
-        function()
-          -- require("neo-tree.command").execute { toggle = true, dir = require("utils").get_root() } end,
-          require("neo-tree.command").execute({ toggle = true, dir = LazyUtil.root() })
-        end,
-        desc = "Explorer NeoTree (root dir)",
-      },
-      {
-        "<leader>fE",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
-        end,
-        desc = "Explorer NeoTree (cwd)",
-      },
-      { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (root dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
-      {
-        "<leader>ge",
-        function()
-          require("neo-tree.command").execute({ source = "git_status", toggle = true })
-        end,
-        desc = "Git explorer",
-      },
-      {
-        "<leader>be",
-        function()
-          require("neo-tree.command").execute({ source = "buffers", toggle = true })
-        end,
-        desc = "Buffer explorer",
-      },
-    },
-
-    deactivate = function()
-      vim.cmd([[Neotree close]])
-    end,
-    init = function()
-      -- FIX: use `autocmd` for lazy-loading neo-tree instead of directly requiring it,
-      -- because `cwd` is not set up properly.
-      vim.api.nvim_create_autocmd("BufEnter", {
-        group = vim.api.nvim_create_augroup("Neotree_start_directory", { clear = true }),
-        desc = "Start Neo-tree with directory",
-        once = true,
-        callback = function()
-          if package.loaded["neo-tree"] then
-            return
-          else
-            local stats = vim.uv.fs_stat(vim.fn.argv(0))
-            if stats and stats.type == "directory" then
-              require("neo-tree")
-            end
-          end
-        end,
-      })
-    end,
     opts = {
-      sources = { "filesystem", "buffers", "git_status", "document_symbols" },
-      open_files_do_not_replace_types = { "terminal", "Trouble", "trouble", "qf", "Outline" },
-      filesystem = {
-        bind_to_cwd = false,
-        follow_current_file = { enabled = true },
-        use_libuv_file_watcher = true,
-      },
       window = {
         mappings = {
-          ["<space>"] = "none",
           ["<c-x>"] = "split_with_window_picker",
           ["<c-v>"] = "vsplit_with_window_picker",
           ["l"] = "open_with_window_picker",
           ["<cr>"] = "open_drop",
-          ["Y"] = {
-            function(state)
-              local node = state.tree:get_node()
-              local path = node:get_id()
-              vim.fn.setreg("+", path, "c")
-            end,
-            desc = "copy path to clipboard",
-          },
-          ["O"] = {
-            function(state)
-              require("lazy.util").open(state.tree:get_node().path, { system = true })
-            end,
-            desc = "open with system application",
-          },
         },
       },
-      document_symbols = {
-        follow_cursor = true,
-        renderers = {
-          symbol = {
-            { "indent", with_expanders = true },
-            { "kind_icon", default = "?" },
-            { "name", zindex = 10 },
-            -- removed the kind text as its redundant with the icon
-          },
-        },
-      },
-      default_component_configs = {
-        indent = {
-          with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
-          expander_collapsed = "",
-          expander_expanded = "",
-          expander_highlight = "NeoTreeExpander",
-        },
-        git_status = {
-          symbols = {
-            unstaged = "󰄱",
-            staged = "󰱒",
-          },
-        },
-      },
-    },
-    config = function(_, opts)
-      local function on_move(data)
-        LazyUtil.lsp.on_rename(data.source, data.destination)
-      end
-
-      local events = require("neo-tree.events")
-      opts.event_handlers = opts.event_handlers or {}
-      vim.list_extend(opts.event_handlers, {
-        { event = events.FILE_MOVED, handler = on_move },
-        { event = events.FILE_RENAMED, handler = on_move },
-      })
-      -- some from https://github.com/CKolkey/config/blob/master/nvim/lua/plugins/neo-tree.lua
-      -- Enable a strong cursorline.
-      local function set_cursorline()
-        vim.wo.winhighlight = "CursorLine:WildMenu"
-        vim.wo.cursorline = true
-        vim.o.signcolumn = "auto"
-      end
-
-      -- Find previous neo-tree window and clear bright highlight selection.
-      -- Don't hide cursorline though, so 'follow_current_file' works.
-      local function reset_cursorline()
-        local winid = vim.fn.win_getid(vim.fn.winnr("#"))
-        vim.api.nvim_win_set_option(winid, "winhighlight", "")
-      end
-
-      --require("plugins.configs.neotree").setup(opts)
-
-      opts = vim.tbl_deep_extend("force", {
-        event_handlers = { -- {{{
-          { event = "neo_tree_buffer_enter", handler = set_cursorline },
-          { event = "neo_tree_buffer_leave", handler = reset_cursorline },
-        },
-      }, opts or {})
-
-      require("neo-tree").setup(opts)
-
-      vim.api.nvim_create_autocmd("TermClose", {
-        pattern = "*lazygit",
-        callback = function()
-          if package.loaded["neo-tree.sources.git_status"] then
-            require("neo-tree.sources.git_status").refresh()
-          end
-        end,
-      })
-    end,
-  },
-
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "LazyFile",
-    enabled = true,
-    --cond = function()
-    --   return vim.fn.isdirectory ".git" == 1
-    --end,
-    opts = {
-      --numhl         = false,
-      watch_gitdir = {
-        interval = 100,
-      },
-      sign_priority = 5,
-      signs = {
-        add = { text = "▎" }, -- catppuccin
-        change = { text = "▎" }, -- catppuccin
-        --add          = { text = "▐" },
-        --change       = { text = "▐" },
-        --topdelete = { text = "契" }, -- catppuccin
-        --delete       = { text = "▎" }, -- catppuccin
-        --topdelete    = { text = "▔" }, -- catppuccin
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "▎" }, -- catppuccin
-        untracked = { text = "▎" }, -- catppuccin
-      },
-      --current_line_blame           = false,
-      --current_line_blame_formatter = "<author>:<author_time:%Y-%m-%d> - <summary>",
-      --current_line_blame_opts      = {
-      --  virt_text         = true,
-      --  -- virt_text_pos     = "right_align",
-      --  virt_text_pos     = "eol",
-      --  delay             = 1000,
-      --  ignore_whitespace = true,
+      --document_symbols = {
+      --  follow_cursor = true,
+      --  renderers = {
+      --    symbol = {
+      --      { "indent", with_expanders = true },
+      --      { "kind_icon", default = "?" },
+      --      { "name", zindex = 10 },
+      --      -- removed the kind text as its redundant with the icon
+      --    },
+      --  },
       --},
-      on_attach = function(buffer)
-        local gs = package.loaded.gitsigns
-        local function map(mode, l, r, desc)
-          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
-        end
-        -- stylua: ignore start
-        map("n", "]h", function() gs.nav_hunk("next") end, "Next Hunk")
-        map("n", "[h", function() gs.nav_hunk("prev") end, "Prev Hunk")
-        map("n", "]H", function() gs.nav_hunk("last") end, "Last Hunk")
-        map("n", "[H", function() gs.nav_hunk("first") end, "First Hunk")
-        map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-        map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-        map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-        map("n", "<leader>ghp", gs.preview_hunk_inline, "Preview Hunk Inline")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
-        map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
-      end,
     },
-    --config = function() require("plugins.configs.gitsigns").config() end,
-    --init = function()
-    --  -- load gitsigns only when a git file is opened
-    --  vim.api.nvim_create_autocmd({ "BufRead" }, {
-    --    group = vim.api.nvim_create_augroup("GitSignslazy_load", { clear = true }),
-    --    callback = function()
-    --      vim.fn.system("git -C " .. '"' .. vim.fn.expand "%:p:h" .. '"' .. " rev-parse")
-    --      if vim.v.shell_error == 0 then
-    --        vim.api.nvim_del_augroup_by_name "GitSignslazy_load"
-    --        vim.schedule(function() require("lazy").load { plugins = "gitsigns.nvim" } end)
-    --      end
-    --    end,
-    --  })
+    --config = function(_, opts)
+    --  -- some from https://github.com/CKolkey/config/blob/master/nvim/lua/plugins/neo-tree.lua
+    --  -- Enable a strong cursorline.
+    --  local function set_cursorline()
+    --    vim.wo.winhighlight = "CursorLine:WildMenu"
+    --    vim.wo.cursorline = true
+    --    vim.o.signcolumn = "auto"
+    --  end
+
+    --  -- Find previous neo-tree window and clear bright highlight selection.
+    --  -- Don't hide cursorline though, so 'follow_current_file' works.
+    --  local function reset_cursorline()
+    --    local winid = vim.fn.win_getid(vim.fn.winnr("#"))
+    --    vim.api.nvim_win_set_option(winid, "winhighlight", "")
+    --  end
     --end,
   },
-
   {
-    "echasnovski/mini.starter",
-    --optional = false,
-    opts = function(_, opts)
-      local items = {
-        {
-          name = "Projects",
-          action = "Telescope projects",
-          section = string.rep(" ", 22) .. "Telescope",
-        },
-      }
-      vim.list_extend(opts.items, items)
-    end,
-  },
-
-  -- matchup 高亮显示光标所在位置对应的括号,函数等
-  --{
-  --  "andymass/vim-matchup",
-  --  event = "CursorMoved",
-  --  --opt = true,
-  --  config = function()
-  --    require("plugins.configs.matchup").config()
-  --  end,
-  --  enabled = true,
-  --},
-
-  -- 直接跳到数字
-  {
-    "nacro90/numb.nvim",
-    --event = "BufRead",
+    "vim-test/vim-test",
+    event = "BufRead",
     config = function()
-      require("numb").setup({
-        show_numbers = true, -- Enable 'number' for the window while peeking
-        show_cursorline = true, -- Enable 'cursorline' for the window while peeking
-      })
-    end,
-    enabled = true,
-  },
-  -- Better quickfix
-  {
-    "kevinhwang91/nvim-bqf",
-    ft = "qf",
-    cmd = "BqfAutoToggle",
-    event = "QuickFixCmdPost",
-    config = function()
-      require("plugins.configs.nvim-bqf")
+      vim.cmd([[
+              function! ToggleTermStrategy(cmd) abort
+                call luaeval("require('toggleterm').exec(_A[1], _A[2])", [a:cmd, 0])
+              endfunction
+
+              let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
+            ]])
+
+      vim.g["test#strategy"] = "toggleterm"
+      --vim.g["test#strategy"] = "neovim"
+      --vim.g["test#strategy"] = {
+      --  nearest = "neovim",
+      --  file = "neovim",
+      --  suite = "neovim"
+      --}
+      vim.g["test#neovim#term_position"] = "vert"
+      vim.g["test#preserve_screen"] = 1
+      vim.g["test#go#runner"] = "gotest"
+      vim.g["test#go#gotest#options"] = "-v --count=1"
+      vim.g["test#echo_command"] = 1
     end,
     enabled = true,
   },
@@ -601,277 +149,4 @@ local plugins = {
     },
     --disable = not lvim.builtin.terminal.active,
   },
-
-  -- LSP Colors
-  {
-    "folke/lsp-colors.nvim",
-    event = "BufRead",
-    enabled = true,
-  },
-  -- Lazygit
-  {
-    "kdheepak/lazygit.nvim",
-    cmd = "LazyGit",
-    enabled = false,
-  },
-  {
-    "jose-elias-alvarez/typescript.nvim",
-  },
-
-  -- smooth scroll
-  {
-    "psliwka/vim-smoothie",
-    event = "VeryLazy",
-    enabled = false,
-  },
-  {
-    "karb94/neoscroll.nvim",
-    enabled = true,
-    --        event = "WinScrolled",
-    config = function()
-      require("neoscroll").setup()
-    end,
-    event = "VeryLazy",
-  },
-
-  -- Add Flash
-  {
-    "folke/flash.nvim",
-    event = "VeryLazy",
-    vscode = true,
-    ---@type Flash.Config
-    opts = {
-      search = {
-        -- search/jump in all windows
-        multi_window = false,
-        -- search direction
-        forward = true,
-        warp = false,
-      },
-      modes = {
-        -- treesitter = {
-        --   label = {
-        --     rainbow = { enabled = true },
-        --   },
-        -- },
-        char = {
-          jump_labels = false,
-        },
-        treesitter_search = {
-          label = {
-            rainbow = { enabled = true },
-          },
-        },
-      },
-    },
-    -- stylua: ignore
-    keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end,       desc = "Flash" },
-      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o",               function() require("flash").remote() end,     desc = "Remote Flash" },
-      {
-        "R",
-        mode = { "o", "x" },
-        function() require("flash").treesitter_search() end,
-        desc =
-        "Treesitter Search"
-      },
-      {
-        "<c-s>",
-        mode = { "c" },
-        function() require("flash").toggle() end,
-        desc =
-        "Toggle Flash Search"
-      },
-    },
-  },
-
-  {
-    enabled = false,
-    "unblevable/quick-scope",
-    config = function()
-      require("plugins.configs.others").quickscope()
-    end,
-  },
-
-  -- Git
-  {
-    "tpope/vim-fugitive",
-    event = "BufRead",
-    cmd = {
-      "Git",
-      "Gdiff",
-      "Gdiffsplit",
-      "Gvdiffsplit",
-      "Gwrite",
-      "Gw",
-    },
-    keys = {},
-  },
-
-  {
-    "vim-test/vim-test",
-    event = "BufRead",
-    config = function()
-      vim.cmd([[
-              function! ToggleTermStrategy(cmd) abort
-                call luaeval("require('toggleterm').exec(_A[1], _A[2])", [a:cmd, 0])
-              endfunction
-
-              let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
-            ]])
-
-      vim.g["test#strategy"] = "toggleterm"
-      --vim.g["test#strategy"] = "neovim"
-      --vim.g["test#strategy"] = {
-      --  nearest = "neovim",
-      --  file = "neovim",
-      --  suite = "neovim"
-      --}
-      vim.g["test#neovim#term_position"] = "vert"
-      vim.g["test#preserve_screen"] = 1
-      vim.g["test#go#runner"] = "gotest"
-      vim.g["test#go#gotest#options"] = "-v --count=1"
-      vim.g["test#echo_command"] = 1
-    end,
-    enabled = true,
-  },
-
-  {
-    "folke/trouble.nvim",
-
-    cmd = { "Trouble", "TroubleToggle" },
-    keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
-      { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
-      {
-        "<leader>cS",
-        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-        desc = "LSP references/definitions/... (Trouble)",
-      },
-      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
-      {
-        "[q",
-        function()
-          if require("trouble").is_open() then
-            require("trouble").prev({ skip_groups = true, jump = true })
-          else
-            local ok, err = pcall(vim.cmd.cprev)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        desc = "Previous trouble/quickfix item",
-      },
-      {
-        "]q",
-        function()
-          if require("trouble").is_open() then
-            require("trouble").next({ skip_groups = true, jump = true })
-          else
-            local ok, err = pcall(vim.cmd.cnext)
-            if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
-            end
-          end
-        end,
-        desc = "Next trouble/quickfix item",
-      },
-    },
-    config = function()
-      require("plugins.configs.nvim-trouble")
-    end,
-    enabled = true,
-  },
-
-  -- 注释工具
-  {
-    "numToStr/Comment.nvim",
-    --keys = { "gc", "gb" },
-    --config = override_req("nvim_comment", "(plugins.configs.configs.others).comment()"),
-    opts = {
-      padding = true, -- Add a space b/w comment and the line
-      sticky = true, -- Whether the cursor should stay at its position
-
-      -- We define all mappings manually to support neovim < 0.7
-      mappings = {
-        basic = false, -- Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
-        extra = false, -- Includes `gco`, `gcO`, `gcA`
-        extended = false, -- Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
-      },
-    },
-    --config = function()
-    --  require("plugins.configs.others").comment()
-    --end,
-    enabled = false,
-  },
-
-  -- Displays a popup with possible key bindings of the command you started typing
-  {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    --keys = { "<leader>", '"', "'", "`", "c", "v" },
-    opts = {
-      triggers_blacklist = {
-        -- list of mode / prefixes that should never be hooked by WhichKey
-        i = { "j", "k" },
-        v = { "j", "k" },
-      },
-
-      show_help = true, -- show help message on the command line when the popup is visible
-      disable = {
-        filetypes = { "TelescopePrompt", "neo-tree" },
-      },
-
-      hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "call", "lua", "^:", "^ " },
-      plugins = { spelling = true },
-      defaults = {
-        mode = { "n", "v" },
-        ["g"] = { name = "+goto" },
-        ["gs"] = { name = "+surround" },
-        ["z"] = { name = "+fold" },
-        ["<leader>v"] = { "<C-W>v", "split right" },
-        ["]"] = { name = "+next" },
-        ["["] = { name = "+prev" },
-        ["<leader><tab>"] = { name = "+tabs" },
-        ["<leader>b"] = { name = "+buffer" },
-        ["<leader>c"] = { name = "+code" },
-        ["<leader>f"] = { name = "+file/find" },
-        ["<leader>g"] = { name = "+git" },
-        ["<leader>gh"] = { name = "+hunks" },
-        ["<leader>q"] = { name = "+quit/session" },
-        ["<leader>s"] = { name = "+search" },
-        ["<leader>t"] = { name = "+test" },
-        ["<leader>u"] = { name = "+ui" },
-        ["<leader>w"] = { name = "+windows" },
-        ["<leader>x"] = { name = "+diagnostics/quickfix" },
-      },
-      misc_n = {
-        mode = { "n" },
-        ["<C-x>"] = {
-          LazyUtil.ui.bufremove,
-          "Delete Buffer",
-        },
-        ["<ESC>"] = { "<cmd> noh <CR>", "no highlight" },
-        ["<M-[>"] = { "<cmd>lua require('smart-splits').resize_left(amount)<CR>", "vertical resize -2" },
-        ["<M-]>"] = { "<cmd>lua require('smart-splits').resize_right(amount)<CR>", "vertical resize +2" },
-        ["<TAB>"] = { "<cmd> BufferLineCycleNext <CR>", "cycle next buffer" },
-        ["<S-Tab>"] = { "<cmd> BufferLineCyclePrev <CR>", "cycle prev buffer" },
-      },
-    },
-    --module = "which-key",
-    --config = function() require "plugins.configs.whichkey" end,
-    config = function(_, opts)
-      local wk = require("which-key")
-      wk.setup(opts)
-      wk.register(opts.defaults)
-      wk.register(opts.misc_n)
-    end,
-    --cond = function() return not vim.g.vscode end,
-  },
 }
-
-return plugins

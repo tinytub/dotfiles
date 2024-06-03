@@ -1,55 +1,4 @@
 return {
-
-  {
-    -- this repo has break some base46 colors
-    -- "CanKolay3499/base46",
-    -- "jayden-chan/base46.nvim",
-    "tinytub/base46",
-    dependencies = "plenary.nvim",
-    config = function()
-      local base46 = require("base46")
-      --base46.setup({ theme = "everforest", custom_highlights = "colors.themes.everforest" })
-      base46.setup({ theme = "everforest" })
-    end,
-    enabled = false,
-  },
-
-  -- tokyonight
-  {
-    "folke/tokyonight.nvim",
-    lazy = true,
-    opts = {
-      style = "moon",
-      sidebars = {
-        "qf",
-        "vista_kind",
-        --"terminal",
-        "spectre_panel",
-        "startuptime",
-        "Outline",
-      },
-    },
-  },
-
-  {
-    "scottmckendry/cyberdream.nvim",
-    lazy = false,
-    enabled = false,
-    priority = 1000,
-
-    opts = function()
-      local colors = require("cyberdream.colors").default
-      return {
-        transparent = false,
-        theme = {
-          highlights = {
-            Constant = { fg = colors.magenta },
-          },
-        },
-      }
-    end,
-  },
-
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -138,28 +87,10 @@ return {
     },
     --event = "VeryLazy",
   },
-
   {
-    "sainnhe/everforest",
-    config = function()
-      require("colors").init()
-    end,
-    enabled = false,
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "catppuccin",
+    },
   },
-
-  {
-    "rebelot/kanagawa.nvim",
-    config = function()
-      require("colors").init()
-    end,
-    enabled = false,
-  },
-
-  --{
-  --	"sainnhe/gruvbox-material",
-  --	config = function()
-  --		require("colors").init()
-  --	end,
-  --	enabled = false,
-  --},
 }

@@ -1,139 +1,97 @@
 return {
-  --lspconfig
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "b0o/SchemaStore.nvim", -- Get extra JSON schemas -- 虽然不知道干嘛用,但是先留着吧, jsonls
-      "mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-    },
-
     ---@class PluginLspOpts
-    opts = function()
-      return {
-        --autoformat = true,
-        -- add any global capabilities here
-
-        -- Enable lsp cursor word highlighting
-        document_highlight = {
-          enabled = true,
-        },
-        capabilities = {
-          workspace = {
-            fileOperations = {
-              didRename = true,
-              willRename = true,
-            },
-          },
-        },
-        inlay_hints = {
-          enabled = false,
-          exclude = {}, -- filetypes for which you don't want to enable inlay hints
-        },
-        -- Enable this to enable the builtin LSP code lenses on Neovim >= 0.10.0
-        -- Be aware that you also will need to properly configure your LSP server to
-        -- provide the code lenses.
-        codelens = {
-          enabled = false,
-        },
-        diagnostics = {
-          virtual_text = {
-            spacing = 4,
-            source = "if_many",
-            -- prefix = "●",
-            -- this will set the prefix to a function that returns the diagnostics icon based on the severity
-            -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-            prefix = "icons",
-          },
-          severity_sort = true,
-          signs = {
-            text = {
-              [vim.diagnostic.severity.ERROR] = require("plugins.configs.lspkind_icons").diagnostics.Error,
-              [vim.diagnostic.severity.WARN] = require("plugins.configs.lspkind_icons").diagnostics.Warn,
-              [vim.diagnostic.severity.HINT] = require("plugins.configs.lspkind_icons").diagnostics.Hint,
-              [vim.diagnostic.severity.INFO] = require("plugins.configs.lspkind_icons").diagnostics.Info,
-            },
-          },
-          -- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
-          -- Be aware that you also will need to properly configure your LSP server to
-          -- provide the inlay hints.
-          underline = true,
-          update_in_insert = false, -- update diagnostics insert mode
-          float = {
-            --  focused = false,
-            --  style = "minimal",
-            border = "rounded",
-            --  source = "always",
-            --  header = "",
-            --  prefix = "",
-          },
-        },
-        -- options for vim.lsp.buf.format
-        -- `bufnr` and `filter` is handled by the formatter,
-        -- but can be also overridden when specified
-        format = {
-          formatting_options = nil,
-          timeout_ms = nil,
-        },
-        -- you can do any additional lsp server setup here
-        -- return true if you don't want this server to be setup with lspconfig
-        ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-        setup = {
-          -- example to setup with typescript.nvim
-          -- tsserver = function(_, opts)
-          --   require("typescript").setup({ server = opts })
-          --   return true
-          -- end,
-          -- Specify * to use this function as a fallback for any server
-          -- ["*"] = function(server, opts) end,
-        },
-      }
-    end,
-    ---@param opts PluginLspOpts
-    config = function(_, opts)
-      require("lsp.lspconfig").config(opts)
-    end,
-  },
-  -- Package Manager
-  {
-    "williamboman/mason.nvim",
-    cmd = { "Mason" },
-    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-    build = ":MasonUpdate",
     opts = {
-      ensure_installed = {
-        "stylua",
-        "shfmt",
-        "gopls",
-        -- "flake8",
+      ---@type lspconfig.options
+      ---
+      inlay_hints = {
+        enabled = false,
+        exclude = {}, -- filetypes for which you don't want to enable inlay hints
+      },
+      servers = {
+        --  gopls = require "lsp.servers.gopls",
+        gopls = {
+          --cmd = {
+          --  "gopls", -- share the gopls instance if there is one already
+          --  "-remote.debug=:0",
+          --},
+          keys = {
+            -- Workaround for the lack of a DAP strategy in neotest-go: https://github.com/nvim-neotest/neotest-go/issues/12
+            { "<leader>td", "<cmd>lua require('dap-go').debug_test()<CR>", desc = "Debug Nearest (Go)" },
+          },
+          settings = {
+            gopls = {
+              gofumpt = false,
+              codelenses = {
+                gc_details = false,
+                generate = true,
+                regenerate_cgo = true,
+                run_govulncheck = false,
+                test = false,
+                tidy = true,
+                upgrade_dependency = true,
+                vendor = true,
+              },
+              -- 这几个是干啥的
+              hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                constantValues = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+              },
+              analyses = {
+                fieldalignment = false,
+                nilness = true,
+                unusedwrite = true,
+                useany = true,
+
+                fillstruct = false, -- 关闭自动填充 struct. 默认打开
+                unusedparams = true,
+              },
+
+              usePlaceholders = false, -- 填充补全后的 functions param. 默认打开
+              completeUnimported = true,
+              staticcheck = true,
+              directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+              semanticTokens = true,
+            },
+          },
+          flags = { allow_incremental_sync = true, debounce_text_changes = 150 },
+        },
+      },
+      setup = {
+        gopls = function(_, opts)
+          -- workaround for gopls not supporting semanticTokensProvider
+          -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
+          require("lazyvim.util").lsp.on_attach(function(client, _)
+            client.server_capabilities.documentFormattingProvider = true
+            client.server_capabilities.documentRangeFormattingProvider = true
+            if client.name == "gopls" then
+              if not client.server_capabilities.semanticTokensProvider then
+                local semantic = client.config.capabilities.textDocument.semanticTokens
+                client.server_capabilities.semanticTokensProvider = {
+                  full = true,
+                  legend = {
+                    tokenTypes = semantic.tokenTypes,
+                    tokenModifiers = semantic.tokenModifiers,
+                  },
+                  range = true,
+                }
+              end
+
+              -- has move to use comform
+              ---- stop autoformat and use format_acmd_go instead
+              --vim.b.autoformat = false
+              --require("lsp.format").format_acmd_go()
+            end
+          end)
+          -- end workaround
+        end,
       },
     },
-    --config = function(_,opts)
-    --  require "plugins.configs.mason"
-    --end,
-    ---@param opts MasonSettings | {ensure_installed: string[]}
-    config = function(_, opts)
-      require("mason").setup(opts)
-      local mr = require("mason-registry")
-      mr:on("package:install:success", function()
-        vim.defer_fn(function()
-          -- trigger FileType event to possibly load this newly installed LSP server
-          require("lazy.core.handler.event").trigger({
-            event = "FileType",
-            buf = vim.api.nvim_get_current_buf(),
-          })
-        end, 100)
-      end)
-      mr.refresh(function()
-        for _, tool in ipairs(opts.ensure_installed) do
-          local p = mr.get_package(tool)
-          if not p:is_installed() then
-            p:install()
-          end
-        end
-      end)
-    end,
-    enabled = true,
   },
 }

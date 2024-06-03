@@ -1,2 +1,2 @@
-require("core").global_setup()
-vim.uv = vim.uv or vim.loop
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")
