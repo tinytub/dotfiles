@@ -10,21 +10,19 @@ vim.keymap.set("n", "<S-Tab>", "<cmd> BufferLineCyclePrev <CR>")
 -- "Delete Buffer",
 vim.keymap.set("n", "<C-x>", LazyVim.ui.bufremove)
 
----- floating terminal
---local lazyterm = function()
---  LazyVim.terminal(nil, { cwd = LazyVim.root() })
---end
---vim.keymap.set("n", "<leader>ft", lazyterm, { desc = "Terminal (Root Dir)" })
---vim.keymap.set("n", "<leader>fT", function()
---  LazyVim.terminal()
---end, { desc = "Terminal (cwd)" })
---vim.keymap.set("n", "<c-/>", lazyterm, { desc = "Terminal (Root Dir)" })
---vim.keymap.set("n", "<c-_>", lazyterm, { desc = "which_key_ignore" })
---
----- Terminal Mappings
---vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter Normal Mode" })
---vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { desc = "Go to left window" })
---vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<cr>", { desc = "Go to lower window" })
---vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Go to upper window" })
---vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Go to right window" })
---vim.keymap.set("t", "<C-\\>", "<cmd>close<cr>", { desc = "Hide Terminal" })
+-- move cursor within insert mode
+vim.keymap.set("i", "<C-h>", "<Left>")
+vim.keymap.set("i", "<C-l>", "<Right>")
+vim.keymap.set("i", "<C-j>", "<Down>")
+vim.keymap.set("i", "<C-k>", "<Up>")
+vim.keymap.set("i", "<C-a>", "<ESC>^i")
+vim.keymap.set("i", "<C-e>", "<End>")
+
+vim.keymap.set("c", "<C-h>", "<Left>")
+vim.keymap.set("c", "<C-l>", "<Right>")
+vim.keymap.set("c", "<C-j>", "<Down>")
+vim.keymap.set("c", "<C-k>", "<Up>")
+vim.keymap.set("c", "<C-t>", '[[<C-R>=expand("%:p:h") . "/" <CR>]]')
+
+vim.cmd('vnoremap p "0p')
+vim.cmd('vnoremap P "0P')

@@ -149,4 +149,18 @@ return {
     },
     --disable = not lvim.builtin.terminal.active,
   },
+  -- Git
+  {
+    "tpope/vim-fugitive",
+    event = "BufRead",
+    cmd = {
+      "Git",
+      "Gdiff",
+      "Gdiffsplit",
+      "Gvdiffsplit",
+      "Gwrite",
+      "Gw",
+    },
+    keys = {},
+  },
 }
