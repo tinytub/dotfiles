@@ -163,4 +163,61 @@ return {
     },
     keys = {},
   },
+  {
+    "nvim-telescope/telescope.nvim",
+    -- change some options
+    opts = function(_, opts)
+      if not LazyVim.has("flash.nvim") then
+        return
+      end
+      local function flash(prompt_bufnr)
+        require("flash").jump({
+          pattern = "^",
+          label = { after = { 0, 0 } },
+          search = {
+            mode = "search",
+            exclude = {
+              function(win)
+                return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
+              end,
+            },
+          },
+          action = function(match)
+            local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+            picker:set_selection(match.pos[1] - 1)
+          end,
+        })
+      end
+
+      local actions = require("telescope.actions")
+      opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
+        mappings = {
+          n = {
+            s = flash,
+          },
+          i = {
+            ["<c-s>"] = flash,
+
+            ["<Tab>"] = actions.move_selection_previous,
+            ["<S-Tab>"] = actions.move_selection_next,
+          },
+        },
+      })
+
+      --local actions = require("telescope.actions")
+      --return {
+      --  defaults = {
+      --    mappings = {
+      --      i = {
+      --        ["<Tab>"] = actions.move_selection_previous,
+      --        ["<S-Tab>"] = actions.move_selection_next,
+      --      },
+      --      n = {
+      --        ["q"] = actions.close,
+      --      },
+      --    },
+      --  },
+      --}
+    end,
+  },
 }

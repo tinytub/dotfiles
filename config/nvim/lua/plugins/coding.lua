@@ -1,6 +1,9 @@
 return {
   {
     "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-emoji",
+    },
     opts = function(_, opts)
       local has_words_before = function()
         unpack = unpack or table.unpack
