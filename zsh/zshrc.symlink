@@ -292,8 +292,10 @@ ps_output=$(ps -ef | grep diagnosticd | grep -v "grep")
 if [ -n "$ps_output" ]; then
     # Extract the PID of the diagnosticd process
     pid=$(echo "$ps_output" | awk '{print $2}')
+    sudo kill -9 $pid
     # Kill the diagnosticd process using the PID
-    echo "diagnosticd process with PID $pid has been founded. use \"sudo kill -9 $pid\""
+    #echo "diagnosticd process with PID $pid has been founded. use \"sudo kill -9 $pid\""
+    echo "\"diagnosticd\" process with PID $pid has been killed."
 fi
 }
 
