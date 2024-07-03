@@ -8,32 +8,26 @@ return {
     },
     event = { "CmdlineEnter" },
     ft = { "go", "gomod" },
+    config = function(_, opts)
+      require("go").setup(opts)
+    end,
     opts = {
-      disable_defaults = false,
-      --verbose = plugin_debug(),
-      -- goimport = 'goimports', -- 'gopls'
-      goimports = "gopls",
-      fillstruct = "fillstruct",
-      verbose = false,
-      lsp_cfg = false,
-      textobjects = false,
-      tag_transform = "camelcase", -- can be transform option("snakecase", "camelcase", etc) check gomodifytags for details and more options
-      --log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
-      --lsp_codelens = false, -- use navigator
-      lsp_keymaps = false, -- set to false to disable gopls/lsp keymap
-      lsp_codelens = false,
-
-      dap_debug = false,
-      --goimport = "goimports",
-      dap_debug_vt = "true",
-      dap_debug_gui = false,
-      --test_runner = "go", -- richgo, go test, richgo, dlv, ginkgo
-      -- run_in_floaterm = true, -- set to true to run in float window.
-      --lsp_document_formatting = false,
-      -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
-      -- lsp_cfg = true,
-      lsp_inlay_hints = { enable = false },
+      -- we only need go command with this plugin
+      disable_defaults = true,
+      -- go binary need to set
+      go = "go",
+      -- preludes need set like below, otherwise will cause error
+      preludes = {
+        default = function()
+          return {}
+        end, -- one for all commands
+        GoRun = function() -- the commands to run before GoRun, this override default
+          return {} -- e.g. return {'watchexe', '--restart', '-v', '-e', 'go'}
+          -- so you will run `watchexe --restart -v -e go go run `
+        end,
+      },
     },
+
     --    config = function() require "plugins.configs.go-nvim" end,
   },
 
