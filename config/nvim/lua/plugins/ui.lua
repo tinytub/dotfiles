@@ -46,5 +46,10 @@ return {
       { "<c-f>", false },
       { "<c-b>", false },
     },
+    opts = {
+      presets = {
+        lsp_doc_border = true, -- add a border to hover docs and signature help
+      },
+    },
   },
 }
