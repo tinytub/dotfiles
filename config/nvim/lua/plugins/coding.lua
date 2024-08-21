@@ -1,4 +1,61 @@
 return {
+
+  {
+    "yetone/avante.nvim",
+    enabled = true,
+    event = "VeryLazy",
+    build = "make",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      {
+        "grapp-dev/nui-components.nvim",
+        dependencies = {
+          "MunifTanjim/nui.nvim",
+        },
+      },
+      --- The below is optional, make sure to setup it properly if you have lazy=true
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+    opts = {
+      provider = "openai", -- "claude" or "openai" or "azure"
+      openai = {
+        endpoint = "https://penran.cc",
+        --endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai",
+        model = "gpt-4o",
+        temperature = 0,
+        max_tokens = 4096,
+      },
+    },
+    --opts = {
+    --  provider = "myopenaigw", -- You can then change this provider here
+    --  vendors = {
+    --    ["myopenaigw"] = {
+    --      endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai/chat/completions",
+    --      model = "gpt-4o", -- The model name to use with this provider
+    --      api_key_name = "OPENAI_API_KEY",
+    --    },
+    --  },
+    --  windows = {
+    --    wrap_line = true,
+    --    width = 30, -- default % based on available width
+    --  },
+    --  --- @class AvanteConflictUserConfig
+    --  diff = {
+    --    debug = false,
+    --    autojump = true,
+    --    ---@type string | fun(): any
+    --    list_opener = "copen",
+    --  },
+    --},
+  },
   {
     "ray-x/go.nvim",
     dependencies = { -- optional packages

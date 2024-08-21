@@ -52,4 +52,30 @@ return {
       },
     },
   },
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    enabled = true,
+    opts = {
+      animate = {
+        enabled = false,
+      },
+
+      exit_when_last = true,
+    },
+  },
+  {
+    "echasnovski/mini.indentscope",
+    version = false, -- wait till new 0.7.0 release to put it back on semver
+    event = "LazyFile",
+    opts = {
+      -- symbol = "",
+      symbol = "│", -- ▏│
+      -- delay = 0,
+      options = { try_as_border = true },
+      draw = {
+        animation = require("mini.indentscope").gen_animation.none(),
+      },
+    },
+  },
 }
