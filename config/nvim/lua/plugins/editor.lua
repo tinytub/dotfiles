@@ -46,6 +46,17 @@ return {
           ["<cr>"] = "open_drop",
         },
       },
+      --close_if_last_window = true,
+      --source_selector = {
+      --  winbar = false,
+      --  show_scrolled_off_parent_node = true,
+      --  padding = { left = 1, right = 0 },
+      --  sources = {
+      --    { source = "filesystem", display_name = "  Files" }, --      
+      --    { source = "buffers", display_name = "  Buffers" }, --      
+      --    { source = "git_status", display_name = " 󰊢 Git" }, -- 󰊢      
+      --  },
+      --},
       --document_symbols = {
       --  follow_cursor = true,
       --  renderers = {
