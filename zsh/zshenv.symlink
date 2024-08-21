@@ -63,6 +63,7 @@ export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 #export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
 export https_proxy=http://127.0.0.1:7788 http_proxy=http://127.0.0.1:7788 all_proxy=socks5://127.0.0.1:7788
 . "$HOME/.cargo/env"
+. "$HOME/openai.yaml"
 
 # proxy apiserver by remote bastion
 # ssh -t -L 127.0.0.1:6443:{apiserver}:{apiserverPort} root@{bastion} -- kubectl  proxy --port 6443
@@ -70,4 +71,4 @@ export https_proxy=http://127.0.0.1:7788 http_proxy=http://127.0.0.1:7788 all_pr
 
 #alias -g zplug="LC_MESSAGES=en_US.UTF-8 zplug"
 ulimit -n 4096
-source /Users/zhaopeng18/.iterm2_shell_integration.zsh
+#$source /Users/zhaopeng18/.iterm2_shell_integration.zsh
