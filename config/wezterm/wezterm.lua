@@ -3,8 +3,8 @@
 
 local wezterm = require("wezterm")
 local wezterm_action = wezterm.action
-local wezterm_nerdfonts = wezterm.nerdfonts
-local wezterm_mux = wezterm.mux
+--local wezterm_nerdfonts = wezterm.nerdfonts
+--local wezterm_mux = wezterm.mux
 
 wezterm.log_info("reloading")
 
@@ -112,7 +112,7 @@ config.inactive_pane_hsb = {
 }
 
 --config.window_decorations = "RESIZE|MACOS_FORCE_DISABLE_SHADOW"
-config.window_decorations = "RESIZE|INTEGRATED_BUTTONS"
+config.window_decorations = "INTEGRATED_BUTTONS | RESIZE"
 
 config.native_macos_fullscreen_mode = true
 config.audible_bell = "Disabled"
@@ -135,13 +135,12 @@ config.enable_scroll_bar = false -- 渲染会有问题
 config.min_scroll_bar_height = "2cell"
 config.colors.scrollbar_thumb = "#A872FB"
 
--- https://wezfurlong.org/wezterm/config/lua/config/hyperlink_rules.html
-
+-- Remove all padding
 config.window_padding = {
-	left = 5,
-	right = 5,
-	top = 8,
-	bottom = 8,
+	left = 0,
+	right = 0,
+	top = 0,
+	bottom = 0,
 }
 
 config.status_update_interval = 1000
@@ -153,39 +152,29 @@ config.status_update_interval = 1000
 
 config.initial_cols = 140
 config.initial_rows = 42
---config.window_background_opacity = 0.92
+config.window_background_opacity = 0.92
 config.macos_window_background_blur = 6
 
 -- ui.lua }
 
--- key-mappings.lua {
-
-config.keys = {}
-table.insert(config.keys, { key = "LeftArrow", mods = "SHIFT|SUPER", action = wezterm_action.ActivateTabRelative(-1) })
-table.insert(config.keys, { key = "RightArrow", mods = "SHIFT|SUPER", action = wezterm_action.ActivateTabRelative(1) })
-if IS_MACOS then
-	table.insert(
-		config.keys,
-		{ key = "ApplicationLeftArrow", mods = "CMD|SHIFT", action = wezterm_action.ActivateTabRelative(-1) }
-	)
-	table.insert(
-		config.keys,
-		{ key = "ApplicationRightArrow", mods = "CMD|SHIFT", action = wezterm_action.ActivateTabRelative(1) }
-	)
-	table.insert(config.keys, { mods = "ALT", key = "Enter", action = wezterm_action.DisableDefaultAssignment })
-	table.insert(config.keys, { mods = "CMD", key = "Enter", action = wezterm_action.ToggleFullScreen })
-end
-
 -- key-mappings.lua }
 
 -- shell.lua {
-
+-- config.default_prog = { "/usr/bin/zsh" }
 if IS_WINDOWS then
 	config.default_prog = { "pwsh.exe" }
 end
 
 config.color_scheme = "Catppuccin Mocha"
 -- require("tabs").setup(config)
+
+-- Tabs
+--local transparent_bg = "rgba(22, 24, 26, " .. opacity .. ")"
+config.enable_tab_bar = true
+config.hide_tab_bar_if_only_one_tab = true
+config.show_tab_index_in_tab_bar = true
+config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = true
 
 --wezterm.plugin.require("https://github.com/nekowinston/wezterm-bar").apply_to_config(config)
 --local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
@@ -195,14 +184,6 @@ config.color_scheme = "Catppuccin Mocha"
 --		clock = false,
 --	},
 --})
-
--- Tabs
---local transparent_bg = "rgba(22, 24, 26, " .. opacity .. ")"
-config.enable_tab_bar = true
-config.hide_tab_bar_if_only_one_tab = true
-config.show_tab_index_in_tab_bar = true
-config.use_fancy_tab_bar = false
-config.tab_bar_at_bottom = true
 
 --config.background = {
 --	{
@@ -226,7 +207,10 @@ config.tab_bar_at_bottom = true
 --		opacity = 0.55,
 --	},
 --}
+
 -- from: https://akos.ma/blog/adopting-wezterm/
+-- URLs in Markdown files are not handled properly by default
+-- Source: https://github.com/wez/wezterm/issues/3803#issuecomment-1608954312
 config.hyperlink_rules = {
 	-- Matches: a URL in parens: (URL)
 	{
@@ -266,6 +250,59 @@ config.hyperlink_rules = {
 	{
 		regex = "\\b\\w+@[\\w-]+(\\.[\\w-]+)+\\b",
 		format = "mailto:$0",
+	},
+}
+
+local act = wezterm.action
+config.keys = {
+	-- ⌘+d, ⌘+⇧+D split pane -- 水平/垂直分割窗格
+	{ key = "d", mods = "CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "D", mods = "CMD|SHIFT", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+	-- toggle fullscreen -- 全屏模式
+	{ mods = "CMD", key = "Enter", action = wezterm_action.ToggleFullScreen },
+	-- ^+w clear pattern in search mode -- 搜索模式快速删除搜索词
+	{ key = "Backspace", mods = "ALT", action = act.CopyMode("ClearPattern") },
+}
+---- key-mappings.lua {
+--config.keys = {}
+--table.insert(config.keys, { key = "LeftArrow", mods = "SHIFT|SUPER", action = wezterm_action.ActivateTabRelative(-1) })
+--table.insert(config.keys, { key = "RightArrow", mods = "SHIFT|SUPER", action = wezterm_action.ActivateTabRelative(1) })
+--if IS_MACOS then
+--	table.insert(
+--		config.keys,
+--		{ key = "ApplicationLeftArrow", mods = "CMD|SHIFT", action = wezterm_action.ActivateTabRelative(-1) }
+--	)
+--	table.insert(
+--		config.keys,
+--		{ key = "ApplicationRightArrow", mods = "CMD|SHIFT", action = wezterm_action.ActivateTabRelative(1) }
+--	)
+--	table.insert(config.keys, { mods = "ALT", key = "Enter", action = wezterm_action.DisableDefaultAssignment })
+--	table.insert(config.keys, { mods = "CMD", key = "Enter", action = wezterm_action.ToggleFullScreen })
+--end
+
+config.mouse_bindings = {
+	-- Change the default click behavior so that it only selects
+	-- text and doesn't open hyperlinks
+	{
+		event = { Up = { streak = 1, button = "Left" } },
+		mods = "NONE",
+		action = act.CompleteSelection("ClipboardAndPrimarySelection"),
+	},
+
+	-- and make CTRL-Click open hyperlinks
+	{
+		event = { Up = { streak = 1, button = "Left" } },
+		mods = "CMD",
+		action = act.OpenLinkAtMouseCursor,
+	},
+	-- NOTE that binding only the 'Up' event can give unexpected behaviors.
+	-- Read more below on the gotcha of binding an 'Up' event only.
+
+	-- Disable the 'Down' event of CTRL-Click to avoid weird program behaviors
+	{
+		event = { Down = { streak = 1, button = "Left" } },
+		mods = "CMD",
+		action = act.Nop,
 	},
 }
 
