@@ -13,6 +13,9 @@ opt.tabstop = 4
 opt.softtabstop = 4
 --vim.bo.expandtab   = true
 
+-- for avante.nvim
+opt.splitkeep = "screen"
+
 --opt.title = true
 --opt.titlelen = 0 -- do not shorten title
 --opt.titlestring = 'nvim %{expand("%:p")}'

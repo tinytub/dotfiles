@@ -5,13 +5,67 @@ return {
     enabled = true,
     event = "VeryLazy",
     build = "make",
+    opts = {
+      provider = "openai", -- "claude" or "openai" or "azure"
+      --debug = true,
+      openai = {
+        --endpoint = "https://penran.cc/v1",
+        endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai",
+        model = "gpt-4o",
+        temperature = 0,
+        max_tokens = 4096,
+      },
+    },
+    keys = {
+      {
+        "<leader>aa",
+        function()
+          require("avante.api").ask()
+        end,
+        desc = "avante: ask",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>ar",
+        function()
+          require("avante.api").refresh()
+        end,
+        desc = "avante: refresh",
+      },
+      {
+        "<leader>ae",
+        function()
+          require("avante.api").edit()
+        end,
+        desc = "avante: edit",
+        mode = "v",
+      },
+    },
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
-      --- The below is optional, make sure to setup it properly if you have lazy=true
+      --- The below dependencies are optional,
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
       {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to setup it properly if you have lazy=true
         "MeanderingProgrammer/render-markdown.nvim",
         opts = {
           file_types = { "markdown", "Avante" },
@@ -19,37 +73,6 @@ return {
         ft = { "markdown", "Avante" },
       },
     },
-    opts = {
-      provider = "openai", -- "claude" or "openai" or "azure"
-      openai = {
-        endpoint = "https://penran.cc",
-        --endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai",
-        model = "gpt-4o",
-        temperature = 0,
-        max_tokens = 4096,
-      },
-    },
-    --opts = {
-    --  provider = "myopenaigw", -- You can then change this provider here
-    --  vendors = {
-    --    ["myopenaigw"] = {
-    --      endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai/chat/completions",
-    --      model = "gpt-4o", -- The model name to use with this provider
-    --      api_key_name = "OPENAI_API_KEY",
-    --    },
-    --  },
-    --  windows = {
-    --    wrap_line = true,
-    --    width = 30, -- default % based on available width
-    --  },
-    --  --- @class AvanteConflictUserConfig
-    --  diff = {
-    --    debug = false,
-    --    autojump = true,
-    --    ---@type string | fun(): any
-    --    list_opener = "copen",
-    --  },
-    --},
   },
   {
     "ray-x/go.nvim",
