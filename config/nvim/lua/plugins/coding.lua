@@ -4,7 +4,7 @@ return {
     "yetone/avante.nvim",
     enabled = true,
     event = "VeryLazy",
-    build = "make",
+    build = "make BUILD_FROM_SOURCE=true",
     opts = {
       provider = "openai", -- "claude" or "openai" or "azure"
       --debug = true,
