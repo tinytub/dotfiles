@@ -120,7 +120,7 @@ config.scrollback_lines = 5000
 config.set_environment_variables = {
 	EDITOR = "nvim",
 }
-config.hide_mouse_cursor_when_typing = true
+
 config.freetype_load_flags = "NO_HINTING"
 config.use_ime = true -- 如果关闭会导致中文输入法无法使用
 
@@ -128,6 +128,8 @@ config.use_ime = true -- 如果关闭会导致中文输入法无法使用
 
 config.font = wezterm.font_with_fallback(FONTS)
 config.font_size = FONT_SIZE
+
+--config.font_rules = { { intensity = "Bold", font = FONTS }, { intensity = "Normal", font = FONTS } }
 
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 
@@ -151,10 +153,15 @@ config.status_update_interval = 1000
 --end)
 
 config.initial_cols = 140
-config.initial_rows = 42
+config.initial_rows = 40
 config.window_background_opacity = 0.92
 config.macos_window_background_blur = 6
 
+-- CURSOR
+config.cursor_blink_ease_in = "Linear"
+config.cursor_blink_ease_out = "Linear"
+config.hide_mouse_cursor_when_typing = true
+config.animation_fps = 60
 -- ui.lua }
 
 -- key-mappings.lua }
@@ -184,6 +191,17 @@ config.tab_bar_at_bottom = true
 --		clock = false,
 --	},
 --})
+
+local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+tabline.setup({
+	options = {
+		section_separators = "",
+		--component_separators = '',
+		tab_separators = "",
+		--theme = "Tokyo Night Storm",
+		theme = "Poimandres",
+	},
+})
 
 --config.background = {
 --	{
