@@ -5,6 +5,8 @@ return {
     enabled = true,
     event = "VeryLazy",
     build = "make BUILD_FROM_SOURCE=true",
+    lazy = false,
+    version = false,
     opts = {
       provider = "openai", -- "claude" or "openai" or "azure"
       --debug = true,
@@ -42,11 +44,13 @@ return {
       },
     },
     dependencies = {
+      "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua", -- for providers='copilot'
       {
         -- support for image pasting
         "HakonHarnes/img-clip.nvim",

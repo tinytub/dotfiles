@@ -90,9 +90,9 @@ local FONTS = {
 	--"Noto Nerd Font Mono",
 	--"Hack Nerd Font Mono",
 }
-local FONT_SIZE = 12.0
+local FONT_SIZE = 14.0
 if not IS_MACOS then
-	FONT_SIZE = 11.0
+	FONT_SIZE = 13.0
 end
 
 local config = {

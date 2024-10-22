@@ -41,8 +41,6 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    -- https://github.com/folke/noice.nvim/issues/921, 等修复吧
-    commit = "d9328ef903168b6f52385a751eb384ae7e906c6f",
     enabled = true,
     keys = {
       { "<c-f>", false },
