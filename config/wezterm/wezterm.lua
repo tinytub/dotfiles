@@ -2,76 +2,12 @@
 -- https://github.com/kenchou/wezterm-config/blob/main/wezterm.lua
 
 local wezterm = require("wezterm")
+local utils = require("lib.utils")
 local wezterm_action = wezterm.action
 --local wezterm_nerdfonts = wezterm.nerdfonts
 --local wezterm_mux = wezterm.mux
 
 wezterm.log_info("reloading")
-
-local function _execute(cmd)
-	local f = assert(io.popen(cmd, "r"))
-	local s = assert(f:read("*a"))
-	f:close()
-	s = string.gsub(s, "^%s+", "")
-	s = string.gsub(s, "%s+$", "")
-	s = string.gsub(s, "[\n\r]+", "")
-	return s
-end
-
-local function _extract_path(p)
-	local dirname, filename = p:match("^(.*/)([^/]-)$")
-	return dirname, filename
-end
-
---- @param s string
---- @param t string
---- @param rstart integer?  by default rstart=#s
---- @return integer?
-local function string_rfind(s, t, rstart)
-	rstart = rstart or #s
-	for i = rstart, 1, -1 do
-		local match = true
-		for j = 1, #t do
-			if i + j - 1 > #s then
-				match = false
-				break
-			end
-			local a = string.byte(s, i + j - 1)
-			local b = string.byte(t, j)
-			if a ~= b then
-				match = false
-				break
-			end
-		end
-		if match then
-			return i
-		end
-	end
-	return nil
-end
-
-local IS_WINDOWS = package.config:sub(1, 1) == "\\"
-local IS_LINUX = false
-local IS_MACOS = false
-if not IS_WINDOWS then
-	local os_name = _execute("uname")
-	IS_LINUX = os_name ~= "Darwin"
-	IS_MACOS = os_name == "Darwin"
-end
-local SHELL = nil
-if IS_WINDOWS then
-	SHELL = "pwsh"
-end
-if IS_MACOS or IS_LINUX then
-	local shellname = _execute("echo $SHELL")
-	local _, shortname = _extract_path(shellname)
-	SHELL = shortname
-end
-
--- Ran into an issue in nightly build where Alt-` stopped working.
--- It should be fixed now, but if it ever doesn't work, then
--- `use_dead_keys = true` should fix it.
-
 local FONTS = {
 	"JetBrainsMonoNL Nerd Font Mono",
 	"Hack Nerd Font Mono",
@@ -90,29 +26,28 @@ local FONTS = {
 	--"Noto Nerd Font Mono",
 	--"Hack Nerd Font Mono",
 }
-local FONT_SIZE = 14.0
-if not IS_MACOS then
-	FONT_SIZE = 13.0
-end
+
+local FONT_SIZE = 13.0
 
 local config = {
 	colors = {},
 }
 
-if IS_WINDOWS or IS_MACOS then
-	--config.front_end = "WebGpu"
-	--config.front_end = "OpenGL"
-	config.webgpu_power_preference = "HighPerformance"
-	config.enable_wayland = false
-end
+config.adjust_window_size_when_changing_font_size = false
+
+--config.front_end = "WebGpu"
+--config.front_end = "OpenGL"
+config.webgpu_power_preference = "HighPerformance"
+config.enable_wayland = false
 
 config.inactive_pane_hsb = {
-	saturation = 0.8,
-	brightness = 0.6,
+	saturation = 0.9,
+	brightness = 0.8,
 }
 
 --config.window_decorations = "RESIZE|MACOS_FORCE_DISABLE_SHADOW"
-config.window_decorations = "INTEGRATED_BUTTONS | RESIZE"
+-- config.window_decorations = "INTEGRATED_BUTTONS | RESIZE"
+config.window_decorations = "RESIZE"
 
 config.native_macos_fullscreen_mode = true
 config.audible_bell = "Disabled"
@@ -139,8 +74,8 @@ config.colors.scrollbar_thumb = "#A872FB"
 
 -- Remove all padding
 config.window_padding = {
-	left = 0,
-	right = 0,
+	left = 5,
+	right = 5,
 	top = 0,
 	bottom = 0,
 }
@@ -154,8 +89,8 @@ config.status_update_interval = 1000
 
 config.initial_cols = 140
 config.initial_rows = 40
-config.window_background_opacity = 0.92
-config.macos_window_background_blur = 6
+config.window_background_opacity = 0.95
+config.macos_window_background_blur = 10
 
 -- CURSOR
 config.cursor_blink_ease_in = "Linear"
@@ -167,12 +102,10 @@ config.animation_fps = 60
 -- key-mappings.lua }
 
 -- shell.lua {
--- config.default_prog = { "/usr/bin/zsh" }
-if IS_WINDOWS then
-	config.default_prog = { "pwsh.exe" }
-end
 
 config.color_scheme = "Catppuccin Mocha"
+config.color_scheme = "Tokyo Night Night"
+config.color_scheme = "Tokyo Night Storm"
 -- require("tabs").setup(config)
 
 -- Tabs
@@ -192,16 +125,37 @@ config.tab_bar_at_bottom = true
 --	},
 --})
 
-local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
-tabline.setup({
-	options = {
-		section_separators = "",
-		--component_separators = '',
-		tab_separators = "",
-		--theme = "Tokyo Night Storm",
-		theme = "Poimandres",
-	},
-})
+--local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+--tabline.setup({
+--	options = {
+--		section_separators = "",
+--		--component_separators = '',
+--		tab_separators = "",
+--		--theme = "Tokyo Night Storm",
+--		theme = "Poimandres",
+--	},
+--})
+--
+--https://github.com/fisenkodv/dotfiles/blob/6a9db6549d31f486c62cc65ac162620774db9c56/config/wezterm/cfg_appearance.lua
+wezterm.on("update-right-status", function(window, pane)
+	local date = wezterm.strftime("%a %b %-d %I:%M %p")
+	window:set_right_status(wezterm.format({
+		{ Text = wezterm.nerdfonts.md_calendar_clock .. " " .. date },
+		{ Text = " | " },
+		{ Text = wezterm.nerdfonts.oct_person .. " " .. wezterm.hostname() },
+	}))
+end)
+
+wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+	local position = tab.tab_index + 1
+	local process_icon = utils.get_process(tab)
+	-- ensure that the titles fit in the available space
+	local tab_text = wezterm.truncate_right(utils.tab_title(tab), max_width - 2)
+	local tab_title = string.format(" ⌘%d %s %s ", position, process_icon, tab_text)
+	return {
+		{ Text = tab_title },
+	}
+end)
 
 --config.background = {
 --	{
@@ -276,6 +230,12 @@ config.keys = {
 	-- ⌘+d, ⌘+⇧+D split pane -- 水平/垂直分割窗格
 	{ key = "d", mods = "CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{ key = "D", mods = "CMD|SHIFT", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+	{ key = "RightArrow", mods = "CMD", action = act.ActivatePaneDirection("Right") },
+	{ key = "LeftArrow", mods = "CMD", action = act.ActivatePaneDirection("Left") },
+	{ key = "UpArrow", mods = "CMD", action = act.ActivatePaneDirection("Up") },
+	{ key = "DownArrow", mods = "CMD", action = act.ActivatePaneDirection("Down") },
+	{ key = "]", mods = "CMD", action = act.ActivatePaneDirection("Next") },
+	{ key = "[", mods = "CMD", action = act.ActivatePaneDirection("Next") },
 	-- toggle fullscreen -- 全屏模式
 	{ mods = "CMD", key = "Enter", action = wezterm_action.ToggleFullScreen },
 	-- ^+w clear pattern in search mode -- 搜索模式快速删除搜索词
