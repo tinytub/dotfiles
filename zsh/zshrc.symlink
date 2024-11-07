@@ -206,6 +206,9 @@ alias vim="nvim"
 alias vimdiff='nvim -d'
 # alias vim="neovide --frame transparent"
 
+# git log
+alias glg="git log --graph --all --oneline"
+
 alias sed="gsed"
 #alias lc='colorls -lA --sd'
 #alias emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"

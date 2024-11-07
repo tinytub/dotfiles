@@ -25,6 +25,7 @@ return {
           --
           severity = { min = vim.diagnostic.severity.ERROR },
         },
+        float = { border = "rounded" },
         severity_sort = true,
         signs = {
           text = {
