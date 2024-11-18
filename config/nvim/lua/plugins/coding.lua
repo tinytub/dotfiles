@@ -1,12 +1,9 @@
 return {
-
   {
     "yetone/avante.nvim",
-    enabled = true,
     event = "VeryLazy",
-    build = "make BUILD_FROM_SOURCE=true",
     lazy = false,
-    version = false,
+    version = false, -- set this if you want to always pull the latest change
     opts = {
       provider = "openai", -- "claude" or "openai" or "azure"
       --debug = true,
@@ -18,31 +15,9 @@ return {
         max_tokens = 4096,
       },
     },
-    keys = {
-      {
-        "<leader>aa",
-        function()
-          require("avante.api").ask()
-        end,
-        desc = "avante: ask",
-        mode = { "n", "v" },
-      },
-      {
-        "<leader>ar",
-        function()
-          require("avante.api").refresh()
-        end,
-        desc = "avante: refresh",
-      },
-      {
-        "<leader>ae",
-        function()
-          require("avante.api").edit()
-        end,
-        desc = "avante: edit",
-        mode = "v",
-      },
-    },
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make",
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
@@ -69,7 +44,7 @@ return {
         },
       },
       {
-        -- Make sure to setup it properly if you have lazy=true
+        -- Make sure to set this up properly if you have lazy=true
         "MeanderingProgrammer/render-markdown.nvim",
         opts = {
           file_types = { "markdown", "Avante" },
