@@ -27,7 +27,6 @@ return {
       },
       integrations = {
         --fidget = true,
-        --treesitter_context = true,
         --ts_rainbow = true,
         --mason = true,
         --gitgutter = true,
@@ -40,7 +39,6 @@ return {
         --},
 
         symbols_outline = true,
-        --treesitter_context = true,
         mason = true,
         aerial = true,
         alpha = true,
@@ -75,6 +73,7 @@ return {
         semantic_tokens = true,
         telescope = true,
         treesitter = true,
+        treesitter_context = true,
         which_key = true,
       },
       color_overrides = {

@@ -97,6 +97,7 @@ config.cursor_blink_ease_in = "Linear"
 config.cursor_blink_ease_out = "Linear"
 config.hide_mouse_cursor_when_typing = true
 config.animation_fps = 60
+config.max_fps = 120
 -- ui.lua }
 
 -- key-mappings.lua }

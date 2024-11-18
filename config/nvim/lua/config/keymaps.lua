@@ -8,7 +8,7 @@ vim.keymap.set("n", "<TAB>", "<cmd> BufferLineCycleNext <CR>")
 vim.keymap.set("n", "<S-Tab>", "<cmd> BufferLineCyclePrev <CR>")
 
 -- "Delete Buffer",
-vim.keymap.set("n", "<C-x>", LazyVim.ui.bufremove)
+-- vim.keymap.set("n", "<C-x>", LazyVim.ui.bufremove)
 
 -- remove move up / move down
 -- v  <M-k>       * :m '<-2<CR>gv=gv
