@@ -231,4 +231,14 @@ return {
       --}
     end,
   },
+  {
+    "ibhagwan/fzf-lua",
+    enabled = false,
+    cmd = "FzfLua",
+    opts = function(_, opts)
+      local config = require("fzf-lua.config")
+      config.defaults.keymap.fzf["tab"] = "down"
+      config.defaults.keymap.fzf["shift-tab"] = "up"
+    end,
+  },
 }
