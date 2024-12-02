@@ -17,10 +17,10 @@ return {
       end
 
       todocomments.setup({
-        signs = false,
-        highlight = {
-          keyword = "bg",
-        },
+        --signs = false,
+        --highlight = {
+        --  keyword = "bg",
+        --},
         keywords = {
           FIX = {
             icon = " ", -- icon used for the sign, and in search results
@@ -28,12 +28,12 @@ return {
             alt = { "FIXME", "BUG", "FIXIT", "ISSUE", "fix", "fixme", "bug" }, -- a set of other keywords that all map to this FIX keywords
             -- signs = false, -- configure signs for some keywords individually
           },
-          IDEA = { icon = " ", color = "#ffb86c" },
-          TODO = { icon = " ", color = "#bd93f9" },
-          HACK = { icon = " ", color = "#ffb86c" },
-          WARN = { icon = " ", color = "#ff5555", alt = { "WARNING", "XXX" } },
-          --PERF = { icon = " ", color = "#8be9fd", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-          NOTE = { icon = " ", color = "#50fa7b", alt = { "INFO" } },
+          -- TODO = { icon = " ", color = "info" },
+          -- HACK = { icon = " ", color = "warning" },
+          -- WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+          -- PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+          -- NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+          -- TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
         },
       })
     end,
@@ -46,36 +46,36 @@ return {
       { "<c-f>", false },
       { "<c-b>", false },
     },
-    opts = {
-      presets = {
+    opts = function(_, opts)
+      opts.presets = {
         lsp_doc_border = true, -- add a border to hover docs and signature help
-      },
-    },
+      }
+    end,
   },
   {
     "folke/edgy.nvim",
     event = "VeryLazy",
     enabled = true,
-    opts = {
-      animate = {
+    opts = function(_, opts)
+      opts.animate = {
         enabled = false,
-      },
-
-      exit_when_last = true,
-    },
+      }
+      opts.exit_when_last = true
+    end,
   },
   {
     "echasnovski/mini.indentscope",
     version = false, -- wait till new 0.7.0 release to put it back on semver
     event = "LazyFile",
-    opts = {
+
+    opts = function(_, opts)
       -- symbol = "",
-      symbol = "│", -- ▏│
+      opts.symbol = "│" -- ▏│
       -- delay = 0,
-      options = { try_as_border = true },
-      draw = {
+      opts.options = { try_as_border = true }
+      opts.draw = {
         animation = require("mini.indentscope").gen_animation.none(),
-      },
-    },
+      }
+    end,
   },
 }

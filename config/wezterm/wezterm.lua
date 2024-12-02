@@ -10,8 +10,10 @@ local wezterm_action = wezterm.action
 wezterm.log_info("reloading")
 local FONTS = {
 	"JetBrainsMonoNL Nerd Font Mono",
+	"Anonymice Nerd Font", -- v2.3.3, 适配老图标
 	"Hack Nerd Font Mono",
 	--"IosevkaTerm Nerd Font Mono",
+	"NotoMono Nerd Font Mono",
 	"Symbols Nerd Font Mono",
 	--"Monaco",
 	-- MacOS 默认的黑体。或者使用 'Noto Sans CJK SC' 也不错

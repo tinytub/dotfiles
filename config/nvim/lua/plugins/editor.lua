@@ -15,18 +15,37 @@ return {
     dependencies = {
       {
         "s1n7ax/nvim-window-picker",
-        --"tinytub/nvim-window-picker",
         version = "v2.*",
         opts = {
           --hint = "floating-big-letter",
           statusline_winbar_picker = {
             use_winbar = "smart",
           },
+
+          -- 'statusline-winbar' | 'floating-big-letter'
+          hint = "floating-big-letter",
+
+          -- filter using buffer options
           filter_rules = {
             autoselect_one = true,
             include_current_win = false,
             bo = {
-              filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix", "edgy", "noice" },
+
+              -- if the file type is one of following, the window will be ignored
+              filetype = {
+                "neo-tree",
+                "neo-tree-popup",
+                "notify",
+                "quickfix",
+                "edgy",
+                "noice",
+                "snacks_notif",
+                "snacks_notif_history",
+                "snacks_dashboard",
+                "snacks_terminal",
+                "snacks_win",
+              },
+              -- if the buffer type is one of following, the window will be ignored
               buftype = { "terminal", "quickfix" },
             },
           },
@@ -239,6 +258,48 @@ return {
       local config = require("fzf-lua.config")
       config.defaults.keymap.fzf["tab"] = "down"
       config.defaults.keymap.fzf["shift-tab"] = "up"
+    end,
+  },
+  {
+    "s1n7ax/nvim-window-picker",
+    version = "v2.*",
+    opts = {
+      --hint = "floating-big-letter",
+      statusline_winbar_picker = {
+        use_winbar = "smart",
+      },
+
+      -- 'statusline-winbar' | 'floating-big-letter'
+      hint = "floating-big-letter",
+
+      -- filter using buffer options
+      filter_rules = {
+        autoselect_one = true,
+        include_current_win = false,
+        bo = {
+
+          -- if the file type is one of following, the window will be ignored
+          filetype = {
+            "neo-tree",
+            "neo-tree-popup",
+            "notify",
+            "quickfix",
+            "edgy",
+            "noice",
+            "snacks_notif",
+            "snacks_notif_history",
+            "snacks_dashboard",
+            "snacks_terminal",
+            "snacks_win",
+          },
+          -- if the buffer type is one of following, the window will be ignored
+          buftype = { "terminal", "quickfix" },
+        },
+      },
+      --         other_win_hl_color = "#e35e4f",
+    },
+    config = function(_, opts)
+      require("window-picker").setup(opts)
     end,
   },
 }
