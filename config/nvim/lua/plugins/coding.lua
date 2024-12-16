@@ -84,7 +84,34 @@ return {
 
     --    config = function() require "plugins.configs.go-nvim" end,
   },
+  {
+    "saghen/blink.cmp",
+    opts = function(_, opts)
+      --opts.keymap = { preset = "super-tab", ["<CR>"] = { "accept", "fallback" } }
+      opts.completion.menu.border = "rounded"
+      opts.completion.menu.draw.columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } }
+      opts.completion.documentation.window = {
+        border = "rounded",
+      }
 
+      --opts.completion = {
+      --  menu = {
+      --    border = "rounded",
+      --  },
+      --  documentation = {
+      --    window = {
+      --      border = "rounded",
+      --    },
+      --  },
+      --  ghost_text = {
+      --    enabled = false,
+      --  },
+      --}
+      --opts.sources.default = { "copilot", "lsp", "path" }
+    end,
+  },
+
+  -- lazyvim 14.x version disabled nvim-cmp by default
   {
     "hrsh7th/nvim-cmp",
     dependencies = {

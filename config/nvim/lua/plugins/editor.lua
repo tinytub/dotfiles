@@ -1,8 +1,9 @@
 return {
 
   {
+    -- try snack scroll
     "karb94/neoscroll.nvim",
-    enabled = true,
+    enabled = false,
     --        event = "WinScrolled",
     config = function()
       require("neoscroll").setup()
@@ -251,8 +252,9 @@ return {
     end,
   },
   {
+    -- default for lazyvim version 14.x
     "ibhagwan/fzf-lua",
-    enabled = false,
+    --enabled = false,
     cmd = "FzfLua",
     opts = function(_, opts)
       local config = require("fzf-lua.config")
