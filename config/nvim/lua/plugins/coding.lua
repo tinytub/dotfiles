@@ -51,6 +51,36 @@ return {
         },
         ft = { "markdown", "Avante" },
       },
+      {
+        "saghen/blink.cmp",
+        optional = true,
+        opts = function(_, opts)
+          -- set with avante and set to optional ?
+          table.insert(opts.sources.compat, "avante_commands")
+          table.insert(opts.sources.compat, "avante_mentions")
+          table.insert(opts.sources.compat, "avante_files")
+          table.insert(opts.sources.default, "markdown")
+          opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
+          opts.sources.providers.avante_commands = {
+            name = "avante_commands",
+            module = "blink.compat.source",
+            score_offset = 90, -- show at a higher priority than lsp
+            opts = {},
+          }
+          opts.sources.providers.avante_files = {
+            name = "avante_commands",
+            module = "blink.compat.source",
+            score_offset = 100, -- show at a higher priority than lsp
+            opts = {},
+          }
+          opts.sources.providers.avante_mentions = {
+            name = "avante_mentions",
+            module = "blink.compat.source",
+            score_offset = 1000, -- show at a higher priority than lsp
+            opts = {},
+          }
+        end,
+      },
     },
   },
   {
@@ -183,46 +213,5 @@ return {
         end, { "i", "s" }),
       })
     end,
-    --config = function(_, opts)
-    --  for _, source in ipairs(opts.sources) do
-    --    source.group_index = source.group_index or 1
-    --  end
-
-    --  local parse = require("cmp.utils.snippet").parse
-    --  require("cmp.utils.snippet").parse = function(input)
-    --    local ok, ret = pcall(parse, input)
-    --    if ok then
-    --      return ret
-    --    end
-    --    return LazyVim.cmp.snippet_preview(input)
-    --  end
-
-    --  local cmp = require("cmp")
-    --  cmp.setup(opts)
-    --  cmp.event:on("confirm_done", function(event)
-    --    if vim.tbl_contains(opts.auto_brackets or {}, vim.bo.filetype) then
-    --      LazyVim.cmp.auto_brackets(event.entry)
-    --    end
-    --  end)
-    --  cmp.event:on("menu_opened", function(event)
-    --    LazyVim.cmp.add_missing_snippet_docs(event.window)
-    --  end)
-    --  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-    --  cmp.setup.cmdline("/", {
-    --    mapping = cmp.mapping.preset.cmdline(),
-    --    sources = {
-    --      { name = "nvim_lsp" },
-    --      { name = "buffer" },
-    --    },
-    --  })
-    --  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-    --  cmp.setup.cmdline(":", {
-    --    mapping = cmp.mapping.preset.cmdline(),
-    --    sources = cmp.config.sources({
-    --      { name = "path" },
-    --      { name = "cmdline" },
-    --    }),
-    --  })
-    --end,
   },
 }
