@@ -138,6 +138,7 @@ return {
   {
     "akinsho/toggleterm.nvim",
     --commit = commit.toggleterm,
+    enabled = false,
 
     optional = false,
     event = "BufWinEnter",
