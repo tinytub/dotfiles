@@ -123,7 +123,9 @@ return {
       opts.completion.documentation.window = {
         border = "rounded",
       }
-
+      opts.completion.accept.auto_brackets = {
+        enabled = true,
+      }
       --opts.completion = {
       --  menu = {
       --    border = "rounded",
