@@ -110,15 +110,24 @@ return {
     "vim-test/vim-test",
     event = "BufRead",
     config = function()
-      vim.cmd([[
-              function! ToggleTermStrategy(cmd) abort
-                call luaeval("require('toggleterm').exec(_A[1], _A[2])", [a:cmd, 0])
-              endfunction
+      --vim.cmd([[
+      --        function! ToggleTermStrategy(cmd) abort
+      --          call luaeval("require('toggleterm').exec(_A[1], _A[2])", [a:cmd, 0])
+      --        endfunction
 
-              let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
-            ]])
+      --        let g:test#custom_strategies = {'toggleterm': function('ToggleTermStrategy')}
+      --      ]])
+      --vim.g["test#strategy"] = "toggleterm"
 
-      vim.g["test#strategy"] = "toggleterm"
+      vim.g["test#custom_strategies"] = {
+        snacks = function(cmd)
+          --require("snacks").terminal(cmd, { win = { position = "bottom", enter = true }, interactive = false })
+          require("snacks").terminal.open(cmd, { win = { position = "bottom", enter = true }, interactive = false })
+          --vim.cmd("stopinsert")
+          --vim.cmd("normal! G")
+        end,
+      }
+      vim.g["test#strategy"] = "snacks"
       --vim.g["test#strategy"] = "neovim"
       --vim.g["test#strategy"] = {
       --  nearest = "neovim",
