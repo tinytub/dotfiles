@@ -2,7 +2,7 @@ return {
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
-    lazy = false,
+    lazy = true,
     version = false, -- set this if you want to always pull the latest change
     opts = {
       provider = "openai", -- "claude" or "openai" or "azure"
@@ -59,25 +59,28 @@ return {
           table.insert(opts.sources.compat, "avante_commands")
           table.insert(opts.sources.compat, "avante_mentions")
           table.insert(opts.sources.compat, "avante_files")
-          table.insert(opts.sources.default, "markdown")
-          opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
+          --table.insert(opts.sources.default, "markdown")
+          --opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
           opts.sources.providers.avante_commands = {
             name = "avante_commands",
             module = "blink.compat.source",
             score_offset = 90, -- show at a higher priority than lsp
             opts = {},
+            kind = "Avante",
           }
           opts.sources.providers.avante_files = {
             name = "avante_commands",
             module = "blink.compat.source",
             score_offset = 100, -- show at a higher priority than lsp
             opts = {},
+            kind = "Avante",
           }
           opts.sources.providers.avante_mentions = {
             name = "avante_mentions",
             module = "blink.compat.source",
             score_offset = 1000, -- show at a higher priority than lsp
             opts = {},
+            kind = "Avante",
           }
         end,
       },
@@ -85,6 +88,7 @@ return {
   },
   {
     "ray-x/go.nvim",
+    lazy = true,
     dependencies = { -- optional packages
       "ray-x/guihua.lua",
       "neovim/nvim-lspconfig",
@@ -146,6 +150,7 @@ return {
   -- lazyvim 14.x version disabled nvim-cmp by default
   {
     "hrsh7th/nvim-cmp",
+    enabled = false,
     dependencies = {
       "hrsh7th/cmp-emoji",
     },

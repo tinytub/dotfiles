@@ -108,7 +108,7 @@ return {
   },
   {
     "vim-test/vim-test",
-    event = "BufRead",
+    event = "VeryLazy",
     config = function()
       --vim.cmd([[
       --        function! ToggleTermStrategy(cmd) abort
@@ -206,6 +206,7 @@ return {
   },
   {
     "nvim-telescope/telescope.nvim",
+    enabled = false,
     -- change some options
     opts = function(_, opts)
       if not LazyVim.has("flash.nvim") then
@@ -275,6 +276,7 @@ return {
   {
     "s1n7ax/nvim-window-picker",
     version = "v2.*",
+    event = "VeryLazy",
     opts = {
       --hint = "floating-big-letter",
       statusline_winbar_picker = {

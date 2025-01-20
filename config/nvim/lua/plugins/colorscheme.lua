@@ -18,6 +18,12 @@ return {
         dark = "macchiato",
         --dark = "mocha",
       }
+      -- 非活动窗口搞成深色
+      opts.dim_inactive = {
+        enabled = false,
+        shade = "dark",
+        percentage = 0.99,
+      }
       opts.transparent_background = true
       opts.no_italic = true
       opts.no_bold = false
