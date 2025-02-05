@@ -300,6 +300,18 @@ if [ -n "$ps_output" ]; then
     #echo "diagnosticd process with PID $pid has been founded. use \"sudo kill -9 $pid\""
     echo "\"diagnosticd\" process with PID $pid has been killed."
 fi
+
+#ps_output=$(ps -ef | grep MacOS/CGEDataService | grep -v "grep")
+## Check if the output contains the diagnosticd process
+#if [ -n "$ps_output" ]; then
+#    # Extract the PID of the diagnosticd process
+#    pid=$(echo "$ps_output" | awk '{print $2}')
+#    sudo kill -9 $pid
+#    # Kill the diagnosticd process using the PID
+#    #echo "diagnosticd process with PID $pid has been founded. use \"sudo kill -9 $pid\""
+#    echo "\"MacOS/CGEDataService\" process with PID $pid has been killed."
+#fi
+
 }
 
 eval "$(starship init zsh)"

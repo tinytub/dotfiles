@@ -31,7 +31,9 @@ export GOPRIVATE="git.jd.com,coding.jd.com"
 
 #export GOPATH="/home/zhaopeng/goworks1.8.3/src/jd.com/jstack-thirdparty-libs"
 #export GOROOT="/home/zhaopeng/go1.8.3"
+#
 
+export KUBE_EDITOR="/usr/bin/vim"
 export PATH=$PATH:/usr/local/kubebuilder/bin
 
 #export PATH=${JAVA_HOME}/bin:$PATH
