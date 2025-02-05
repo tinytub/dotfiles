@@ -130,6 +130,11 @@ return {
       opts.completion.accept.auto_brackets = {
         enabled = true,
       }
+      opts.keymap = {
+        preset = "enter",
+        ["<Tab>"] = { "select_next", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "fallback" },
+      }
       --opts.completion = {
       --  menu = {
       --    border = "rounded",

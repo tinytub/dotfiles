@@ -7,13 +7,12 @@ return {
       -- disable a keymap
       keys[#keys + 1] = { "<c-k>", false }
     end,
-    opts = {
-      inlay_hints = {
-
+    opts = function(_, opts)
+      opts.inlay_hints = {
         enabled = false,
         exclude = { "vue" }, -- filetypes for which you don't want to enable inlay hints
-      },
-      diagnostics = {
+      }
+      opts.diagnostics = {
         underline = true,
         update_in_insert = false,
         virtual_text = {
@@ -36,25 +35,38 @@ return {
             [vim.diagnostic.severity.INFO] = LazyVim.config.icons.diagnostics.Info,
           },
         },
-      },
-      codelens = {
+      }
+      opts.codelens = {
         enabled = false,
-      },
-      servers = {
+      }
+      --opts.servers = {
+      --  --  gopls = require "lsp.servers.gopls",
+      --  gopls = {
+      --    keys = {
+      --      -- Workaround for the lack of a DAP strategy in neotest-go: https://github.com/nvim-neotest/neotest-go/issues/12
+      --      { "<leader>td", "<cmd>lua require('dap-go').debug_test()<CR>", desc = "Debug Nearest (Go)" },
+      --    },
+      --    settings = {
+      --      gopls = {
+      --        usePlaceholders = false, -- 填充补全后的 functions param. 默认打开
+      --      },
+      --    },
+      --    flags = { allow_incremental_sync = true, debounce_text_changes = 150 },
+      --  },
+      --}
+      opts.servers.gopls = {
         --  gopls = require "lsp.servers.gopls",
-        gopls = {
-          keys = {
-            -- Workaround for the lack of a DAP strategy in neotest-go: https://github.com/nvim-neotest/neotest-go/issues/12
-            { "<leader>td", "<cmd>lua require('dap-go').debug_test()<CR>", desc = "Debug Nearest (Go)" },
-          },
-          settings = {
-            gopls = {
-              usePlaceholders = false, -- 填充补全后的 functions param. 默认打开
-            },
-          },
-          flags = { allow_incremental_sync = true, debounce_text_changes = 150 },
+        keys = {
+          -- Workaround for the lack of a DAP strategy in neotest-go: https://github.com/nvim-neotest/neotest-go/issues/12
+          { "<leader>td", "<cmd>lua require('dap-go').debug_test()<CR>", desc = "Debug Nearest (Go)" },
         },
-      },
-    },
+        settings = {
+          gopls = {
+            usePlaceholders = false, -- 填充补全后的 functions param. 默认打开
+          },
+        },
+        flags = { allow_incremental_sync = true, debounce_text_changes = 150 },
+      }
+    end,
   },
 }
