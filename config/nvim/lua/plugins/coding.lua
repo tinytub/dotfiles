@@ -54,6 +54,8 @@ return {
       {
         "saghen/blink.cmp",
         optional = true,
+        lazy = true,
+        dependencies = { "saghen/blink.compat" },
         opts = function(_, opts)
           -- set with avante and set to optional ?
           table.insert(opts.sources.compat, "avante_commands")
