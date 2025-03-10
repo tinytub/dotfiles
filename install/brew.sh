@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-if test ! "$( command -v brew )"; then
+if test ! "$(command -v brew)"; then
     echo "Installing homebrew"
-    ruby -e "$( curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install )"
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
 echo -e "\\n\\nInstalling homebrew packages..."
@@ -10,40 +10,40 @@ echo "=============================="
 
 formulas=(
     bat
-    diff-so-fancy
-    dnsmasq
+    #    diff-so-fancy
+    #    dnsmasq
     fzf
     git
     grep
     highlight
-    hub
+    #    hub
     markdown
-    mas
+    #    mas
     neovim
-    python
+    #    python
     reattach-to-user-namespace
-    the_silver_searcher
+    #    the_silver_searcher
     shellcheck
     tmux
-    trash
+    #    trash
     tree
     wget
     vim
-    z
+    #    z
     zsh
     ripgrep
-    git-standup
-    entr
-    yarn
-    --with-jansson --HEAD universal-ctags/universal-ctags/universal-ctags
+    #    git-standup
+    #    entr
+    #    yarn
+    #    --with-jansson --HEAD universal-ctags/universal-ctags/universal-ctags
     zsh-autosuggestions
-    autojump
+    #    autojump
     jesseduffield/lazygit/lazygit
 )
 
 for formula in "${formulas[@]}"; do
-    formula_name=$( echo "$formula" | awk '{print $1}' )
-    if brew list "$formula_name" > /dev/null 2>&1; then
+    formula_name=$(echo "$formula" | awk '{print $1}')
+    if brew list "$formula_name" >/dev/null 2>&1; then
         echo "$formula_name already installed... skipping."
     else
         brew install "$formula"
@@ -65,7 +65,7 @@ echo "=============================="
 #pip3 install pynvim
 
 # Change the default shell to zsh
-zsh_path="$( command -v zsh )"
+zsh_path="$(command -v zsh)"
 if ! grep "$zsh_path" /etc/shells; then
     echo "adding $zsh_path to /etc/shells"
     echo "$zsh_path" | sudo tee -a /etc/shells
