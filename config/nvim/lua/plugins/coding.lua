@@ -13,7 +13,7 @@ return {
         model = "gpt-4o",
         timeout = 30000, -- timeout in milliseconds
         temperature = 0,
-        max_tokens = 4096,
+        max_tokens = 8192,
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
@@ -53,41 +53,41 @@ return {
         },
         ft = { "markdown", "Avante" },
       },
-      {
-        "saghen/blink.cmp",
-        optional = true,
-        lazy = true,
-        dependencies = { "saghen/blink.compat" },
-        opts = function(_, opts)
-          -- set with avante and set to optional ?
-          table.insert(opts.sources.compat, "avante_commands")
-          table.insert(opts.sources.compat, "avante_mentions")
-          table.insert(opts.sources.compat, "avante_files")
-          --table.insert(opts.sources.default, "markdown")
-          --opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
-          opts.sources.providers.avante_commands = {
-            name = "avante_commands",
-            module = "blink.compat.source",
-            score_offset = 90, -- show at a higher priority than lsp
-            opts = {},
-            kind = "Avante",
-          }
-          opts.sources.providers.avante_files = {
-            name = "avante_commands",
-            module = "blink.compat.source",
-            score_offset = 100, -- show at a higher priority than lsp
-            opts = {},
-            kind = "Avante",
-          }
-          opts.sources.providers.avante_mentions = {
-            name = "avante_mentions",
-            module = "blink.compat.source",
-            score_offset = 1000, -- show at a higher priority than lsp
-            opts = {},
-            kind = "Avante",
-          }
-        end,
-      },
+      --{
+      --  "saghen/blink.cmp",
+      --  optional = true,
+      --  lazy = true,
+      --  dependencies = { "saghen/blink.compat" },
+      --  opts = function(_, opts)
+      --    -- set with avante and set to optional ?
+      --    table.insert(opts.sources.compat, "avante_commands")
+      --    table.insert(opts.sources.compat, "avante_mentions")
+      --    table.insert(opts.sources.compat, "avante_files")
+      --    --table.insert(opts.sources.default, "markdown")
+      --    --opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
+      --    opts.sources.providers.avante_commands = {
+      --      name = "avante_commands",
+      --      module = "blink.compat.source",
+      --      score_offset = 90, -- show at a higher priority than lsp
+      --      opts = {},
+      --      kind = "Avante",
+      --    }
+      --    opts.sources.providers.avante_files = {
+      --      name = "avante_commands",
+      --      module = "blink.compat.source",
+      --      score_offset = 100, -- show at a higher priority than lsp
+      --      opts = {},
+      --      kind = "Avante",
+      --    }
+      --    opts.sources.providers.avante_mentions = {
+      --      name = "avante_mentions",
+      --      module = "blink.compat.source",
+      --      score_offset = 1000, -- show at a higher priority than lsp
+      --      opts = {},
+      --      kind = "Avante",
+      --    }
+      --  end,
+      --},
     },
   },
   {
@@ -124,6 +124,8 @@ return {
   },
   {
     "saghen/blink.cmp",
+
+    dependencies = { "saghen/blink.compat" },
     opts = function(_, opts)
       --opts.keymap = { preset = "super-tab", ["<CR>"] = { "accept", "fallback" } }
       opts.completion.menu.border = "rounded"
@@ -153,6 +155,36 @@ return {
       --  },
       --}
       --opts.sources.default = { "copilot", "lsp", "path" }
+      --
+      -- for avente --
+      -- set with avante and set to optional ?
+      table.insert(opts.sources.compat, "avante_commands")
+      table.insert(opts.sources.compat, "avante_mentions")
+      table.insert(opts.sources.compat, "avante_files")
+      --table.insert(opts.sources.default, "markdown")
+      --opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
+      opts.sources.providers.avante_commands = {
+        name = "avante_commands",
+        module = "blink.compat.source",
+        score_offset = 90, -- show at a higher priority than lsp
+        opts = {},
+        kind = "Avante",
+      }
+      opts.sources.providers.avante_files = {
+        name = "avante_commands",
+        module = "blink.compat.source",
+        score_offset = 100, -- show at a higher priority than lsp
+        opts = {},
+        kind = "Avante",
+      }
+      opts.sources.providers.avante_mentions = {
+        name = "avante_mentions",
+        module = "blink.compat.source",
+        score_offset = 1000, -- show at a higher priority than lsp
+        opts = {},
+        kind = "Avante",
+      }
+      -- for avente done--
     end,
   },
 
