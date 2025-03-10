@@ -11,6 +11,7 @@ return {
         --endpoint = "https://penran.cc/v1",
         endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai",
         model = "gpt-4o",
+        timeout = 30000, -- timeout in milliseconds
         temperature = 0,
         max_tokens = 4096,
       },
@@ -24,6 +25,7 @@ return {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
+      -- "echasnovski/mini.pick", -- for file_selector provider mini.pick
       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
       "zbirenbaum/copilot.lua", -- for providers='copilot'
       {
