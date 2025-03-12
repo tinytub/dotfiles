@@ -141,22 +141,8 @@ return {
         ["<Tab>"] = { "select_next", "fallback" },
         ["<S-Tab>"] = { "select_prev", "fallback" },
       }
-      --opts.completion = {
-      --  menu = {
-      --    border = "rounded",
-      --  },
-      --  documentation = {
-      --    window = {
-      --      border = "rounded",
-      --    },
-      --  },
-      --  ghost_text = {
-      --    enabled = false,
-      --  },
-      --}
-      --opts.sources.default = { "copilot", "lsp", "path" }
-      --
-      -- for avente --
+
+      -- for Avente --
       -- set with avante and set to optional ?
       table.insert(opts.sources.compat, "avante_commands")
       table.insert(opts.sources.compat, "avante_mentions")
