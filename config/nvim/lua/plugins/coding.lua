@@ -5,12 +5,19 @@ return {
     lazy = true,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = "openai", -- "claude" or "openai" or "azure"
+      provider = "gemini", -- "claude" or "openai" or "azure"
       --debug = true,
       openai = {
         --endpoint = "https://penran.cc/v1",
         endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai",
         model = "gpt-4o",
+        timeout = 30000, -- timeout in milliseconds
+        temperature = 0,
+        max_tokens = 8192,
+      },
+      gemini = {
+        --endpoint = "https://penran.cc/v1",
+        model = "gemini-2.0-flash",
         timeout = 30000, -- timeout in milliseconds
         temperature = 0,
         max_tokens = 8192,
