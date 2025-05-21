@@ -5,19 +5,22 @@ return {
     lazy = true,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = "gemini", -- "claude" or "openai" or "azure"
+      --provider = "gemini", -- "claude" or "openai" or "azure"
+      provider = "openai", -- "claude" or "openai" or "azure"
       --debug = true,
       openai = {
         --endpoint = "https://penran.cc/v1",
-        endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai",
+        -- endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai",
         model = "gpt-4o",
         timeout = 30000, -- timeout in milliseconds
         temperature = 0,
-        max_tokens = 8192,
+        max_tokens = 16384,
       },
       gemini = {
         --endpoint = "https://penran.cc/v1",
-        model = "gemini-2.0-flash",
+        -- model = "gemini-2.0-flash",
+        model = "gemini-2.5-flash-preview-04-17",
+        -- model = "gemini-2.5-pro-exp-03-25",
         timeout = 30000, -- timeout in milliseconds
         temperature = 0,
         max_tokens = 8192,
@@ -35,24 +38,25 @@ return {
       --- The below dependencies are optional,
       -- "echasnovski/mini.pick", -- for file_selector provider mini.pick
       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua", -- for providers='copilot'
-      {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
-      },
+      "ibhagwan/fzf-lua", -- for file_selector provider fzf
+      -- "zbirenbaum/copilot.lua", -- for providers='copilot'
+      --{
+      --  -- support for image pasting
+      --  "HakonHarnes/img-clip.nvim",
+      --  event = "VeryLazy",
+      --  opts = {
+      --    -- recommended settings
+      --    default = {
+      --      embed_image_as_base64 = false,
+      --      prompt_for_file_name = false,
+      --      drag_and_drop = {
+      --        insert_mode = true,
+      --      },
+      --      -- required for Windows users
+      --      -- use_absolute_path = true,
+      --    },
+      --  },
+      --},
       {
         -- Make sure to set this up properly if you have lazy=true
         "MeanderingProgrammer/render-markdown.nvim",

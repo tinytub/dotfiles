@@ -57,54 +57,25 @@ return {
         end,
       },
     },
-    opts = {
-      window = {
-        mappings = {
-          ["<c-x>"] = "split_with_window_picker",
-          ["<c-v>"] = "vsplit_with_window_picker",
-          ["l"] = "open_with_window_picker",
-          ["<cr>"] = "open_drop",
-        },
-      },
-      --close_if_last_window = true,
-      --source_selector = {
-      --  winbar = false,
-      --  show_scrolled_off_parent_node = true,
-      --  padding = { left = 1, right = 0 },
-      --  sources = {
-      --    { source = "filesystem", display_name = "  Files" }, --      
-      --    { source = "buffers", display_name = "  Buffers" }, --      
-      --    { source = "git_status", display_name = " 󰊢 Git" }, -- 󰊢      
-      --  },
-      --},
-      --document_symbols = {
-      --  follow_cursor = true,
-      --  renderers = {
-      --    symbol = {
-      --      { "indent", with_expanders = true },
-      --      { "kind_icon", default = "?" },
-      --      { "name", zindex = 10 },
-      --      -- removed the kind text as its redundant with the icon
-      --    },
-      --  },
-      --},
-    },
-    --config = function(_, opts)
-    --  -- some from https://github.com/CKolkey/config/blob/master/nvim/lua/plugins/neo-tree.lua
-    --  -- Enable a strong cursorline.
-    --  local function set_cursorline()
-    --    vim.wo.winhighlight = "CursorLine:WildMenu"
-    --    vim.wo.cursorline = true
-    --    vim.o.signcolumn = "auto"
-    --  end
-
-    --  -- Find previous neo-tree window and clear bright highlight selection.
-    --  -- Don't hide cursorline though, so 'follow_current_file' works.
-    --  local function reset_cursorline()
-    --    local winid = vim.fn.win_getid(vim.fn.winnr("#"))
-    --    vim.api.nvim_win_set_option(winid, "winhighlight", "")
-    --  end
-    --end,
+    opts = function(_, opts)
+      --vim.api.nvim_set_hl(0, "NeoTreeCurrentFile", {
+      --  --fg = "#ffcc00", -- 设置前景色为黄色
+      --  fg = "#e35e4f",
+      --  bg = "#282828", -- 设置背景色
+      --  bold = true, -- 设置加粗
+      --})
+      opts.window.mappings = {
+        ["<c-x>"] = "split_with_window_picker",
+        ["<c-v>"] = "vsplit_with_window_picker",
+        ["l"] = "open_with_window_picker",
+        ["<cr>"] = "open_drop",
+      }
+      -- 高亮当前文件
+      --opts.window.highlight_current_file = {
+      --  enabled = true,
+      --  group = "NeoTreeCurrentFile", -- 你可以自定义这个group
+      --}
+    end,
   },
   {
     "vim-test/vim-test",
