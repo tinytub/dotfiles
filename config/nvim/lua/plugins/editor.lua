@@ -10,7 +10,6 @@ return {
     end,
     event = "VeryLazy",
   },
-
   {
     "nvim-neo-tree/neo-tree.nvim",
     dependencies = {
@@ -64,11 +63,38 @@ return {
       --  bg = "#282828", -- 设置背景色
       --  bold = true, -- 设置加粗
       --})
+
+      opts.filesystem.commands = {
+        avante_add_files = function(state)
+          local node = state.tree:get_node()
+          local filepath = node:get_id()
+          local relative_path = require("avante.utils").relative_path(filepath)
+
+          local sidebar = require("avante").get()
+
+          local open = sidebar:is_open()
+          -- 确保 avante 侧边栏已打开
+          if not open then
+            require("avante.api").ask()
+            sidebar = require("avante").get()
+          end
+
+          sidebar.file_selector:add_selected_file(relative_path)
+
+          -- 删除 neo tree 缓冲区
+          if not open then
+            sidebar.file_selector:remove_selected_file("neo-tree filesystem [1]")
+          end
+        end,
+      }
       opts.window.mappings = {
         ["<c-x>"] = "split_with_window_picker",
         ["<c-v>"] = "vsplit_with_window_picker",
         ["l"] = "open_with_window_picker",
         ["<cr>"] = "open_drop",
+
+        -- 快速将 file/folder 添加到 Avante Selected Files
+        ["oa"] = "avante_add_files",
       }
       -- 高亮当前文件
       --opts.window.highlight_current_file = {

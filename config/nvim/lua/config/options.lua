@@ -16,6 +16,8 @@ opt.softtabstop = 4
 -- for avante.nvim
 opt.splitkeep = "screen"
 
+vim.g.lazyvim_prettier_needs_config = true
+
 --opt.title = true
 --opt.titlelen = 0 -- do not shorten title
 --opt.titlestring = 'nvim %{expand("%:p")}'
