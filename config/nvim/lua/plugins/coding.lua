@@ -5,6 +5,10 @@ return {
     lazy = true,
     version = false, -- set this if you want to always pull the latest change
     opts = {
+      web_search_engine = {
+        provider = "google", -- tavily, serpapi, searchapi, google, kagi, brave, or searxng
+        proxy = nil, -- proxy support, e.g., http://127.0.0.1:7890
+      },
       provider = "gemini", -- "claude" or "openai" or "azure"
       --provider = "openai", -- "claude" or "openai" or "azure"
       --debug = true,
@@ -20,8 +24,8 @@ return {
         },
         gemini = {
           --endpoint = "https://penran.cc/v1",
-          model = "gemini-2.0-flash",
-          --model = "gemini-2.5-flash-preview-05-20",
+          --model = "gemini-2.0-flash",
+          model = "gemini-2.5-flash-preview-05-20",
           -- model = "gemini-2.5-pro-exp-03-25",
           --timeout = 30000, -- timeout in milliseconds
           --temperature = 0,
