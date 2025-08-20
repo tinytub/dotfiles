@@ -301,6 +301,29 @@ if [ -n "$ps_output" ]; then
     echo "\"diagnosticd\" process with PID $pid has been killed."
 fi
 
+kill_target_processes() {
+  local targets=("JDITDesk" "HioUpdate" "HioNetwor")
+  for pname in "${targets[@]}"; do
+    # 查找进程ID
+    pids=$(pgrep -x "$pname")
+    if [[ -n "$pids" ]]; then
+      echo "发现进程 $pname，PID: $pids，正在终止..."
+      kill -9 $pids
+      echo "$pname 已被终止。"
+    else
+     # echo "未发现进程 $pname。"
+    fi
+  done
+}
+start_socat_8988() {
+  # 检查是否已有 socat 监听 127.0.0.1:8988
+  if lsof -nP -iTCP:8988 -sTCP:LISTEN | grep -q 'socat'; then
+  else
+    echo "未检测到 socat 监听 127.0.0.1:8988，正在后台启动..."
+    nohup socat TCP4-LISTEN:8988,bind=127.0.0.1,fork - >/dev/null 2>&1 &
+  fi
+}
+
 #ps_output=$(ps -ef | grep MacOS/CGEDataService | grep -v "grep")
 ## Check if the output contains the diagnosticd process
 #if [ -n "$ps_output" ]; then
@@ -332,7 +355,12 @@ fi
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 checkrabbish
-
+kill_target_processes
+start_socat_8988
 
 alias gf=gf
 
+# append completions to fpath
+fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
+# initialise completions with ZSH's compinit
+autoload -Uz compinit && compinit

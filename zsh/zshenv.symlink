@@ -8,6 +8,12 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 setopt COMBINING_CHARS
 
+export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+. ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.zsh
+
+
 #export LANG=en_US.UTF-8
 
 #source ~/.bash_profile
@@ -63,6 +69,7 @@ export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 # HTTPProxy
 #export https_proxy=http://10.12.164.8:7890 http_proxy=http://10.12.164.8:7890 all_proxy=socks5://10.12.164.8:7891
 export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
+#export https_proxy= http_proxy= all_proxy=
 #export https_proxy=http://127.0.0.1:7788 http_proxy=http://127.0.0.1:7788 all_proxy=socks5://127.0.0.1:7788
 #. "$HOME/.cargo/env"
 . "$HOME/.config/.openai.yaml"
@@ -74,3 +81,9 @@ export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_pr
 #alias -g zplug="LC_MESSAGES=en_US.UTF-8 zplug"
 ulimit -n 4096
 #$source /Users/zhaopeng18/.iterm2_shell_integration.zsh
+
+export GOPATH="/Users/zhaopeng18/Documents/local_projects/goworks"
+export GO111MODULE="on"
+export GOPRIVATE="git.jd.com,coding.jd.com"
+
+

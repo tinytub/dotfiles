@@ -28,12 +28,13 @@ palette = 14=#7dcfff
 palette = 15=#c0caf5
 font-thicken = false
 font-family = JetBrainsMonoNL Nerd Font Mono
-## -- v2.3.3, 适配老图标
-font-family = Anonymice Nerd Font 
+font-family = Anonymice Nerd Font ## -- v2.3.3, 适配老图标
+
 font-family = Hack Nerd Font Mono
 font-family = NotoMono Nerd Font Mono
 font-family = Symbols Nerd Font Mono
-font-family = Heiti SC
+#font-family = Heiti SC
+font-family = PingFang SC
 
 
 copy-on-select = clipboard

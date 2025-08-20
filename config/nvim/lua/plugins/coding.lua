@@ -10,6 +10,7 @@ return {
         proxy = nil, -- proxy support, e.g., http://127.0.0.1:7890
       },
       provider = "gemini", -- "claude" or "openai" or "azure"
+      --provider = "moonshot", -- "claude" or "openai" or "azure"
       --provider = "openai", -- "claude" or "openai" or "azure"
       --debug = true,
       --
@@ -22,19 +23,72 @@ return {
           --temperature = 0,
           --max_tokens = 16384,
         },
+        moonshot = {
+          --  endpoint = "https://api.moonshot.ai/v1",
+          endpoint = "https://api.moonshot.cn/v1",
+          model = "kimi-k2-0711-preview",
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 32768,
+          },
+        },
         gemini = {
           --endpoint = "https://penran.cc/v1",
           --model = "gemini-2.0-flash",
-          model = "gemini-2.5-flash-preview-05-20",
-          -- model = "gemini-2.5-pro-exp-03-25",
+          -- model = "gemini-2.5-flash-preview-05-20",
+          model = "gemini-2.5-pro",
+          --model = "gemini-2.5-pro-preview-06-05",
           --timeout = 30000, -- timeout in milliseconds
           --temperature = 0,
           --max_tokens = 8192,
         },
       },
+      behaviour = {
+        enable_fastapply = false, -- Enable Fast Apply feature
+      },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
+    --config = function()
+    --  pcall(function()
+    --    -- workaround for https://github.com/yetone/avante.nvim/issues/153
+    --    local sidebar_ok, sidebar = pcall(require, "avante.sidebar")
+    --    if sidebar_ok and sidebar then
+    --      local mt = getmetatable(sidebar)
+    --      if mt and mt.delete_containers then
+    --        mt.delete_containers = function(self)
+    --          if self.containers and self.containers.content then
+    --            if #vim.api.nvim_list_wins() < 2 then
+    --              vim.cmd.enew()
+    --            end
+    --            self.containers.content:unmount()
+    --            self.containers.content = nil
+    --          end
+    --          if self.containers and self.containers.input then
+    --            if #vim.api.nvim_list_wins() < 2 then
+    --              vim.cmd.enew()
+    --            end
+    --            self.containers.input:unmount()
+    --            self.containers.input = nil
+    --          end
+    --        end
+    --      end
+    --    end
+
+    --    -- workaround for invalid window id error
+    --    local utils_ok, utils = pcall(require, "avante.utils")
+    --    if utils_ok and utils and utils.is_top_adjacent then
+    --      local original_is_top_adjacent = utils.is_top_adjacent
+    --      utils.is_top_adjacent = function(winid, bufnr)
+    --        if not vim.api.nvim_win_is_valid(winid) then
+    --          return false
+    --        end
+    --        return original_is_top_adjacent(winid, bufnr)
+    --      end
+    --    end
+    --  end)
+    --end,
     -- build = "make BUILD_FROM_SOURCE=true",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
