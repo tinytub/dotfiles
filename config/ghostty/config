@@ -2,6 +2,13 @@
 # 升级到开发版
 auto-update-channel = tip 
 
+mouse-hide-while-typing = true
+adjust-cursor-thickness = 300%
+cursor-style-blink = false
+cursor-style = block
+cursor-color = #c0caf5
+shell-integration-features = no-cursor
+
 custom-shader-animation = true
 background-opacity = 0.95
 theme = tokyonight-storm
@@ -9,7 +16,9 @@ background = #24283b
 foreground = #c0caf5
 selection-background = #364a82
 selection-foreground = #c0caf5
-cursor-color = #c0caf5
+
+macos-option-as-alt = true
+
 palette = 0=#1d202f
 palette = 1=#f7768e
 palette = 2=#9ece6a
@@ -39,12 +48,9 @@ font-family = PingFang SC
 
 copy-on-select = clipboard
 
-cursor-style = block
-cursor-style-blink = false
-shell-integration-features = no-cursor
 
 
-macos-option-as-alt = true
+
 
 # 终端查询临时方案
-keybind = super+f=write_screen_file:open
+#keybind = super+f=write_screen_file:open
