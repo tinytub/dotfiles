@@ -9,7 +9,9 @@ return {
         provider = "google", -- tavily, serpapi, searchapi, google, kagi, brave, or searxng
         proxy = nil, -- proxy support, e.g., http://127.0.0.1:7890
       },
-      provider = "gemini", -- "claude" or "openai" or "azure"
+
+      provider = "gemini-cli",
+      --    provider = "gemini", -- "claude" or "openai" or "azure"
       --provider = "moonshot", -- "claude" or "openai" or "azure"
       --provider = "openai", -- "claude" or "openai" or "azure"
       --debug = true,
