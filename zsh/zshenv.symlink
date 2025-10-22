@@ -11,6 +11,9 @@ setopt COMBINING_CHARS
 export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+#export PATH="/Users/zhaopeng18/.asdf/installs/golang/1.24.3/bin:$PATH"
+#export PATH="/Users/zhaopeng18/.asdf/installs/golang/1.24.3/go/bin:$PATH"
+
 . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.zsh
 
 
@@ -26,6 +29,8 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 export GOPATH="/Users/zhaopeng18/Documents/local_projects/goworks"
 export GO111MODULE="on"
 export GOPRIVATE="git.jd.com,coding.jd.com"
+export GONOSUMDB=coding.jd.com
+export GOPROXY=direct
 
 #export GOROOT="/usr/local/go"
 #export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home"
@@ -45,7 +50,7 @@ export PATH=$PATH:/usr/local/kubebuilder/bin
 #export PATH=${JAVA_HOME}/bin:$PATH
 export PATH="/usr/local/opt/ruby/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
 export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="/usr/local/opt/go@1.18/bin:$PATH"
+#export PATH="/usr/local/opt/go@1.18/bin:$PATH"
 
 export PATH="/usr/local/opt/openssl@3/bin:$PATH"
 export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"

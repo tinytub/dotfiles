@@ -2,6 +2,7 @@ return {
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
+    enabled = true,
     lazy = true,
     version = false, -- set this if you want to always pull the latest change
     opts = {
@@ -11,6 +12,7 @@ return {
       },
 
       provider = "gemini-cli",
+      -- provider = "codex",
       --    provider = "gemini", -- "claude" or "openai" or "azure"
       --provider = "moonshot", -- "claude" or "openai" or "azure"
       --provider = "openai", -- "claude" or "openai" or "azure"
@@ -103,6 +105,7 @@ return {
       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
       "ibhagwan/fzf-lua", -- for file_selector provider fzf
       -- "zbirenbaum/copilot.lua", -- for providers='copilot'
+
       {
         -- support for image pasting
         "HakonHarnes/img-clip.nvim",
@@ -116,7 +119,7 @@ return {
               insert_mode = true,
             },
             -- required for Windows users
-            -- use_absolute_path = true,
+            use_absolute_path = true,
           },
         },
       },

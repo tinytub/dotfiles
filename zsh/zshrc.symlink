@@ -302,7 +302,7 @@ if [ -n "$ps_output" ]; then
 fi
 
 kill_target_processes() {
-  local targets=("JDITDesk" "HioUpdate" "HioNetwor")
+  local targets=("JDITDesk" "HioUpdate" "HioNetwork" "JDITTray")
   for pname in "${targets[@]}"; do
     # 查找进程ID
     pids=$(pgrep -x "$pname")

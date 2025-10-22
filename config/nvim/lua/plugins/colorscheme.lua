@@ -11,8 +11,8 @@ return {
     lazy = true,
     vscode = true,
     opts = function(_, opts)
-      local bufferline = require("catppuccin.groups.integrations.bufferline")
-      bufferline.get = bufferline.get or bufferline.get_theme
+      --local bufferline = require("catppuccin.groups.integrations.bufferline")
+      --bufferline.get = bufferline.get or bufferline.get_theme
 
       opts.flavour = "macchiato" -- latte, frappe, macchiato, mocha
       opts.integrations = {

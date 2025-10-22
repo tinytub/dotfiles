@@ -11,7 +11,7 @@ shell-integration-features = no-cursor
 
 custom-shader-animation = true
 background-opacity = 0.95
-theme = tokyonight-storm
+theme = tokyonight storm
 background = #24283b
 foreground = #c0caf5
 selection-background = #364a82
