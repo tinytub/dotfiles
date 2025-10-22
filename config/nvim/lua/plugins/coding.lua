@@ -3,7 +3,7 @@ return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     enabled = true,
-    lazy = true,
+    -- lazy = true,
     version = false, -- set this if you want to always pull the latest change
     opts = {
       web_search_engine = {
@@ -11,7 +11,7 @@ return {
         proxy = nil, -- proxy support, e.g., http://127.0.0.1:7890
       },
 
-      provider = "gemini-cli",
+      provider = "codex",
       -- provider = "codex",
       --    provider = "gemini", -- "claude" or "openai" or "azure"
       --provider = "moonshot", -- "claude" or "openai" or "azure"
@@ -51,123 +51,190 @@ return {
       behaviour = {
         enable_fastapply = false, -- Enable Fast Apply feature
       },
+      windows = {
+        position = "right", -- the position of the sidebar
+        wrap = true, -- similar to vim.o.wrap
+        width = 30, -- default % based on available width
+        sidebar_header = {
+          enabled = true, -- true, false to enable/disable the header
+          align = "center", -- left, center, right for title
+          rounded = false,
+        },
+      },
     },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+
     build = "make",
-    --config = function()
-    --  pcall(function()
-    --    -- workaround for https://github.com/yetone/avante.nvim/issues/153
-    --    local sidebar_ok, sidebar = pcall(require, "avante.sidebar")
-    --    if sidebar_ok and sidebar then
-    --      local mt = getmetatable(sidebar)
-    --      if mt and mt.delete_containers then
-    --        mt.delete_containers = function(self)
-    --          if self.containers and self.containers.content then
-    --            if #vim.api.nvim_list_wins() < 2 then
-    --              vim.cmd.enew()
-    --            end
-    --            self.containers.content:unmount()
-    --            self.containers.content = nil
-    --          end
-    --          if self.containers and self.containers.input then
-    --            if #vim.api.nvim_list_wins() < 2 then
-    --              vim.cmd.enew()
-    --            end
-    --            self.containers.input:unmount()
-    --            self.containers.input = nil
-    --          end
-    --        end
-    --      end
-    --    end
-
-    --    -- workaround for invalid window id error
-    --    local utils_ok, utils = pcall(require, "avante.utils")
-    --    if utils_ok and utils and utils.is_top_adjacent then
-    --      local original_is_top_adjacent = utils.is_top_adjacent
-    --      utils.is_top_adjacent = function(winid, bufnr)
-    --        if not vim.api.nvim_win_is_valid(winid) then
-    --          return false
-    --        end
-    --        return original_is_top_adjacent(winid, bufnr)
-    --      end
-    --    end
-    --  end)
-    --end,
-    -- build = "make BUILD_FROM_SOURCE=true",
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      -- "echasnovski/mini.pick", -- for file_selector provider mini.pick
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "ibhagwan/fzf-lua", -- for file_selector provider fzf
-      -- "zbirenbaum/copilot.lua", -- for providers='copilot'
-
-      {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
-      },
-      {
-        -- Make sure to set this up properly if you have lazy=true
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = {
-          file_types = { "markdown", "Avante" },
-        },
-        ft = { "markdown", "Avante" },
-      },
-      --{
-      --  "saghen/blink.cmp",
-      --  optional = true,
-      --  lazy = true,
-      --  dependencies = { "saghen/blink.compat" },
-      --  opts = function(_, opts)
-      --    -- set with avante and set to optional ?
-      --    table.insert(opts.sources.compat, "avante_commands")
-      --    table.insert(opts.sources.compat, "avante_mentions")
-      --    table.insert(opts.sources.compat, "avante_files")
-      --    --table.insert(opts.sources.default, "markdown")
-      --    --opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
-      --    opts.sources.providers.avante_commands = {
-      --      name = "avante_commands",
-      --      module = "blink.compat.source",
-      --      score_offset = 90, -- show at a higher priority than lsp
-      --      opts = {},
-      --      kind = "Avante",
-      --    }
-      --    opts.sources.providers.avante_files = {
-      --      name = "avante_commands",
-      --      module = "blink.compat.source",
-      --      score_offset = 100, -- show at a higher priority than lsp
-      --      opts = {},
-      --      kind = "Avante",
-      --    }
-      --    opts.sources.providers.avante_mentions = {
-      --      name = "avante_mentions",
-      --      module = "blink.compat.source",
-      --      score_offset = 1000, -- show at a higher priority than lsp
-      --      opts = {},
-      --      kind = "Avante",
-      --    }
-      --  end,
-      --},
-    },
   },
+
+  --  {
+  --    "yetone/avante.nvim",
+  --    event = "VeryLazy",
+  --    enabled = true,
+  --    lazy = true,
+  --    version = false, -- set this if you want to always pull the latest change
+  --    opts = {
+  --      web_search_engine = {
+  --        provider = "google", -- tavily, serpapi, searchapi, google, kagi, brave, or searxng
+  --        proxy = nil, -- proxy support, e.g., http://127.0.0.1:7890
+  --      },
+  --
+  --      provider = "gemini-cli",
+  --      -- provider = "codex",
+  --      --    provider = "gemini", -- "claude" or "openai" or "azure"
+  --      --provider = "moonshot", -- "claude" or "openai" or "azure"
+  --      --provider = "openai", -- "claude" or "openai" or "azure"
+  --      --debug = true,
+  --      --
+  --      providers = {
+  --        openai = {
+  --          --endpoint = "https://penran.cc/v1",
+  --          -- endpoint = "https://gateway.ai.cloudflare.com/v1/b405e447102907b7dab0007a12d01a0f/my-ai-gw/openai",
+  --          model = "gpt-4o",
+  --          --timeout = 30000, -- timeout in milliseconds
+  --          --temperature = 0,
+  --          --max_tokens = 16384,
+  --        },
+  --        moonshot = {
+  --          --  endpoint = "https://api.moonshot.ai/v1",
+  --          endpoint = "https://api.moonshot.cn/v1",
+  --          model = "kimi-k2-0711-preview",
+  --          timeout = 30000, -- Timeout in milliseconds
+  --          extra_request_body = {
+  --            temperature = 0.75,
+  --            max_tokens = 32768,
+  --          },
+  --        },
+  --        gemini = {
+  --          --endpoint = "https://penran.cc/v1",
+  --          --model = "gemini-2.0-flash",
+  --          -- model = "gemini-2.5-flash-preview-05-20",
+  --          model = "gemini-2.5-pro",
+  --          --model = "gemini-2.5-pro-preview-06-05",
+  --          --timeout = 30000, -- timeout in milliseconds
+  --          --temperature = 0,
+  --          --max_tokens = 8192,
+  --        },
+  --      },
+  --      behaviour = {
+  --        enable_fastapply = false, -- Enable Fast Apply feature
+  --      },
+  --    },
+  --    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  --    build = "make",
+  --    --config = function()
+  --    --  pcall(function()
+  --    --    -- workaround for https://github.com/yetone/avante.nvim/issues/153
+  --    --    local sidebar_ok, sidebar = pcall(require, "avante.sidebar")
+  --    --    if sidebar_ok and sidebar then
+  --    --      local mt = getmetatable(sidebar)
+  --    --      if mt and mt.delete_containers then
+  --    --        mt.delete_containers = function(self)
+  --    --          if self.containers and self.containers.content then
+  --    --            if #vim.api.nvim_list_wins() < 2 then
+  --    --              vim.cmd.enew()
+  --    --            end
+  --    --            self.containers.content:unmount()
+  --    --            self.containers.content = nil
+  --    --          end
+  --    --          if self.containers and self.containers.input then
+  --    --            if #vim.api.nvim_list_wins() < 2 then
+  --    --              vim.cmd.enew()
+  --    --            end
+  --    --            self.containers.input:unmount()
+  --    --            self.containers.input = nil
+  --    --          end
+  --    --        end
+  --    --      end
+  --    --    end
+  --
+  --    --    -- workaround for invalid window id error
+  --    --    local utils_ok, utils = pcall(require, "avante.utils")
+  --    --    if utils_ok and utils and utils.is_top_adjacent then
+  --    --      local original_is_top_adjacent = utils.is_top_adjacent
+  --    --      utils.is_top_adjacent = function(winid, bufnr)
+  --    --        if not vim.api.nvim_win_is_valid(winid) then
+  --    --          return false
+  --    --        end
+  --    --        return original_is_top_adjacent(winid, bufnr)
+  --    --      end
+  --    --    end
+  --    --  end)
+  --    --end,
+  --    -- build = "make BUILD_FROM_SOURCE=true",
+  --    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+  --    dependencies = {
+  --      "nvim-treesitter/nvim-treesitter",
+  --      "stevearc/dressing.nvim",
+  --      "nvim-lua/plenary.nvim",
+  --      "MunifTanjim/nui.nvim",
+  --      --- The below dependencies are optional,
+  --      -- "echasnovski/mini.pick", -- for file_selector provider mini.pick
+  --      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+  --      "ibhagwan/fzf-lua", -- for file_selector provider fzf
+  --      -- "zbirenbaum/copilot.lua", -- for providers='copilot'
+  --
+  --      {
+  --        -- support for image pasting
+  --        "HakonHarnes/img-clip.nvim",
+  --        event = "VeryLazy",
+  --        opts = {
+  --          -- recommended settings
+  --          default = {
+  --            embed_image_as_base64 = false,
+  --            prompt_for_file_name = false,
+  --            drag_and_drop = {
+  --              insert_mode = true,
+  --            },
+  --            -- required for Windows users
+  --            use_absolute_path = true,
+  --          },
+  --        },
+  --      },
+  --      {
+  --        -- Make sure to set this up properly if you have lazy=true
+  --        "MeanderingProgrammer/render-markdown.nvim",
+  --        opts = {
+  --          file_types = { "markdown", "Avante" },
+  --        },
+  --        ft = { "markdown", "Avante" },
+  --      },
+  --      --{
+  --      --  "saghen/blink.cmp",
+  --      --  optional = true,
+  --      --  lazy = true,
+  --      --  dependencies = { "saghen/blink.compat" },
+  --      --  opts = function(_, opts)
+  --      --    -- set with avante and set to optional ?
+  --      --    table.insert(opts.sources.compat, "avante_commands")
+  --      --    table.insert(opts.sources.compat, "avante_mentions")
+  --      --    table.insert(opts.sources.compat, "avante_files")
+  --      --    --table.insert(opts.sources.default, "markdown")
+  --      --    --opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
+  --      --    opts.sources.providers.avante_commands = {
+  --      --      name = "avante_commands",
+  --      --      module = "blink.compat.source",
+  --      --      score_offset = 90, -- show at a higher priority than lsp
+  --      --      opts = {},
+  --      --      kind = "Avante",
+  --      --    }
+  --      --    opts.sources.providers.avante_files = {
+  --      --      name = "avante_commands",
+  --      --      module = "blink.compat.source",
+  --      --      score_offset = 100, -- show at a higher priority than lsp
+  --      --      opts = {},
+  --      --      kind = "Avante",
+  --      --    }
+  --      --    opts.sources.providers.avante_mentions = {
+  --      --      name = "avante_mentions",
+  --      --      module = "blink.compat.source",
+  --      --      score_offset = 1000, -- show at a higher priority than lsp
+  --      --      opts = {},
+  --      --      kind = "Avante",
+  --      --    }
+  --      --  end,
+  --      --},
+  --    },
+  --  },
 
   -- npm install -g prettier prettier-plugin-go-template 解决go template 问题
 
@@ -223,35 +290,35 @@ return {
         ["<S-Tab>"] = { "select_prev", "fallback" },
       }
 
-      -- for Avente --
-      -- set with avante and set to optional ?
-      table.insert(opts.sources.compat, "avante_commands")
-      table.insert(opts.sources.compat, "avante_mentions")
-      table.insert(opts.sources.compat, "avante_files")
-      --table.insert(opts.sources.default, "markdown")
-      --opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
-      opts.sources.providers.avante_commands = {
-        name = "avante_commands",
-        module = "blink.compat.source",
-        score_offset = 90, -- show at a higher priority than lsp
-        opts = {},
-        kind = "Avante",
-      }
-      opts.sources.providers.avante_files = {
-        name = "avante_commands",
-        module = "blink.compat.source",
-        score_offset = 100, -- show at a higher priority than lsp
-        opts = {},
-        kind = "Avante",
-      }
-      opts.sources.providers.avante_mentions = {
-        name = "avante_mentions",
-        module = "blink.compat.source",
-        score_offset = 1000, -- show at a higher priority than lsp
-        opts = {},
-        kind = "Avante",
-      }
-      -- for avente done--
+      ---- for Avente --
+      ---- set with avante and set to optional ?
+      --table.insert(opts.sources.compat, "avante_commands")
+      --table.insert(opts.sources.compat, "avante_mentions")
+      --table.insert(opts.sources.compat, "avante_files")
+      ----table.insert(opts.sources.default, "markdown")
+      ----opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
+      --opts.sources.providers.avante_commands = {
+      --  name = "avante_commands",
+      --  module = "blink.compat.source",
+      --  score_offset = 90, -- show at a higher priority than lsp
+      --  opts = {},
+      --  kind = "Avante",
+      --}
+      --opts.sources.providers.avante_files = {
+      --  name = "avante_commands",
+      --  module = "blink.compat.source",
+      --  score_offset = 100, -- show at a higher priority than lsp
+      --  opts = {},
+      --  kind = "Avante",
+      --}
+      --opts.sources.providers.avante_mentions = {
+      --  name = "avante_mentions",
+      --  module = "blink.compat.source",
+      --  score_offset = 1000, -- show at a higher priority than lsp
+      --  opts = {},
+      --  kind = "Avante",
+      --}
+      ---- for avente done--
     end,
   },
 

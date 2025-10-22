@@ -14,7 +14,7 @@ opt.softtabstop = 4
 --vim.bo.expandtab   = true
 
 -- for avante.nvim
-opt.splitkeep = "screen"
+--opt.splitkeep = "screen"
 
 vim.g.lazyvim_prettier_needs_config = true
 
