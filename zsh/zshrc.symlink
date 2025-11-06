@@ -12,7 +12,7 @@
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
-ZSH_THEME=""
+#ZSH_THEME=""
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

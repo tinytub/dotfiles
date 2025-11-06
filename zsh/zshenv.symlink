@@ -8,13 +8,40 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 setopt COMBINING_CHARS
 
-export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+# PATH helper，让目录管理集中且去重。
+path_prepend() {
+  local dir
+  for dir in "$@"; do
+    [[ -z "$dir" ]] && continue
+    path=("$dir" ${(@)path:#$dir})
+  done
+}
 
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+path_append() {
+  local dir
+  for dir in "$@"; do
+    [[ -z "$dir" ]] && continue
+    path=(${(@)path:#$dir} "$dir")
+  done
+}
+
+path_prepend /opt/homebrew/opt/mysql-client/bin
+
+path_prepend "${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
 #export PATH="/Users/zhaopeng18/.asdf/installs/golang/1.24.3/bin:$PATH"
 #export PATH="/Users/zhaopeng18/.asdf/installs/golang/1.24.3/go/bin:$PATH"
 
 . ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.zsh
+asdf_update_golang_env
+
+_asdf_golang_path_update() {
+  if [[ -n "$GOBIN" ]]; then
+    path=($GOBIN ${(@)path:#$GOBIN})
+  fi
+}
+
+add-zsh-hook precmd _asdf_golang_path_update
+_asdf_golang_path_update
 
 
 #export LANG=en_US.UTF-8
@@ -45,16 +72,19 @@ export GOPROXY=direct
 #
 
 export KUBE_EDITOR="/usr/bin/vim"
-export PATH=$PATH:/usr/local/kubebuilder/bin
+path_append /usr/local/kubebuilder/bin
 
 #export PATH=${JAVA_HOME}/bin:$PATH
-export PATH="/usr/local/opt/ruby/bin:$HOME/bin:$GOROOT/bin:$GOPATH/bin:$PATH"
-export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+[[ -n "$GOPATH" ]] && path_prepend "$GOPATH/bin"
+[[ -n "$GOROOT" ]] && path_prepend "$GOROOT/bin"
+path_prepend "$HOME/bin"
+path_prepend /usr/local/opt/ruby/bin
+path_prepend /usr/local/opt/gnu-sed/libexec/gnubin
 #export PATH="/usr/local/opt/go@1.18/bin:$PATH"
 
-export PATH="/usr/local/opt/openssl@3/bin:$PATH"
-export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS"
-export PATH="/usr/local/sbin:$PATH"
+path_prepend /usr/local/opt/openssl@3/bin
+path_append /Applications/WezTerm.app/Contents/MacOS
+path_prepend /usr/local/sbin
 
 #autossh
 export AUTOSSH_PIDFILE=~/autossh.pid
@@ -86,9 +116,3 @@ export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_pr
 #alias -g zplug="LC_MESSAGES=en_US.UTF-8 zplug"
 ulimit -n 4096
 #$source /Users/zhaopeng18/.iterm2_shell_integration.zsh
-
-export GOPATH="/Users/zhaopeng18/Documents/local_projects/goworks"
-export GO111MODULE="on"
-export GOPRIVATE="git.jd.com,coding.jd.com"
-
-

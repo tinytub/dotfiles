@@ -11,13 +11,7 @@ return {
         proxy = nil, -- proxy support, e.g., http://127.0.0.1:7890
       },
 
-      provider = "codex",
-      -- provider = "codex",
-      --    provider = "gemini", -- "claude" or "openai" or "azure"
-      --provider = "moonshot", -- "claude" or "openai" or "azure"
-      --provider = "openai", -- "claude" or "openai" or "azure"
-      --debug = true,
-      --
+      provider = "codex", -- "claude" or "openai" or "azure"
       providers = {
         openai = {
           --endpoint = "https://penran.cc/v1",
@@ -289,36 +283,6 @@ return {
         ["<Tab>"] = { "select_next", "fallback" },
         ["<S-Tab>"] = { "select_prev", "fallback" },
       }
-
-      ---- for Avente --
-      ---- set with avante and set to optional ?
-      --table.insert(opts.sources.compat, "avante_commands")
-      --table.insert(opts.sources.compat, "avante_mentions")
-      --table.insert(opts.sources.compat, "avante_files")
-      ----table.insert(opts.sources.default, "markdown")
-      ----opts.sources.providers.markdown = { name = "RenderMarkdown", module = "render-markdown.integ.blink" }
-      --opts.sources.providers.avante_commands = {
-      --  name = "avante_commands",
-      --  module = "blink.compat.source",
-      --  score_offset = 90, -- show at a higher priority than lsp
-      --  opts = {},
-      --  kind = "Avante",
-      --}
-      --opts.sources.providers.avante_files = {
-      --  name = "avante_commands",
-      --  module = "blink.compat.source",
-      --  score_offset = 100, -- show at a higher priority than lsp
-      --  opts = {},
-      --  kind = "Avante",
-      --}
-      --opts.sources.providers.avante_mentions = {
-      --  name = "avante_mentions",
-      --  module = "blink.compat.source",
-      --  score_offset = 1000, -- show at a higher priority than lsp
-      --  opts = {},
-      --  kind = "Avante",
-      --}
-      ---- for avente done--
     end,
   },
 
@@ -337,19 +301,6 @@ return {
       end
 
       local cmp = require("cmp")
-
-      local function border(hl_name)
-        return {
-          { "╭", hl_name },
-          { "─", hl_name },
-          { "╮", hl_name },
-          { "│", hl_name },
-          { "╯", hl_name },
-          { "─", hl_name },
-          { "╰", hl_name },
-          { "│", hl_name },
-        }
-      end
 
       local border_opts = {
         --border = "rounded",
