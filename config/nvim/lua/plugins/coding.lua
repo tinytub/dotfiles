@@ -35,13 +35,42 @@ return {
           --endpoint = "https://penran.cc/v1",
           --model = "gemini-2.0-flash",
           -- model = "gemini-2.5-flash-preview-05-20",
-          model = "gemini-2.5-pro",
+          model = "gemini-3.0-pro",
           --model = "gemini-2.5-pro-preview-06-05",
           --timeout = 30000, -- timeout in milliseconds
           --temperature = 0,
           --max_tokens = 8192,
         },
       },
+      --acp_providers = {
+      --  ["gemini-cli"] = {
+      --    command = "gemini",
+      --    args = { "--experimental-acp" },
+      --    env = {
+      --      NODE_NO_WARNINGS = "1",
+      --      GEMINI_API_KEY = os.getenv("GEMINI_API_KEY"),
+      --    },
+      --  },
+      --  ["claude-code"] = {
+      --    command = "npx",
+      --    args = { "@zed-industries/claude-code-acp" },
+      --    env = {
+      --      NODE_NO_WARNINGS = "1",
+      --      ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY"),
+      --    },
+      --  },
+      --  ["goose"] = {
+      --    command = "goose",
+      --    args = { "acp" },
+      --  },
+      --  ["codex"] = {
+      --    command = "codex-acp",
+      --    env = {
+      --      NODE_NO_WARNINGS = "1",
+      --      --  OPENAI_API_KEY = os.getenv("OPENAI_API_KEY"),
+      --    },
+      --  },
+      --},
       behaviour = {
         enable_fastapply = false, -- Enable Fast Apply feature
       },

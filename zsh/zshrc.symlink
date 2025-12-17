@@ -58,12 +58,6 @@ zinit wait lucid for \
 
 zinit light zsh-users/zsh-completions
 
-# 历史持久化 + Ctrl-R 模糊搜索
-zinit ice wait'1a' lucid
-zinit light larkery/zsh-histdb
-zinit ice wait'1b' lucid
-zinit light m42e/zsh-histdb-fzf
-
 # 语法高亮与历史搜索
 zinit ice wait'0a' lucid \
     atload"zicompinit; zpcdreplay; FAST_HIGHLIGHT[chroma-man]="
@@ -72,7 +66,6 @@ zinit ice wait'1b' lucid
 zinit light zsh-users/zsh-history-substring-search
 zinit ice wait'1c' lucid trackbinds bindmap'^R -> ^S'
 zinit light zdharma-continuum/history-search-multi-word
-bindkey '^R' histdb-fzf-widget   # Ctrl-R 使用 histdb + fzf
 
 # autosuggestions（需在高亮之后）
 zinit ice wait'0b' lucid atload'_zsh_autosuggest_start' compile'{src/*.zsh,src/strategies/*}'
@@ -86,8 +79,20 @@ zinit ice pick"c.zsh" atclone"local PFX=${${(M)OSTYPE:#*darwin*}:+g}
             \${PFX}dircolors -b LS_COLORS > c.zsh" atpull'%atclone' nocompile'!'
 zinit light trapd00r/LS_COLORS
 
+# rupa/z（老牌 z：提供 z 命令 & 数据库逻辑，很多补全/插件围绕它）
+zinit ice wait'0d' lucid blockf
+zinit light rupa/z
+
+# changyuheng/fz（关键：让 z+[Tab] / zz+[Tab] 列出候选）
+zinit ice wait'0e' lucid
+zinit light changyuheng/fz
+
+# 可选：andrewferrier/fzf-z（提供 ctrl-g 等快捷跳转）
+zinit ice wait'0f' lucid
+zinit light andrewferrier/fzf-z
+
 # Zoxide: smarter z replacement（需 Homebrew 安装）
-eval "$(zoxide init zsh)"
+# eval "$(zoxide init zsh)"
 
 # 常用按键
 bindkey "^[[1;5C" forward-word                      # [Ctrl-right] - forward one word
@@ -118,17 +123,29 @@ zstyle ':completion:*' insert-tab pending
 zstyle ':completion:*' completer _expand _complete _files _correct _approximate
 
 # == fzf-tab
-zstyle ':fzf-tab:complete:_zlua:*' query-string input
+zstyle ':fzf-tab:complete:z:*' query-string input
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-preview 'ps --pid=$word -o cmd --no-headers -w -w'
 zstyle ':fzf-tab:complete:kill:argument-rest' fzf-flags '--preview-window=down:3:wrap'
 zstyle ':fzf-tab:complete:kill:*' popup-pad 0 3
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview '
+  if command -v eza >/dev/null; then eza -1 --color=always "$realpath";
+  elif command -v exa >/dev/null; then exa -1 --color=always "$realpath";
+  else ls -1 "$realpath";
+  fi'
 zstyle ':fzf-tab:complete:cd:*' popup-pad 30 0
 zstyle ":fzf-tab:*" fzf-flags --color=bg+:23
-zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+if [[ -n "$TMUX" ]]; then
+  zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+else
+  zstyle ':fzf-tab:*' fzf-command fzf
+fi
 zstyle ':fzf-tab:*' switch-group ',' '.'
+zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview 'git log -n 20 --oneline --decorate $word 2>/dev/null'
+zstyle ':fzf-tab:complete:kubectl:*' fzf-preview 'kubectl get -o wide ${words[2]} $word 2>/dev/null | head -50'
 zstyle ":completion:*:git-checkout:*" sort false
-zstyle ':completion:*' file-sort modification
+#zstyle ':completion:*' file-sort modification
+zstyle ':completion:*' file-sort name
 zstyle ':completion:*:exa' sort false
 zstyle ':completion:files' sort false
 
@@ -176,15 +193,13 @@ alias tls='tmux ls'
 alias tat='tmux attach -t'
 alias tns='tmux new-session'
 
-# zoxide 快捷
 # 删除 zinit 添加的有冲突的 alias
 unalias zi 2>/dev/null
 unalias zz 2>/dev/null
 unalias zini 2>/dev/null
 unalias zpl 2>/dev/null
 unalias zplg 2>/dev/null
-alias zz='zi'          # 以前的 zz → 现在就是交互式选择目录
-alias za='zoxide add .'
+alias zz='z -i'
 
 alias typora="open -a typora"
 
