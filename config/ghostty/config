@@ -37,6 +37,7 @@ palette = 13=#bb9af7
 palette = 14=#7dcfff
 palette = 15=#c0caf5
 font-thicken = false
+#font-family = TX-02
 font-family = JetBrainsMonoNL Nerd Font Mono
 font-family = Anonymice Nerd Font ## -- v2.3.3, 适配老图标
 
