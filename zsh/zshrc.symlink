@@ -302,3 +302,9 @@ fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
 
 # Added by Antigravity
 export PATH="/Users/zhaopeng18/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/zhaopeng18/.antigravity/antigravity/bin:$PATH"
+
+# opencode
+export PATH=/Users/zhaopeng18/.opencode/bin:$PATH
