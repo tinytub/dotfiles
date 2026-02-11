@@ -1,5 +1,10 @@
 # 基础：oh-my-zsh + zinit + fzf + starship
 
+# Disable OMZ auto title to save precmd time (~45ms)
+export DISABLE_AUTO_TITLE="true"
+# Disable OMZ magic functions (url-quote-magic, bracketed-paste-magic) to fix paste lag
+export DISABLE_MAGIC_FUNCTIONS="true"
+
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
@@ -248,40 +253,51 @@ tmux-launch () {
     fi
 }
 
+start_socat_8988() {
+  if ! lsof -nP -iTCP:8988 -sTCP:LISTEN | grep -q 'socat'; then
+    echo "未检测到 socat 监听 127.0.0.1:8988，正在后台启动..."
+    nohup socat TCP4-LISTEN:8988,bind=127.0.0.1,fork - >/dev/null 2>&1 &
+  fi
+}
+
 checkrabbish() {
-  # 清理高占用进程，顺便杀掉指定国产软件并确保 8988 转发
-  ps_output=$(ps -ef | grep diagnosticd | grep -v "grep")
-  if [ -n "$ps_output" ]; then
-      pid=$(echo "$ps_output" | awk '{print $2}')
-      sudo kill -9 $pid
-      echo "\"diagnosticd\" process with PID $pid has been killed."
+  local all_pids=()
+  local found_names=()
+  
+  # 1. 检查 diagnosticd
+  local diag_pid=$(ps -ef | grep "[d]iagnosticd" | awk '{print $2}')
+  if [[ -n "$diag_pid" ]]; then
+    all_pids+=($diag_pid)
+    found_names+=("diagnosticd")
   fi
 
-  kill_target_processes() {
-    local targets=("JDITDesk" "HiOffice" "HioUpdate" "HioNetwork" "HioNetFilter" "JDITTray")
-    for pname in "${targets[@]}"; do
-      pids=$(pgrep -x "$pname")
-      if [[ -n "$pids" ]]; then
-        echo "发现进程 $pname，PID: $pids，正在终止..."
-        sudo kill -9 $pids
-        echo "$pname 已被终止。"
-      fi
-    done
-  }
-
-  start_socat_8988() {
-    if ! lsof -nP -iTCP:8988 -sTCP:LISTEN | grep -q 'socat'; then
-      echo "未检测到 socat 监听 127.0.0.1:8988，正在后台启动..."
-      nohup socat TCP4-LISTEN:8988,bind=127.0.0.1,fork - >/dev/null 2>&1 &
+  # 2. 检查其他目标进程
+  local targets=("JDITDesk" "HiOffice" "HioUpdate" "HioNetwork" "HioNetFilter" "JDITTray")
+  for pname in "${targets[@]}"; do
+    local pids=$(pgrep -x "$pname")
+    if [[ -n "$pids" ]]; then
+      all_pids+=(${(f)pids})
+      found_names+=("$pname")
     fi
-  }
+  done
+
+  # 3. 如果发现进程，提示手动执行命令
+  if [[ ${#all_pids[@]} -gt 0 ]]; then
+    local unique_names=(${(u)found_names})
+    echo "⚠️  检测到垃圾进程: ${(j:, :)unique_names}"
+    echo "手动清理请执行: sudo kill -9 ${all_pids[*]}"
+  fi
+
+  start_socat_8988
 }
 
 eval "$(starship init zsh)"
+# Mise: use shims mode for better performance (avoids precmd hook lag)
+# eval "$(mise activate zsh)"
+export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # kitty prompt
 if [[ -n $KITTY_INSTALLATION_DIR ]]; then
-  DISABLE_AUTO_TITLE="true"
   ZSH_THEME_TERM_TITLE_IDLE="%1d"
   function precmd () {
     window_title="\033]0;${PWD##*/}\007"
@@ -291,20 +307,17 @@ fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+# 后台执行清理任务
+#checkrabbish &!
 checkrabbish
-kill_target_processes
-start_socat_8988
 
 alias gf=gf
-
-# asdf 补全（compinit 由 oh-my-zsh/zinit 负责）
-fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
-
-# Added by Antigravity
-export PATH="/Users/zhaopeng18/.antigravity/antigravity/bin:$PATH"
 
 # Added by Antigravity
 export PATH="/Users/zhaopeng18/.antigravity/antigravity/bin:$PATH"
 
 # opencode
 export PATH=/Users/zhaopeng18/.opencode/bin:$PATH
+
+
+

@@ -1,0 +1,6 @@
+[tools]
+go = "1.24"
+
+[env]
+# 1. 强行锁定全局 GOPATH，不再随版本变动
+GOPATH = "/Users/zhaopeng18/Documents/local_projects/goworks"

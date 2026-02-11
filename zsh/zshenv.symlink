@@ -27,56 +27,24 @@ path_append() {
 
 path_prepend /opt/homebrew/opt/mysql-client/bin
 
-path_prepend "${ASDF_DATA_DIR:-$HOME/.asdf}/shims"
-#export PATH="/Users/zhaopeng18/.asdf/installs/golang/1.24.3/bin:$PATH"
-#export PATH="/Users/zhaopeng18/.asdf/installs/golang/1.24.3/go/bin:$PATH"
-
-. ${ASDF_DATA_DIR:-$HOME/.asdf}/plugins/golang/set-env.zsh
-asdf_update_golang_env
-
-_asdf_golang_path_update() {
-  if [[ -n "$GOBIN" ]]; then
-    path=($GOBIN ${(@)path:#$GOBIN})
-  fi
-}
-
-add-zsh-hook precmd _asdf_golang_path_update
-_asdf_golang_path_update
-
-
-#export LANG=en_US.UTF-8
-
-#source ~/.bash_profile
-#source ~/.vim/plugged/gruvbox/gruvbox_256palette.sh
-#export GOPATH="/home/zhaopeng/goworks"
-#export GOROOT="/usr/local/go"
-
-# GVM
-[[ -s "/Users/zhaopeng18/.gvm/scripts/gvm" ]] && source "/Users/zhaopeng18/.gvm/scripts/gvm"
+# 固定你的 GOPATH（用回你习惯的路径）
 export GOPATH="/Users/zhaopeng18/Documents/local_projects/goworks"
+
+# 私有仓库配置（保持不变，对 JD 内部开发至关重要）
 export GO111MODULE="on"
 export GOPRIVATE="git.jd.com,coding.jd.com"
-export GONOSUMDB=coding.jd.com
-export GOPROXY=direct
+export GONOSUMDB="coding.jd.com"
+export GOPROXY="https://goproxy.cn,direct" # 建议加个国内镜像，挂了再走 direct
 
-#export GOROOT="/usr/local/go"
-#export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home"
-#export CLASSPATH="${CLASSPATH}:/Users/zhaopeng18/Documents/local_projects/algs4/algs4.jar"
+# 再把 GOPATH/bin 放进去，确保 go install 的工具（如 golangci-lint, delve）能直接搜到
+path_prepend "$GOPATH/bin"
 
-#java maven
-#export M2_HOME=/Users/zhaopeng18/Documents/local_projects/apache-maven-3.6.3
-#export PATH=$PATH:$M2_HOME/bin
+# 注意：不要手动设置 GOROOT，asdf 会通过 shim 自动处理。
 
-#export GOPATH="/home/zhaopeng/goworks1.8.3/src/jd.com/jstack-thirdparty-libs"
-#export GOROOT="/home/zhaopeng/go1.8.3"
-#
 
 export KUBE_EDITOR="/usr/bin/vim"
 path_append /usr/local/kubebuilder/bin
 
-#export PATH=${JAVA_HOME}/bin:$PATH
-[[ -n "$GOPATH" ]] && path_prepend "$GOPATH/bin"
-[[ -n "$GOROOT" ]] && path_prepend "$GOROOT/bin"
 path_prepend "$HOME/bin"
 path_prepend /usr/local/opt/ruby/bin
 path_prepend /usr/local/opt/gnu-sed/libexec/gnubin
