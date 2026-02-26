@@ -272,7 +272,7 @@ checkrabbish() {
   fi
 
   # 2. 检查其他目标进程
-  local targets=("JDITDesk" "HiOffice" "HioUpdate" "HioNetwork" "HioNetFilter" "JDITTray")
+  local targets=("JDITDesk" "HiOffice" "HioUpdate" "HioNetwork" "HioNetFilter" "JDITTray", "JDITAssistant")
   for pname in "${targets[@]}"; do
     local pids=$(pgrep -x "$pname")
     if [[ -n "$pids" ]]; then
