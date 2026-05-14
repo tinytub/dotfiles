@@ -272,7 +272,7 @@ checkrabbish() {
   fi
 
   # 2. 检查其他目标进程
-  local targets=("JDITDesk" "HiOffice" "HioUpdate" "HioNetwork" "HioNetFilter" "JDITTray", "JDITAssistant")
+  local targets=("JDITDesk" "HiOffice" "HioUpdate" "HioNetwork" "HioNetFilter" "JDITTray" "JDITAssistant" "joyclaw" "openclaw-gateway" "JoyClaw-Installer")
   for pname in "${targets[@]}"; do
     local pids=$(pgrep -x "$pname")
     if [[ -n "$pids" ]]; then
@@ -312,12 +312,5 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 checkrabbish
 
 alias gf=gf
-
-# Added by Antigravity
-export PATH="/Users/zhaopeng18/.antigravity/antigravity/bin:$PATH"
-
-# opencode
-export PATH=/Users/zhaopeng18/.opencode/bin:$PATH
-
 
 

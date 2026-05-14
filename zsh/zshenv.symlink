@@ -54,6 +54,14 @@ path_prepend /usr/local/opt/openssl@3/bin
 path_append /Applications/WezTerm.app/Contents/MacOS
 path_prepend /usr/local/sbin
 
+path_prepend /Users/zhaopeng18/.antigravity/antigravity/bin
+
+# opencode
+path_prepend /Users/zhaopeng18/.opencode/bin
+
+path_prepend /Users/zhaopeng18/.local/bin
+
+
 #autossh
 export AUTOSSH_PIDFILE=~/autossh.pid
 export AUTOSSH_POLL=60
@@ -71,7 +79,7 @@ export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 
 # HTTPProxy
 #export https_proxy=http://10.12.164.8:7890 http_proxy=http://10.12.164.8:7890 all_proxy=socks5://10.12.164.8:7891
-export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
+export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=http://127.0.0.1:7890
 #export https_proxy= http_proxy= all_proxy=
 #export https_proxy=http://127.0.0.1:7788 http_proxy=http://127.0.0.1:7788 all_proxy=socks5://127.0.0.1:7788
 #. "$HOME/.cargo/env"

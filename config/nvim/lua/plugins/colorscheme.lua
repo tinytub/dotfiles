@@ -86,10 +86,4 @@ return {
     end,
     --event = "VeryLazy",
   },
-  {
-    "LazyVim/LazyVim",
-    opts = function(_, opts)
-      opts.colorscheme = "catppuccin"
-    end,
-  },
 }

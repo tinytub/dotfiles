@@ -16,9 +16,10 @@ copy-on-select = clipboard
 # --- Font Configuration ---
 # Ghostty 支持字体回退列表。优先使用 TX-02，后续为图标字体和 CJK 字体。
 font-size = 14
-font-family = "TX-02"
-# Fallback: Nerd Fonts for icons
+# font-family = "TX-02"
 font-family = "JetBrainsMonoNL Nerd Font Mono"
+
+# Fallback: Nerd Fonts for icons
 font-family = "Anonymice Nerd Font"
 font-family = "Hack Nerd Font Mono"
 font-family = "Symbols Nerd Font Mono"
@@ -73,7 +74,7 @@ cursor-color = #c0caf5
 # --- Cursor & Mouse ---
 cursor-style-blink = false
 # 300% 可能过厚，标准通常为 100-150%？保留原设置。
-adjust-cursor-thickness = 300%
+adjust-cursor-thickness = 100%
 mouse-hide-while-typing = true
 
 # --- Window & macOS Specifics ---
