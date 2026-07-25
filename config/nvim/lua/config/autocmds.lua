@@ -28,3 +28,21 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spell = false
   end,
 })
+
+local function disable_yaml_template_formatting(buf)
+  if vim.bo[buf].filetype == "yaml" and table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), "\n"):find("{{", 1, true) then
+    vim.b[buf].autoformat = false
+  end
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("disable_yaml_template_formatting"),
+  pattern = "yaml",
+  callback = function(event)
+    disable_yaml_template_formatting(event.buf)
+  end,
+})
+
+for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+  disable_yaml_template_formatting(buf)
+end
