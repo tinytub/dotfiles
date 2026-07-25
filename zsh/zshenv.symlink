@@ -84,6 +84,7 @@ export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_pr
 #export https_proxy=http://127.0.0.1:7788 http_proxy=http://127.0.0.1:7788 all_proxy=socks5://127.0.0.1:7788
 #. "$HOME/.cargo/env"
 . "$HOME/.config/.openai.yaml"
+. "$HOME/.config/.bi.yaml"
 
 # proxy apiserver by remote bastion
 # ssh -t -L 127.0.0.1:6443:{apiserver}:{apiserverPort} root@{bastion} -- kubectl  proxy --port 6443

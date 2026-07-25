@@ -314,3 +314,7 @@ checkrabbish
 alias gf=gf
 
 
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/zhaopeng18/.local/bin:$PATH"

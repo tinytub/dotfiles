@@ -7,7 +7,7 @@
 # 禁用光标相关的 shell 集成（避免某些 shell 提示符冲突）
 shell-integration-features = no-cursor
 # 增加回滚缓冲区大小
-scrollback-limit = 100000
+scrollback-limit = 900000
 # 复制即剪贴板
 copy-on-select = clipboard
 # 遇到错误时不发出系统铃声，改为视觉提示（可选）
