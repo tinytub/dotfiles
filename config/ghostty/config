@@ -7,7 +7,11 @@
 # 禁用光标相关的 shell 集成（避免某些 shell 提示符冲突）
 shell-integration-features = no-cursor
 # 增加回滚缓冲区大小
-scrollback-limit = 900000
+scrollback-limit = 104857600
+#scrollback-limit = 100MB
+#scrollback-limit-lines = 100000
+
+
 # 复制即剪贴板
 copy-on-select = clipboard
 # 遇到错误时不发出系统铃声，改为视觉提示（可选）
@@ -16,11 +20,12 @@ copy-on-select = clipboard
 # --- Font Configuration ---
 # Ghostty 支持字体回退列表。优先使用 TX-02，后续为图标字体和 CJK 字体。
 font-size = 14
-# font-family = "TX-02"
+#font-family = "TX-02"
+font-family = "IoskeleyMonoTerm Nerd Font Mono"
 font-family = "JetBrainsMonoNL Nerd Font Mono"
 
 # Fallback: Nerd Fonts for icons
-font-family = "Anonymice Nerd Font"
+font-family = "AnonymicePro Nerd Font"
 font-family = "Hack Nerd Font Mono"
 font-family = "Symbols Nerd Font Mono"
 # Fallback: CJK (Chinese)
@@ -40,7 +45,7 @@ font-codepoint-map = U+e5fa-U+e6b1=JetBrainsMono Nerd Font Mono
 font-codepoint-map = U+ea60-U+ebeb=JetBrainsMono Nerd Font Mono
 
 # Rendering tweaks
-font-thicken = false
+font-thicken = true
 
 # --- Theme: Tokyo Night Storm ---
 # 使用内置主题。如果需要微调颜色，可以解开下方的 palette 注释覆盖。
@@ -53,29 +58,17 @@ selection-background = #364a82
 selection-foreground = #c0caf5
 cursor-color = #c0caf5
 
-# Palette Overrides (恢复手动定义以解决 theme not found 问题)
-#palette = 0=#1d202f
-#palette = 1=#f7768e
-#palette = 2=#9ece6a
-#palette = 3=#e0af68
-#palette = 4=#7aa2f7
-#palette = 5=#bb9af7
-#palette = 6=#7dcfff
-#palette = 7=#a9b1d6
-#palette = 8=#414868
-#palette = 9=#f7768e
-#palette = 10=#9ece6a
-#palette = 11=#e0af68
-#palette = 12=#7aa2f7
-#palette = 13=#bb9af7
-#palette = 14=#7dcfff
-#palette = 15=#c0caf5
 
 # --- Cursor & Mouse ---
 cursor-style-blink = false
 # 300% 可能过厚，标准通常为 100-150%？保留原设置。
 adjust-cursor-thickness = 100%
 mouse-hide-while-typing = true
+quick-terminal-animation-duration = 0
+clipboard-trim-trailing-spaces = true
+
+macos-titlebar-proxy-icon = hidden
+
 
 # --- Window & macOS Specifics ---
 # macOS Option 键作为 Alt 发送 (对 Emacs/Vim 用户重要)
@@ -86,9 +79,17 @@ macos-titlebar-style = tabs
 window-padding-x = 10
 window-padding-y = 10
 # 启用着色器动画 (Retro 风格或其他效果)
-custom-shader-animation = true
+#custom-shader-animation = true
+
+window-inherit-working-directory = true
+window-inherit-font-size = true
+window-theme = system
 
 # --- Updates ---
 auto-update = check
 # 建议在生产环境使用 stable，除非需要测试新特性
 auto-update-channel = tip
+
+#https://github.com/ghostty-org/ghostty/issues/10749
+keybind = super+v=paste_from_clipboard
+keybind = super+c=copy_to_clipboard
