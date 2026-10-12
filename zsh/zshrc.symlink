@@ -272,7 +272,30 @@ checkrabbish() {
   fi
 
   # 2. 检查其他目标进程
-  local targets=("JDITDesk" "HiOffice" "HioUpdate" "HioNetwork" "HioNetFilter" "JDITTray" "JDITAssistant" "joyclaw" "openclaw-gateway" "JoyClaw-Installer")
+  # JD/HIO 进程说明，核对日期：2026-10-12。本函数只打印手动清理命令。
+  # 清理名单中的进程：
+  # JDITDesk/HiOffice：IT 服务台客户端，具体界面职责尚未逐项核实。
+  # HioUpdate：客户端更新程序，LaunchAgent 每 600 秒触发一次。
+  # HioNetwork：网络组件，停止它不会卸载 HioNetFilter 系统扩展。
+  # JDITTray：推测为托盘组件，依据进程名称判断。
+  # JDITAssistant：电脑优化插件；SysAssistant 是由 SysAssist 启动的辅助进程。
+  # HioWallpaper：桌面壁纸插件，停止它不会解除受管理的壁纸设置锁定。
+  # corplink-launcher：软件商店启动器，使用该商店时需要保留。
+  # joyclaw/openclaw-gateway/JoyClaw-Installer：原有清理目标，运行职责未在本次核查。
+  # 其他常驻组件，不列入清理名单：
+  # ITDeskDaemon（com.apple.hio.daemon）：root 权限的 HIO 父服务，KeepAlive=true。
+  # SysAssist/HioSafeService：上述父服务链中的插件启动和基线组件。
+  # JdEdrForMac/EdpEvent：JD 安全组件服务及其事件插件子进程。
+  # JdEagle/llm-worker：JD 安全组件服务及其工作进程，工作进程的具体任务未核实。
+  # HioNetFilter：2026-10-12 已从清理名单移除；它是启用中的系统网络过滤扩展，
+  # 不是普通界面进程，不应作为日常清理目标；本次只移除名单项，未停止或卸载扩展。
+  # DialDetect/SysEventMontior：插件登记用途分别为“拨测”和“事件探测”。
+  # ITBasicServices/ITProactiveServices：插件登记用途分别为“IT服务”和“主动服务”。
+  # GDWM：日志和程序符号包含水印相关内容，具体行为尚未验证。
+  # MCP：HIO 本机监听服务，调用它的插件和使用协议尚未核实。
+  # PerReport/SysAssistBrief：后台插件，具体职责尚未核实。
+  # ME/JoyME 辅助进程：会议、远控和截图等组件，优先通过主应用管理。
+  local targets=("JDITDesk" "HiOffice" "HioUpdate" "HioNetwork" "JDITTray" "JDITAssistant" "HioWallpaper" "corplink-launcher" "joyclaw" "openclaw-gateway" "JoyClaw-Installer")
   for pname in "${targets[@]}"; do
     local pids=$(pgrep -x "$pname")
     if [[ -n "$pids" ]]; then
