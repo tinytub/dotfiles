@@ -6,10 +6,9 @@ export DISABLE_AUTO_TITLE="true"
 export DISABLE_MAGIC_FUNCTIONS="true"
 
 export ZSH=$HOME/.oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+typeset -U path PATH
 
 # fzf 默认行为
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_DEFAULT_OPTS='--height 40% --reverse --border --color=bg+:23 -m'
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
@@ -24,16 +23,15 @@ if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
 fi
 
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+
+# Completion directories must be present before OMZ runs compinit.
+zinit light zsh-users/zsh-completions
+source "$ZSH/oh-my-zsh.sh"
+ZINIT[ZCOMPDUMP_PATH]=$ZSH_COMPDUMP
 autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-
-ZINIT[COMPINIT_OPTS]='-u'   # 忽略 compinit 安全提示
-
-zinit light-mode for \
-    zdharma-continuum/zinit-annex-as-monitor \
-    zdharma-continuum/zinit-annex-bin-gem-node \
-    zdharma-continuum/zinit-annex-patch-dl \
-    zdharma-continuum/zinit-annex-rust
+_comps[zinit]=_zinit
+zpcdreplay
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Zinit plugins
 
@@ -49,7 +47,7 @@ zinit ice wait'2a' lucid depth'1'
 zinit snippet 'https://raw.githubusercontent.com/junegunn/fzf-git.sh/main/fzf-git.sh'
 
 # fzf-tab：增强所有补全为 fzf 交互
-zinit ice wait'2a' lucid
+zinit ice wait'0b' lucid
 zinit light Aloxaf/fzf-tab
 
 zinit wait lucid for \
@@ -61,19 +59,15 @@ zinit wait lucid for \
   OMZP::command-not-found \
   OMZP::docker-compose
 
-zinit light zsh-users/zsh-completions
-
 # 语法高亮与历史搜索
-zinit ice wait'0a' lucid \
-    atload"zicompinit; zpcdreplay; FAST_HIGHLIGHT[chroma-man]="
+zinit ice wait'0c' lucid \
+    atload"zpcdreplay; FAST_HIGHLIGHT[chroma-man]="
 zinit light zdharma-continuum/fast-syntax-highlighting
-zinit ice wait'1b' lucid
-zinit light zsh-users/zsh-history-substring-search
 zinit ice wait'1c' lucid trackbinds bindmap'^R -> ^S'
 zinit light zdharma-continuum/history-search-multi-word
 
 # autosuggestions（需在高亮之后）
-zinit ice wait'0b' lucid atload'_zsh_autosuggest_start' compile'{src/*.zsh,src/strategies/*}'
+zinit ice wait'0c' lucid atload'_zsh_autosuggest_start' compile'{src/*.zsh,src/strategies/*}'
 zinit light zsh-users/zsh-autosuggestions
 
 # LS_COLORS 定制（macOS 需 gsed/gdircolors）
@@ -85,19 +79,16 @@ zinit ice pick"c.zsh" atclone"local PFX=${${(M)OSTYPE:#*darwin*}:+g}
 zinit light trapd00r/LS_COLORS
 
 # rupa/z（老牌 z：提供 z 命令 & 数据库逻辑，很多补全/插件围绕它）
-zinit ice wait'0d' lucid blockf
+zinit ice wait'0a' lucid blockf
 zinit light rupa/z
 
 # changyuheng/fz（关键：让 z+[Tab] / zz+[Tab] 列出候选）
-zinit ice wait'0e' lucid
+zinit ice wait'0a' lucid
 zinit light changyuheng/fz
 
 # 可选：andrewferrier/fzf-z（提供 ctrl-g 等快捷跳转）
-zinit ice wait'0f' lucid
+zinit ice wait'0a' lucid
 zinit light andrewferrier/fzf-z
-
-# Zoxide: smarter z replacement（需 Homebrew 安装）
-# eval "$(zoxide init zsh)"
 
 # 常用按键
 bindkey "^[[1;5C" forward-word                      # [Ctrl-right] - forward one word
@@ -172,10 +163,15 @@ gbrd() {                       # 选择分支并删除
   git branch -d "$branch"
 }
 
-gstf() {                       # 用 fzf 选文件再 git status / diff
+gstf() {
+  setopt localoptions pipefail
   local files
-  files=$(_fzf_git_files) || return
-  echo "$files" | xargs git status --short
+  files=$({ git ls-files -z --cached --others --exclude-standard &&
+    git diff --cached --relative --name-only --diff-filter=D -z; } |
+    fzf --read0 --print0 --multi --preview 'git diff --color=always -- {}') || return
+  files=${files%$'\0'}
+  [[ -n "$files" ]] || return
+  git status --short -- "${(@0)files}"
 }
 
 alias sed="gsed"
@@ -200,11 +196,9 @@ alias tns='tmux new-session'
 
 # 删除 zinit 添加的有冲突的 alias
 unalias zi 2>/dev/null
-unalias zz 2>/dev/null
 unalias zini 2>/dev/null
 unalias zpl 2>/dev/null
 unalias zplg 2>/dev/null
-alias zz='z -i'
 
 alias typora="open -a typora"
 
@@ -310,14 +304,12 @@ checkrabbish() {
     echo "⚠️  检测到垃圾进程: ${(j:, :)unique_names}"
     echo "手动清理请执行: sudo kill -9 ${all_pids[*]}"
   fi
-
-  start_socat_8988
 }
 
 eval "$(starship init zsh)"
 # Mise: use shims mode for better performance (avoids precmd hook lag)
 # eval "$(mise activate zsh)"
-export PATH="$HOME/.local/share/mise/shims:$PATH"
+path=("$HOME/.local/share/mise/shims" $path)
 
 # kitty prompt
 if [[ -n $KITTY_INSTALLATION_DIR ]]; then
@@ -331,13 +323,11 @@ fi
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # 后台执行清理任务
-#checkrabbish &!
-checkrabbish
-
+checkrabbish &!
 alias gf=gf
 
 
 
 
 # Added by Antigravity CLI installer
-export PATH="/Users/zhaopeng18/.local/bin:$PATH"
+path=("$HOME/.local/bin" $path)
