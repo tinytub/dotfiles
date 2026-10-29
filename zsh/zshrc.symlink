@@ -254,19 +254,50 @@ start_socat_8988() {
   fi
 }
 
+# 临时停止 JD/HIO 客户端，仅作用于当前登录会话。
+# 拉起链（2026-10-28 核实）：
+#   com.apple.hio.daemon（root LaunchDaemon，KeepAlive=true）是根，负责重建
+#   JDITDesk 及其整棵 HiOfficeMeta/JD/plugin 进程树；
+#   com.apple.hio.update.jd.com（用户 LaunchAgent，StartInterval=600）
+#   每 10 分钟拉起一次 HioUpdate。
+# 所以 kill 无效：必须先 launchctl bootout 卸载 job，launchd 才会停手。
+# bootout 不删除 plist，下次登录/开机 launchd 重新加载，开机时的策略与基线更新不受影响。
+killjd() {
+  local uid=$(id -u)
+  # 顺序很重要：先卸载守护进程，否则它会重建下面所有进程。
+  if launchctl print system/com.apple.hio.daemon.jd.com >/dev/null 2>&1; then
+    sudo launchctl bootout system/com.apple.hio.daemon.jd.com
+  fi
+  launchctl bootout gui/$uid/com.apple.hio.update.jd.com 2>/dev/null
+
+  # bootout 只终止 job 主进程，被 daemon 拉起的插件会被 init 收留，需要显式清理。
+  # root 与用户插件都位于 ~/Library/HiOfficeMeta/JD/plugin 下，sudo 一并处理。
+  sudo pkill -9 -f '/Library/HiOfficeMeta/JD/plugin' 2>/dev/null
+  pkill -9 -f '/Applications/\.JDITDesk\.app' 2>/dev/null
+
+  local jobs_left=0
+  launchctl print system/com.apple.hio.daemon.jd.com >/dev/null 2>&1 && jobs_left=1
+  launchctl print gui/$uid/com.apple.hio.update.jd.com >/dev/null 2>&1 && jobs_left=1
+  if (( jobs_left )) || pgrep -f '/Library/HiOfficeMeta/JD/plugin|/Applications/\.JDITDesk\.app' >/dev/null; then
+    echo "⚠️  JD 组件仍在运行，可能有管理端在重新加载，请复查"
+  else
+    echo "✅ 当前会话已停止拉起；重新登录或重启后恢复，不影响开机策略更新"
+  fi
+}
+
 checkrabbish() {
-  local all_pids=()
   local found_names=()
-  
-  # 1. 检查 diagnosticd
-  local diag_pid=$(ps -ef | grep "[d]iagnosticd" | awk '{print $2}')
-  if [[ -n "$diag_pid" ]]; then
-    all_pids+=($diag_pid)
-    found_names+=("diagnosticd")
+  local jd_found=0
+
+  # diagnosticd is independent of JD/HIO cleanup.
+  local diag_pids=$(pgrep -x diagnosticd)
+  if [[ -n "$diag_pids" ]]; then
+    echo "ℹ️  检测到 diagnosticd（macOS 系统诊断进程），killjd 不处理它"
   fi
 
   # 2. 检查其他目标进程
-  # JD/HIO 进程说明，核对日期：2026-10-12。本函数只打印手动清理命令。
+  # Detection only; killjd applies to JD/HIO targets, not every listed process.
+  # JD/HIO process descriptions were last checked on 2026-10-12.
   # 清理名单中的进程：
   # JDITDesk/HiOffice：IT 服务台客户端，具体界面职责尚未逐项核实。
   # HioUpdate：客户端更新程序，LaunchAgent 每 600 秒触发一次。
@@ -276,9 +307,10 @@ checkrabbish() {
   # HioWallpaper：桌面壁纸插件，停止它不会解除受管理的壁纸设置锁定。
   # corplink-launcher：软件商店启动器，使用该商店时需要保留。
   # joyclaw/openclaw-gateway/JoyClaw-Installer：原有清理目标，运行职责未在本次核查。
-  # 其他常驻组件，不列入清理名单：
+  # 其他常驻组件，不列入本函数的检测名单：
   # ITDeskDaemon（com.apple.hio.daemon）：root 权限的 HIO 父服务，KeepAlive=true。
   # SysAssist/HioSafeService：上述父服务链中的插件启动和基线组件。
+  # 这两类由 killjd 处理：它 bootout 守护进程后一并清理 plugin 进程树，仅当前会话有效。
   # JdEdrForMac/EdpEvent：JD 安全组件服务及其事件插件子进程。
   # JdEagle/llm-worker：JD 安全组件服务及其工作进程，工作进程的具体任务未核实。
   # HioNetFilter：2026-10-12 已从清理名单移除；它是启用中的系统网络过滤扩展，
@@ -291,19 +323,24 @@ checkrabbish() {
   # ME/JoyME 辅助进程：会议、远控和截图等组件，优先通过主应用管理。
   local targets=("JDITDesk" "HiOffice" "HioUpdate" "HioNetwork" "JDITTray" "JDITAssistant" "HioWallpaper" "corplink-launcher" "joyclaw" "openclaw-gateway" "JoyClaw-Installer")
   for pname in "${targets[@]}"; do
-    local pids=$(pgrep -x "$pname")
-    if [[ -n "$pids" ]]; then
-      all_pids+=(${(f)pids})
+    if pgrep -x "$pname" >/dev/null; then
       found_names+=("$pname")
+      case "$pname" in
+        JDITDesk|HiOffice|HioUpdate|HioNetwork|JDITTray|JDITAssistant|HioWallpaper)
+          jd_found=1
+          ;;
+      esac
     fi
   done
 
-  # 3. 如果发现进程，提示手动执行命令
-  if [[ ${#all_pids[@]} -gt 0 ]]; then
+  if [[ ${#found_names[@]} -gt 0 ]]; then
     local unique_names=(${(u)found_names})
-    echo "⚠️  检测到垃圾进程: ${(j:, :)unique_names}"
-    echo "手动清理请执行: sudo kill -9 ${all_pids[*]}"
+    echo "⚠️  检测到目标进程: ${(j:, :)unique_names}"
+    if (( jd_found )); then
+      echo "JD/HIO 临时处理命令: killjd（不处理 diagnosticd 或其他非 JD/HIO 目标）"
+    fi
   fi
+  return 0
 }
 
 eval "$(starship init zsh)"
