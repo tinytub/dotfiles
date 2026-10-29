@@ -1,0 +1,147 @@
+add_newline = false
+
+[aws]
+symbol = " "
+disabled = true
+
+[battery]
+#full_symbol = ""
+#charging_symbol = ""
+#discharging_symbol = ""
+
+[conda]
+symbol = " "
+
+[custom]
+
+[custom.tab]
+description = "The current tab in the tab terminal multiplexer"
+command = "tab --starship"
+when = "tab --starship"
+shell = ["zsh"]
+format = "[$output]($style) "
+style = "bold blue"
+
+#[git_status]
+#untracked = '[ $count](bold yellow) '
+#staged = '[ $count](bold green) '
+#stashed = "[ ](cyan) "
+#deleted = '[ $count](bold red) '
+#modified= '[ $count](bold blue) '
+#behind = '[ ](bold purple) '
+#format = '([$all_status$ahead_behind]($style))'
+[git_status]
+ignore_submodules = true
+untracked = ""
+
+[git_commit]
+commit_hash_length = 7
+tag_symbol = '🔖 '
+only_detached = false
+
+[[battery.display]]
+threshold = 50
+
+[lua]
+detect_folders = []
+symbol = " "
+
+[git_metrics]
+disabled = false
+
+[pulumi]
+disabled = true
+#[aws]
+#symbol = "  "
+
+[buf]
+symbol = " "
+
+[c]
+symbol = " "
+
+#[conda]
+#symbol = " "
+
+[dart]
+symbol = " "
+
+[directory]
+read_only = " 󰌾"
+
+[docker_context]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+#[fossil_branch]
+#symbol = " "
+
+[git_branch]
+symbol = " "
+
+[golang]
+symbol = " "
+
+#[guix_shell]
+#symbol = " "
+
+[haskell]
+symbol = " "
+
+#[haxe]
+#symbol = "⌘ "
+
+[hg_branch]
+symbol = " "
+
+[hostname]
+ssh_symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+
+#[meson]
+#symbol = "󰔷 "
+
+[nim]
+symbol = "󰆥 "
+
+[nix_shell]
+symbol = " "
+
+[nodejs]
+symbol = " "
+
+[package]
+symbol = "󰏗 "
+
+[python]
+symbol = " "
+
+[rlang]
+symbol = "󰟔 "
+
+[ruby]
+symbol = " "
+
+[rust]
+symbol = " "
+
+[scala]
+symbol = " "
+
+[spack]
+symbol = "🅢 "
+
+

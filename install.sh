@@ -22,7 +22,7 @@ if [ "$(uname)" == "Linux" ]; then
     source install/linux.sh
 fi
 
-source install/venv.sh
+#source install/venv.sh
 #
 #echo "creating vim directories"
 #mkdir -p ~/.vim-tmp

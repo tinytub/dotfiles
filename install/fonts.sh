@@ -1,32 +1,103 @@
-#  brew cask install font-inconsolata-go-nerd-font
-#  brew cask install font-hack-nerd-font font-meslo-nerd-font font-sourcecodepro-nerd-font
-#  brew install font-meslo-nerd-font
+#!/usr/bin/env bash
 
-# script from https://gist.github.com/ELLIOTTCABLE/5b87ab21b11acb76a5c52d47a022b519
+# Script: install_nerd_fonts.sh
+# Description: Interactively select and install Nerd Fonts for macOS using GitHub releases + fzf.
+# Author: zx0r
+# Version: 1.1
 
-# Creating this because I'm *sure* I'll forget how to do this.
+set -euo pipefail
 
-# 1. Customize your Input fontface, and download it from their website:
-open -a Safari \
-   "http://input.fontbureau.com/download/index.html?size=14&language=javascript&theme=base16-dark&family=InputMono&width=200&weight=300&line-height=1.3&a=0&g=ss&i=serif&l=serifs_round&zero=slash&asterisk=height&braces=straight&preset=dejavu&customize=please"
-"https://input.fontbureau.com/download/index.html?customize&fontSelection=fourStyleFamily&regular=InputMonoNarrow-Light&italic=InputMonoNarrow-LightItalic&bold=InputMonoNarrow-Medium&boldItalic=InputMonoNarrow-MediumItalic&a=0&g=ss&i=serif&l=serifs_round&zero=slash&asterisk=height&braces=straight&preset=dejavu&line-height=1.3&email="
+FZF_PROMPT="Select Nerd Fonts: "
+FZF_HEIGHT="60%"
+FZF_LAYOUT="reverse"
 
-# 2. Download the ‘patcher script’:
-# (I have no idea why the hell this script requires the `changelog.md` as well; and we [ab]use
-#  GitHub's SVN bridge to download *just* the `src/glyphs`, instead of the 100s of megabytes of
-#  pre-patched fonts)
-cd ~/Downloads/Input-Font
-curl -o nerd-patcher.py -JO -fsSl --proto-redir -all,https \
-   https://raw.githubusercontent.com/ryanoasis/nerd-fonts/2.1.0/{font-patcher,changelog.md}
-svn checkout https://github.com/ryanoasis/nerd-fonts/branches/2.1.0/src/glyphs src/glyphs
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+RED='\033[0;31m'
+NC='\033[0m'
 
-# 3. Install the patcher-script's dependencies:
-brew install fontforge
+is_command_installed() { command -v "$1" &>/dev/null; }
 
-# 4. Patch the files:
-for font in Input_Fonts/Input/*.ttf; do
-   #python nerd-patcher.py --careful --complete --progressbars "$font"; done
-   fontforge -script ./font-patcher --careful --complete --progressbars --adjust-line-height "$font"; done
+print_step()    { echo -e "\n${CYAN}➜ ${1}${NC}\n"; }
+print_success() { echo -e "\n${GREEN}✅ ${1}${NC}\n"; }
+print_warn()    { echo -e "${YELLOW}[Warn] ${1}${NC}"; }
+print_error()   { echo -e "${RED}❗️${1}${NC}"; exit 1; }
 
-# 5. Install the patched fonts:
-open -a 'Font Book' 'Input '*
+check_dependencies() {
+  local dependencies=("curl" "fzf" "unzip")
+  for dep in "${dependencies[@]}"; do
+    if ! is_command_installed "$dep"; then
+      print_warn "$dep is not installed."
+      if [[ "$dep" == "fzf" ]]; then
+        print_step "Installing fzf via Homebrew..."
+        brew install fzf
+      else
+        print_error "Please install $dep first."
+      fi
+    fi
+  done
+}
+
+# Fetch Nerd Fonts list from GitHub releases
+fetch_nerd_fonts() {
+  curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest \
+    | grep "browser_download_url" \
+    | grep ".zip" \
+    | sed -E 's/.*\/([^\/]+)\.zip.*/\1/'
+}
+
+select_fonts() {
+  local fonts="$1"
+  echo "$fonts" | fzf --multi --prompt="$FZF_PROMPT" --height="$FZF_HEIGHT" --layout="$FZF_LAYOUT"
+}
+
+install_fonts() {
+  local selected_fonts="$1"
+  if [[ -z "$selected_fonts" ]]; then
+    print_warn "No fonts selected. Exiting."
+    exit 0
+  fi
+
+  print_step "Downloading and installing selected Nerd Fonts..."
+  echo "$selected_fonts" | while read -r font; do
+    url="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${font}.zip"
+    tmpdir=$(mktemp -d)
+    print_step "Downloading $font..."
+    curl -L "$url" -o "$tmpdir/$font.zip"
+    unzip -q "$tmpdir/$font.zip" -d "$tmpdir/$font"
+    cp "$tmpdir/$font"/*.ttf ~/Library/Fonts/ || true
+    rm -rf "$tmpdir"
+    print_success "Installed $font."
+  done
+}
+
+main() {
+  print_step "Select the Nerd Fonts you want to install (TAB to select multiple):"
+  check_dependencies
+
+  local fonts
+  fonts=$(fetch_nerd_fonts)
+  if [[ -z "$fonts" ]]; then
+    print_error "No Nerd Fonts found from GitHub API."
+  fi
+
+  local selected_fonts
+  selected_fonts=$(select_fonts "$fonts")
+
+  install_fonts "$selected_fonts"
+}
+
+main
+
+
+
+
+
+
+
+
+
+
+
+

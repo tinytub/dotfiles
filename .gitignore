@@ -12,6 +12,8 @@ config/nvim/sessions/default.vim
 vim/vim.symlink/spell/
 vim/vim.symlink/plugged/
 
+.avante_chat_history
+
 
 
 ./coc-settings.json

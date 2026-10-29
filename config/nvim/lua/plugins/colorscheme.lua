@@ -1,55 +1,4 @@
 return {
-
-  {
-    -- this repo has break some base46 colors
-    -- "CanKolay3499/base46",
-    -- "jayden-chan/base46.nvim",
-    "tinytub/base46",
-    dependencies = "plenary.nvim",
-    config = function()
-      local base46 = require("base46")
-      --base46.setup({ theme = "everforest", custom_highlights = "colors.themes.everforest" })
-      base46.setup({ theme = "everforest" })
-    end,
-    enabled = false,
-  },
-
-  -- tokyonight
-  {
-    "folke/tokyonight.nvim",
-    lazy = true,
-    opts = {
-      style = "moon",
-      sidebars = {
-        "qf",
-        "vista_kind",
-        --"terminal",
-        "spectre_panel",
-        "startuptime",
-        "Outline",
-      },
-    },
-  },
-
-  {
-    "scottmckendry/cyberdream.nvim",
-    lazy = false,
-    enabled = false,
-    priority = 1000,
-
-    opts = function()
-      local colors = require("cyberdream.colors").default
-      return {
-        transparent = false,
-        theme = {
-          highlights = {
-            Constant = { fg = colors.magenta },
-          },
-        },
-      }
-    end,
-  },
-
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -61,105 +10,80 @@ return {
     enabled = true,
     lazy = true,
     vscode = true,
-    opts = {
-      flavour = "macchiato", -- latte, frappe, macchiato, mocha
-      background = {
+    opts = function(_, opts)
+      --local bufferline = require("catppuccin.groups.integrations.bufferline")
+      --bufferline.get = bufferline.get or bufferline.get_theme
+
+      opts.flavour = "macchiato" -- latte, frappe, macchiato, mocha
+      opts.integrations = {
+        avante = true,
+      }
+      opts.background = {
         -- :h background
         light = "latte",
         dark = "macchiato",
         --dark = "mocha",
-      },
-      transparent_background = true,
-      no_italic = true,
-      no_bold = false,
-      compile = {
+      }
+      -- 非活动窗口搞成深色
+      opts.dim_inactive = {
+        enabled = false,
+        shade = "dark",
+        percentage = 0.99,
+      }
+      opts.transparent_background = true
+      opts.no_italic = true
+      opts.no_bold = false
+      opts.compile = {
         enabled = true,
         path = vim.fn.stdpath("cache") .. "/catppuccin",
-      },
-      integrations = {
-        --fidget = true,
-        --treesitter_context = true,
-        --ts_rainbow = true,
-        --mason = true,
-        --gitgutter = true,
-        --symbols_outline = true,
-        --dashboard = false,
-        --markdown = true,
-        --dap = {
-        --  enabled = true,
-        --  enabled_ui = true,
-        --},
+      }
+      --opts.color_overrides = {
+      --  mocha = {
+      --    -- I don't think these colours are pastel enough by default!
+      --    peach = "#fcc6a7",
+      --    green = "#d2fac5",
+      --  },
+      --}
+      opts.custom_highlights = function(colors)
+        return {
+          --WinSeparator = { fg = colors.yellow, style = { "bold" } },
+          --WinSeparator = { fg = "#ffc4c4" },
+          -- NeoTreeWinSeparator = { fg = "#ffc4c4" },
+          WinSeparator = { style = { "bold" } },
+          NeoTreeWinSeparator = { style = { "bold" } },
+          --NeoTreeFileNameOpened = {
+          --  fg = "#ffcc00", -- 设置前景色为黄色
+          --  --  fg = "",
+          --  -- bg = "#282828", -- 设置背景色
+          --  bg = "#e35e4f",
+          --  bold = true, -- 设置加粗
+          --},
+          --WinSeparator = { fg = colors.peach },
+          --NeoTreeWinSeparator = { fg = colors.peach },
+          -- 当前文件高亮
+          NeoTreeFileNameOpened = {
+            fg = colors.peach,
+            bg = colors.surface0,
+            bold = true,
+          },
 
-        symbols_outline = true,
-        --treesitter_context = true,
-        mason = true,
-        aerial = true,
-        alpha = true,
-        cmp = true,
-        dashboard = true,
-        flash = true,
-        gitsigns = true,
-        headlines = true,
-        illuminate = true,
-        indent_blankline = { enabled = true },
-        leap = true,
-        lsp_trouble = true,
-        mini = true,
-        markdown = true,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { "undercurl" },
-            warnings = { "undercurl" },
-            hints = { "undercurl" },
-            information = { "undercurl" },
+          -- 光标所在行高亮（Neo-tree 专用）
+          NeoTreeCursorLine = {
+            bg = colors.surface1,
           },
-          inlay_hints = {
-            background = true,
+          -- 如果你想让普通窗口也有 CursorLine 背景
+          CursorLine = {
+            bg = colors.surface1,
           },
-        },
-        navic = { enabled = true, custom_bg = "lualine" },
-        neotest = true,
-        noice = true,
-        notify = true,
-        neotree = true,
-        semantic_tokens = true,
-        telescope = true,
-        treesitter = true,
-        which_key = true,
-      },
-      color_overrides = {
-        mocha = {
-          -- I don't think these colours are pastel enough by default!
-          peach = "#fcc6a7",
-          green = "#d2fac5",
-        },
-      },
-    },
+          --NeoTreeNormal = {
+          --  bg = colors.base,
+          --},
+          --NeoTreeNormalNC = {
+          --  bg = colors.base,
+          --},
+        }
+      end
+    end,
     --event = "VeryLazy",
   },
-
-  {
-    "sainnhe/everforest",
-    config = function()
-      require("colors").init()
-    end,
-    enabled = false,
-  },
-
-  {
-    "rebelot/kanagawa.nvim",
-    config = function()
-      require("colors").init()
-    end,
-    enabled = false,
-  },
-
-  --{
-  --	"sainnhe/gruvbox-material",
-  --	config = function()
-  --		require("colors").init()
-  --	end,
-  --	enabled = false,
-  --},
 }
